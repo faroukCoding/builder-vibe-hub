@@ -14,12 +14,17 @@
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
+    --card-light: 231 54% 97%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
+    --primary-dark: 225 76% 15%;
+    --primary-accent: 48 100% 66%;
+    --primary-green: 166 100% 40%;
+    --primary-blue: 225 85% 67%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -36,6 +41,9 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
+
+    --text-primary: 334 58% 50%;
+    --text-secondary: 214 14% 45%;
 
     --radius: 0.5rem;
 
