@@ -325,7 +325,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5" />
-            التقارير الطبية
+            التقارير ال��بية
           </CardTitle>
           <CardDescription>
             التقارير والتقييمات من الأخصائي المعالج
@@ -533,7 +533,7 @@ export default function ParentDashboard() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
+              <PieChart width="100%" height="100%">
                 <Pie
                   data={testCategories}
                   cx="50%"
@@ -542,6 +542,9 @@ export default function ParentDashboard() {
                   fill="#8884d8"
                   dataKey="value"
                   label={({ name, value }) => `${name}: ${value}%`}
+                  startAngle={0}
+                  endAngle={360}
+                  innerRadius={0}
                 >
                   {testCategories.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
