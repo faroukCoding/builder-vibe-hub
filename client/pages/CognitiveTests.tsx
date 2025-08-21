@@ -220,7 +220,7 @@ const IMAGE_CATEGORIES = {
       id: 5,
       name: "برتقال",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8cc2e508a60e4905960628da1aa52209?format=webp&width=800",
-      category: "فواكه"
+      category: "فو��كه"
     },
     {
       id: 6,
@@ -337,7 +337,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 8,
       name: "جمل",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F81ed82645a254678b25be28d54b0b66b?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F9822ce0a201443629ead37f3f713efe5?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -390,7 +390,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 17,
-      name: "قطة",
+      name: "��طة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
       category: "حيوا��ات"
     }
@@ -430,7 +430,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 6,
-      name: "دراجة نارية",
+      name: "دراجة ناري��",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F57f0bef6a1c144ea967dd6843b6bccd6?format=webp&width=800",
       category: "مركبات"
     },
@@ -516,7 +516,7 @@ const BODY_PARTS = [
   { name: "عين", emoji: "👁️", category: "وجه" },
   { name: "أنف", emoji: "��", category: "وجه" },
   { name: "فم", emoji: "👄", category: "وجه" },
-  { name: "أذن", emoji: "👂", category: "وجه" },
+  { name: "أذن", emoji: "���", category: "وجه" },
   { name: "يد", emoji: "✋", category: "أطراف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
   { name: "رأس", emoji: "🗣️", category: "جسم" },
@@ -769,7 +769,7 @@ export default function CognitiveTests() {
       setCurrentVerificationIndex(prev => prev + 1);
     } else {
       setIsVerificationMode(false);
-      alert(`تم الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
+      alert(`��م الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -1976,7 +1976,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'success',
-            message: `🎉 ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
+            message: `��� ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
           });
           setScore(prev => prev + 1);
           setMatches(prev => [...prev, { image, name }]);
@@ -2301,7 +2301,7 @@ export default function CognitiveTests() {
               {isAnalyzing && (
                 <div className="text-center py-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                  <p className="text-blue-600">جاري التحليل...</p>
+                  <p className="text-blue-600">ج��ري التحليل...</p>
                 </div>
               )}
 
