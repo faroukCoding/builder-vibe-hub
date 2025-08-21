@@ -275,7 +275,7 @@ export default function AttentionExercises() {
       const numItems = Math.min(8, 6 + level); // حد أقصى 8 عناصر
       const newItems: ColoredItem[] = [];
 
-      // تأكد من وجود على الأقل عنصرين من اللون المطلوب
+      // تأكد م�� وجود على الأقل عنصرين من اللون المطلوب
       const targetColorObj = colors.find(c => c.value === targetColor);
       if (targetColorObj) {
         const minTargetItems = Math.max(2, Math.floor(numItems / 3));
@@ -383,7 +383,7 @@ export default function AttentionExercises() {
         <div className="flex items-center justify-between">
           <Button onClick={() => setCurrentGame("menu")} variant="outline">
             <ArrowLeft className="w-4 h-4 ml-2" />
-            العودة للقائمة
+            العودة للقا��مة
           </Button>
           <h2 className="text-2xl font-bold text-center">الانتباه الانتقائي</h2>
           <div></div>
@@ -548,7 +548,7 @@ export default function AttentionExercises() {
     const endJointGame = () => {
       setGameActive(false);
       setCharacters([]);
-      speakArabic(`انتهت اللعبة! أكملت ${round} جولات بنقاط ${score}`);
+      speakArabic(`انتهت اللعبة! أكملت ${round} جولات بنق��ط ${score}`);
     };
 
     // تحريك الشخص��ات
@@ -983,7 +983,7 @@ export default function AttentionExercises() {
         }
       } else {
         setScore(prev => Math.max(0, prev - 5));
-        speakArabic("حاول مرة أخرى");
+        speakArabic("حاو�� مرة أخرى");
       }
     };
 
