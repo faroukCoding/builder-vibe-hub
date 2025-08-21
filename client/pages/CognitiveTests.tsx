@@ -543,6 +543,12 @@ export default function CognitiveTests() {
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // واجهة التحقق من الصور
+  const [isVerificationMode, setIsVerificationMode] = useState(false);
+  const [currentVerificationIndex, setCurrentVerificationIndex] = useState(0);
+  const [verificationData, setVerificationData] = useState<{item: TestItem, originalCategory: string}[]>([]);
+  const [correctedImages, setCorrectedImages] = useState<TestItem[]>([]);
+
   // =============================================================================
   // UTILITY FUNCTIONS
   // =============================================================================
@@ -1525,7 +1531,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              ابدأ الاختب��ر
             </Button>
           </CardContent>
         </Card>
