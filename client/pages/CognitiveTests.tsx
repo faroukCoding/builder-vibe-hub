@@ -150,7 +150,7 @@ const IMAGE_CATEGORIES = {
       id: 3,
       name: "ثوم",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F47ce5c086a054c7d87c3ef80e94a1568?format=webp&width=800",
-      category: "خ��ر��ات"
+      category: "خضر��ات"
     },
     {
       id: 4,
@@ -313,7 +313,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 4,
       name: "ثعلب",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ff9da0592a9534bcbb8b8ec0fa3700363?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd41e8b30b0db4caab82da81e2f5b0218?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -654,7 +654,7 @@ export default function CognitiveTests() {
           }
         }
 
-        // إذا لم يتم العثور على نمط، نحلل ب��اءً على hash في URL
+        // إذا لم يتم العثور على نم��، نحلل بناءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
         const categories = ['ملابس', 'خضروات', 'فواكه', 'حيو��نات', 'مركبات'];
@@ -1119,7 +1119,7 @@ export default function CognitiveTests() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">اختبار التعرف على الألوان</CardTitle>
+          <CardTitle className="text-center">اختب��ر التعرف على الألوان</CardTitle>
           <CardDescription className="text-center">
             السؤال {testSession.currentQuestion} من 10
           </CardDescription>
@@ -1211,7 +1211,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ��لخص اختبار الأرقام
+              ملخص اختبار الأرقام
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1797,7 +1797,7 @@ export default function CognitiveTests() {
                 <Eye className="w-8 h-8 text-teal-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">أعضاء الجسم</h3>
+                <h3 className="text-xl font-bold">أعضا�� الجسم</h3>
                 <p className="text-gray-600 text-sm">التعرف على أجزاء الجسم</p>
               </div>
             </div>
@@ -1820,7 +1820,7 @@ export default function CognitiveTests() {
               </div>
               <div className="flex-1">
                 <h3 className="text-2xl font-bold text-purple-700">🧠 مطابقة الصور والأسماء الذكية</h3>
-                <p className="text-gray-600 text-base">تمرين تفاعلي مع الذكاء الاصطناعي لتطوير مهارات الإدراك</p>
+                <p className="text-gray-600 text-base">تمرين تفاعلي مع الذكاء ��لاصطناعي لتطوير مهارات الإدراك</p>
               </div>
               <div className="text-right">
                 <Badge className="bg-purple-500 text-white mb-2">جديد!</Badge>
@@ -1877,7 +1877,7 @@ export default function CognitiveTests() {
             </Button>
           </div>
           <div className="mt-3 text-sm text-gray-600">
-            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاس�� والفئة الص��يحة
+            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاس�� والفئة الصحيحة
           </div>
         </CardContent>
       </Card>
@@ -1898,13 +1898,13 @@ export default function CognitiveTests() {
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري و��لسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
-                <li>• إعداد ��طط العلاج المناسبة</li>
+                <li>• إعداد ����طط العلاج المناسبة</li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-3 text-gray-800">معايير التقييم:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• كل اختبار يحتو�� على 10 أسئلة</li>
+                <li>• كل اختبار يحتوي على 10 أسئلة</li>
                 <li>• تغذية راجعة فورية باللغة العربية</li>
                 <li>• حساب دقيق ��نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
