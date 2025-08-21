@@ -392,7 +392,7 @@ const IMAGE_CATEGORIES = {
       id: 17,
       name: "قطة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
-      category: "حيوا��ات"
+      category: "حيو����ات"
     }
   ],
 
@@ -706,7 +706,7 @@ export default function CognitiveTests() {
           });
         }
 
-        // تحديث قائ��ة الصور المصححة
+        // تحديث قائمة الصور المصححة
         setCorrectedImages(prev => [...prev, {
           ...item,
           name: analysis.name,
@@ -1108,7 +1108,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العود�� للقائمة
+                العودة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1811,6 +1811,40 @@ export default function CognitiveTests() {
           </CardContent>
         </Card>
 
+        {/* تمرين المطابقة الذكي */}
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-300 col-span-full" onClick={() => setCurrentTest('matching')}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-4 rounded-lg">
+                <Brain className="w-10 h-10 text-purple-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-purple-700">🧠 مطابقة الصور والأسماء الذكية</h3>
+                <p className="text-gray-600 text-base">تمرين تفاعلي مع الذكاء الاصطناعي لتطوير مهارات الإدراك</p>
+              </div>
+              <div className="text-right">
+                <Badge className="bg-purple-500 text-white mb-2">جديد!</Badge>
+                <div className="text-sm text-gray-500">
+                  ⭐ تحليل ذكي • ⚡ تغذية راجعة فورية
+                </div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600 mb-4">
+              اختر الصورة واختر الاسم المطابق، سيقوم الذكاء الاصطناعي بتحليل إجابتك وإعطائك تغذية راجعة فورية ودقيقة
+            </div>
+            <div className="flex gap-2 text-xs text-gray-500 mb-4">
+              <span className="bg-purple-100 px-2 py-1 rounded">15 مطابقة</span>
+              <span className="bg-blue-100 px-2 py-1 rounded">5 فئات</span>
+              <span className="bg-green-100 px-2 py-1 rounded">تحليل AI</span>
+              <span className="bg-yellow-100 px-2 py-1 rounded">صوت عربي</span>
+            </div>
+            <Button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white text-lg py-3">
+              <Brain className="w-5 h-5 ml-2" />
+              ابدأ التمرين الذكي
+            </Button>
+          </CardContent>
+        </Card>
+
       </div>
 
       {/* Image Verification Section */}
@@ -1823,7 +1857,7 @@ export default function CognitiveTests() {
         </CardHeader>
         <CardContent>
           <p className="text-gray-700 mb-4">
-            استخدم الذكاء الاصطناعي لتحليل وتص��يح جميع الصور تلقائياً أو راجعها يدوياً
+            استخدم الذكاء الاصطناعي لتحليل وتصحيح جميع الصور تلقائياً أو راجعها يدوياً
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Button
@@ -1853,7 +1887,7 @@ export default function CognitiveTests() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-blue-700">
             <Brain className="w-5 h-5" />
-            معلومات مهمة حول الاخ��بارات
+            معلومات مهمة حول الاختبارات
           </CardTitle>
         </CardHeader>
         <CardContent>
