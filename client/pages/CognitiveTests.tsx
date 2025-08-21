@@ -61,7 +61,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 1,
       name: "بدلة رسمية",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5581dd13e7614e508185741483efb417?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc0d740f933814e539adf7e80620a3aff?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -180,7 +180,7 @@ const IMAGE_CATEGORIES = {
       id: 8,
       name: "جزر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcf22556c95014df6847800eea8c8c8d3?format=webp&width=800",
-      category: "خضروات"
+      category: "��ضروات"
     },
     {
       id: 9,
@@ -543,7 +543,7 @@ export default function CognitiveTests() {
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // واجهة التحقق من الصور
+  // واجهة التحقق م�� الصور
   const [isVerificationMode, setIsVerificationMode] = useState(false);
   const [currentVerificationIndex, setCurrentVerificationIndex] = useState(0);
   const [verificationData, setVerificationData] = useState<{item: TestItem, originalCategory: string}[]>([]);
@@ -1945,7 +1945,7 @@ export default function CognitiveTests() {
       const shuffledNames = shuffledImages.map(item => item.name).sort(() => Math.random() - 0.5);
 
       setGameData({
-        images: shuffledImages.slice(0, 15), // 15 صورة للعب
+        images: shuffledImages.slice(0, 15), // 15 صورة لل��ب
         names: shuffledNames.slice(0, 15)
       });
     });
