@@ -331,7 +331,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 7,
       name: "ديك",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F85d6f143bfd542af91bc9e23c31bce0d?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F2698ac06c7bf449b9214bb26df507d7f?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -1865,7 +1865,7 @@ export default function CognitiveTests() {
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
               <Brain className="w-4 h-4 ml-2" />
-              تصحيح تلقائي ب��ل��كاء الاصطناعي
+              تصحيح تلقائي بال��كاء الاصطناعي
             </Button>
             <Button
               onClick={startImageVerification}
