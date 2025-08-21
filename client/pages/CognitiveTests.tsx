@@ -246,9 +246,9 @@ export default function CognitiveTests() {
 
   const shapes = [
     { name: "دائرة", type: "circle", description: "شكل دائري" },
-    { name: "مربع", type: "square", description: "شكل بأربعة أضلاع متساوية" },
+    { name: "مربع", type: "square", description: "شكل بأربعة أضلاع ��تساوية" },
     { name: "مثلث", type: "triangle", description: "شكل بثلاثة أضلاع" },
-    { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أضلاع مستطيل" },
+    { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أض��اع مستطيل" },
     { name: "نجمة", type: "star", description: "شكل نجمة" },
     { name: "قلب", type: "heart", description: "شكل قلب" },
     { name: "معين", type: "diamond", description: "شكل معين" },
@@ -1005,7 +1005,7 @@ export default function CognitiveTests() {
                 <div className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300 bg-white flex items-center justify-center">
                   {renderShape(currentShape)}
                 </div>
-                <p className="text-lg font-semibold mb-4">ما اسم هذا الشكل؟</p>
+                <p className="text-lg font-semibold mb-4">ما اس�� هذا الشكل؟</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1111,7 +1111,7 @@ export default function CognitiveTests() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">اختبار التعرف على أعضاء الجسم</CardTitle>
+          <CardTitle className="text-center">اختبار الت��رف على أعضاء الجسم</CardTitle>
           <CardDescription className="text-center">
             السؤال {testSession.currentQuestion} من 10
           </CardDescription>
@@ -1180,7 +1180,7 @@ export default function CognitiveTests() {
       <Card className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
         <CardContent className="p-8 text-center">
           <Brain className="w-16 h-16 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold mb-2">اختبارات الإدراك والمكت��بات القبلية</h1>
+          <h1 className="text-3xl font-bold mb-2">اختبارات الإدراك والمكتسبات القبلية</h1>
           <p className="text-purple-100">تقييم قدرات الطفل المعرفية والإدراكية</p>
         </CardContent>
       </Card>
@@ -1240,7 +1240,7 @@ export default function CognitiveTests() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer opacity-75">
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('shapes')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="bg-orange-100 p-3 rounded-lg">
@@ -1248,16 +1248,17 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">الأشكال الهندسية</h3>
-                <p className="text-gray-600">قريباً - تقييم معرفة الأشكال</p>
+                <p className="text-gray-600">تقييم معرفة الأشكال الهندسية</p>
               </div>
             </div>
-            <Button className="w-full" variant="outline" disabled>
-              قريباً
+            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ الاختبار
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer opacity-75">
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('numbers')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="bg-red-100 p-3 rounded-lg">
@@ -1265,16 +1266,17 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">الأرقام 1-10</h3>
-                <p className="text-gray-600">قريباً - تقييم معرفة الأرقام</p>
+                <p className="text-gray-600">تقييم معرفة الأرقام العربية</p>
               </div>
             </div>
-            <Button className="w-full" variant="outline" disabled>
-              قريباً
+            <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ الاختبار
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer opacity-75">
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('bodyparts')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="bg-teal-100 p-3 rounded-lg">
@@ -1282,11 +1284,12 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">أعضاء الجسم</h3>
-                <p className="text-gray-600">قريباً - تقييم معرفة الجسم</p>
+                <p className="text-gray-600">تقييم معرفة أجزاء الجسم</p>
               </div>
             </div>
-            <Button className="w-full" variant="outline" disabled>
-              قريباً
+            <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ الاختبار
             </Button>
           </CardContent>
         </Card>
