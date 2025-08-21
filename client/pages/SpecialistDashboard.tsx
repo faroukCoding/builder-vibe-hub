@@ -99,7 +99,7 @@ export default function SpecialistDashboard() {
     {
       id: "balance",
       title: "الميزانية الأرطوفونية",
-      description: "استمارة سريرية ��املة للتقي��م",
+      description: "استمارة سريرية ��املة للتقييم",
       icon: FileText,
       color: "blue",
       route: "/orthophonic-balance"
@@ -115,7 +115,7 @@ export default function SpecialistDashboard() {
     {
       id: "portage",
       title: "تقرير بورتاج",
-      description: "حساب وعرض بياني لمقياس بورتاج",
+      description: "حساب وعرض بياني لمقياس بو��تاج",
       icon: BarChart3,
       color: "purple",
       route: "/portage-report"
@@ -339,7 +339,7 @@ export default function SpecialistDashboard() {
                 <div className="bg-blue-100 p-3 rounded-lg">
                   <BarChart3 className="w-6 h-6 text-blue-600" />
                 </div>
-                <h3 className="font-semibold">تقرير ��امل للمرضى</h3>
+                <h3 className="font-semibold">تقرير شامل للمرضى</h3>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 تقرير تفصيلي عن جميع المرضى وتقدمهم العلاجي
@@ -476,8 +476,18 @@ export default function SpecialistDashboard() {
                                 angle={-45}
                                 textAnchor="end"
                                 height={80}
+                                axisLine={true}
+                                tickLine={true}
+                                type="category"
+                                orientation="bottom"
                               />
-                              <YAxis />
+                              <YAxis
+                                axisLine={true}
+                                tickLine={true}
+                                type="number"
+                                orientation="left"
+                                tick={{ fontSize: 12 }}
+                              />
                               <Tooltip
                                 formatter={(value, name) => [value, name === 'patients' ? 'عدد المرضى' : 'معدل النجاح']}
                                 labelFormatter={(label) => `الولاية: ${label}`}
@@ -556,7 +566,7 @@ export default function SpecialistDashboard() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <FileText className="w-5 h-5 text-indigo-600" />
-                        تفاصيل البيانات الجغرافية
+                        تفاصيل البيان��ت الجغرافية
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -815,7 +825,7 @@ export default function SpecialistDashboard() {
                         </Button>
                         <Button variant="outline" className="flex items-center gap-2">
                           <FileText className="w-4 h-4" />
-                          تصدير التقارير
+                          ��صدير التقارير
                         </Button>
                         <Button variant="outline" className="flex items-center gap-2">
                           <Users className="w-4 h-4" />
