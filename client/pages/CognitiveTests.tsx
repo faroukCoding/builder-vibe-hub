@@ -290,7 +290,7 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الحيوانات (المو��ودة مسبقاً)
+  // الحيوانات (الموجودة مسبقاً)
   animals: [
     {
       id: 1,
@@ -456,7 +456,7 @@ const IMAGE_CATEGORIES = {
       id: 10,
       name: "حافلة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb8fe0a7b5baf4a8abbba37cbe393790d?format=webp&width=800",
-      category: "م��كبات"
+      category: "مركبات"
     },
     {
       id: 11,
@@ -619,10 +619,10 @@ export default function CognitiveTests() {
 
           // أنماط الملابس
           'suit|بدلة': { name: 'بدلة رسمية', category: 'ملابس', confidence: 95 },
-          'tie|ربطة': { name: 'ربطة عنق', category: 'ملا��س', confidence: 94 },
+          'tie|ربطة': { name: 'ربطة عنق', category: 'ملابس', confidence: 94 },
           'scarf|وشاح': { name: 'وشاح شتوي', category: 'ملابس', confidence: 92 },
           'gloves|قفازات': { name: 'قفازات', category: 'ملابس', confidence: 93 },
-          'shoes|حذاء': { name: 'حذ��ء رياضي', category: 'ملابس', confidence: 96 },
+          'shoes|حذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
           'socks|جوارب': { name: 'جوارب', category: 'ملابس', confidence: 94 },
           'skirt|تنورة': { name: 'تنورة', category: 'ملابس', confidence: 95 },
           'dress|فستان': { name: 'فستان', category: 'ملابس', confidence: 97 },
@@ -635,9 +635,9 @@ export default function CognitiveTests() {
           'helicopter|هليكوبتر': { name: 'طائرة هليكوبتر', category: 'مركبات', confidence: 99 },
           'fire.truck|إطفاء': { name: 'سيارة إطفاء', category: 'مركبات', confidence: 98 },
           'tractor|جرار': { name: 'جرار زراعي', category: 'مركبات', confidence: 97 },
-          'ambulance|إسعاف': { name: 'سيارة إسعاف', category: 'مركبات', confidence: 98 },
+          'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مركبات', confidence: 98 },
           'truck|شاحنة': { name: 'شاحنة', category: 'مركبات', confidence: 96 },
-          'motorcycle|��راجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
+          'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
           'bicycle|دراجة.هوائية': { name: 'دراجة هوائية', category: 'مركبات', confidence: 94 },
           'tram|ترام': { name: 'ترام', category: 'مركبات', confidence: 93 },
           'train|قطار': { name: 'قطار', category: 'مركبات', confidence: 97 },
@@ -657,7 +657,7 @@ export default function CognitiveTests() {
         // إذا لم يتم العثور على نمط، نحلل بناءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
-        const categories = ['ملابس', 'خضروات', 'فوا��ه', 'حيوانات', 'مركبات'];
+        const categories = ['ملابس', 'خضروات', 'فواكه', 'حيوانات', 'مركبات'];
         const categoryIndex = hashInt % categories.length;
 
         resolve({
@@ -769,7 +769,7 @@ export default function CognitiveTests() {
       setCurrentVerificationIndex(prev => prev + 1);
     } else {
       setIsVerificationMode(false);
-      alert(`تم الانتهاء من التحقق! تم تصحيح ${correctedImages.length} صورة.`);
+      alert(`تم الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -1368,7 +1368,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار ال��شكال
+              ملخص اختبار الأشكال
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1843,7 +1843,7 @@ export default function CognitiveTests() {
             </Button>
           </div>
           <div className="mt-3 text-sm text-gray-600">
-            💡 التصحيح التلقائي يحلل كل صورة ويقترح الاسم والفئة الصحيحة
+            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاسم والفئة الصحيحة
           </div>
         </CardContent>
       </Card>
@@ -1872,7 +1872,7 @@ export default function CognitiveTests() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
                 <li>• تغذية راجعة فورية باللغة العربية</li>
-                <li>• حساب دقيق لنسبة النجاح</li>
+                <li>• حساب دقيق ��نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
             </div>
@@ -2108,6 +2108,8 @@ export default function CognitiveTests() {
         return <ShapeRecognitionTest />;
       case "bodyparts":
         return <BodyPartsTest />;
+      case "matching":
+        return <ImageNameMatchingTest />;
       default:
         return <MainMenu />;
     }
@@ -2135,7 +2137,7 @@ export default function CognitiveTests() {
                   العودة للقائمة الرئيسية
                 </Button>
                 <div className="h-6 w-px bg-gray-300" />
-                <h1 className="text-xl font-bold">تحقق من الصور والأ��ماء</h1>
+                <h1 className="text-xl font-bold">تحقق من الصور والأسماء</h1>
               </div>
             </div>
           </div>
