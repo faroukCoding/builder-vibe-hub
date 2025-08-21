@@ -111,7 +111,7 @@ export default function CognitiveTests() {
       },
       {
         id: 12,
-        name: "قميص",
+        name: "��ميص",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa4a6d473f5fb43f18d40b4df6568691f?format=webp&width=800",
         category: "ملابس"
       }
@@ -375,7 +375,7 @@ export default function CognitiveTests() {
     vehicles: [
       {
         id: 1,
-        name: "طائرة هليكوبتر",
+        name: "طائرة هليكو��تر",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbe4a29629e1473a96ed091dd66f1950?format=webp&width=800",
         category: "مركبات"
       },
@@ -473,7 +473,7 @@ export default function CognitiveTests() {
   ];
 
   const shapes = [
-    { name: "دائرة", type: "circle", description: "شكل دائ��ي" },
+    { name: "دائرة", type: "circle", description: "شكل دائري" },
     { name: "مربع", type: "square", description: "شكل بأربعة أضلاع متساوية" },
     { name: "مثلث", type: "triangle", description: "شكل بثلاثة أضلاع" },
     { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أضلاع مستطيل" },
@@ -701,7 +701,7 @@ export default function CognitiveTests() {
     );
   };
 
-  // اختبار التعرف على المركبات
+  // اختبار التعرف على ا��مركبات
   const VehicleRecognitionTest = () => {
     const [currentVehicle, setCurrentVehicle] = useState(null);
     const [options, setOptions] = useState([]);
@@ -1000,7 +1000,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار الطعام
+              م��خص اختبار الطعام
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1513,7 +1513,7 @@ export default function CognitiveTests() {
                     variant="outline"
                     className="h-16 text-lg"
                     onClick={() => {
-                      handleAnswer(option.name, currentShape.name, "ما اسم هذا الشكل؟");
+                      handleAnswer(option.name, currentShape.name, "ما اسم هذا الشكل��");
                       setTimeout(() => {
                         if (testSession.currentQuestion <= 10) {
                           generateQuestion();
@@ -1683,7 +1683,7 @@ export default function CognitiveTests() {
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('animals')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
@@ -1763,7 +1763,7 @@ export default function CognitiveTests() {
                 <Palette className="w-8 h-8 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">التعرف على الألوان</h3>
+                <h3 className="text-xl font-bold">التعرف ع��ى الألوان</h3>
                 <p className="text-gray-600">تقييم معرفة الألوان الأساسية</p>
               </div>
             </div>
