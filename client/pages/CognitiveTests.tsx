@@ -74,7 +74,7 @@ const IMAGE_CATEGORIES = {
       id: 3,
       name: "وشاح شتوي",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd0cde76030774a0ca41d2a2f13165f02?format=webp&width=800",
-      category: "ملابس"
+      category: "م��ابس"
     },
     {
       id: 4,
@@ -142,7 +142,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 2,
-      name: "بصل أحمر",
+      name: "بصل أحم��",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb14104d5718c449fb362f5f9f9f26ca5?format=webp&width=800",
       category: "خضروات"
     },
@@ -274,7 +274,7 @@ const IMAGE_CATEGORIES = {
       id: 14,
       name: "توت أسود",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbb8c87d10584fd08e62855f67b17dd8?format=webp&width=800",
-      category: "فواكه"
+      category: "ف��اكه"
     },
     {
       id: 15,
@@ -1984,7 +1984,7 @@ export default function CognitiveTests() {
 
           // إزالة العناصر المطابقة
           setGameData(prev => ({
-            images: prev.images.filter(img => img.id !== image.id),
+            images: prev.images.filter(img => !(img.id === image.id && img.category === image.category)),
             names: prev.names.filter(n => n !== name)
           }));
 
@@ -2335,7 +2335,7 @@ export default function CognitiveTests() {
               )}
             </div>
 
-            {/* أسئلة التحقق */}
+            {/* أس��لة التحقق */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">المراجعة اليدوية:</h3>
 
