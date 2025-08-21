@@ -115,7 +115,7 @@ export default function SpecialistDashboard() {
     {
       id: "portage",
       title: "تقرير بورتاج",
-      description: "حساب وعرض بياني لمقياس بو��تاج",
+      description: "حساب وعرض بياني لمقياس بورتاج",
       icon: BarChart3,
       color: "purple",
       route: "/portage-report"
@@ -527,7 +527,7 @@ export default function SpecialistDashboard() {
                       <CardContent>
                         <div className="h-80">
                           <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
+                            <PieChart width="100%" height="100%">
                               <Pie
                                 data={casesDistribution}
                                 cx="50%"
@@ -536,6 +536,8 @@ export default function SpecialistDashboard() {
                                 outerRadius={120}
                                 paddingAngle={5}
                                 dataKey="value"
+                                startAngle={0}
+                                endAngle={360}
                               >
                                 {casesDistribution.map((entry, index) => (
                                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -566,7 +568,7 @@ export default function SpecialistDashboard() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <FileText className="w-5 h-5 text-indigo-600" />
-                        تفاصيل البيان��ت الجغرافية
+                        تفاصيل البيانات الجغرافية
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -670,7 +672,7 @@ export default function SpecialistDashboard() {
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">تنبيهات ��لمواعيد</p>
+                          <p className="font-medium">��نبيهات ��لمواعيد</p>
                           <p className="text-sm text-gray-600">إرسال تذكير قبل المواعيد</p>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -735,7 +737,7 @@ export default function SpecialistDashboard() {
                         <div className="space-y-2">
                           <label className="text-sm font-medium">تنسيق التاريخ</label>
                           <select className="w-full p-2 border rounded-md">
-                            <option value="dd/mm/yyyy">ي��م/شهر/سنة</option>
+                            <option value="dd/mm/yyyy">ي���م/شهر/سنة</option>
                             <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
                             <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
                           </select>
@@ -782,7 +784,7 @@ export default function SpecialistDashboard() {
                     <CardContent className="space-y-4">
                       <div className="space-y-4">
                         <Button variant="outline" className="w-full justify-start">
-                          تغيير كلمة ا��مرور
+                          تغيير كلمة ا����مرور
                         </Button>
                         <Button variant="outline" className="w-full justify-start">
                           إعداد المصادقة الثنائية
@@ -825,7 +827,7 @@ export default function SpecialistDashboard() {
                         </Button>
                         <Button variant="outline" className="flex items-center gap-2">
                           <FileText className="w-4 h-4" />
-                          ��صدير التقارير
+                          تصدير التقارير
                         </Button>
                         <Button variant="outline" className="flex items-center gap-2">
                           <Users className="w-4 h-4" />
