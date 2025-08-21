@@ -46,80 +46,159 @@ export default function AttentionExercises() {
     userSequence: []
   });
 
-  // تمرين اختيار النجمة
-  const StarSelectionGame = () => {
-    const shapes = [Circle, Square, Triangle, Star];
-    const [currentShapes, setCurrentShapes] = useState([]);
-    const [targetIndex, setTargetIndex] = useState(0);
+  // تمرين الانتباه البصري
+  const VisualAttentionGame = () => {
+    const [currentTask, setCurrentTask] = useState(null);
     const [feedback, setFeedback] = useState(null);
+    const [taskType, setTaskType] = useState("shapes"); // shapes, colors, patterns, numbers
 
-    const generateLevel = () => {
-      const numShapes = Math.min(4 + Math.floor(gameSession.currentQuestion / 3), 8);
-      const shuffledShapes = [];
-      const starPosition = Math.floor(Math.random() * numShapes);
+    const shapes = [
+      { name: "مربع", icon: "⬜", color: "#3B82F6" },
+      { name: "دائرة", icon: "🔵", color: "#EF4444" },
+      { name: "مثلث", icon: "🔺", color: "#10B981" },
+      { name: "نجمة", icon: "⭐", color: "#F59E0B" },
+      { name: "قلب", icon: "❤️", color: "#EC4899" },
+      { name: "معين", icon: "🔷", color: "#8B5CF6" }
+    ];
 
-      for (let i = 0; i < numShapes; i++) {
-        if (i === starPosition) {
-          shuffledShapes.push({ Component: Star, isTarget: true, id: i });
-        } else {
-          const randomShape = shapes[Math.floor(Math.random() * (shapes.length - 1))];
-          shuffledShapes.push({ Component: randomShape, isTarget: false, id: i });
+    const colors = [
+      { name: "أحمر", value: "#EF4444", emoji: "🔴" },
+      { name: "أزرق", value: "#3B82F6", emoji: "🔵" },
+      { name: "أخضر", value: "#10B981", emoji: "🟢" },
+      { name: "أصفر", value: "#F59E0B", emoji: "🟡" },
+      { name: "بنفسجي", value: "#8B5CF6", emoji: "🟣" },
+      { name: "برتقالي", value: "#F97316", emoji: "🟠" }
+    ];
+
+    const generateTask = () => {
+      const level = Math.min(Math.floor(gameSession.currentQuestion / 3) + 1, 4);
+      const gridSize = Math.min(3 + level, 6);
+
+      if (taskType === "shapes") {
+        const targetShape = shapes[Math.floor(Math.random() * shapes.length)];
+        const distractors = shapes.filter(s => s.name !== targetShape.name);
+        const items = [];
+
+        // Add target shapes (1-3 based on level)
+        const targetCount = Math.min(level, 3);
+        for (let i = 0; i < targetCount; i++) {
+          items.push({ ...targetShape, isTarget: true, id: `target-${i}` });
         }
+
+        // Fill remaining spots with distractors
+        while (items.length < gridSize * gridSize) {
+          const distractor = distractors[Math.floor(Math.random() * distractors.length)];
+          items.push({ ...distractor, isTarget: false, id: `dist-${items.length}` });
+        }
+
+        // Shuffle array
+        for (let i = items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [items[i], items[j]] = [items[j], items[i]];
+        }
+
+        setCurrentTask({
+          type: "shapes",
+          target: targetShape,
+          items: items,
+          gridSize: gridSize,
+          instruction: `ابحث عن جميع ${targetShape.name}`
+        });
+
+      } else if (taskType === "colors") {
+        const targetColor = colors[Math.floor(Math.random() * colors.length)];
+        const distractors = colors.filter(c => c.name !== targetColor.name);
+        const items = [];
+
+        const targetCount = Math.min(level, 3);
+        for (let i = 0; i < targetCount; i++) {
+          items.push({ ...targetColor, isTarget: true, id: `target-${i}` });
+        }
+
+        while (items.length < gridSize * gridSize) {
+          const distractor = distractors[Math.floor(Math.random() * distractors.length)];
+          items.push({ ...distractor, isTarget: false, id: `dist-${items.length}` });
+        }
+
+        for (let i = items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [items[i], items[j]] = [items[j], items[i]];
+        }
+
+        setCurrentTask({
+          type: "colors",
+          target: targetColor,
+          items: items,
+          gridSize: gridSize,
+          instruction: `ابحث عن جميع الألوان ${targetColor.name}`
+        });
       }
 
-      setCurrentShapes(shuffledShapes);
-      setTargetIndex(starPosition);
       playInstruction();
     };
 
     const playInstruction = () => {
-      // تشغيل التعليمات الصوتية "اختر النجمة"
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance('اختر النجمة');
+      if ('speechSynthesis' in window && currentTask) {
+        const utterance = new SpeechSynthesisUtterance(currentTask.instruction);
         utterance.lang = 'ar-SA';
         speechSynthesis.speak(utterance);
       }
     };
 
-    const handleShapeClick = (index: number, isTarget: boolean) => {
+    const handleItemClick = (item) => {
       if (!gameSession.isGameActive) return;
 
-      if (isTarget) {
-        setFeedback({ type: 'success', message: 'أحسنت!' });
-        setGameSession(prev => ({
-          ...prev,
-          correctAnswers: prev.correctAnswers + 1,
-          currentQuestion: prev.currentQuestion + 1,
-          totalQuestions: prev.totalQuestions + 1
-        }));
+      const newItems = currentTask.items.map(i =>
+        i.id === item.id ? { ...i, clicked: true } : i
+      );
 
-        // تشغيل صوت التصفيق
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('أحسنت! ممتاز');
-          utterance.lang = 'ar-SA';
-          speechSynthesis.speak(utterance);
+      setCurrentTask(prev => ({ ...prev, items: newItems }));
+
+      if (item.isTarget) {
+        // Check if all targets are found
+        const allTargetsFound = newItems.filter(i => i.isTarget).every(i => i.clicked);
+
+        if (allTargetsFound) {
+          setFeedback({ type: 'success', message: 'ممتاز! وجدت كل الأهداف!' });
+          setGameSession(prev => ({
+            ...prev,
+            correctAnswers: prev.correctAnswers + 1,
+            currentQuestion: prev.currentQuestion + 1,
+            totalQuestions: prev.totalQuestions + 1
+          }));
+
+          if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance('ممتاز! أحسنت!');
+            utterance.lang = 'ar-SA';
+            speechSynthesis.speak(utterance);
+          }
+
+          setTimeout(() => {
+            setFeedback(null);
+            if (gameSession.currentQuestion < 10) {
+              generateTask();
+            } else {
+              endGame();
+            }
+          }, 2500);
+        } else {
+          // Positive feedback for finding one target
+          if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance('أحسنت! ابحث عن المزيد');
+            utterance.lang = 'ar-SA';
+            speechSynthesis.speak(utterance);
+          }
         }
 
-        setTimeout(() => {
-          setFeedback(null);
-          if (gameSession.currentQuestion < 10) {
-            generateLevel();
-          } else {
-            endGame();
-          }
-        }, 2000);
-
       } else {
-        setFeedback({ type: 'error', message: 'أعد المحاولة' });
+        setFeedback({ type: 'error', message: 'ليس هذا الهدف، حاول مرة أخرى' });
         setGameSession(prev => ({
           ...prev,
-          wrongAnswers: prev.wrongAnswers + 1,
-          totalQuestions: prev.totalQuestions + 1
+          wrongAnswers: prev.wrongAnswers + 1
         }));
 
-        // تشغيل صوت "أعد المحاولة"
         if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('أعد المحاولة');
+          const utterance = new SpeechSynthesisUtterance('ليس هذا الهدف');
           utterance.lang = 'ar-SA';
           speechSynthesis.speak(utterance);
         }
@@ -135,9 +214,10 @@ export default function AttentionExercises() {
         totalQuestions: 0,
         currentQuestion: 1,
         isGameActive: true,
-        timeElapsed: 0
+        timeElapsed: 0,
+        level: 1
       });
-      generateLevel();
+      generateTask();
     };
 
     const endGame = () => {
@@ -146,27 +226,56 @@ export default function AttentionExercises() {
 
     useEffect(() => {
       if (gameSession.isGameActive && gameSession.currentQuestion === 1) {
-        generateLevel();
+        generateTask();
       }
-    }, [gameSession.isGameActive]);
+    }, [gameSession.isGameActive, taskType]);
 
     return (
       <div className="space-y-6">
         {/* Game Header */}
-        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+        <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold mb-2">🌟 اختيار النجمة</h2>
-                <p className="text-yellow-100">ابحث عن النجمة بين الأشكال واضغط عليها</p>
+                <h2 className="text-2xl font-bold mb-2">👁️ الانتباه البصري</h2>
+                <p className="text-blue-100">ابحث عن الأشكال أو الألوان المطلوبة</p>
               </div>
               <div className="text-right">
-                <div className="text-sm text-yellow-100 mb-1">السؤال</div>
-                <div className="text-2xl font-bold">{gameSession.currentQuestion}/10</div>
+                <div className="text-sm text-blue-100 mb-1">المستوى</div>
+                <div className="text-2xl font-bold">{Math.min(Math.floor(gameSession.currentQuestion / 3) + 1, 4)}</div>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        {/* Task Type Selection */}
+        {!gameSession.isGameActive && (
+          <Card>
+            <CardHeader>
+              <CardTitle>اختر نوع التمرين</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <Button
+                  variant={taskType === "shapes" ? "default" : "outline"}
+                  onClick={() => setTaskType("shapes")}
+                  className="p-6 h-auto flex flex-col gap-2"
+                >
+                  <div className="text-2xl">🔷</div>
+                  <div>الأشكال</div>
+                </Button>
+                <Button
+                  variant={taskType === "colors" ? "default" : "outline"}
+                  onClick={() => setTaskType("colors")}
+                  className="p-6 h-auto flex flex-col gap-2"
+                >
+                  <div className="text-2xl">🎨</div>
+                  <div>الألوان</div>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Game Stats */}
         <div className="grid grid-cols-3 gap-4">
@@ -174,7 +283,7 @@ export default function AttentionExercises() {
             <CardContent className="p-4 text-center">
               <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-              <div className="text-sm text-green-700">إجابات صحيحة</div>
+              <div className="text-sm text-green-700">مهام مكتملة</div>
             </CardContent>
           </Card>
 
@@ -182,17 +291,15 @@ export default function AttentionExercises() {
             <CardContent className="p-4 text-center">
               <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-              <div className="text-sm text-red-700">إجابات خاطئة</div>
+              <div className="text-sm text-red-700">أخطاء</div>
             </CardContent>
           </Card>
 
           <Card className="bg-blue-50 border-blue-200">
             <CardContent className="p-4 text-center">
               <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-blue-600">
-                {gameSession.totalQuestions > 0 ? Math.round((gameSession.correctAnswers / gameSession.totalQuestions) * 100) : 0}%
-              </div>
-              <div className="text-sm text-blue-700">نسبة النجاح</div>
+              <div className="text-2xl font-bold text-blue-600">{gameSession.currentQuestion}/10</div>
+              <div className="text-sm text-blue-700">التقدم</div>
             </CardContent>
           </Card>
         </div>
@@ -203,10 +310,10 @@ export default function AttentionExercises() {
             <Button
               onClick={startGame}
               size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               <Play className="w-5 h-5 ml-2" />
-              ابدأ اللعبة
+              ابدأ التمرين
             </Button>
           ) : (
             <>
@@ -219,20 +326,37 @@ export default function AttentionExercises() {
                 إيقاف
               </Button>
               <Button
-                onClick={generateLevel}
+                onClick={generateTask}
                 size="lg"
                 variant="outline"
               >
                 <RotateCcw className="w-5 h-5 ml-2" />
-                سؤال جديد
+                مهمة جديدة
               </Button>
             </>
           )}
         </div>
 
         {/* Game Area */}
-        {gameSession.isGameActive && (
+        {gameSession.isGameActive && currentTask && (
           <Card className="min-h-96">
+            <CardHeader className="text-center">
+              <CardTitle className="text-xl">{currentTask.instruction}</CardTitle>
+              {currentTask.target && (
+                <div className="flex items-center justify-center gap-2 text-lg">
+                  <span>الهدف:</span>
+                  {currentTask.type === "shapes" ? (
+                    <span className="text-2xl">{currentTask.target.icon}</span>
+                  ) : (
+                    <div
+                      className="w-8 h-8 rounded-full border-2 border-gray-300"
+                      style={{ backgroundColor: currentTask.target.value }}
+                    ></div>
+                  )}
+                  <span className="font-bold">{currentTask.target.name}</span>
+                </div>
+              )}
+            </CardHeader>
             <CardContent className="p-8">
               <div className="relative">
                 {/* Feedback */}
@@ -251,27 +375,34 @@ export default function AttentionExercises() {
                   </div>
                 )}
 
-                {/* Shapes Grid */}
-                <div className="grid grid-cols-4 gap-6 max-w-2xl mx-auto">
-                  {currentShapes.map((shape, index) => (
+                {/* Items Grid */}
+                <div
+                  className={`grid gap-4 max-w-4xl mx-auto`}
+                  style={{
+                    gridTemplateColumns: `repeat(${currentTask.gridSize}, minmax(0, 1fr))`
+                  }}
+                >
+                  {currentTask.items.map((item, index) => (
                     <div
-                      key={shape.id}
-                      onClick={() => handleShapeClick(index, shape.isTarget)}
+                      key={item.id}
+                      onClick={() => handleItemClick(item)}
                       className={`
-                        w-20 h-20 flex items-center justify-center rounded-lg cursor-pointer
-                        transition-all duration-200 border-4 hover:scale-110
-                        ${shape.isTarget
-                          ? 'border-yellow-400 bg-yellow-100 hover:bg-yellow-200'
-                          : 'border-gray-300 bg-gray-100 hover:bg-gray-200'
+                        aspect-square flex items-center justify-center rounded-lg cursor-pointer
+                        transition-all duration-200 border-4 hover:scale-105 text-4xl
+                        ${item.clicked
+                          ? (item.isTarget ? 'border-green-500 bg-green-100' : 'border-red-500 bg-red-100')
+                          : 'border-gray-300 bg-white hover:bg-gray-50'
                         }
-                        ${feedback?.type === 'error' && !shape.isTarget ? 'animate-pulse border-red-400' : ''}
                       `}
                     >
-                      <shape.Component
-                        className={`w-12 h-12 ${
-                          shape.isTarget ? 'text-yellow-600' : 'text-gray-600'
-                        }`}
-                      />
+                      {currentTask.type === "shapes" ? (
+                        <span>{item.icon}</span>
+                      ) : (
+                        <div
+                          className="w-16 h-16 rounded-full border-2 border-gray-300"
+                          style={{ backgroundColor: item.value }}
+                        ></div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -280,9 +411,9 @@ export default function AttentionExercises() {
                 <div className="mt-8 max-w-md mx-auto">
                   <div className="flex justify-between text-sm text-gray-600 mb-2">
                     <span>التقدم</span>
-                    <span>{gameSession.currentQuestion - 1}/10</span>
+                    <span>{gameSession.currentQuestion}/10</span>
                   </div>
-                  <Progress value={((gameSession.currentQuestion - 1) / 10) * 100} className="h-3" />
+                  <Progress value={(gameSession.currentQuestion / 10) * 100} className="h-3" />
                 </div>
               </div>
             </CardContent>
@@ -299,24 +430,20 @@ export default function AttentionExercises() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-                  <div className="text-sm text-gray-600">صحيحة</div>
+                  <div className="text-sm text-gray-600">مهام مكتملة</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-                  <div className="text-sm text-gray-600">خاطئة</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-blue-600">{gameSession.totalQuestions}</div>
-                  <div className="text-sm text-gray-600">إجمالي</div>
+                  <div className="text-sm text-gray-600">أخطاء</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-purple-600">
-                    {Math.round((gameSession.correctAnswers / gameSession.totalQuestions) * 100)}%
+                    {gameSession.totalQuestions > 0 ? Math.round((gameSession.correctAnswers / gameSession.totalQuestions) * 100) : 0}%
                   </div>
-                  <div className="text-sm text-gray-600">نسبة النجاح</div>
+                  <div className="text-sm text-gray-600">معدل النجاح</div>
                 </div>
               </div>
             </CardContent>
