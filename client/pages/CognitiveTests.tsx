@@ -56,7 +56,7 @@ interface FeedbackState {
 // =============================================================================
 
 const IMAGE_CATEGORIES = {
-  // الملابس والإكسسوار��ت
+  // الملابس والإكسسوار����ت
   clothes: [
     {
       id: 1,
@@ -220,7 +220,7 @@ const IMAGE_CATEGORIES = {
       id: 5,
       name: "برتقال",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8cc2e508a60e4905960628da1aa52209?format=webp&width=800",
-      category: "فو��كه"
+      category: "فواكه"
     },
     {
       id: 6,
@@ -343,7 +343,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 9,
       name: "بطة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb8383ff406544f75a5888bd2613d9e49?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb1ce13f294db40c3958c09cc70add63e?format=webp&width=800",
       category: "حي��انات"
     },
     {
@@ -390,7 +390,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 17,
-      name: "��طة",
+      name: "قطة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
       category: "حيوا��ات"
     }
@@ -400,7 +400,7 @@ const IMAGE_CATEGORIES = {
   vehicles: [
     {
       id: 1,
-      name: "طائرة هليكوبتر",
+      name: "طائر�� هليكوبتر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbe4a29629e1473a96ed091dd66f1950?format=webp&width=800",
       category: "مركبات"
     },
@@ -430,7 +430,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 6,
-      name: "دراجة ناري��",
+      name: "دراجة نارية",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F57f0bef6a1c144ea967dd6843b6bccd6?format=webp&width=800",
       category: "مركبات"
     },
@@ -516,7 +516,7 @@ const BODY_PARTS = [
   { name: "عين", emoji: "👁️", category: "وجه" },
   { name: "أنف", emoji: "��", category: "وجه" },
   { name: "فم", emoji: "👄", category: "وجه" },
-  { name: "أذن", emoji: "���", category: "وجه" },
+  { name: "أذن", emoji: "👂", category: "وجه" },
   { name: "يد", emoji: "✋", category: "أطراف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
   { name: "رأس", emoji: "🗣️", category: "جسم" },
@@ -574,7 +574,7 @@ export default function CognitiveTests() {
           // أنماط الخضروات
           'cucumber|خيار': { name: 'خيار', category: 'خضروات', confidence: 95 },
           'carrot|جزر': { name: 'جزر', category: 'خضروات', confidence: 98 },
-          'tomato|طماطم': { name: 'طماطم', category: 'خضروات', confidence: 97 },
+          'tomato|طماطم': { name: 'طماطم', category: 'خضروا��', confidence: 97 },
           'onion|بصل': { name: 'بصل', category: 'خضروات', confidence: 94 },
           'garlic|ثوم': { name: 'ثوم', category: 'خضروات', confidence: 96 },
           'eggplant|باذنجان': { name: 'باذنجان', category: 'خضروات', confidence: 93 },
@@ -606,7 +606,7 @@ export default function CognitiveTests() {
           'giraffe|زرافة': { name: 'زرافة', category: 'حيوانات', confidence: 99 },
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
           'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
-          'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
+          'camel|جمل': { name: 'ج��ل', category: 'حيوانات', confidence: 98 },
           'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
           'horse|حصان': { name: 'حصان', category: 'حيوانات', confidence: 97 },
@@ -769,7 +769,7 @@ export default function CognitiveTests() {
       setCurrentVerificationIndex(prev => prev + 1);
     } else {
       setIsVerificationMode(false);
-      alert(`��م الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
+      alert(`تم الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -1802,7 +1802,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              10 أعضاء جسم • مفاهيم تشريحية
+              10 أعضاء جسم ��� مفاهيم تشريحية
             </div>
             <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1906,7 +1906,7 @@ export default function CognitiveTests() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
                 <li>• تغذية راجعة فورية باللغة العربية</li>
-                <li>• حساب دقيق ��نسبة النجاح</li>
+                <li>• حساب دقيق ��ن��بة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
             </div>
@@ -1976,7 +1976,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'success',
-            message: `��� ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
+            message: `🎉 ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
           });
           setScore(prev => prev + 1);
           setMatches(prev => [...prev, { image, name }]);
@@ -2301,7 +2301,7 @@ export default function CognitiveTests() {
               {isAnalyzing && (
                 <div className="text-center py-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                  <p className="text-blue-600">ج��ري التحليل...</p>
+                  <p className="text-blue-600">جاري التحليل...</p>
                 </div>
               )}
 
