@@ -21,16 +21,35 @@ import {
   BarChart3,
   Globe,
   Play,
-  Award
+  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+} from "recharts";
 
 export default function ParentDashboard() {
   const navigate = useNavigate();
@@ -39,7 +58,7 @@ export default function ParentDashboard() {
 
   useEffect(() => {
     // Load parent data from localStorage
-    const savedData = localStorage.getItem('parentData');
+    const savedData = localStorage.getItem("parentData");
     if (savedData) {
       setParentData(JSON.parse(savedData));
     }
@@ -58,8 +77,8 @@ export default function ParentDashboard() {
     nextAppointment: {
       date: "2024-01-20",
       time: "10:00 ص",
-      type: "جلسة علاج"
-    }
+      type: "جلسة علاج",
+    },
   };
 
   const sessionHistory = [
@@ -70,7 +89,7 @@ export default function ParentDashboard() {
       duration: "45 دقيقة",
       progress: 85,
       notes: "تحسن ملحوظ في التركيز والانتباه",
-      activities: ["اختيار النجمة", "البحث عن المفقود"]
+      activities: ["اختيار النجمة", "البحث عن المفقود"],
     },
     {
       id: 2,
@@ -79,7 +98,7 @@ export default function ParentDashboard() {
       duration: "60 دقيقة",
       progress: 78,
       notes: "تحسن في نطق حرف الراء",
-      activities: ["تمارين اللسان", "تكرار الكلمات"]
+      activities: ["تمارين اللسان", "تكرار الكلمات"],
     },
     {
       id: 3,
@@ -88,8 +107,8 @@ export default function ParentDashboard() {
       duration: "90 دقيقة",
       progress: 70,
       notes: "تقييم الميزانية الأرطوفونية",
-      activities: ["فحص النطق", "اختبارات الإدراك"]
-    }
+      activities: ["فحص النطق", "اختبارات الإدراك"],
+    },
   ];
 
   const achievements = [
@@ -107,7 +126,7 @@ export default function ParentDashboard() {
       date: "2024-01-01",
       type: "تقييم",
       specialist: "د. فاطمة أحمد",
-      summary: "تقييم شامل للحالة مع خطة العلاج المقترحة"
+      summary: "تقييم شامل للحالة مع خطة العلاج المقترحة",
     },
     {
       id: 2,
@@ -115,8 +134,8 @@ export default function ParentDashboard() {
       date: "2024-01-15",
       type: "متابعة",
       specialist: "د. فاطمة أحمد",
-      summary: "تقرير مفصل عن التقدم المحرز خلال الشهر الأول"
-    }
+      summary: "تقرير مفصل عن التقدم المحرز خلال الشهر الأول",
+    },
   ];
 
   // بيانات المخطط الجغرافي - الجزائر
@@ -132,10 +151,38 @@ export default function ParentDashboard() {
   ];
 
   const cognitiveTestsProgress = [
-    { month: "يناير", fruits: 75, vegetables: 68, clothes: 82, animals: 90, vehicles: 77 },
-    { month: "فبراير", fruits: 78, vegetables: 72, clothes: 85, animals: 92, vehicles: 80 },
-    { month: "مارس", fruits: 82, vegetables: 75, clothes: 88, animals: 94, vehicles: 83 },
-    { month: "أبريل", fruits: 85, vegetables: 78, clothes: 90, animals: 96, vehicles: 86 },
+    {
+      month: "يناير",
+      fruits: 75,
+      vegetables: 68,
+      clothes: 82,
+      animals: 90,
+      vehicles: 77,
+    },
+    {
+      month: "فبراير",
+      fruits: 78,
+      vegetables: 72,
+      clothes: 85,
+      animals: 92,
+      vehicles: 80,
+    },
+    {
+      month: "مارس",
+      fruits: 82,
+      vegetables: 75,
+      clothes: 88,
+      animals: 94,
+      vehicles: 83,
+    },
+    {
+      month: "أبريل",
+      fruits: 85,
+      vegetables: 78,
+      clothes: 90,
+      animals: 96,
+      vehicles: 86,
+    },
   ];
 
   const testCategories = [
@@ -154,14 +201,23 @@ export default function ParentDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold mb-2">{childData.name}</h2>
-              <p className="text-green-100 mb-1">العمر: {childData.age} سنوات</p>
-              <p className="text-green-100 mb-4">التشخيص: {childData.diagnosis}</p>
+              <p className="text-green-100 mb-1">
+                العمر: {childData.age} سنوات
+              </p>
+              <p className="text-green-100 mb-4">
+                التشخيص: {childData.diagnosis}
+              </p>
               <div className="flex items-center gap-4">
                 <div>
                   <p className="text-sm text-green-100">التقدم العام</p>
                   <div className="flex items-center gap-2">
-                    <Progress value={childData.overallProgress} className="w-32 h-2" />
-                    <span className="text-lg font-bold">{childData.overallProgress}%</span>
+                    <Progress
+                      value={childData.overallProgress}
+                      className="w-32 h-2"
+                    />
+                    <span className="text-lg font-bold">
+                      {childData.overallProgress}%
+                    </span>
                   </div>
                 </div>
               </div>
@@ -187,7 +243,11 @@ export default function ParentDashboard() {
           <CardContent className="p-6 text-center">
             <TrendingUp className="w-10 h-10 text-green-600 mx-auto mb-3" />
             <div className="text-2xl font-bold text-green-600 mb-1">
-              +{Math.round(childData.overallProgress / childData.completedSessions)}%
+              +
+              {Math.round(
+                childData.overallProgress / childData.completedSessions,
+              )}
+              %
             </div>
             <div className="text-sm text-green-700">معدل التحسن</div>
           </CardContent>
@@ -197,7 +257,7 @@ export default function ParentDashboard() {
           <CardContent className="p-6 text-center">
             <Star className="w-10 h-10 text-purple-600 mx-auto mb-3" />
             <div className="text-2xl font-bold text-purple-600 mb-1">
-              {achievements.filter(a => a.earned).length}
+              {achievements.filter((a) => a.earned).length}
             </div>
             <div className="text-sm text-purple-700">الإنجازات</div>
           </CardContent>
@@ -215,14 +275,20 @@ export default function ParentDashboard() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold text-lg">{childData.nextAppointment.type}</p>
+              <p className="font-semibold text-lg">
+                {childData.nextAppointment.type}
+              </p>
               <p className="text-gray-600">
-                {childData.nextAppointment.date} - {childData.nextAppointment.time}
+                {childData.nextAppointment.date} -{" "}
+                {childData.nextAppointment.time}
               </p>
               <p className="text-sm text-gray-500">مع {childData.specialist}</p>
             </div>
             <div className="text-center">
-              <Badge variant="outline" className="border-orange-500 text-orange-700">
+              <Badge
+                variant="outline"
+                className="border-orange-500 text-orange-700"
+              >
                 قريباً
               </Badge>
             </div>
@@ -241,16 +307,23 @@ export default function ParentDashboard() {
         <CardContent>
           <div className="space-y-4">
             {sessionHistory.slice(0, 3).map((session) => (
-              <div key={session.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+              <div
+                key={session.id}
+                className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
+              >
                 <div className="bg-blue-100 p-2 rounded-full">
                   <Target className="w-5 h-5 text-blue-600" />
                 </div>
                 <div className="flex-1">
                   <p className="font-medium">{session.type}</p>
-                  <p className="text-sm text-gray-600">{session.date} - {session.duration}</p>
+                  <p className="text-sm text-gray-600">
+                    {session.date} - {session.duration}
+                  </p>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-green-600">{session.progress}%</div>
+                  <div className="text-lg font-bold text-green-600">
+                    {session.progress}%
+                  </div>
                   <div className="text-xs text-gray-500">تقدم</div>
                 </div>
               </div>
@@ -266,9 +339,7 @@ export default function ParentDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>تاريخ الجلسات</CardTitle>
-          <CardDescription>
-            سجل مفصل بجميع الجلسات والأنشطة
-          </CardDescription>
+          <CardDescription>سجل مفصل بجميع الجلسات والأنشطة</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -278,14 +349,18 @@ export default function ParentDashboard() {
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="font-semibold text-lg">{session.type}</h3>
-                      <p className="text-gray-600">{session.date} - {session.duration}</p>
+                      <p className="text-gray-600">
+                        {session.date} - {session.duration}
+                      </p>
                     </div>
                     <Badge
                       variant="outline"
                       className={`${
-                        session.progress >= 80 ? 'border-green-500 text-green-700' :
-                        session.progress >= 60 ? 'border-yellow-500 text-yellow-700' :
-                        'border-red-500 text-red-700'
+                        session.progress >= 80
+                          ? "border-green-500 text-green-700"
+                          : session.progress >= 60
+                            ? "border-yellow-500 text-yellow-700"
+                            : "border-red-500 text-red-700"
                       }`}
                     >
                       {session.progress}% تقدم
@@ -295,7 +370,9 @@ export default function ParentDashboard() {
                   <div className="mb-4">
                     <p className="text-gray-700 mb-2">{session.notes}</p>
                     <div>
-                      <p className="text-sm font-medium text-gray-600 mb-2">الأنشطة:</p>
+                      <p className="text-sm font-medium text-gray-600 mb-2">
+                        الأنشطة:
+                      </p>
                       <div className="flex flex-wrap gap-2">
                         {session.activities.map((activity, index) => (
                           <Badge key={index} variant="secondary">
@@ -308,7 +385,9 @@ export default function ParentDashboard() {
 
                   <div className="flex items-center gap-2">
                     <Progress value={session.progress} className="flex-1 h-2" />
-                    <span className="text-sm font-medium">{session.progress}%</span>
+                    <span className="text-sm font-medium">
+                      {session.progress}%
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -334,7 +413,10 @@ export default function ParentDashboard() {
         <CardContent>
           <div className="space-y-4">
             {reports.map((report) => (
-              <Card key={report.id} className="hover:shadow-md transition-shadow">
+              <Card
+                key={report.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-start gap-4">
@@ -342,7 +424,9 @@ export default function ParentDashboard() {
                         <FileText className="w-6 h-6 text-blue-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-1">{report.title}</h3>
+                        <h3 className="font-semibold text-lg mb-1">
+                          {report.title}
+                        </h3>
                         <p className="text-gray-600 mb-2">{report.summary}</p>
                         <div className="flex items-center gap-4 text-sm text-gray-500">
                           <span>📅 {report.date}</span>
@@ -379,9 +463,7 @@ export default function ParentDashboard() {
             <Star className="w-5 h-5" />
             إنجازات {childData.name}
           </CardTitle>
-          <CardDescription>
-            الإنجازات والأهداف المحققة
-          </CardDescription>
+          <CardDescription>الإنجازات والأهداف المحققة</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4">
@@ -390,17 +472,21 @@ export default function ParentDashboard() {
                 key={index}
                 className={`${
                   achievement.earned
-                    ? 'bg-green-50 border-green-200'
-                    : 'bg-gray-50 border-gray-200 opacity-60'
+                    ? "bg-green-50 border-green-200"
+                    : "bg-gray-50 border-gray-200 opacity-60"
                 }`}
               >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
                     <div className="text-3xl">{achievement.icon}</div>
                     <div className="flex-1">
-                      <h3 className={`font-semibold ${
-                        achievement.earned ? 'text-green-800' : 'text-gray-600'
-                      }`}>
+                      <h3
+                        className={`font-semibold ${
+                          achievement.earned
+                            ? "text-green-800"
+                            : "text-gray-600"
+                        }`}
+                      >
                         {achievement.title}
                       </h3>
                       {achievement.earned ? (
@@ -408,7 +494,9 @@ export default function ParentDashboard() {
                           تم الحصول عليه في {achievement.date}
                         </p>
                       ) : (
-                        <p className="text-sm text-gray-500">لم يتم تحقيقه بعد</p>
+                        <p className="text-sm text-gray-500">
+                          لم يتم تحقيقه بعد
+                        </p>
                       )}
                     </div>
                     {achievement.earned && (
@@ -440,42 +528,42 @@ export default function ParentDashboard() {
         <CardContent>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             <Button
-              onClick={() => navigate('/cognitive-tests')}
+              onClick={() => navigate("/cognitive-tests")}
               className="h-24 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🍎</div>
               <span>الفواكه</span>
             </Button>
             <Button
-              onClick={() => navigate('/cognitive-tests')}
+              onClick={() => navigate("/cognitive-tests")}
               className="h-24 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🥕</div>
               <span>الخضروات</span>
             </Button>
             <Button
-              onClick={() => navigate('/cognitive-tests')}
+              onClick={() => navigate("/cognitive-tests")}
               className="h-24 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">👕</div>
               <span>الملابس</span>
             </Button>
             <Button
-              onClick={() => navigate('/cognitive-tests')}
+              onClick={() => navigate("/cognitive-tests")}
               className="h-24 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🐘</div>
               <span>الحيوانات</span>
             </Button>
             <Button
-              onClick={() => navigate('/cognitive-tests')}
+              onClick={() => navigate("/cognitive-tests")}
               className="h-24 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🚗</div>
               <span>المركبات</span>
             </Button>
             <Button
-              onClick={() => navigate('/cognitive-tests')}
+              onClick={() => navigate("/cognitive-tests")}
               className="h-24 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🧠</div>
@@ -514,11 +602,41 @@ export default function ParentDashboard() {
                   tick={{ fontSize: 12 }}
                 />
                 <Tooltip />
-                <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="الفواكه" />
-                <Line type="monotone" dataKey="vegetables" stroke="#4ecdc4" strokeWidth={2} name="الخضروات" />
-                <Line type="monotone" dataKey="clothes" stroke="#45b7d1" strokeWidth={2} name="الملابس" />
-                <Line type="monotone" dataKey="animals" stroke="#96ceb4" strokeWidth={2} name="الحيوانات" />
-                <Line type="monotone" dataKey="vehicles" stroke="#ffeaa7" strokeWidth={2} name="المركبات" />
+                <Line
+                  type="monotone"
+                  dataKey="fruits"
+                  stroke="#ff6b6b"
+                  strokeWidth={2}
+                  name="الفواكه"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="vegetables"
+                  stroke="#4ecdc4"
+                  strokeWidth={2}
+                  name="الخضروات"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="clothes"
+                  stroke="#45b7d1"
+                  strokeWidth={2}
+                  name="الملابس"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="animals"
+                  stroke="#96ceb4"
+                  strokeWidth={2}
+                  name="الحيوانات"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="vehicles"
+                  stroke="#ffeaa7"
+                  strokeWidth={2}
+                  name="المركبات"
+                />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -576,7 +694,9 @@ export default function ParentDashboard() {
             {/* مخطط المرضى حسب الولايات */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">عدد المرضى حسب الولاية</CardTitle>
+                <CardTitle className="text-lg">
+                  عدد المرضى حسب الولاية
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
@@ -610,7 +730,9 @@ export default function ParentDashboard() {
             {/* مخطط نسب النجاح */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">نسب النجاح حسب الولاية</CardTitle>
+                <CardTitle className="text-lg">
+                  نسب النجاح حسب الولاية
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
@@ -635,7 +757,11 @@ export default function ParentDashboard() {
                       tick={{ fontSize: 12 }}
                     />
                     <Tooltip />
-                    <Bar dataKey="success" fill="#10b981" name="نسبة النجاح %" />
+                    <Bar
+                      dataKey="success"
+                      fill="#10b981"
+                      name="نسبة النجاح %"
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -667,20 +793,31 @@ export default function ParentDashboard() {
                         <td className="p-3">{row.cases}</td>
                         <td className="p-3">
                           <div className="flex items-center gap-2">
-                            <Progress value={row.success} className="flex-1 h-2" />
-                            <span className="text-sm font-medium">{row.success}%</span>
+                            <Progress
+                              value={row.success}
+                              className="flex-1 h-2"
+                            />
+                            <span className="text-sm font-medium">
+                              {row.success}%
+                            </span>
                           </div>
                         </td>
                         <td className="p-3">
                           <Badge
                             variant="outline"
                             className={`${
-                              row.success >= 85 ? 'border-green-500 text-green-700' :
-                              row.success >= 75 ? 'border-yellow-500 text-yellow-700' :
-                              'border-red-500 text-red-700'
+                              row.success >= 85
+                                ? "border-green-500 text-green-700"
+                                : row.success >= 75
+                                  ? "border-yellow-500 text-yellow-700"
+                                  : "border-red-500 text-red-700"
                             }`}
                           >
-                            {row.success >= 85 ? 'ممتاز' : row.success >= 75 ? 'جيد' : 'يحتاج تحسن'}
+                            {row.success >= 85
+                              ? "ممتاز"
+                              : row.success >= 75
+                                ? "جيد"
+                                : "يحتاج تحسن"}
                           </Badge>
                         </td>
                       </tr>
@@ -696,7 +833,10 @@ export default function ParentDashboard() {
             <Card className="bg-blue-50 border-blue-200">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-blue-600">
-                  {geographicalData.reduce((sum, region) => sum + region.patients, 0)}
+                  {geographicalData.reduce(
+                    (sum, region) => sum + region.patients,
+                    0,
+                  )}
                 </div>
                 <div className="text-sm text-blue-700">إجمالي المرضى</div>
               </CardContent>
@@ -704,7 +844,13 @@ export default function ParentDashboard() {
             <Card className="bg-green-50 border-green-200">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-green-600">
-                  {Math.round(geographicalData.reduce((sum, region) => sum + region.success, 0) / geographicalData.length)}%
+                  {Math.round(
+                    geographicalData.reduce(
+                      (sum, region) => sum + region.success,
+                      0,
+                    ) / geographicalData.length,
+                  )}
+                  %
                 </div>
                 <div className="text-sm text-green-700">متوسط النجاح</div>
               </CardContent>
@@ -720,7 +866,10 @@ export default function ParentDashboard() {
             <Card className="bg-orange-50 border-orange-200">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-orange-600">
-                  {geographicalData.reduce((sum, region) => sum + region.cases, 0)}
+                  {geographicalData.reduce(
+                    (sum, region) => sum + region.cases,
+                    0,
+                  )}
                 </div>
                 <div className="text-sm text-orange-700">إجمالي الحالات</div>
               </CardContent>
@@ -732,7 +881,10 @@ export default function ParentDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -741,7 +893,7 @@ export default function ParentDashboard() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -761,8 +913,12 @@ export default function ParentDashboard() {
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <p className="font-semibold text-gray-800">{parentData?.fullName || "ولي الطفل"}</p>
-                <p className="text-sm text-gray-600">{parentData?.state || "المنطقة"}</p>
+                <p className="font-semibold text-gray-800">
+                  {parentData?.fullName || "ولي الطفل"}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {parentData?.state || "المنطقة"}
+                </p>
               </div>
               <div className="bg-green-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-semibold">
                 {parentData?.fullName?.charAt(0) || "و"}
@@ -773,7 +929,11 @@ export default function ParentDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           {/* Tabs Navigation */}
           <div className="bg-white rounded-lg p-2 shadow-sm">
             <TabsList className="grid grid-cols-6 w-full">
@@ -781,7 +941,10 @@ export default function ParentDashboard() {
                 <Activity className="w-4 h-4" />
                 نظرة عامة
               </TabsTrigger>
-              <TabsTrigger value="cognitive" className="flex items-center gap-2">
+              <TabsTrigger
+                value="cognitive"
+                className="flex items-center gap-2"
+              >
                 <Brain className="w-4 h-4" />
                 التمارين المعرفية
               </TabsTrigger>
@@ -789,7 +952,10 @@ export default function ParentDashboard() {
                 <Calendar className="w-4 h-4" />
                 الجلسات
               </TabsTrigger>
-              <TabsTrigger value="geography" className="flex items-center gap-2">
+              <TabsTrigger
+                value="geography"
+                className="flex items-center gap-2"
+              >
                 <Globe className="w-4 h-4" />
                 المخطط الجغرافي
               </TabsTrigger>
@@ -797,7 +963,10 @@ export default function ParentDashboard() {
                 <FileText className="w-4 h-4" />
                 التقارير
               </TabsTrigger>
-              <TabsTrigger value="achievements" className="flex items-center gap-2">
+              <TabsTrigger
+                value="achievements"
+                className="flex items-center gap-2"
+              >
                 <Star className="w-4 h-4" />
                 الإنجازات
               </TabsTrigger>

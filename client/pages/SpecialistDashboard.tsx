@@ -18,16 +18,35 @@ import {
   BarChart3,
   Eye,
   Gamepad2,
-  Download
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+} from "recharts";
 
 export default function SpecialistDashboard() {
   const navigate = useNavigate();
@@ -43,7 +62,7 @@ export default function SpecialistDashboard() {
       status: "متابعة",
       diagnosis: "تأخر في النطق",
       progress: 75,
-      parent: "فاطمة السعيد"
+      parent: "فاطمة السعيد",
     },
     {
       id: 2,
@@ -53,7 +72,7 @@ export default function SpecialistDashboard() {
       status: "تقييم أولي",
       diagnosis: "صعوبة في نطق الحروف",
       progress: 45,
-      parent: "نورا أحمد"
+      parent: "نورا أحمد",
     },
     {
       id: 3,
@@ -63,14 +82,29 @@ export default function SpecialistDashboard() {
       status: "علاج متقدم",
       diagnosis: "تلعثم في الكلام",
       progress: 90,
-      parent: "خديجة عبدالله"
-    }
+      parent: "خديجة عبدالله",
+    },
   ];
 
   const appointments = [
-    { time: "09:00", patient: "أحمد محمد", type: "متابعة", parent: "فاطمة السعيد" },
-    { time: "10:30", patient: "سارة علي", type: "تقييم أولي", parent: "نورا أحمد" },
-    { time: "14:00", patient: "يوسف عبدالله", type: "جلسة علاج", parent: "خديجة عبدالله" },
+    {
+      time: "09:00",
+      patient: "أحمد محمد",
+      type: "متابعة",
+      parent: "فاطمة السعيد",
+    },
+    {
+      time: "10:30",
+      patient: "سارة علي",
+      type: "تقييم أولي",
+      parent: "نورا أحمد",
+    },
+    {
+      time: "14:00",
+      patient: "يوسف عبدالله",
+      type: "جلسة علاج",
+      parent: "خديجة عبدالله",
+    },
   ];
 
   // بيانات جغرافية للجزائر
@@ -84,7 +118,7 @@ export default function SpecialistDashboard() {
     { region: "بجاية", patients: 58, success: 80, cases: 74 },
     { region: "تلمسان", patients: 52, success: 77, cases: 68 },
     { region: "البليدة", patients: 64, success: 85, cases: 78 },
-    { region: "مستغانم", patients: 45, success: 74, cases: 61 }
+    { region: "مستغانم", patients: 45, success: 74, cases: 61 },
   ];
 
   // بيانات توزيع الحالات
@@ -92,7 +126,7 @@ export default function SpecialistDashboard() {
     { name: "تأخر النطق", value: 35, color: "#0088FE" },
     { name: "صعوبة النطق", value: 28, color: "#00C49F" },
     { name: "التلعثم", value: 20, color: "#FFBB28" },
-    { name: "اضطرابات الصوت", value: 17, color: "#FF8042" }
+    { name: "اضطرابات الصوت", value: 17, color: "#FF8042" },
   ];
 
   const assessmentTools = [
@@ -102,7 +136,7 @@ export default function SpecialistDashboard() {
       description: "استمارة سريرية ��املة للتقييم",
       icon: FileText,
       color: "blue",
-      route: "/orthophonic-balance"
+      route: "/orthophonic-balance",
     },
     {
       id: "age-calc",
@@ -110,7 +144,7 @@ export default function SpecialistDashboard() {
       description: "أداة حساب العمر بدقة",
       icon: Calculator,
       color: "green",
-      route: "/age-calculator"
+      route: "/age-calculator",
     },
     {
       id: "portage",
@@ -118,7 +152,7 @@ export default function SpecialistDashboard() {
       description: "حساب وعرض بياني لمقياس بورتاج",
       icon: BarChart3,
       color: "purple",
-      route: "/portage-report"
+      route: "/portage-report",
     },
     {
       id: "cognitive",
@@ -126,7 +160,7 @@ export default function SpecialistDashboard() {
       description: "المكتسبات القبلية والإدراكية",
       icon: Brain,
       color: "orange",
-      route: "/cognitive-tests"
+      route: "/cognitive-tests",
     },
     {
       id: "theory-mind",
@@ -134,7 +168,7 @@ export default function SpecialistDashboard() {
       description: "تقييم القدرات المعرفية العليا",
       icon: Eye,
       color: "pink",
-      route: "/theory-of-mind"
+      route: "/theory-of-mind",
     },
     {
       id: "attention",
@@ -142,8 +176,8 @@ export default function SpecialistDashboard() {
       description: "ألعاب تفاعلية للانتباه والتركيز",
       icon: Target,
       color: "red",
-      route: "/attention-exercises"
-    }
+      route: "/attention-exercises",
+    },
   ];
 
   const getColorClasses = (color: string) => {
@@ -153,7 +187,7 @@ export default function SpecialistDashboard() {
       purple: "bg-purple-100 text-purple-600 hover:bg-purple-200",
       orange: "bg-orange-100 text-orange-600 hover:bg-orange-200",
       pink: "bg-pink-100 text-pink-600 hover:bg-pink-200",
-      red: "bg-red-100 text-red-600 hover:bg-red-200"
+      red: "bg-red-100 text-red-600 hover:bg-red-200",
     };
     return colors[color] || colors.blue;
   };
@@ -229,14 +263,18 @@ export default function SpecialistDashboard() {
               >
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className={`p-3 rounded-lg ${getColorClasses(tool.color)}`}>
+                    <div
+                      className={`p-3 rounded-lg ${getColorClasses(tool.color)}`}
+                    >
                       <tool.icon className="w-6 h-6" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">{tool.title}</h3>
                     </div>
                   </div>
-                  <p className="text-gray-600 text-sm mb-4">{tool.description}</p>
+                  <p className="text-gray-600 text-sm mb-4">
+                    {tool.description}
+                  </p>
                   <Button size="sm" className="w-full">
                     بدء التقييم
                   </Button>
@@ -257,10 +295,7 @@ export default function SpecialistDashboard() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                placeholder="البحث عن مريض..."
-                className="pr-10 w-64"
-              />
+              <Input placeholder="البحث عن مريض..." className="pr-10 w-64" />
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 ml-2" />
@@ -272,21 +307,30 @@ export default function SpecialistDashboard() {
       <CardContent>
         <div className="space-y-4">
           {patients.map((patient) => (
-            <div key={patient.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+            <div
+              key={patient.id}
+              className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-semibold">
                     {patient.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800">{patient.name}</h3>
-                    <p className="text-sm text-gray-600">العمر: {patient.age} سنوات | ولي الأمر: {patient.parent}</p>
+                    <h3 className="font-semibold text-gray-800">
+                      {patient.name}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      العمر: {patient.age} سنوات | ولي الأمر: {patient.parent}
+                    </p>
                     <p className="text-sm text-gray-600">{patient.diagnosis}</p>
                   </div>
                 </div>
                 <div className="text-left">
                   <Badge
-                    variant={patient.status === "متابعة" ? "default" : "secondary"}
+                    variant={
+                      patient.status === "متابعة" ? "default" : "secondary"
+                    }
                     className="mb-2"
                   >
                     {patient.status}
@@ -301,7 +345,9 @@ export default function SpecialistDashboard() {
                         style={{ width: `${patient.progress}%` }}
                       ></div>
                     </div>
-                    <span className="text-xs text-gray-600">{patient.progress}%</span>
+                    <span className="text-xs text-gray-600">
+                      {patient.progress}%
+                    </span>
                   </div>
                 </div>
               </div>
@@ -383,7 +429,7 @@ export default function SpecialistDashboard() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -418,23 +464,39 @@ export default function SpecialistDashboard() {
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="space-y-6"
+            >
               {/* Tabs Navigation */}
               <div className="bg-white rounded-lg p-2 shadow-sm">
                 <TabsList className="grid grid-cols-4 w-full">
-                  <TabsTrigger value="overview" className="flex items-center gap-2">
+                  <TabsTrigger
+                    value="overview"
+                    className="flex items-center gap-2"
+                  >
                     <Stethoscope className="w-4 h-4" />
                     نظرة عامة
                   </TabsTrigger>
-                  <TabsTrigger value="patients" className="flex items-center gap-2">
+                  <TabsTrigger
+                    value="patients"
+                    className="flex items-center gap-2"
+                  >
                     <Users className="w-4 h-4" />
                     المرضى
                   </TabsTrigger>
-                  <TabsTrigger value="reports" className="flex items-center gap-2">
+                  <TabsTrigger
+                    value="reports"
+                    className="flex items-center gap-2"
+                  >
                     <BarChart3 className="w-4 h-4" />
                     التقارير
                   </TabsTrigger>
-                  <TabsTrigger value="settings" className="flex items-center gap-2">
+                  <TabsTrigger
+                    value="settings"
+                    className="flex items-center gap-2"
+                  >
                     <Settings className="w-4 h-4" />
                     الإعدادات
                   </TabsTrigger>
@@ -489,26 +551,52 @@ export default function SpecialistDashboard() {
                                 tick={{ fontSize: 12 }}
                               />
                               <Tooltip
-                                formatter={(value, name) => [value, name === 'patients' ? 'عدد المرضى' : 'معدل النجاح']}
+                                formatter={(value, name) => [
+                                  value,
+                                  name === "patients"
+                                    ? "عدد المرضى"
+                                    : "معدل النجاح",
+                                ]}
                                 labelFormatter={(label) => `الولاية: ${label}`}
                               />
-                              <Bar dataKey="patients" fill="#3B82F6" name="عدد المرضى" />
-                              <Bar dataKey="success" fill="#10B981" name="معدل النجاح %" />
+                              <Bar
+                                dataKey="patients"
+                                fill="#3B82F6"
+                                name="عدد المرضى"
+                              />
+                              <Bar
+                                dataKey="success"
+                                fill="#10B981"
+                                name="معدل النجاح %"
+                              />
                             </BarChart>
                           </ResponsiveContainer>
                         </div>
                         <div className="grid grid-cols-2 gap-4 mt-4">
                           <div className="text-center p-3 bg-blue-50 rounded-lg">
                             <div className="text-2xl font-bold text-blue-600">
-                              {geographicalData.reduce((sum, item) => sum + item.patients, 0)}
+                              {geographicalData.reduce(
+                                (sum, item) => sum + item.patients,
+                                0,
+                              )}
                             </div>
-                            <div className="text-sm text-gray-600">إجمالي المرضى</div>
+                            <div className="text-sm text-gray-600">
+                              إجمالي المرضى
+                            </div>
                           </div>
                           <div className="text-center p-3 bg-green-50 rounded-lg">
                             <div className="text-2xl font-bold text-green-600">
-                              {Math.round(geographicalData.reduce((sum, item) => sum + item.success, 0) / geographicalData.length)}%
+                              {Math.round(
+                                geographicalData.reduce(
+                                  (sum, item) => sum + item.success,
+                                  0,
+                                ) / geographicalData.length,
+                              )}
+                              %
                             </div>
-                            <div className="text-sm text-gray-600">متوسط معدل النجاح</div>
+                            <div className="text-sm text-gray-600">
+                              متوسط معدل النجاح
+                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -540,22 +628,32 @@ export default function SpecialistDashboard() {
                                 endAngle={360}
                               >
                                 {casesDistribution.map((entry, index) => (
-                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={entry.color}
+                                  />
                                 ))}
                               </Pie>
-                              <Tooltip formatter={(value) => [`${value}%`, 'النسبة']} />
+                              <Tooltip
+                                formatter={(value) => [`${value}%`, "النسبة"]}
+                              />
                             </PieChart>
                           </ResponsiveContainer>
                         </div>
                         <div className="grid grid-cols-2 gap-2 mt-4">
                           {casesDistribution.map((item, index) => (
-                            <div key={index} className="flex items-center gap-2 text-sm">
+                            <div
+                              key={index}
+                              className="flex items-center gap-2 text-sm"
+                            >
                               <div
                                 className="w-4 h-4 rounded"
                                 style={{ backgroundColor: item.color }}
                               ></div>
                               <span>{item.name}</span>
-                              <span className="font-semibold text-gray-600">{item.value}%</span>
+                              <span className="font-semibold text-gray-600">
+                                {item.value}%
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -576,31 +674,60 @@ export default function SpecialistDashboard() {
                         <table className="w-full text-sm">
                           <thead>
                             <tr className="border-b">
-                              <th className="text-right p-3 font-semibold">الولاية</th>
-                              <th className="text-right p-3 font-semibold">عدد المرضى</th>
-                              <th className="text-right p-3 font-semibold">إجمالي الحالات</th>
-                              <th className="text-right p-3 font-semibold">معدل النجاح</th>
-                              <th className="text-right p-3 font-semibold">الحالة</th>
+                              <th className="text-right p-3 font-semibold">
+                                الولاية
+                              </th>
+                              <th className="text-right p-3 font-semibold">
+                                عدد المرضى
+                              </th>
+                              <th className="text-right p-3 font-semibold">
+                                إجمالي الحالات
+                              </th>
+                              <th className="text-right p-3 font-semibold">
+                                معدل النجاح
+                              </th>
+                              <th className="text-right p-3 font-semibold">
+                                الحالة
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             {geographicalData.map((item, index) => (
-                              <tr key={index} className="border-b hover:bg-gray-50">
-                                <td className="p-3 font-medium">{item.region}</td>
+                              <tr
+                                key={index}
+                                className="border-b hover:bg-gray-50"
+                              >
+                                <td className="p-3 font-medium">
+                                  {item.region}
+                                </td>
                                 <td className="p-3">{item.patients}</td>
                                 <td className="p-3">{item.cases}</td>
                                 <td className="p-3">
-                                  <span className={`px-2 py-1 rounded-full text-xs ${
-                                    item.success >= 80 ? 'bg-green-100 text-green-800' :
-                                    item.success >= 70 ? 'bg-yellow-100 text-yellow-800' :
-                                    'bg-red-100 text-red-800'
-                                  }`}>
+                                  <span
+                                    className={`px-2 py-1 rounded-full text-xs ${
+                                      item.success >= 80
+                                        ? "bg-green-100 text-green-800"
+                                        : item.success >= 70
+                                          ? "bg-yellow-100 text-yellow-800"
+                                          : "bg-red-100 text-red-800"
+                                    }`}
+                                  >
                                     {item.success}%
                                   </span>
                                 </td>
                                 <td className="p-3">
-                                  <Badge variant={item.success >= 80 ? 'default' : 'secondary'}>
-                                    {item.success >= 80 ? 'ممتاز' : item.success >= 70 ? 'جيد' : 'يحتاج تحسين'}
+                                  <Badge
+                                    variant={
+                                      item.success >= 80
+                                        ? "default"
+                                        : "secondary"
+                                    }
+                                  >
+                                    {item.success >= 80
+                                      ? "ممتاز"
+                                      : item.success >= 70
+                                        ? "جيد"
+                                        : "يحتاج تحسين"}
                                   </Badge>
                                 </td>
                               </tr>
@@ -626,7 +753,9 @@ export default function SpecialistDashboard() {
                     <CardContent className="space-y-4">
                       <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">الاسم الكامل</label>
+                          <label className="text-sm font-medium">
+                            الاسم الكامل
+                          </label>
                           <Input defaultValue="د. أحمد محمد" />
                         </div>
                         <div className="space-y-2">
@@ -634,19 +763,30 @@ export default function SpecialistDashboard() {
                           <Input defaultValue="أخصائي أرطوفوني" />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">البريد الإلكتروني</label>
-                          <Input type="email" defaultValue="ahmed.mohamed@example.com" />
+                          <label className="text-sm font-medium">
+                            البريد الإلكتروني
+                          </label>
+                          <Input
+                            type="email"
+                            defaultValue="ahmed.mohamed@example.com"
+                          />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">رقم الهاتف</label>
+                          <label className="text-sm font-medium">
+                            رقم الهاتف
+                          </label>
                           <Input defaultValue="+966 50 123 4567" />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">رقم الترخيص المهني</label>
+                          <label className="text-sm font-medium">
+                            رقم الترخيص المهني
+                          </label>
                           <Input defaultValue="SPT-2024-001" />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">جهة العمل</label>
+                          <label className="text-sm font-medium">
+                            جهة العمل
+                          </label>
                           <Input defaultValue="مستشفى الملك فهد التخصصي" />
                         </div>
                       </div>
@@ -654,9 +794,7 @@ export default function SpecialistDashboard() {
                         <Button className="bg-blue-600 hover:bg-blue-700">
                           حفظ التغييرات
                         </Button>
-                        <Button variant="outline">
-                          إلغاء
-                        </Button>
+                        <Button variant="outline">إلغاء</Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -673,25 +811,39 @@ export default function SpecialistDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">��نبيهات ��لمواعيد</p>
-                          <p className="text-sm text-gray-600">إرسال تذكير قبل المواعيد</p>
+                          <p className="text-sm text-gray-600">
+                            إرسال تذكير قبل المواعيد
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <input type="checkbox" defaultChecked className="rounded" />
+                          <input
+                            type="checkbox"
+                            defaultChecked
+                            className="rounded"
+                          />
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">تنبيهات المرضى الجدد</p>
-                          <p className="text-sm text-gray-600">إشعار عند تسجيل مريض جديد</p>
+                          <p className="text-sm text-gray-600">
+                            إشعار عند تسجيل مريض جديد
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <input type="checkbox" defaultChecked className="rounded" />
+                          <input
+                            type="checkbox"
+                            defaultChecked
+                            className="rounded"
+                          />
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">تنبيهات التقارير</p>
-                          <p className="text-sm text-gray-600">إشعار عند إنجاز التقارير الدورية</p>
+                          <p className="text-sm text-gray-600">
+                            إشعار عند إنجاز التقارير الدورية
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <input type="checkbox" className="rounded" />
@@ -699,11 +851,19 @@ export default function SpecialistDashboard() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">تنبيهات البريد الإلكتروني</p>
-                          <p className="text-sm text-gray-600">استقبال التنبيهات عبر البريد</p>
+                          <p className="font-medium">
+                            تنبيهات البريد الإلكتروني
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            استقبال التنبيهات عبر البريد
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <input type="checkbox" defaultChecked className="rounded" />
+                          <input
+                            type="checkbox"
+                            defaultChecked
+                            className="rounded"
+                          />
                         </div>
                       </div>
                     </CardContent>
@@ -727,15 +887,21 @@ export default function SpecialistDashboard() {
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">المنطقة الزمنية</label>
+                          <label className="text-sm font-medium">
+                            المنطقة الزمنية
+                          </label>
                           <select className="w-full p-2 border rounded-md">
                             <option value="Asia/Riyadh">الرياض (GMT+3)</option>
                             <option value="Asia/Dubai">دبي (GMT+4)</option>
-                            <option value="Africa/Cairo">القاهرة (GMT+2)</option>
+                            <option value="Africa/Cairo">
+                              القاهرة (GMT+2)
+                            </option>
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">تنسيق التاريخ</label>
+                          <label className="text-sm font-medium">
+                            تنسيق التاريخ
+                          </label>
                           <select className="w-full p-2 border rounded-md">
                             <option value="dd/mm/yyyy">ي���م/شهر/سنة</option>
                             <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
@@ -743,7 +909,9 @@ export default function SpecialistDashboard() {
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">عدد المرضى في الصفحة</label>
+                          <label className="text-sm font-medium">
+                            عدد المرضى في الصفحة
+                          </label>
                           <select className="w-full p-2 border rounded-md">
                             <option value="10">10</option>
                             <option value="25">25</option>
@@ -755,7 +923,9 @@ export default function SpecialistDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">الوضع المظلم</p>
-                          <p className="text-sm text-gray-600">تفعيل المظهر المظلم للتطبيق</p>
+                          <p className="text-sm text-gray-600">
+                            تفعيل المظهر المظلم للتطبيق
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <input type="checkbox" className="rounded" />
@@ -764,10 +934,16 @@ export default function SpecialistDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">الصوت في التمارين</p>
-                          <p className="text-sm text-gray-600">تشغيل الصوت في تمارين الأطفال</p>
+                          <p className="text-sm text-gray-600">
+                            تشغيل الصوت في تمارين الأطفال
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <input type="checkbox" defaultChecked className="rounded" />
+                          <input
+                            type="checkbox"
+                            defaultChecked
+                            className="rounded"
+                          />
                         </div>
                       </div>
                     </CardContent>
@@ -783,16 +959,26 @@ export default function SpecialistDashboard() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-4">
-                        <Button variant="outline" className="w-full justify-start">
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start"
+                        >
                           تغيير كلمة ا����مرور
                         </Button>
-                        <Button variant="outline" className="w-full justify-start">
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start"
+                        >
                           إعداد المصادقة الثنائية
                         </Button>
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium">مشاركة البيانات للتطوير</p>
-                            <p className="text-sm text-gray-600">المساعدة في تحسين النظام (بيانات مجهولة)</p>
+                            <p className="font-medium">
+                              مشاركة البيانات للتطوير
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              المساعدة في تحسين النظام (بيانات مجهولة)
+                            </p>
                           </div>
                           <div className="flex items-center space-x-2">
                             <input type="checkbox" className="rounded" />
@@ -801,10 +987,16 @@ export default function SpecialistDashboard() {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium">حفظ جلسات العمل</p>
-                            <p className="text-sm text-gray-600">البقاء مسجلاً لفترة أطول</p>
+                            <p className="text-sm text-gray-600">
+                              البقاء مسجلاً لفترة أطول
+                            </p>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <input type="checkbox" defaultChecked className="rounded" />
+                            <input
+                              type="checkbox"
+                              defaultChecked
+                              className="rounded"
+                            />
                           </div>
                         </div>
                       </div>
@@ -821,19 +1013,31 @@ export default function SpecialistDashboard() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="grid md:grid-cols-2 gap-4">
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <Download className="w-4 h-4" />
                           تصدير بيانات المرضى
                         </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <FileText className="w-4 h-4" />
                           تصدير التقارير
                         </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <Users className="w-4 h-4" />
                           نسخ احتياطية
                         </Button>
-                        <Button variant="outline" className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50"
+                        >
                           <Activity className="w-4 h-4" />
                           حذف البيانات
                         </Button>
@@ -851,19 +1055,31 @@ export default function SpecialistDashboard() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="grid md:grid-cols-2 gap-4">
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <FileText className="w-4 h-4" />
                           دليل المستخدم
                         </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <Activity className="w-4 h-4" />
                           التواصل مع الدعم
                         </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <Star className="w-4 h-4" />
                           تقييم التطبيق
                         </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          className="flex items-center gap-2"
+                        >
                           <Brain className="w-4 h-4" />
                           معلومات النسخة
                         </Button>
@@ -901,10 +1117,16 @@ export default function SpecialistDashboard() {
                         <Badge variant="outline" className="text-xs">
                           {appointment.time}
                         </Badge>
-                        <span className="text-xs text-gray-500">{appointment.type}</span>
+                        <span className="text-xs text-gray-500">
+                          {appointment.type}
+                        </span>
                       </div>
-                      <p className="font-medium text-sm">{appointment.patient}</p>
-                      <p className="text-xs text-gray-600">ولي الأمر: {appointment.parent}</p>
+                      <p className="font-medium text-sm">
+                        {appointment.patient}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        ولي الأمر: {appointment.parent}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -923,7 +1145,7 @@ export default function SpecialistDashboard() {
                 <Button
                   variant="outline"
                   className="w-full justify-start"
-                  onClick={() => navigate('/attention-exercises')}
+                  onClick={() => navigate("/attention-exercises")}
                 >
                   <Target className="w-4 h-4 ml-2" />
                   تمارين الانتباه
@@ -931,7 +1153,7 @@ export default function SpecialistDashboard() {
                 <Button
                   variant="outline"
                   className="w-full justify-start"
-                  onClick={() => navigate('/orthophonic-balance')}
+                  onClick={() => navigate("/orthophonic-balance")}
                 >
                   <FileText className="w-4 h-4 ml-2" />
                   الميزانية الأرطوفونية
@@ -939,7 +1161,7 @@ export default function SpecialistDashboard() {
                 <Button
                   variant="outline"
                   className="w-full justify-start"
-                  onClick={() => navigate('/age-calculator')}
+                  onClick={() => navigate("/age-calculator")}
                 >
                   <Calculator className="w-4 h-4 ml-2" />
                   حساب العمر
