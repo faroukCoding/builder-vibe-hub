@@ -69,7 +69,7 @@ export default function ParentDashboard() {
       type: "تمارين الانتباه",
       duration: "45 دقيقة",
       progress: 85,
-      notes: "تحسن ملحوظ في التركي�� والانتباه",
+      notes: "تحسن ملحوظ في التركيز والانتباه",
       activities: ["اختيار النجمة", "البحث عن المفقود"]
     },
     {
@@ -377,7 +377,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Star className="w-5 h-5" />
-            إنجازات {childData.name}
+            إنجا��ات {childData.name}
           </CardTitle>
           <CardDescription>
             الإنجازات والأهداف المحققة
@@ -472,7 +472,7 @@ export default function ParentDashboard() {
               className="h-24 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🚗</div>
-              <span>��لمركبات</span>
+              <span>المركبات</span>
             </Button>
             <Button
               onClick={() => navigate('/cognitive-tests')}
@@ -614,7 +614,7 @@ export default function ParentDashboard() {
                   <tbody>
                     {geographicalData.map((row, index) => (
                       <tr key={index} className="border-b hover:bg-gray-50">
-                        <td className="p-3 font-medium">🏢 {row.region}</td>
+                        <td className="p-3 font-medium">🏛️ {row.region}</td>
                         <td className="p-3">{row.patients}</td>
                         <td className="p-3">{row.cases}</td>
                         <td className="p-3">
@@ -735,7 +735,7 @@ export default function ParentDashboard() {
               </TabsTrigger>
               <TabsTrigger value="cognitive" className="flex items-center gap-2">
                 <Brain className="w-4 h-4" />
-                التمارين ��لمعرفية
+                التمارين المعرفية
               </TabsTrigger>
               <TabsTrigger value="sessions" className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
