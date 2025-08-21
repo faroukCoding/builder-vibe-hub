@@ -1,201 +1,321 @@
 import { 
-  Users, 
-  Baby, 
-  Heart, 
-  Mic, 
-  Brain, 
-  Gamepad2, 
-  FileText,
-  ArrowLeft,
-  Stethoscope,
-  Sparkles
+  User, 
+  UserPlus, 
+  LogIn, 
+  Stethoscope, 
+  Baby,
+  Sparkles,
+  Heart,
+  Brain,
+  Shield,
+  ArrowLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Index() {
   const navigate = useNavigate();
+  const [currentView, setCurrentView] = useState("welcome"); // welcome, accountType, login, register
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center gap-3">
-              <div className="bg-primary-blue text-white p-3 rounded-full">
-                <Mic className="w-8 h-8" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-primary-dark">
-                  عيادة النطق الذكية
-                </h1>
-                <p className="text-text-secondary">منصة متطورة لعلاج صعوبات النطق عند الأطفال</p>
-              </div>
+  const WelcomeScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
+      <Card className="max-w-2xl mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+        <CardContent className="p-12 text-center">
+          {/* Logo and Title */}
+          <div className="mb-8">
+            <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 rounded-3xl w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+              <Brain className="w-12 h-12" />
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-gradient-to-r from-primary-blue to-primary-green bg-clip-text text-transparent mb-6">
-            <Brain className="w-20 h-20 mx-auto mb-4 text-primary-blue" />
-            <h2 className="text-5xl font-bold mb-4">
-              حلول ذكية لعلاج النطق
-            </h2>
-          </div>
-          <p className="text-xl text-text-secondary mb-12 leading-relaxed max-w-2xl mx-auto">
-            منصة شاملة تجمع بين الأدوات الطبية المتقدمة والألعاب التفاعلية 
-            لمساعدة الأطفال على تطوير مهارات النطق والتواصل
-          </p>
-
-          {/* User Selection Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Doctor Interface */}
-            <Card 
-              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-blue cursor-pointer bg-white/80 backdrop-blur-sm"
-              onClick={() => navigate('/doctor')}
-            >
-              <CardHeader className="text-center pb-6">
-                <div className="bg-gradient-to-r from-primary-blue to-primary-green p-4 rounded-full w-20 h-20 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Stethoscope className="w-12 h-12 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-primary-dark mb-2">
-                  واجهة الأطباء والأخصائيين
-                </CardTitle>
-                <CardDescription className="text-lg text-text-secondary">
-                  أدوات تقييم شاملة وإدارة ملفات المرضى
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 text-text-secondary">
-                  <FileText className="w-5 h-5 text-primary-blue flex-shrink-0" />
-                  <span>نماذج التقييم الأرطوفوني الشاملة</span>
-                </div>
-                <div className="flex items-center gap-3 text-text-secondary">
-                  <Users className="w-5 h-5 text-primary-blue flex-shrink-0" />
-                  <span>إدارة ملفات المرضى والمتابعة</span>
-                </div>
-                <div className="flex items-center gap-3 text-text-secondary">
-                  <Brain className="w-5 h-5 text-primary-blue flex-shrink-0" />
-                  <span>تقارير مفصلة وخطط العلاج</span>
-                </div>
-                <Button className="w-full mt-6 bg-primary-blue hover:bg-primary-blue/90 text-white font-semibold py-3">
-                  دخول واجهة الأطباء
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Child Interface */}
-            <Card 
-              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-green cursor-pointer bg-white/80 backdrop-blur-sm"
-              onClick={() => navigate('/child')}
-            >
-              <CardHeader className="text-center pb-6">
-                <div className="bg-gradient-to-r from-primary-green to-primary-accent p-4 rounded-full w-20 h-20 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Baby className="w-12 h-12 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-primary-dark mb-2">
-                  واجهة الأطفال التفاعلية
-                </CardTitle>
-                <CardDescription className="text-lg text-text-secondary">
-                  ألعاب وتمارين ممتعة لتطوير النطق
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 text-text-secondary">
-                  <Gamepad2 className="w-5 h-5 text-primary-green flex-shrink-0" />
-                  <span>ألعاب تفاعلية لتمارين النطق</span>
-                </div>
-                <div className="flex items-center gap-3 text-text-secondary">
-                  <Sparkles className="w-5 h-5 text-primary-green flex-shrink-0" />
-                  <span>تجربة ممتعة ومحفزة للأطفال</span>
-                </div>
-                <div className="flex items-center gap-3 text-text-secondary">
-                  <Heart className="w-5 h-5 text-primary-green flex-shrink-0" />
-                  <span>متابعة التقدم والإنجازات</span>
-                </div>
-                <Button className="w-full mt-6 bg-primary-green hover:bg-primary-green/90 text-white font-semibold py-3">
-                  دخول واجهة الأطفال
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 px-4 bg-white/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-primary-dark mb-4">
-              مميزات المنصة
-            </h3>
-            <p className="text-text-secondary text-lg">
-              حلول متكاملة لعلاج صعوبات النطق والتواصل
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+              Ortho Smart
+            </h1>
+            <p className="text-2xl text-gray-600 font-semibold mb-2">
+              مرحباً بك في Ortho Smart
+            </p>
+            <p className="text-lg text-gray-500 leading-relaxed">
+              منصّة رقمية متخصّصة في الأرطوفونيا لتقييم ومتابعة الأطفال
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-primary-blue/10 p-4 rounded-full w-16 h-16 mx-auto mb-4">
-                <FileText className="w-8 h-8 text-primary-blue mx-auto" />
+          {/* Features */}
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            <div className="text-center p-4">
+              <div className="bg-blue-100 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                <Stethoscope className="w-8 h-8 text-blue-600" />
               </div>
-              <h4 className="font-semibold text-primary-dark mb-2">
-                تقييم شامل
-              </h4>
-              <p className="text-text-secondary text-sm">
-                نماذج تقييم مفصلة تغطي جميع جوانب النطق والتواصل
-              </p>
+              <p className="text-sm font-medium text-gray-700">تقييم شامل</p>
             </div>
-
-            <div className="text-center">
-              <div className="bg-primary-green/10 p-4 rounded-full w-16 h-16 mx-auto mb-4">
-                <Gamepad2 className="w-8 h-8 text-primary-green mx-auto" />
+            <div className="text-center p-4">
+              <div className="bg-green-100 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                <Baby className="w-8 h-8 text-green-600" />
               </div>
-              <h4 className="font-semibold text-primary-dark mb-2">
-                تمارين تفاعلية
-              </h4>
-              <p className="text-text-secondary text-sm">
-                ألعاب وأنش��ة محفزة تساعد الأطفال على التعلم والتطور
-              </p>
+              <p className="text-sm font-medium text-gray-700">تمارين تفاعلية</p>
             </div>
-
-            <div className="text-center">
-              <div className="bg-primary-accent/10 p-4 rounded-full w-16 h-16 mx-auto mb-4">
-                <Brain className="w-8 h-8 text-primary-accent mx-auto" />
+            <div className="text-center p-4">
+              <div className="bg-purple-100 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                <Heart className="w-8 h-8 text-purple-600" />
               </div>
-              <h4 className="font-semibold text-primary-dark mb-2">
-                متابعة ذكية
-              </h4>
-              <p className="text-text-secondary text-sm">
-                نظام متابعة متطور لرصد التقدم ووضع خطط العلاج
-              </p>
+              <p className="text-sm font-medium text-gray-700">متابعة مستمرة</p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-primary-dark text-white py-12 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Mic className="w-8 h-8 text-primary-accent" />
-            <h4 className="text-2xl font-bold">عيادة النطق الذكية</h4>
+          {/* Action Buttons */}
+          <div className="space-y-4">
+            <Button 
+              size="lg" 
+              className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white text-lg py-4"
+              onClick={() => setCurrentView("accountType")}
+            >
+              <UserPlus className="w-6 h-6 ml-3" />
+              اختر نوع الحساب
+            </Button>
+            
+            <div className="flex gap-4">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="flex-1 border-2 hover:bg-blue-50 text-lg py-4"
+                onClick={() => setCurrentView("login")}
+              >
+                <LogIn className="w-5 h-5 ml-2" />
+                دخول
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="flex-1 border-2 hover:bg-green-50 text-lg py-4"
+                onClick={() => setCurrentView("register")}
+              >
+                <User className="w-5 h-5 ml-2" />
+                حساب جديد
+              </Button>
+            </div>
           </div>
-          <p className="text-gray-300 mb-8">
-            منصة متخصصة لعلاج صعوبات النطق والتواصل عند الأطفال
-          </p>
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-400">
-              © 2024 عيادة النطق الذكية - جميع الحقوق محفوظة
-            </p>
-          </div>
-        </div>
-      </footer>
+        </CardContent>
+      </Card>
     </div>
   );
+
+  const AccountTypeScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
+      <Card className="max-w-4xl mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+        <CardHeader className="text-center pb-6">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-4 right-4"
+            onClick={() => setCurrentView("welcome")}
+          >
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <CardTitle className="text-3xl font-bold text-gray-800 mb-2">
+            اختر نوع حسابك
+          </CardTitle>
+          <CardDescription className="text-lg">
+            حدد نوع الحساب المناسب لك للبدء
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Parent Account */}
+            <Card 
+              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-green-500 cursor-pointer"
+              onClick={() => navigate('/parent-register')}
+            >
+              <CardContent className="p-8 text-center">
+                <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-2xl w-20 h-20 mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Baby className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">ولي الطفل</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  متابعة تقدم طفلك، الاطلاع على التقارير، ومراجعة مواعيد الجلسات
+                </p>
+                <div className="space-y-2 text-sm text-gray-500 text-right mb-6">
+                  <p>• متابعة بيانات الطفل والتطور</p>
+                  <p>• الاطلاع على التقارير المفصلة</p>
+                  <p>• مراجعة مواعيد الجلسات</p>
+                </div>
+                <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+                  إنشاء حساب ولي
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Specialist Account */}
+            <Card 
+              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-500 cursor-pointer"
+              onClick={() => navigate('/specialist-register')}
+            >
+              <CardContent className="p-8 text-center">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-2xl w-20 h-20 mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Stethoscope className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">أخصائي/ة أرطوفوني/ة</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  أدوات التقييم المتقدمة، إدارة الحالات، وإنشاء التقارير المتخصصة
+                </p>
+                <div className="space-y-2 text-sm text-gray-500 text-right mb-6">
+                  <p>• أدوات التقييم والتشخيص</p>
+                  <p>• إدارة حالات الأطفال</p>
+                  <p>• إنشاء التقارير والخطط</p>
+                </div>
+                <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+                  إنشاء حساب أخصائي
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const LoginScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
+      <Card className="max-w-md mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+        <CardHeader className="text-center">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-4 right-4"
+            onClick={() => setCurrentView("welcome")}
+          >
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-4 rounded-2xl w-16 h-16 mx-auto mb-4">
+            <LogIn className="w-8 h-8" />
+          </div>
+          <CardTitle className="text-2xl font-bold text-gray-800">تسجيل الدخول</CardTitle>
+          <CardDescription>ادخل بياناتك للوصول إلى حسابك</CardDescription>
+        </CardHeader>
+        <CardContent className="p-6">
+          <form className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+              <input 
+                type="email" 
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="example@email.com"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+              <input 
+                type="password" 
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="••••••••"
+              />
+            </div>
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-3"
+              onClick={(e) => {
+                e.preventDefault();
+                // For demo, navigate to specialist dashboard
+                navigate('/specialist-dashboard');
+              }}
+            >
+              <LogIn className="w-5 h-5 ml-2" />
+              دخول
+            </Button>
+          </form>
+          <div className="text-center mt-6">
+            <p className="text-gray-600">ليس لديك حساب؟</p>
+            <Button 
+              variant="link" 
+              onClick={() => setCurrentView("accountType")}
+              className="text-blue-600 hover:text-blue-700"
+            >
+              إنشاء حساب جد��د
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const RegisterScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
+      <Card className="max-w-md mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+        <CardHeader className="text-center">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-4 right-4"
+            onClick={() => setCurrentView("welcome")}
+          >
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white p-4 rounded-2xl w-16 h-16 mx-auto mb-4">
+            <UserPlus className="w-8 h-8" />
+          </div>
+          <CardTitle className="text-2xl font-bold text-gray-800">إنشاء حساب جديد</CardTitle>
+          <CardDescription>اختر نوع الحساب المناسب</CardDescription>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <Button 
+              variant="outline" 
+              className="w-full p-4 text-right border-2 hover:border-green-500 hover:bg-green-50"
+              onClick={() => navigate('/parent-register')}
+            >
+              <div className="flex items-center justify-between w-full">
+                <Baby className="w-6 h-6 text-green-600" />
+                <div>
+                  <p className="font-semibold">ولي الطفل</p>
+                  <p className="text-sm text-gray-500">لمتابعة طفلك</p>
+                </div>
+              </div>
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              className="w-full p-4 text-right border-2 hover:border-blue-500 hover:bg-blue-50"
+              onClick={() => navigate('/specialist-register')}
+            >
+              <div className="flex items-center justify-between w-full">
+                <Stethoscope className="w-6 h-6 text-blue-600" />
+                <div>
+                  <p className="font-semibold">أخصائي أرطوفوني</p>
+                  <p className="text-sm text-gray-500">للتقييم والعلاج</p>
+                </div>
+              </div>
+            </Button>
+          </div>
+          
+          <div className="text-center mt-6">
+            <p className="text-gray-600">لديك حساب بالفعل؟</p>
+            <Button 
+              variant="link" 
+              onClick={() => setCurrentView("login")}
+              className="text-blue-600 hover:text-blue-700"
+            >
+              تسجيل الدخول
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  // Render based on current view
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case "accountType":
+        return <AccountTypeScreen />;
+      case "login":
+        return <LoginScreen />;
+      case "register":
+        return <RegisterScreen />;
+      default:
+        return <WelcomeScreen />;
+    }
+  };
+
+  return renderCurrentView();
 }
