@@ -94,7 +94,7 @@ export default function ParentDashboard() {
 
   const achievements = [
     { title: "أول جلسة", earned: true, date: "2024-01-01", icon: "🎯" },
-    { title: "5 ج��سات", earned: true, date: "2024-01-10", icon: "⭐" },
+    { title: "5 جلسات", earned: true, date: "2024-01-10", icon: "⭐" },
     { title: "تحسن 50%", earned: true, date: "2024-01-12", icon: "📈" },
     { title: "10 جلسات", earned: false, date: null, icon: "🏆" },
     { title: "تحسن 75%", earned: false, date: null, icon: "🎉" },
@@ -135,7 +135,7 @@ export default function ParentDashboard() {
     { month: "يناير", fruits: 75, vegetables: 68, clothes: 82, animals: 90, vehicles: 77 },
     { month: "فبراير", fruits: 78, vegetables: 72, clothes: 85, animals: 92, vehicles: 80 },
     { month: "مارس", fruits: 82, vegetables: 75, clothes: 88, animals: 94, vehicles: 83 },
-    { month: "أبريل", fruits: 85, vegetables: 78, clothes: 90, animals: 96, vehicles: 86 },
+    { month: "أبري��", fruits: 85, vegetables: 78, clothes: 90, animals: 96, vehicles: 86 },
   ];
 
   const testCategories = [
@@ -426,7 +426,7 @@ export default function ParentDashboard() {
 
   const CognitiveTestsTab = () => (
     <div className="space-y-6">
-      {/* تمارين الإدراك المعرفية */}
+      {/* تمارين الإدراك الم��رفية */}
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -549,10 +549,10 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-6 h-6 text-blue-600" />
-            الإحصائيات الجغرافية للمملكة العربية السعودية
+            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشعبية
           </CardTitle>
           <CardDescription>
-            توزيع المرضى ونسب النجاح حسب المناطق
+            توزيع المرضى ونسب النجاح حسب الولايات
           </CardDescription>
         </CardHeader>
         <CardContent>
