@@ -84,7 +84,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 5,
-      name: "حذاء رياضي",
+      name: "حذاء ر��اضي",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F22a372c46a5240b3a6a530be95dfe12d?format=webp&width=800",
       category: "ملابس"
     },
@@ -132,7 +132,7 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الخضروات
+  // الخضروات - مصححة حسب المحتوى الفعلي
   vegetables: [
     {
       id: 1,
@@ -190,7 +190,7 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الفواكه
+  // الفواكه - مصححة حسب المحت��ى الفعلي
   fruits: [
     {
       id: 1,
@@ -621,13 +621,13 @@ export default function CognitiveTests() {
   // REUSABLE TEST COMPONENT
   // =============================================================================
 
-  const ImageRecognitionTest = ({ 
-    category, 
-    categoryArabic, 
-    question, 
-    images, 
+  const ImageRecognitionTest = ({
+    category,
+    categoryArabic,
+    question,
+    images,
     testType,
-    color 
+    color
   }: {
     category: string;
     categoryArabic: string;
@@ -925,7 +925,7 @@ export default function CognitiveTests() {
           {currentColor && (
             <div className="space-y-6">
               <div className="text-center">
-                <div 
+                <div
                   className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300"
                   style={{ backgroundColor: currentColor.color }}
                 ></div>
@@ -1103,7 +1103,7 @@ export default function CognitiveTests() {
 
     const renderShape = (shapeType: string, size: string = 'w-32 h-32') => {
       const shapeClass = `${size} mx-auto`;
-      
+
       switch (shapeType) {
         case 'circle':
           return <div className={`${shapeClass} bg-blue-500 rounded-full`}></div>;
@@ -1401,7 +1401,7 @@ export default function CognitiveTests() {
       </Card>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        
+
         {/* Image Recognition Tests */}
         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-indigo-300" onClick={() => startTest('clothes')}>
           <CardContent className="p-6">
