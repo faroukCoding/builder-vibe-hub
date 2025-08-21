@@ -78,8 +78,8 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 4,
-      name: "قفازات",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F56f902a4cc1343e0970ecf447c54ffef?format=webp&width=800",
+      name: "قفازات شتوية",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe9cc6462fb144685906e523ffdd685f1?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -154,7 +154,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 4,
-      name: "با��نجان",
+      name: "باذنج��ن",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7633a0a50e644886951f1bb44516a2c2?format=webp&width=800",
       category: "خضروات"
     },
@@ -286,7 +286,7 @@ const IMAGE_CATEGORIES = {
       id: 16,
       name: "مشمش",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd6e82105d82246699b915c7cb39526b3?format=webp&width=800",
-      category: "فو��كه"
+      category: "فواكه"
     }
   ],
 
@@ -516,7 +516,7 @@ const BODY_PARTS = [
   { name: "عين", emoji: "👁️", category: "وجه" },
   { name: "أنف", emoji: "👃", category: "وجه" },
   { name: "فم", emoji: "👄", category: "وجه" },
-  { name: "أذن", emoji: "👂", category: "وجه" },
+  { name: "أذ��", emoji: "👂", category: "وجه" },
   { name: "يد", emoji: "✋", category: "أطراف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
   { name: "رأس", emoji: "🗣️", category: "جسم" },
@@ -573,7 +573,7 @@ export default function CognitiveTests() {
         const aiAnalysisResults = {
           // أنماط الخضروات
           'cucumber|خيار': { name: 'خيار', category: 'خضروات', confidence: 95 },
-          'carrot|جزر': { name: 'جزر', category: '��ضروات', confidence: 98 },
+          'carrot|جزر': { name: 'جزر', category: 'خضر��ات', confidence: 98 },
           'tomato|طماطم': { name: 'طماطم', category: 'خضروات', confidence: 97 },
           'onion|بصل': { name: 'بصل', category: 'خضروات', confidence: 94 },
           'garlic|ثوم': { name: 'ثوم', category: 'خضروات', confidence: 96 },
@@ -1078,7 +1078,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اخت��ار الألوان
+              ملخص اختبار الألوان
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1650,7 +1650,7 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">الخضروات</h3>
-                <p className="text-gray-600 text-sm">التعرف على أنواع الخضروات</p>
+                <p className="text-gray-600 text-sm">ال��عرف على أنواع الخضروات</p>
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
@@ -1760,7 +1760,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              الأرقام ا��عربية 1-10 • مفاهيم عددية
+              الأرقام العر��ية 1-10 • مفاهيم عددية
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1895,7 +1895,7 @@ export default function CognitiveTests() {
             <div>
               <h4 className="font-semibold mb-3 text-gray-800">هدف الاختبارات:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• ��قييم المكتسبات القبلية للأطفال</li>
+                <li>• تقي��م المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري والسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
@@ -1992,7 +1992,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'error',
-            message: `❌ غير صحيح! الذكاء الاصطناعي يقترح "${aiAnalysis.name}" لهذه الصورة`
+            message: `❌ غير صحيح! الذكاء الاصطناعي ��قترح "${aiAnalysis.name}" لهذه الصورة`
           });
           playAudio('حاول مرة أخرى');
         }
@@ -2263,7 +2263,7 @@ export default function CognitiveTests() {
             <Progress value={progress} className="w-full" />
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* ا��صورة الحالية */}
+            {/* الصو��ة الحالية */}
             <div className="text-center">
               <div className="inline-block p-4 bg-gray-100 rounded-lg">
                 <img
