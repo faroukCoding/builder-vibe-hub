@@ -260,7 +260,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 12,
-      name: "بطيخ",
+      name: "��طيخ",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcbf84b70c17f46a6b1701a8a8a6d0443?format=webp&width=800",
       category: "فواكه"
     },
@@ -326,7 +326,7 @@ const IMAGE_CATEGORIES = {
       id: 6,
       name: "ذئب",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F18ff4c13294840f49ef57311d63b3d67?format=webp&width=800",
-      category: "حي��انات"
+      category: "حي����نات"
     },
     {
       id: 7,
@@ -607,7 +607,7 @@ export default function CognitiveTests() {
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
           'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
           'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
-          'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
+          'duck|بطة': { name: '��طة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
           'horse|حصان': { name: 'حصان', category: 'حيوانات', confidence: 97 },
           'donkey|حمار': { name: 'حمار', category: 'حيوانات', confidence: 94 },
@@ -1241,7 +1241,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائمة
+                العودة للقائ��ة
               </Button>
             </div>
           </CardContent>
@@ -1654,7 +1654,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              9 أنواع خضروات • صور حقيقية
+              9 أنواع ��ضروات • صور حقيقية
             </div>
             <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -2137,12 +2137,12 @@ export default function CognitiveTests() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
-                  {gameData.images.map((item) => (
+                  {gameData.images.map((item, index) => (
                     <div
-                      key={item.id}
+                      key={`image-${item.category}-${item.id}-${index}`}
                       onClick={() => handleImageSelect(item)}
                       className={`cursor-pointer rounded-lg border-2 p-3 transition-all hover:scale-105 ${
-                        selectedImage?.id === item.id
+                        selectedImage?.id === item.id && selectedImage?.category === item.category
                           ? 'border-blue-500 bg-blue-50 shadow-lg'
                           : 'border-gray-200 hover:border-blue-300'
                       }`}
@@ -2229,7 +2229,7 @@ export default function CognitiveTests() {
 
     const categories = [
       { key: 'clothes', name: 'ملابس', color: 'blue' },
-      { key: 'vegetables', name: 'خضروات', color: 'green' },
+      { key: 'vegetables', name: 'خض��وات', color: 'green' },
       { key: 'fruits', name: 'فواكه', color: 'red' },
       { key: 'animals', name: 'حيوانات', color: 'yellow' },
       { key: 'vehicles', name: 'مركبات', color: 'purple' }
