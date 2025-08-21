@@ -295,7 +295,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 1,
       name: "أسد",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F98a7789d43744a46988dda779122f2dc?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F9b52f1d7168647649c8a9583456988e2?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -1811,7 +1811,7 @@ export default function CognitiveTests() {
           </CardContent>
         </Card>
 
-        {/* تمرين المطابقة الذكي */}
+        {/* تمرين ال��طابقة الذكي */}
         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-300 col-span-full" onClick={() => setCurrentTest('matching')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
@@ -2452,7 +2452,7 @@ export default function CognitiveTests() {
   // MAIN RENDER
   // =============================================================================
 
-  // إذا كان في وضع التحقق ��ن الصور
+  // إذا ��ان في وضع التحقق ��ن الصور
   if (isVerificationMode) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50" dir="rtl">
