@@ -56,7 +56,7 @@ interface FeedbackState {
 // =============================================================================
 
 const IMAGE_CATEGORIES = {
-  // الملابس والإكسسوارات
+  // الملابس والإكسسوار��ت
   clothes: [
     {
       id: 1,
@@ -325,7 +325,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 6,
       name: "ذئب",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F18ff4c13294840f49ef57311d63b3d67?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F11172db611a04d429ca5127d894d3658?format=webp&width=800",
       category: "حي��انات"
     },
     {
@@ -590,7 +590,7 @@ export default function CognitiveTests() {
           'orange|برتقال': { name: 'برتقال', category: 'فواكه', confidence: 97 },
           'strawberry|فراولة': { name: 'فراولة', category: 'فواكه', confidence: 95 },
           'apple|تفاح': { name: 'تفاح', category: 'فواكه', confidence: 98 },
-          'lemon|ليمون': { name: 'ليمون', category: 'فو��كه', confidence: 96 },
+          'lemon|ليمون': { name: '��يمون', category: 'فو��كه', confidence: 96 },
           'peach|خوخ': { name: 'خوخ', category: 'فواكه', confidence: 93 },
           'watermelon|بطيخ': { name: 'بط��خ', category: 'فواكه', confidence: 97 },
           'dates|تمر': { name: 'تمر', category: 'فواكه', confidence: 94 },
@@ -622,7 +622,7 @@ export default function CognitiveTests() {
           'tie|ربطة': { name: 'ربطة عنق', category: 'ملابس', confidence: 94 },
           'scarf|وشاح': { name: 'وشاح شتوي', category: 'ملابس', confidence: 92 },
           'gloves|قفازات': { name: 'قفازات', category: 'ملابس', confidence: 93 },
-          'shoes|حذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
+          'shoes|��ذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
           'socks|جوارب': { name: 'جوارب', category: 'ملابس', confidence: 94 },
           'skirt|��نورة': { name: 'تنورة', category: 'ملابس', confidence: 95 },
           'dress|فستان': { name: 'فستان', category: 'ملابس', confidence: 97 },
@@ -657,7 +657,7 @@ export default function CognitiveTests() {
         // إذا لم يتم العثور على نمط، نحلل بناءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
-        const categories = ['ملابس', 'خضروات', 'فواكه', 'حيو��نات', 'مركبات'];
+        const categories = ['ملا��س', 'خضروات', 'فواكه', 'حيو��نات', 'مركبات'];
         const categoryIndex = hashInt % categories.length;
 
         resolve({
@@ -706,7 +706,7 @@ export default function CognitiveTests() {
           });
         }
 
-        // تحديث قائمة الصور المصححة
+        // تحديث قائ��ة الصور المصححة
         setCorrectedImages(prev => [...prev, {
           ...item,
           name: analysis.name,
@@ -1865,7 +1865,7 @@ export default function CognitiveTests() {
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
               <Brain className="w-4 h-4 ml-2" />
-              تصحيح تلقائي بال��كاء الاصطناعي
+              تصحيح تلقائي ب��ل��كاء الاصطناعي
             </Button>
             <Button
               onClick={startImageVerification}
