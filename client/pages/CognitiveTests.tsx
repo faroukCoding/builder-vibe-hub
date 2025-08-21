@@ -319,7 +319,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 5,
       name: "زرافة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6932171555a342309126302e012c11d3?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd1f86077f13945fbbe3a544a7c0b767f?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -490,7 +490,7 @@ const COLORS = [
 
 const NUMBERS = [
   { number: 1, name: "واحد", symbol: "١" },
-  { number: 2, name: "اثنان", symbol: "٢" },
+  { number: 2, name: "اث��ان", symbol: "٢" },
   { number: 3, name: "ثلاثة", symbol: "٣" },
   { number: 4, name: "أربعة", symbol: "٤" },
   { number: 5, name: "خمسة", symbol: "٥" },
@@ -514,7 +514,7 @@ const SHAPES = [
 
 const BODY_PARTS = [
   { name: "عين", emoji: "👁️", category: "وجه" },
-  { name: "أنف", emoji: "👃", category: "وجه" },
+  { name: "أنف", emoji: "��", category: "وجه" },
   { name: "فم", emoji: "👄", category: "وجه" },
   { name: "أذن", emoji: "👂", category: "وجه" },
   { name: "يد", emoji: "✋", category: "أطراف" },
@@ -654,7 +654,7 @@ export default function CognitiveTests() {
           }
         }
 
-        // إذا لم يتم العثور على نم��، نحلل بناءً على hash في URL
+        // إذا لم يتم العثور على نمط، نحلل بناءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
         const categories = ['ملابس', 'خضروات', 'فواكه', 'حيو��نات', 'مركبات'];
@@ -1119,7 +1119,7 @@ export default function CognitiveTests() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">اختب��ر التعرف على الألوان</CardTitle>
+          <CardTitle className="text-center">اختبار التعرف على الألوان</CardTitle>
           <CardDescription className="text-center">
             السؤال {testSession.currentQuestion} من 10
           </CardDescription>
@@ -1675,7 +1675,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              16 نوع فاكهة • صور حقيقية
+              16 نوع ف��كهة • صور حقيقية
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1797,7 +1797,7 @@ export default function CognitiveTests() {
                 <Eye className="w-8 h-8 text-teal-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">أعضا�� الجسم</h3>
+                <h3 className="text-xl font-bold">أعضاء الجسم</h3>
                 <p className="text-gray-600 text-sm">التعرف على أجزاء الجسم</p>
               </div>
             </div>
@@ -1820,7 +1820,7 @@ export default function CognitiveTests() {
               </div>
               <div className="flex-1">
                 <h3 className="text-2xl font-bold text-purple-700">🧠 مطابقة الصور والأسماء الذكية</h3>
-                <p className="text-gray-600 text-base">تمرين تفاعلي مع الذكاء ��لاصطناعي لتطوير مهارات الإدراك</p>
+                <p className="text-gray-600 text-base">تمرين تفاعلي مع الذكاء الاصطناعي لتطوير مهارات الإدراك</p>
               </div>
               <div className="text-right">
                 <Badge className="bg-purple-500 text-white mb-2">جديد!</Badge>
@@ -1898,7 +1898,7 @@ export default function CognitiveTests() {
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري و��لسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
-                <li>• إعداد ����طط العلاج المناسبة</li>
+                <li>• إعداد ��طط العلاج المناسبة</li>
               </ul>
             </div>
             <div>
