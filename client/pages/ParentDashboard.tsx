@@ -87,7 +87,7 @@ export default function ParentDashboard() {
       type: "تقييم شامل",
       duration: "90 دقيقة",
       progress: 70,
-      notes: "تقييم الميزانية الأرطوفونية",
+      notes: "��قييم الميزانية الأرطوفونية",
       activities: ["فحص النطق", "اختبارات الإدراك"]
     }
   ];
@@ -135,7 +135,7 @@ export default function ParentDashboard() {
     { month: "يناير", fruits: 75, vegetables: 68, clothes: 82, animals: 90, vehicles: 77 },
     { month: "فبراير", fruits: 78, vegetables: 72, clothes: 85, animals: 92, vehicles: 80 },
     { month: "مارس", fruits: 82, vegetables: 75, clothes: 88, animals: 94, vehicles: 83 },
-    { month: "أبري��", fruits: 85, vegetables: 78, clothes: 90, animals: 96, vehicles: 86 },
+    { month: "أبريل", fruits: 85, vegetables: 78, clothes: 90, animals: 96, vehicles: 86 },
   ];
 
   const testCategories = [
@@ -426,7 +426,7 @@ export default function ParentDashboard() {
 
   const CognitiveTestsTab = () => (
     <div className="space-y-6">
-      {/* تمارين الإدراك الم��رفية */}
+      {/* تمارين الإدراك المعرفية */}
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -557,10 +557,10 @@ export default function ParentDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid lg:grid-cols-2 gap-6">
-            {/* مخطط المرضى حسب المناطق */}
+            {/* مخطط المرضى حسب الولايات */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">عدد المرضى حسب المنطقة</CardTitle>
+                <CardTitle className="text-lg">عدد المرضى حسب الولاية</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
