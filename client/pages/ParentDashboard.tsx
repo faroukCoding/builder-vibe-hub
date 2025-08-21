@@ -1,8 +1,8 @@
-import { 
-  ArrowLeft, 
-  Baby, 
-  Calendar, 
-  FileText, 
+import {
+  ArrowLeft,
+  Baby,
+  Calendar,
+  FileText,
   TrendingUp,
   Clock,
   User,
@@ -16,7 +16,12 @@ import {
   AlertCircle,
   Download,
   Eye,
-  MessageSquare
+  MessageSquare,
+  Brain,
+  BarChart3,
+  Globe,
+  Play,
+  Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -72,7 +77,7 @@ export default function ParentDashboard() {
       type: "علاج النطق",
       duration: "60 دقيقة",
       progress: 78,
-      notes: "تحسن في ن��ق حرف الراء",
+      notes: "تحسن في نطق حرف الراء",
       activities: ["تمارين اللسان", "تكرار الكلمات"]
     },
     {
@@ -247,8 +252,8 @@ export default function ParentDashboard() {
                       <h3 className="font-semibold text-lg">{session.type}</h3>
                       <p className="text-gray-600">{session.date} - {session.duration}</p>
                     </div>
-                    <Badge 
-                      variant="outline" 
+                    <Badge
+                      variant="outline"
                       className={`${
                         session.progress >= 80 ? 'border-green-500 text-green-700' :
                         session.progress >= 60 ? 'border-yellow-500 text-yellow-700' :
@@ -258,7 +263,7 @@ export default function ParentDashboard() {
                       {session.progress}% تقدم
                     </Badge>
                   </div>
-                  
+
                   <div className="mb-4">
                     <p className="text-gray-700 mb-2">{session.notes}</p>
                     <div>
@@ -272,7 +277,7 @@ export default function ParentDashboard() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <Progress value={session.progress} className="flex-1 h-2" />
                     <span className="text-sm font-medium">{session.progress}%</span>
@@ -353,11 +358,11 @@ export default function ParentDashboard() {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4">
             {achievements.map((achievement, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`${
-                  achievement.earned 
-                    ? 'bg-green-50 border-green-200' 
+                  achievement.earned
+                    ? 'bg-green-50 border-green-200'
                     : 'bg-gray-50 border-gray-200 opacity-60'
                 }`}
               >
@@ -398,8 +403,8 @@ export default function ParentDashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={() => navigate('/')}
                 className="flex items-center gap-2"
