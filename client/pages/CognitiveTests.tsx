@@ -722,7 +722,7 @@ export default function CognitiveTests() {
     setIsVerificationMode(false);
     alert(`✅ انتهى التحليل بواسطة الذكاء الاصطناعي!\n\nتم تحليل ${images.length} صورة\nتم تصحيح ${correctedImages.length} صورة\n\nسيتم تطبيق التصحيحات تلقائياً.`);
 
-    // تطبيق التص��يحات على البيانات الأصلية
+    // تطبيق التصحيحات على البيانات الأصلية
     applyAICorrections(correctedImages);
   };
 
@@ -788,7 +788,7 @@ export default function CognitiveTests() {
       }));
       playAudio('ممتاز! إجابة صحيحة!');
     } else {
-      setFeedback({ type: 'error', message: `غير صحيح. الإجابة الصحيحة ��ي: ${correctAnswer}` });
+      setFeedback({ type: 'error', message: `غير صحيح. الإجابة الصحيحة هي: ${correctAnswer}` });
       setTestSession(prev => ({
         ...prev,
         wrongAnswers: prev.wrongAnswers + 1,
@@ -911,7 +911,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                ��لعودة للقائمة
+                العودة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1743,7 +1743,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              اب��أ الاختبار
             </Button>
           </CardContent>
         </Card>
@@ -1817,21 +1817,34 @@ export default function CognitiveTests() {
       <Card className="bg-gradient-to-r from-red-50 to-pink-50 border-red-200 mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-red-700">
-            <Eye className="w-5 h-5" />
-            تحقق من صحة الصور والأسماء
+            <Brain className="w-5 h-5" />
+            تصحيح الصور والأسماء بالذكاء الاصطناعي
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-gray-700 mb-4">
-            استخدم هذه الأداة لمراجعة جميع الصور والتأكد من صحة أسمائها وتصنيفها
+            استخدم الذكاء الاصطناعي لتحليل وتصحيح جميع الصور تلقائياً أو راجعها يدوياً
           </p>
-          <Button
-            onClick={startImageVerification}
-            className="bg-red-500 hover:bg-red-600 text-white"
-          >
-            <Eye className="w-4 h-4 ml-2" />
-            ابدأ التحقق من الصور
-          </Button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Button
+              onClick={startAIImageCorrection}
+              className="bg-blue-500 hover:bg-blue-600 text-white"
+            >
+              <Brain className="w-4 h-4 ml-2" />
+              تصحيح تلقائي بالذكاء الاصطناعي
+            </Button>
+            <Button
+              onClick={startImageVerification}
+              variant="outline"
+              className="border-red-300 text-red-600 hover:bg-red-50"
+            >
+              <Eye className="w-4 h-4 ml-2" />
+              مراجعة يدوية
+            </Button>
+          </div>
+          <div className="mt-3 text-sm text-gray-600">
+            💡 التصحيح التلقائي يحلل كل صورة ويقترح الاسم والفئة الصحيحة
+          </div>
         </CardContent>
       </Card>
 
@@ -1849,7 +1862,7 @@ export default function CognitiveTests() {
               <h4 className="font-semibold mb-3 text-gray-800">هدف الاختبارات:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
-                <li>• قياس مستوى الإدراك البصري والسمعي</li>
+                <li>• قياس مستوى ال��دراك البصري والسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
               </ul>
@@ -1939,7 +1952,7 @@ export default function CognitiveTests() {
                   variant="outline"
                   onClick={() => setCurrentVerificationIndex(prev => prev + 1)}
                 >
-                  تحتاج تصحيح
+                  تح��اج تصحيح
                 </Button>
               </div>
 
