@@ -25,9 +25,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/doctor" element={<DoctorDashboard />} />
-          <Route path="/child" element={<ChildInterface />} />
+          <Route path="/parent-register" element={<ParentRegister />} />
+          <Route path="/specialist-register" element={<SpecialistRegister />} />
+          <Route path="/parent-dashboard" element={<ParentDashboard />} />
+          <Route path="/specialist-dashboard" element={<SpecialistDashboard />} />
+          <Route path="/attention-exercises" element={<AttentionExercises />} />
           <Route path="/patient-form" element={<PatientForm />} />
+          <Route path="/orthophonic-balance" element={<PatientForm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
