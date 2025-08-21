@@ -706,7 +706,7 @@ export default function CognitiveTests() {
           });
         }
 
-        // تحديث قائمة الصور المصححة
+        // تحديث قائ��ة الصور المصححة
         setCorrectedImages(prev => [...prev, {
           ...item,
           name: analysis.name,
@@ -1108,7 +1108,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائمة
+                العود�� للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1823,7 +1823,7 @@ export default function CognitiveTests() {
         </CardHeader>
         <CardContent>
           <p className="text-gray-700 mb-4">
-            استخدم الذكاء الاصطناعي لتحليل وتصحيح جميع الصور تلقائياً أو راجعها يدوياً
+            استخدم الذكاء الاصطناعي لتحليل وتص��يح جميع الصور تلقائياً أو راجعها يدوياً
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Button
@@ -1853,7 +1853,7 @@ export default function CognitiveTests() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-blue-700">
             <Brain className="w-5 h-5" />
-            معلومات مهمة حول الاختبارات
+            معلومات مهمة حول الاخ��بارات
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -1881,6 +1881,305 @@ export default function CognitiveTests() {
       </Card>
     </div>
   );
+
+  // =============================================================================
+  // SMART IMAGE-NAME MATCHING TEST
+  // =============================================================================
+
+  const ImageNameMatchingTest = () => {
+    const [selectedImage, setSelectedImage] = useState<TestItem | null>(null);
+    const [selectedName, setSelectedName] = useState<string>("");
+    const [matches, setMatches] = useState<{image: TestItem, name: string}[]>([]);
+    const [gameFeedback, setGameFeedback] = useState<{show: boolean, type: 'success' | 'error', message: string}>({
+      show: false, type: 'success', message: ''
+    });
+    const [gameData, setGameData] = useState<{images: TestItem[], names: string[]}>({
+      images: [], names: []
+    });
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [score, setScore] = useState(0);
+
+    // إعداد البيانات عند تحميل التمرين
+    useState(() => {
+      const allItems: TestItem[] = [];
+      Object.values(IMAGE_CATEGORIES).forEach(category => {
+        allItems.push(...category.slice(0, 6)); // أخذ 6 عناصر من كل فئة
+      });
+
+      // خلط الصور والأسماء
+      const shuffledImages = [...allItems].sort(() => Math.random() - 0.5);
+      const shuffledNames = shuffledImages.map(item => item.name).sort(() => Math.random() - 0.5);
+
+      setGameData({
+        images: shuffledImages.slice(0, 15), // 15 صورة للعب
+        names: shuffledNames.slice(0, 15)
+      });
+    });
+
+    const handleImageSelect = (image: TestItem) => {
+      setSelectedImage(image);
+      if (selectedName) {
+        checkMatch(image, selectedName);
+      }
+    };
+
+    const handleNameSelect = (name: string) => {
+      setSelectedName(name);
+      if (selectedImage) {
+        checkMatch(selectedImage, name);
+      }
+    };
+
+    const checkMatch = async (image: TestItem, name: string) => {
+      setIsAnalyzing(true);
+
+      try {
+        // التحقق بالذكاء الاصطناعي
+        const aiAnalysis = await analyzeImageWithAI(image.src);
+        const isCorrectMatch = aiAnalysis.name === name || image.name === name;
+
+        if (isCorrectMatch) {
+          setGameFeedback({
+            show: true,
+            type: 'success',
+            message: `🎉 ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
+          });
+          setScore(prev => prev + 1);
+          setMatches(prev => [...prev, { image, name }]);
+          playAudio(`ممتاز! ${name} صحيح`);
+
+          // إزالة العناصر المطابقة
+          setGameData(prev => ({
+            images: prev.images.filter(img => img.id !== image.id),
+            names: prev.names.filter(n => n !== name)
+          }));
+
+        } else {
+          setGameFeedback({
+            show: true,
+            type: 'error',
+            message: `❌ غير صحيح! الذكاء الاصطناعي يقترح "${aiAnalysis.name}" لهذه الصورة`
+          });
+          playAudio('حاول مرة أخرى');
+        }
+
+      } catch (error) {
+        setGameFeedback({
+          show: true,
+          type: 'error',
+          message: 'حدث خطأ في التحليل'
+        });
+      } finally {
+        setIsAnalyzing(false);
+        setSelectedImage(null);
+        setSelectedName("");
+
+        // إخفاء التغذية الراجعة بعد 3 ثوان
+        setTimeout(() => {
+          setGameFeedback({ show: false, type: 'success', message: '' });
+        }, 3000);
+      }
+    };
+
+    const resetGame = () => {
+      const allItems: TestItem[] = [];
+      Object.values(IMAGE_CATEGORIES).forEach(category => {
+        allItems.push(...category.slice(0, 6));
+      });
+
+      const shuffledImages = [...allItems].sort(() => Math.random() - 0.5);
+      const shuffledNames = shuffledImages.map(item => item.name).sort(() => Math.random() - 0.5);
+
+      setGameData({
+        images: shuffledImages.slice(0, 15),
+        names: shuffledNames.slice(0, 15)
+      });
+      setMatches([]);
+      setScore(0);
+      setSelectedImage(null);
+      setSelectedName("");
+      setGameFeedback({ show: false, type: 'success', message: '' });
+    };
+
+    return (
+      <div className="max-w-7xl mx-auto p-6">
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setCurrentTest("menu")}
+                className="text-gray-600"
+              >
+                <ArrowLeft className="w-4 h-4 ml-1" />
+                العودة للقائمة
+              </Button>
+              <div className="h-6 w-px bg-gray-300" />
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <Brain className="w-6 h-6 text-purple-600" />
+                مطابقة الصور والأسماء الذكية
+              </h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <Badge variant="outline" className="text-lg px-3 py-1">
+                <Star className="w-4 h-4 ml-1" />
+                النقاط: {score}
+              </Badge>
+              <Badge variant="outline" className="text-lg px-3 py-1">
+                متبقي: {gameData.images.length}
+              </Badge>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <p className="text-blue-800 font-semibold mb-2">📋 التعليمات:</p>
+            <p className="text-blue-700">
+              اختر صورة ثم اختر الاسم المطابق لها. سيتم فحص إجابتك بالذكاء الاصطناعي للتأكد من صحتها!
+            </p>
+          </div>
+        </div>
+
+        {/* Game Completed */}
+        {gameData.images.length === 0 && (
+          <Card className="text-center p-8 bg-gradient-to-r from-green-50 to-blue-50">
+            <CardContent>
+              <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-green-700 mb-2">
+                🎉 تهانينا! أكملت التمرين بنجاح!
+              </h2>
+              <p className="text-lg text-gray-700 mb-4">
+                نقاطك النهائية: <strong>{score}</strong> من 15
+              </p>
+              <div className="flex gap-4 justify-center">
+                <Button onClick={resetGame} className="bg-green-500 hover:bg-green-600">
+                  <RotateCcw className="w-4 h-4 ml-2" />
+                  لعب مرة أخرى
+                </Button>
+                <Button variant="outline" onClick={() => setCurrentTest("menu")}>
+                  <Home className="w-4 h-4 ml-2" />
+                  العودة للقائمة
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Game Interface */}
+        {gameData.images.length > 0 && (
+          <div className="space-y-6">
+            {/* Feedback */}
+            {gameFeedback.show && (
+              <Card className={`p-4 ${gameFeedback.type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                <p className={`text-center font-semibold ${gameFeedback.type === 'success' ? 'text-green-700' : 'text-red-700'}`}>
+                  {gameFeedback.message}
+                </p>
+              </Card>
+            )}
+
+            {/* Analysis Loading */}
+            {isAnalyzing && (
+              <Card className="p-4 bg-blue-50 border-blue-200">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                  <p className="text-blue-700 font-semibold">🤖 الذكاء الاصطناعي يحلل إجابتك...</p>
+                </div>
+              </Card>
+            )}
+
+            {/* Images Grid */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Eye className="w-5 h-5" />
+                  اختر صورة
+                  {selectedImage && (
+                    <Badge className="bg-blue-500">
+                      مختارة: {selectedImage.name}
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+                  {gameData.images.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleImageSelect(item)}
+                      className={`cursor-pointer rounded-lg border-2 p-3 transition-all hover:scale-105 ${
+                        selectedImage?.id === item.id
+                          ? 'border-blue-500 bg-blue-50 shadow-lg'
+                          : 'border-gray-200 hover:border-blue-300'
+                      }`}
+                    >
+                      <img
+                        src={item.src}
+                        alt={item.name}
+                        className="w-full h-20 object-contain rounded"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                      <div className="text-center mt-2">
+                        <Badge variant="outline" className="text-xs">
+                          {item.category}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Names Grid */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Volume2 className="w-5 h-5" />
+                  اختر الاسم المطابق
+                  {selectedName && (
+                    <Badge className="bg-green-500">
+                      مختار: {selectedName}
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                  {gameData.names.map((name, index) => (
+                    <Button
+                      key={index}
+                      variant={selectedName === name ? "default" : "outline"}
+                      onClick={() => handleNameSelect(name)}
+                      className={`h-auto p-4 text-center ${
+                        selectedName === name
+                          ? 'bg-green-500 hover:bg-green-600 text-white'
+                          : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <span className="font-semibold">{name}</span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Progress */}
+            <div className="text-center">
+              <Progress
+                value={(score / 15) * 100}
+                className="w-full max-w-md mx-auto mb-2"
+              />
+              <p className="text-gray-600">
+                تم إكمال {score} من 15 مطابقة
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   // =============================================================================
   // IMAGE VERIFICATION COMPONENT
