@@ -56,7 +56,7 @@ interface FeedbackState {
 // =============================================================================
 
 const IMAGE_CATEGORIES = {
-  // الملابس والإكس���وار��ت
+  // الملابس والإكس����وار��ت
   clothes: [
     {
       id: 1,
@@ -190,7 +190,7 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الفواكه - الصور الجديدة المرفوعة
+  // ��لفواكه - الصور الجديدة المرفوعة
   fruits: [
     {
       id: 1,
@@ -373,7 +373,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 14,
       name: "بقرة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F81b10719ec974592adcf3ef1fd740e75?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F660ca738de49490796eca280e639f647?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -924,7 +924,7 @@ export default function CognitiveTests() {
         <CardHeader>
           <CardTitle className="text-center">اختبار التعرف على {categoryArabic}</CardTitle>
           <CardDescription className="text-center">
-            السؤال {testSession.currentQuestion} من 10
+            ��لسؤال {testSession.currentQuestion} من 10
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1395,7 +1395,7 @@ export default function CognitiveTests() {
             <div className="flex gap-4 justify-center">
               <Button onClick={() => startTest('shapes')} className="bg-orange-600 hover:bg-orange-700">
                 <RotateCcw className="w-4 h-4 ml-2" />
-                إعادة الاختبار
+                إ��ادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
                 العودة للقائمة
@@ -1649,7 +1649,7 @@ export default function CognitiveTests() {
                 <Carrot className="w-8 h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">الخضروات</h3>
+                <h3 className="text-xl font-bold">ا��خضروات</h3>
                 <p className="text-gray-600 text-sm">التعرف على أنواع الخضروات</p>
               </div>
             </div>
@@ -2089,7 +2089,7 @@ export default function CognitiveTests() {
               <div className="flex gap-4 justify-center">
                 <Button onClick={resetGame} className="bg-green-500 hover:bg-green-600">
                   <RotateCcw className="w-4 h-4 ml-2" />
-                  لعب مرة أخرى
+                  لعب مر�� أخرى
                 </Button>
                 <Button variant="outline" onClick={() => setCurrentTest("menu")}>
                   <Home className="w-4 h-4 ml-2" />
