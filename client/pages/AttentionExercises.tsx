@@ -13,7 +13,8 @@ import {
   Volume2,
   CheckCircle,
   XCircle,
-  Home
+  Home,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -323,7 +324,7 @@ export default function AttentionExercises() {
                 variant="outline"
               >
                 <Pause className="w-5 h-5 ml-2" />
-                إيقاف
+                ��يقاف
               </Button>
               <Button
                 onClick={generateTask}
@@ -482,7 +483,7 @@ export default function AttentionExercises() {
       setIsPlaying(true);
 
       if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance('استمع للتسلسل وأعد ترتيبه');
+        const utterance = new SpeechSynthesisUtterance('استمع للتسلسل وأ��د ترتيبه');
         utterance.lang = 'ar-SA';
         speechSynthesis.speak(utterance);
 
@@ -751,7 +752,7 @@ export default function AttentionExercises() {
 
     const arabicLetters = [
       'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر',
-      'ز', 'س', 'ش', 'ص', 'ض', '��', 'ظ', 'ع', 'غ', 'ف',
+      'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
       'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'
     ];
 
@@ -1314,11 +1315,11 @@ export default function AttentionExercises() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-gray-800">نصائح للحصول على أفضل النتائ��:</h4>
+              <h4 className="font-semibold mb-3 text-gray-800">نصائح للحصول على أفضل النتائج:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تأكد من بيئة هادئة وخالية من المشتتات</li>
                 <li>• ابدأ بالمستويات السهلة وارتق تدريجياً</li>
-                <li>• خذ استراحات منتظمة لتجنب التعب</li>
+                <li>• خذ استراح��ت منتظمة لتجنب التعب</li>
                 <li>• مارس التمارين بانتظام للحصول على تحسن مستمر</li>
               </ul>
             </div>
