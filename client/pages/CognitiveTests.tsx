@@ -14,7 +14,9 @@ import {
   RotateCcw,
   Volume2,
   Home,
-  Star
+  Star,
+  Shirt,
+  Apple
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -1307,7 +1309,7 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-red-600">{testSession.wrongAnswers}</div>
-                <div className="text-sm text-gray-600">خاطئ��</div>
+                <div className="text-sm text-gray-600">خاطئة</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
