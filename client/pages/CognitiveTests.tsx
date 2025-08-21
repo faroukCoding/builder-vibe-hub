@@ -84,7 +84,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 5,
-      name: "حذاء ر��اضي",
+      name: "��ذاء ر��اضي",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F22a372c46a5240b3a6a530be95dfe12d?format=webp&width=800",
       category: "ملابس"
     },
@@ -1642,6 +1642,28 @@ export default function CognitiveTests() {
 
       </div>
 
+      {/* Image Verification Section */}
+      <Card className="bg-gradient-to-r from-red-50 to-pink-50 border-red-200 mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-red-700">
+            <Eye className="w-5 h-5" />
+            تحقق من صحة الصور والأسماء
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-700 mb-4">
+            استخدم هذه الأداة لمراجعة جميع الصور والتأكد من صحة أسمائها وتصنيفها
+          </p>
+          <Button
+            onClick={startImageVerification}
+            className="bg-red-500 hover:bg-red-600 text-white"
+          >
+            <Eye className="w-4 h-4 ml-2" />
+            ابدأ التحقق من الصور
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Information Section */}
       <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
         <CardHeader>
@@ -1667,7 +1689,7 @@ export default function CognitiveTests() {
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
                 <li>• تغذية راجعة فورية باللغة العربية</li>
                 <li>• حساب دقيق لنسبة النجاح</li>
-                <li>• إمكانية إعادة الاختبار عدة مرات</li>
+                <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
             </div>
           </div>
