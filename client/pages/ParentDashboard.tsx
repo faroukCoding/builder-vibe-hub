@@ -50,7 +50,7 @@ export default function ParentDashboard() {
     name: "أحمد محمد",
     age: parentData?.childAge || 6,
     diagnosis: "تأخر في النطق",
-    specialist: "د. فاطمة أ��مد",
+    specialist: "د. فاطمة أحمد",
     startDate: "2024-01-01",
     totalSessions: 12,
     completedSessions: 8,
@@ -501,7 +501,7 @@ export default function ParentDashboard() {
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="الفواكه" />
+                <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="ال��واكه" />
                 <Line type="monotone" dataKey="vegetables" stroke="#4ecdc4" strokeWidth={2} name="الخضروات" />
                 <Line type="monotone" dataKey="clothes" stroke="#45b7d1" strokeWidth={2} name="الملابس" />
                 <Line type="monotone" dataKey="animals" stroke="#96ceb4" strokeWidth={2} name="الحيوانات" />
@@ -557,7 +557,7 @@ export default function ParentDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid lg:grid-cols-2 gap-6">
-            {/* م��طط المرضى حسب المناطق */}
+            {/* مخطط المرضى حسب المناطق */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">عدد المرضى حسب المنطقة</CardTitle>
@@ -760,8 +760,16 @@ export default function ParentDashboard() {
             <OverviewTab />
           </TabsContent>
 
+          <TabsContent value="cognitive">
+            <CognitiveTestsTab />
+          </TabsContent>
+
           <TabsContent value="sessions">
             <SessionsTab />
+          </TabsContent>
+
+          <TabsContent value="geography">
+            <GeographicalChartTab />
           </TabsContent>
 
           <TabsContent value="reports">
