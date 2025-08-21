@@ -16,7 +16,8 @@ import {
   Home,
   Star,
   Shirt,
-  Apple
+  Apple,
+  Carrot
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -577,7 +578,7 @@ export default function CognitiveTests() {
       },
       {
         id: 9,
-        name: "سف��نة",
+        name: "سفينة",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd87d5df245b343c195098269b0394b9f?format=webp&width=800",
         category: "مركبات"
       },
@@ -1358,7 +1359,7 @@ export default function CognitiveTests() {
                   className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300"
                   style={{ backgroundColor: currentColor.color }}
                 />
-                <p className="text-lg font-semibold mb-4">ما لون هذا المربع؟</p>
+                <p className="text-lg font-semibold mb-4">ما لو�� هذا المربع؟</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -2028,7 +2029,7 @@ export default function CognitiveTests() {
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                {currentTest === "menu" ? "العودة للوحة التحكم" : "القائمة الرئيسية"}
+                {currentTest === "menu" ? "العودة للوحة التحكم" : "ال��ائمة الرئيسية"}
               </Button>
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-lg">
