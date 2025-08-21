@@ -579,8 +579,24 @@ export default function ParentDashboard() {
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={geographicalData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="region" angle={-45} textAnchor="end" height={80} />
-                    <YAxis />
+                    <XAxis
+                      dataKey="region"
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                      axisLine={true}
+                      tickLine={true}
+                      type="category"
+                      orientation="bottom"
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis
+                      axisLine={true}
+                      tickLine={true}
+                      type="number"
+                      orientation="left"
+                      tick={{ fontSize: 12 }}
+                    />
                     <Tooltip />
                     <Bar dataKey="patients" fill="#4f46e5" name="عدد المرضى" />
                   </BarChart>
