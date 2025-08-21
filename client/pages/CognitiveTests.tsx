@@ -326,7 +326,7 @@ const IMAGE_CATEGORIES = {
       id: 6,
       name: "ذئب",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F18ff4c13294840f49ef57311d63b3d67?format=webp&width=800",
-      category: "حيوانات"
+      category: "حي��انات"
     },
     {
       id: 7,
@@ -392,7 +392,7 @@ const IMAGE_CATEGORIES = {
       id: 17,
       name: "قطة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
-      category: "حيوانات"
+      category: "حيوا��ات"
     }
   ],
 
@@ -1118,7 +1118,7 @@ export default function CognitiveTests() {
                     variant="outline"
                     className="h-16 text-lg"
                     onClick={() => {
-                      handleAnswer(option.name, currentNumber.name, "ما هذا الرقم؟");
+                      handleAnswer(option.name, currentNumber.name, "ما هذا ��لرقم؟");
                       setTimeout(() => {
                         if (testSession.currentQuestion <= 10) {
                           generateQuestion();
@@ -1697,6 +1697,140 @@ export default function CognitiveTests() {
       </Card>
     </div>
   );
+
+  // =============================================================================
+  // IMAGE VERIFICATION COMPONENT
+  // =============================================================================
+
+  const ImageVerification = () => {
+    if (!verificationData[currentVerificationIndex]) return null;
+
+    const { item, originalCategory } = verificationData[currentVerificationIndex];
+    const progress = ((currentVerificationIndex + 1) / verificationData.length) * 100;
+
+    const categories = [
+      { key: 'clothes', name: 'ملابس', color: 'blue' },
+      { key: 'vegetables', name: 'خضروات', color: 'green' },
+      { key: 'fruits', name: 'فواكه', color: 'red' },
+      { key: 'animals', name: 'حيوانات', color: 'yellow' },
+      { key: 'vehicles', name: 'مركبات', color: 'purple' }
+    ];
+
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Eye className="w-5 h-5" />
+                التحقق من الصور والأسماء
+              </CardTitle>
+              <Badge variant="outline">
+                {currentVerificationIndex + 1} من {verificationData.length}
+              </Badge>
+            </div>
+            <Progress value={progress} className="w-full" />
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* الصورة الحالية */}
+            <div className="text-center">
+              <div className="inline-block p-4 bg-gray-100 rounded-lg">
+                <img
+                  src={item.src}
+                  alt={item.name}
+                  className="w-48 h-48 object-contain rounded-lg border"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+              <div className="mt-4">
+                <p className="text-lg font-semibold">الاسم المقترح: "{item.name}"</p>
+                <p className="text-sm text-gray-600">الفئة الحالية: {item.category}</p>
+              </div>
+            </div>
+
+            {/* أسئلة التحقق */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">هل هذه المعلومات صحيحة؟</h3>
+
+              {/* إذا كان الاسم صحيحاً */}
+              <div className="grid grid-cols-2 gap-4">
+                <Button
+                  onClick={() => skipImageVerification()}
+                  className="bg-green-500 hover:bg-green-600 text-white"
+                >
+                  <CheckCircle className="w-4 h-4 ml-2" />
+                  نعم، الاسم والفئة صحيحان
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentVerificationIndex(prev => prev + 1)}
+                >
+                  تحتاج تصحيح
+                </Button>
+              </div>
+
+              {/* إذا كان يحتاج تصحيح */}
+              <div className="border-t pt-4">
+                <h4 className="font-semibold mb-3">اختر الفئة الصحيحة:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {categories.map(category => (
+                    <Button
+                      key={category.key}
+                      variant="outline"
+                      onClick={() => {
+                        const newName = prompt(`أدخل الاسم الصحيح للصورة في فئة ${category.name}:`);
+                        if (newName) {
+                          handleImageCorrection(
+                            { ...item, name: newName },
+                            category.name
+                          );
+                        }
+                      }}
+                      className="h-auto p-3 flex flex-col items-center gap-2 border-2"
+                    >
+                      <span className="font-semibold">{category.name}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* أدوات التحكم */}
+              <div className="flex justify-between pt-4 border-t">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (currentVerificationIndex > 0) {
+                      setCurrentVerificationIndex(prev => prev - 1);
+                    }
+                  }}
+                  disabled={currentVerificationIndex === 0}
+                >
+                  السابق
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setIsVerificationMode(false)}
+                >
+                  إيقاف التحقق
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={skipImageVerification}
+                >
+                  تخطي
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
 
   // =============================================================================
   // RENDER LOGIC
