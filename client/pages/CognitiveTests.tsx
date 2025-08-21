@@ -771,7 +771,7 @@ export default function CognitiveTests() {
                 <div className="text-3xl font-bold text-purple-600">
                   {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
                 </div>
-                <div className="text-sm text-gray-600">نسبة الن��اح</div>
+                <div className="text-sm text-gray-600">نسبة النجاح</div>
               </div>
             </div>
             <div className="flex gap-4 justify-center">
@@ -1320,7 +1320,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائمة
+                العودة للقائم��
               </Button>
             </div>
           </CardContent>
@@ -1709,7 +1709,7 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
-                <div className="text-sm text-gray-600">إجمالي</div>
+                <div className="text-sm text-gray-600">إجما��ي</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-purple-600">
@@ -2097,7 +2097,7 @@ export default function CognitiveTests() {
     );
   };
 
-  // القائمة الرئيسية
+  // القائمة الرئيسي��
   const MainMenu = () => (
     <div className="space-y-6">
       <Card className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
@@ -2282,6 +2282,10 @@ export default function CognitiveTests() {
         return <VehicleRecognitionTest />;
       case "clothes":
         return <ClothesRecognitionTest />;
+      case "vegetables":
+        return <VegetablesRecognitionTest />;
+      case "fruits":
+        return <FruitsRecognitionTest />;
       case "food":
         return <FoodRecognitionTest />;
       case "colors":
