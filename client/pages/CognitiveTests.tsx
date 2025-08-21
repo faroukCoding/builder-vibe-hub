@@ -393,7 +393,7 @@ export default function CognitiveTests() {
       },
       {
         id: 4,
-        name: "سيارة إسعاف",
+        name: "سيارة إسع��ف",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5272a8084f114b36be05e3435795b5b1?format=webp&width=800",
         category: "مركبات"
       },
@@ -454,7 +454,7 @@ export default function CognitiveTests() {
     { name: "أخضر", color: "#22c55e", rgb: "34,197,94" },
     { name: "أصفر", color: "#eab308", rgb: "234,179,8" },
     { name: "برتقالي", color: "#f97316", rgb: "249,115,22" },
-    { name: "بنفسجي", color: "#a855f7", rgb: "168,85,247" },
+    { name: "ب��فسجي", color: "#a855f7", rgb: "168,85,247" },
     { name: "وردي", color: "#ec4899", rgb: "236,72,153" },
     { name: "بني", color: "#a3a3a3", rgb: "163,163,163" }
   ];
@@ -519,7 +519,7 @@ export default function CognitiveTests() {
       }));
       playAudio('ممتاز! إجابة صحيحة!');
     } else {
-      setFeedback({ type: 'error', message: `غير صحيح. الإجابة الصحيحة هي: ${correctAnswer}` });
+      setFeedback({ type: 'error', message: `غير صحي��. الإجابة الصحيحة هي: ${correctAnswer}` });
       setTestSession(prev => ({
         ...prev,
         wrongAnswers: prev.wrongAnswers + 1,
@@ -836,6 +836,276 @@ export default function CognitiveTests() {
     );
   };
 
+  // اختبار التعرف على الملابس
+  const ClothesRecognitionTest = () => {
+    const [currentClothes, setCurrentClothes] = useState(null);
+    const [options, setOptions] = useState([]);
+
+    const generateQuestion = () => {
+      const randomClothes = imageCategories.clothes[Math.floor(Math.random() * imageCategories.clothes.length)];
+      const wrongOptions = imageCategories.clothes
+        .filter(clothes => clothes.id !== randomClothes.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const allOptions = [randomClothes, ...wrongOptions].sort(() => 0.5 - Math.random());
+
+      setCurrentClothes(randomClothes);
+      setOptions(allOptions);
+      playAudio(`ما اسم هذه القطعة من الملابس؟`);
+    };
+
+    if (testSession.isTestActive && !currentClothes && testSession.currentQuestion <= 10) {
+      generateQuestion();
+    }
+
+    if (!testSession.isTestActive || testSession.currentQuestion > 10) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-6 h-6 text-yellow-600" />
+              ملخص اختبار الملابس
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-6">
+              <div>
+                <div className="text-3xl font-bold text-green-600">{testSession.correctAnswers}</div>
+                <div className="text-sm text-gray-600">صحيحة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600">{testSession.wrongAnswers}</div>
+                <div className="text-sm text-gray-600">خاطئة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
+                <div className="text-sm text-gray-600">إجمالي</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-600">
+                  {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
+                </div>
+                <div className="text-sm text-gray-600">نسبة النجاح</div>
+              </div>
+            </div>
+            <div className="flex gap-4 justify-center">
+              <Button onClick={() => startTest('clothes')} className="bg-indigo-600 hover:bg-indigo-700">
+                <RotateCcw className="w-4 h-4 ml-2" />
+                إعادة الاختبار
+              </Button>
+              <Button onClick={resetTest} variant="outline">
+                العودة للقائمة
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">اختبار التعرف على الملابس</CardTitle>
+          <CardDescription className="text-center">
+            السؤال {testSession.currentQuestion} من 10
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {feedback && (
+            <div className={`absolute inset-0 flex items-center justify-center z-10 ${
+              feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
+            } text-white rounded-lg`}>
+              <div className="text-center">
+                {feedback.type === 'success' ? (
+                  <CheckCircle className="w-16 h-16 mx-auto mb-4" />
+                ) : (
+                  <XCircle className="w-16 h-16 mx-auto mb-4" />
+                )}
+                <div className="text-xl font-bold">{feedback.message}</div>
+              </div>
+            </div>
+          )}
+
+          {currentClothes && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <img
+                  src={currentClothes.src}
+                  alt={currentClothes.name}
+                  className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
+                />
+                <p className="text-lg font-semibold mb-4">ما اسم هذه القطعة من الملابس؟</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {options.map((option, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="h-16 text-lg"
+                    onClick={() => {
+                      handleAnswer(option.name, currentClothes.name, "ما اسم هذه القطعة من الملابس؟");
+                      setTimeout(() => {
+                        if (testSession.currentQuestion <= 10) {
+                          generateQuestion();
+                        }
+                      }, 3500);
+                    }}
+                  >
+                    {option.name}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="mt-6">
+                <Progress value={(testSession.currentQuestion - 1) / 10 * 100} className="h-3" />
+                <div className="text-center text-sm text-gray-600 mt-2">
+                  التقدم: {testSession.currentQuestion - 1}/10
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
+
+  // اختبار التعرف على الطعام
+  const FoodRecognitionTest = () => {
+    const [currentFood, setCurrentFood] = useState(null);
+    const [options, setOptions] = useState([]);
+
+    const generateQuestion = () => {
+      const randomFood = imageCategories.food[Math.floor(Math.random() * imageCategories.food.length)];
+      const wrongOptions = imageCategories.food
+        .filter(food => food.id !== randomFood.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const allOptions = [randomFood, ...wrongOptions].sort(() => 0.5 - Math.random());
+
+      setCurrentFood(randomFood);
+      setOptions(allOptions);
+      playAudio(`ما اسم هذا الطعام؟`);
+    };
+
+    if (testSession.isTestActive && !currentFood && testSession.currentQuestion <= 10) {
+      generateQuestion();
+    }
+
+    if (!testSession.isTestActive || testSession.currentQuestion > 10) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-6 h-6 text-yellow-600" />
+              ملخص اختبار الطعام
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-6">
+              <div>
+                <div className="text-3xl font-bold text-green-600">{testSession.correctAnswers}</div>
+                <div className="text-sm text-gray-600">صحيحة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600">{testSession.wrongAnswers}</div>
+                <div className="text-sm text-gray-600">خاطئة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
+                <div className="text-sm text-gray-600">إجمالي</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-600">
+                  {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
+                </div>
+                <div className="text-sm text-gray-600">نسبة النجاح</div>
+              </div>
+            </div>
+            <div className="flex gap-4 justify-center">
+              <Button onClick={() => startTest('food')} className="bg-emerald-600 hover:bg-emerald-700">
+                <RotateCcw className="w-4 h-4 ml-2" />
+                إعادة الاختبار
+              </Button>
+              <Button onClick={resetTest} variant="outline">
+                العودة للقائمة
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">اختبار التعرف على الطعام</CardTitle>
+          <CardDescription className="text-center">
+            السؤال {testSession.currentQuestion} من 10
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {feedback && (
+            <div className={`absolute inset-0 flex items-center justify-center z-10 ${
+              feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
+            } text-white rounded-lg`}>
+              <div className="text-center">
+                {feedback.type === 'success' ? (
+                  <CheckCircle className="w-16 h-16 mx-auto mb-4" />
+                ) : (
+                  <XCircle className="w-16 h-16 mx-auto mb-4" />
+                )}
+                <div className="text-xl font-bold">{feedback.message}</div>
+              </div>
+            </div>
+          )}
+
+          {currentFood && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <img
+                  src={currentFood.src}
+                  alt={currentFood.name}
+                  className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
+                />
+                <p className="text-lg font-semibold mb-4">ما اسم هذا الطعام؟</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {options.map((option, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="h-16 text-lg"
+                    onClick={() => {
+                      handleAnswer(option.name, currentFood.name, "ما اسم هذا الطعام؟");
+                      setTimeout(() => {
+                        if (testSession.currentQuestion <= 10) {
+                          generateQuestion();
+                        }
+                      }, 3500);
+                    }}
+                  >
+                    {option.name}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="mt-6">
+                <Progress value={(testSession.currentQuestion - 1) / 10 * 100} className="h-3" />
+                <div className="text-center text-sm text-gray-600 mt-2">
+                  التقدم: {testSession.currentQuestion - 1}/10
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
+
   // اختبار الألوان
   const ColorRecognitionTest = () => {
     const [currentColor, setCurrentColor] = useState(null);
@@ -1020,7 +1290,7 @@ export default function CognitiveTests() {
                 <div className="text-3xl font-bold text-purple-600">
                   {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
                 </div>
-                <div className="text-sm text-gray-600">نسبة النجاح</div>
+                <div className="text-sm text-gray-600">نسبة ��لنجاح</div>
               </div>
             </div>
             <div className="flex gap-4 justify-center">
