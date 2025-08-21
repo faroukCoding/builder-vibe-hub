@@ -246,9 +246,9 @@ export default function CognitiveTests() {
 
   const shapes = [
     { name: "دائرة", type: "circle", description: "شكل دائري" },
-    { name: "مربع", type: "square", description: "شكل بأربعة أضلاع ��تساوية" },
+    { name: "مربع", type: "square", description: "شكل بأربعة أضلاع متساوية" },
     { name: "مثلث", type: "triangle", description: "شكل بثلاثة أضلاع" },
-    { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أض��اع مستطيل" },
+    { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أضلاع مستطيل" },
     { name: "نجمة", type: "star", description: "شكل نجمة" },
     { name: "قلب", type: "heart", description: "شكل قلب" },
     { name: "معين", type: "diamond", description: "شكل معين" },
@@ -1005,7 +1005,7 @@ export default function CognitiveTests() {
                 <div className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300 bg-white flex items-center justify-center">
                   {renderShape(currentShape)}
                 </div>
-                <p className="text-lg font-semibold mb-4">ما اس�� هذا الشكل؟</p>
+                <p className="text-lg font-semibold mb-4">ما اسم هذا الشكل؟</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1111,7 +1111,7 @@ export default function CognitiveTests() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">اختبار الت��رف على أعضاء الجسم</CardTitle>
+          <CardTitle className="text-center">اختبار التعرف على أعضاء الجسم</CardTitle>
           <CardDescription className="text-center">
             السؤال {testSession.currentQuestion} من 10
           </CardDescription>
@@ -1305,6 +1305,12 @@ export default function CognitiveTests() {
         return <VehicleRecognitionTest />;
       case "colors":
         return <ColorRecognitionTest />;
+      case "numbers":
+        return <NumberRecognitionTest />;
+      case "shapes":
+        return <ShapeRecognitionTest />;
+      case "bodyparts":
+        return <BodyPartsTest />;
       default:
         return <MainMenu />;
     }
