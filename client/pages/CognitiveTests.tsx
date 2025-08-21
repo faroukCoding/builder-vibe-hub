@@ -116,6 +116,160 @@ export default function CognitiveTests() {
         category: "ملابس"
       }
     ],
+    vegetables: [
+      {
+        id: 1,
+        name: "خيار",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8691ed83b7434d08af3374ff5b93824d?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 2,
+        name: "جزر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb986297ad7c349daa4bc4cc1d97085cc?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 3,
+        name: "طماطم",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F91d60d50f8f6461f94db54d5f81265be?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 4,
+        name: "بصل أحمر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F793222dcb33f4642aa6253c90cdc392f?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 5,
+        name: "ثوم",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7027cc0b30f646c5a264be0f71a4a0a0?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 6,
+        name: "باذنجان",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F16a8fb132bf941c5b78d0b83afc9fe49?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 7,
+        name: "فلفل أخضر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8b298b7119ee460c9636216d7db59a9d?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 8,
+        name: "فطر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe294ceefdadb4d4ea175c8c7df4efa86?format=webp&width=800",
+        category: "خضروات"
+      },
+      {
+        id: 9,
+        name: "بطاطس",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F934953a939b3429f80e24ef402339e6a?format=webp&width=800",
+        category: "خضروات"
+      }
+    ],
+    fruits: [
+      {
+        id: 1,
+        name: "عنب مختلط",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F4fac31da6fc6430ea785b18a04e9619b?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 2,
+        name: "كرز",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F99f30099d7ba407982ae098eea98bd0a?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 3,
+        name: "موز",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc6452635bcb5423f91f73be23e069129?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 4,
+        name: "أناناس",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe9b45c0781994f3e8c301e466cc3afdb?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 5,
+        name: "برتقال",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa0a8a1743a044678a5788cb781fd3f14?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 6,
+        name: "عنب أحمر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F113bbc8fdbdb4ef5a2fdf650f3940739?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 7,
+        name: "فراولة",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb64e31c417f34adc942b7514c3e38602?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 8,
+        name: "تفاح",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F546b00f6c81947f7bc5e2bffee0fb0ff?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 9,
+        name: "ليمون",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1aaffded6b2c4bd2ae5a436345e5796a?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 10,
+        name: "خوخ",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa86743cc0a724321bb57fcda1d55852f?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 11,
+        name: "عنب أخضر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F94022a0bd4ff4e6d84a625bdf37ef5a6?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 12,
+        name: "بطيخ",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc8f96384f92e4b34ad6ee861050ceb3f?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 13,
+        name: "تمر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6105aeeac2c34b0dbc7e9a6ebd2dd90b?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 14,
+        name: "توت أسود",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ff2d501123a604a018594aabd1856707e?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 15,
+        name: "رمان",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7c2d1ef2ba1449ea8fa3d2e1dcaaed18?format=webp&width=800",
+        category: "فواكه"
+      },
+      {
+        id: 16,
+        name: "مشمش",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcd138451db15487498db4ddcc3cc5e2c?format=webp&width=800",
+        category: "فواكه"
+      }
+    ],
     food: [
       {
         id: 1,
@@ -423,7 +577,7 @@ export default function CognitiveTests() {
       },
       {
         id: 9,
-        name: "سفينة",
+        name: "سف��نة",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd87d5df245b343c195098269b0394b9f?format=webp&width=800",
         category: "مركبات"
       },
@@ -730,7 +884,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ��لخص اختبار المركبات
+              ملخص اختبار المركبات
             </CardTitle>
           </CardHeader>
           <CardContent>
