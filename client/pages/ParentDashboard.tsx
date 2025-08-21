@@ -424,6 +424,265 @@ export default function ParentDashboard() {
     </div>
   );
 
+  const CognitiveTestsTab = () => (
+    <div className="space-y-6">
+      {/* تمارين الإدراك المعرفية */}
+      <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Brain className="w-6 h-6 text-purple-600" />
+            تمارين الإدراك المعرفية
+          </CardTitle>
+          <CardDescription>
+            تمارين تفاعلية لتطوير مهارات الإدراك والتعرف على الأشياء
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <Button
+              onClick={() => navigate('/cognitive-tests')}
+              className="h-24 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white flex flex-col items-center justify-center gap-2"
+            >
+              <div className="text-2xl">🍎</div>
+              <span>الفواكه</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/cognitive-tests')}
+              className="h-24 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-2"
+            >
+              <div className="text-2xl">🥕</div>
+              <span>الخضروات</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/cognitive-tests')}
+              className="h-24 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-2"
+            >
+              <div className="text-2xl">👕</div>
+              <span>الملابس</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/cognitive-tests')}
+              className="h-24 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white flex flex-col items-center justify-center gap-2"
+            >
+              <div className="text-2xl">🐘</div>
+              <span>الحيوانات</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/cognitive-tests')}
+              className="h-24 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-2"
+            >
+              <div className="text-2xl">🚗</div>
+              <span>المركبات</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/cognitive-tests')}
+              className="h-24 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-2"
+            >
+              <div className="text-2xl">🧠</div>
+              <span>المطابقة الذكية</span>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* إحصائيات التقدم */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="w-5 h-5" />
+              التقدم الشهري في التم��رين
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={cognitiveTestsProgress}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="الفواكه" />
+                <Line type="monotone" dataKey="vegetables" stroke="#4ecdc4" strokeWidth={2} name="الخضروات" />
+                <Line type="monotone" dataKey="clothes" stroke="#45b7d1" strokeWidth={2} name="الملابس" />
+                <Line type="monotone" dataKey="animals" stroke="#96ceb4" strokeWidth={2} name="الحيوانات" />
+                <Line type="monotone" dataKey="vehicles" stroke="#ffeaa7" strokeWidth={2} name="المركبات" />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Award className="w-5 h-5" />
+              نسب النجاح الحالية
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={testCategories}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}%`}
+                >
+                  {testCategories.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+
+  const GeographicalChartTab = () => (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Globe className="w-6 h-6 text-blue-600" />
+            الإحصائيات الجغرافية للمملكة العربية السعودية
+          </CardTitle>
+          <CardDescription>
+            توزيع المرضى ونسب النجاح حسب المناطق
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* مخطط المرضى حسب المناطق */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">عدد المرضى حسب المنطقة</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={geographicalData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="region" angle={-45} textAnchor="end" height={80} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="patients" fill="#4f46e5" name="عدد المرضى" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* مخطط نسب النجاح */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">نسب النجاح حسب المنطقة</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={geographicalData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="region" angle={-45} textAnchor="end" height={80} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="success" fill="#10b981" name="نسبة النجاح %" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* جدول الإحصائيات التفصيلية */}
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>الإحصائيات التفصيلية</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-right p-3">المنطقة</th>
+                      <th className="text-right p-3">عدد المرضى</th>
+                      <th className="text-right p-3">إجمالي الحالات</th>
+                      <th className="text-right p-3">نسبة النجاح</th>
+                      <th className="text-right p-3">الحالة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {geographicalData.map((row, index) => (
+                      <tr key={index} className="border-b hover:bg-gray-50">
+                        <td className="p-3 font-medium">🏢 {row.region}</td>
+                        <td className="p-3">{row.patients}</td>
+                        <td className="p-3">{row.cases}</td>
+                        <td className="p-3">
+                          <div className="flex items-center gap-2">
+                            <Progress value={row.success} className="flex-1 h-2" />
+                            <span className="text-sm font-medium">{row.success}%</span>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <Badge
+                            variant="outline"
+                            className={`${
+                              row.success >= 85 ? 'border-green-500 text-green-700' :
+                              row.success >= 75 ? 'border-yellow-500 text-yellow-700' :
+                              'border-red-500 text-red-700'
+                            }`}
+                          >
+                            {row.success >= 85 ? 'ممتاز' : row.success >= 75 ? 'جيد' : 'يحتاج تحسن'}
+                          </Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* إحصائيات عامة */}
+          <div className="grid md:grid-cols-4 gap-4 mt-6">
+            <Card className="bg-blue-50 border-blue-200">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {geographicalData.reduce((sum, region) => sum + region.patients, 0)}
+                </div>
+                <div className="text-sm text-blue-700">إجمالي المرضى</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-green-50 border-green-200">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {Math.round(geographicalData.reduce((sum, region) => sum + region.success, 0) / geographicalData.length)}%
+                </div>
+                <div className="text-sm text-green-700">متوسط النجاح</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-purple-50 border-purple-200">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {geographicalData.length}
+                </div>
+                <div className="text-sm text-purple-700">المناطق المغطاة</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-orange-50 border-orange-200">
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-orange-600">
+                  {geographicalData.reduce((sum, region) => sum + region.cases, 0)}
+                </div>
+                <div className="text-sm text-orange-700">إجمالي الحالات</div>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50" dir="rtl">
       {/* Header */}
