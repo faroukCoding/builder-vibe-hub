@@ -367,7 +367,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 13,
       name: "أرنب",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F70b43ed85183406481a3d760811c6416?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F93421856ed924a64bc6471dbfe722fa0?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -400,7 +400,7 @@ const IMAGE_CATEGORIES = {
   vehicles: [
     {
       id: 1,
-      name: "����ائرة هليكوبتر",
+      name: "��ائرة هليكوبت��",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbe4a29629e1473a96ed091dd66f1950?format=webp&width=800",
       category: "مركبات"
     },
@@ -606,7 +606,7 @@ export default function CognitiveTests() {
           'giraffe|زرافة': { name: 'زرافة', category: 'حيوانات', confidence: 99 },
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
           'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
-          'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
+          'camel|��مل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
           'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
           'horse|حصان': { name: 'حصان', category: 'حيوانات', confidence: 97 },
@@ -1078,7 +1078,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار ال��لوان
+              ملخص اختبار الألوان
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1395,7 +1395,7 @@ export default function CognitiveTests() {
             <div className="flex gap-4 justify-center">
               <Button onClick={() => startTest('shapes')} className="bg-orange-600 hover:bg-orange-700">
                 <RotateCcw className="w-4 h-4 ml-2" />
-                إعادة ا��اختبار
+                إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
                 العودة للقائمة
@@ -1500,7 +1500,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ��لخص اختبار أ��ضاء الجسم
+              ملخص اختبار أ��ضاء الجسم
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1760,7 +1760,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              ��لأرقام العربية 1-10 • مفاهيم عددية
+              الأرقام العربية 1-10 • مفاهيم عددية
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -2329,7 +2329,7 @@ export default function CognitiveTests() {
                     variant="outline"
                     className="w-full"
                   >
-                    تحليل مرة أخرى
+                    تح��يل مرة أخرى
                   </Button>
                 </div>
               )}
