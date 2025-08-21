@@ -90,7 +90,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 6,
-      name: "جوارب طويلة",
+      name: "جوا��ب طويلة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc78cb950ba284dbb8c2d0a30c9a9eddd?format=webp&width=800",
       category: "ملابس"
     },
@@ -1679,7 +1679,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              ابدأ ا��اختبار
             </Button>
           </CardContent>
         </Card>
@@ -1933,8 +1933,8 @@ export default function CognitiveTests() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [score, setScore] = useState(0);
 
-    // إعداد البيانات ع��د تحميل التمرين
-    useState(() => {
+    // إعداد البيانات عند تحميل التمرين
+    useEffect(() => {
       const allItems: TestItem[] = [];
       Object.values(IMAGE_CATEGORIES).forEach(category => {
         allItems.push(...category.slice(0, 6)); // أخذ 6 عناصر من كل فئة
@@ -1948,7 +1948,7 @@ export default function CognitiveTests() {
         images: shuffledImages.slice(0, 15), // 15 صورة للعب
         names: shuffledNames.slice(0, 15)
       });
-    });
+    }, []);
 
     const handleImageSelect = (image: TestItem) => {
       setSelectedImage(image);
