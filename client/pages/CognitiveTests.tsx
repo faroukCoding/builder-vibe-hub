@@ -344,7 +344,7 @@ const IMAGE_CATEGORIES = {
       id: 9,
       name: "بطة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb8383ff406544f75a5888bd2613d9e49?format=webp&width=800",
-      category: "حيوانات"
+      category: "حي��انات"
     },
     {
       id: 10,
@@ -558,6 +558,47 @@ export default function CognitiveTests() {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ar-SA';
       speechSynthesis.speak(utterance);
+    }
+  };
+
+  // =============================================================================
+  // IMAGE VERIFICATION FUNCTIONS
+  // =============================================================================
+
+  const startImageVerification = () => {
+    const allImages: {item: TestItem, originalCategory: string}[] = [];
+
+    Object.entries(IMAGE_CATEGORIES).forEach(([categoryKey, items]) => {
+      items.forEach(item => {
+        allImages.push({ item, originalCategory: categoryKey });
+      });
+    });
+
+    setVerificationData(allImages);
+    setCurrentVerificationIndex(0);
+    setIsVerificationMode(true);
+    setCorrectedImages([]);
+  };
+
+  const handleImageCorrection = (correctedItem: TestItem, newCategory: string) => {
+    const updatedItem = { ...correctedItem, category: newCategory };
+    setCorrectedImages(prev => [...prev, updatedItem]);
+
+    if (currentVerificationIndex < verificationData.length - 1) {
+      setCurrentVerificationIndex(prev => prev + 1);
+    } else {
+      // انتهاء التحقق
+      setIsVerificationMode(false);
+      alert(`تم الانتهاء من التحقق! تم تصحيح ${correctedImages.length + 1} صورة.`);
+    }
+  };
+
+  const skipImageVerification = () => {
+    if (currentVerificationIndex < verificationData.length - 1) {
+      setCurrentVerificationIndex(prev => prev + 1);
+    } else {
+      setIsVerificationMode(false);
+      alert(`تم الانتهاء من التحقق! تم تصحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -1531,7 +1572,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختب��ر
+              ابدأ الاختبار
             </Button>
           </CardContent>
         </Card>
@@ -1552,7 +1593,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              ابدأ الا��تبار
             </Button>
           </CardContent>
         </Card>
