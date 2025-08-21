@@ -334,7 +334,7 @@ export default function SpecialistDashboard() {
                 <div className="bg-green-100 p-3 rounded-lg">
                   <TrendingUp className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold">تقرير الأداء الشهري</h3>
+                <h3 className="font-semibold">تقرير ا��أداء الشهري</h3>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 إحصائيات شهرية عن عدد الجلسات ونسب التحسن
@@ -431,14 +431,271 @@ export default function SpecialistDashboard() {
               </TabsContent>
 
               <TabsContent value="settings">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>الإعدادات</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">قريباً - إعدادات الحساب والتفضيلات</p>
-                  </CardContent>
-                </Card>
+                <div className="space-y-6">
+                  {/* Profile Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <User className="w-5 h-5" />
+                        معلومات الحساب
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">الاسم الكامل</label>
+                          <Input defaultValue="د. أحمد محمد" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">التخصص</label>
+                          <Input defaultValue="أخصائي أرطوفوني" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">البريد الإلكتروني</label>
+                          <Input type="email" defaultValue="ahmed.mohamed@example.com" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">رقم الهاتف</label>
+                          <Input defaultValue="+966 50 123 4567" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">رقم الترخيص المهني</label>
+                          <Input defaultValue="SPT-2024-001" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">جهة العمل</label>
+                          <Input defaultValue="مستشفى الملك فهد التخصصي" />
+                        </div>
+                      </div>
+                      <div className="flex gap-2 pt-4">
+                        <Button className="bg-blue-600 hover:bg-blue-700">
+                          حفظ التغييرات
+                        </Button>
+                        <Button variant="outline">
+                          إلغاء
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Notification Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Activity className="w-5 h-5" />
+                        إعدادات التنبيهات
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">تنبيهات المواعيد</p>
+                          <p className="text-sm text-gray-600">إرسال تذكير قبل المواعيد</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" defaultChecked className="rounded" />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">تنبيهات المرضى الجدد</p>
+                          <p className="text-sm text-gray-600">إشعار عند تسجيل مريض جديد</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" defaultChecked className="rounded" />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">تنبيهات التقارير</p>
+                          <p className="text-sm text-gray-600">إشعار عند إنجاز التقارير الدورية</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" className="rounded" />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">تنبيهات البريد الإلكتروني</p>
+                          <p className="text-sm text-gray-600">استقبال التنبيهات عبر البريد</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" defaultChecked className="rounded" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* System Preferences */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Settings className="w-5 h-5" />
+                        تفضيلات النظام
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">اللغة</label>
+                          <select className="w-full p-2 border rounded-md">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                          </select>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">المنطقة الزمنية</label>
+                          <select className="w-full p-2 border rounded-md">
+                            <option value="Asia/Riyadh">الرياض (GMT+3)</option>
+                            <option value="Asia/Dubai">دبي (GMT+4)</option>
+                            <option value="Africa/Cairo">القاهرة (GMT+2)</option>
+                          </select>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">تنسيق التاريخ</label>
+                          <select className="w-full p-2 border rounded-md">
+                            <option value="dd/mm/yyyy">يوم/شهر/سنة</option>
+                            <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
+                            <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
+                          </select>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">عدد المرضى في الصفحة</label>
+                          <select className="w-full p-2 border rounded-md">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">الوضع المظلم</p>
+                          <p className="text-sm text-gray-600">تفعيل المظهر المظلم للتطبيق</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" className="rounded" />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">الصوت في التمارين</p>
+                          <p className="text-sm text-gray-600">تشغيل الصوت في تمارين الأطفال</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <input type="checkbox" defaultChecked className="rounded" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Privacy & Security */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Users className="w-5 h-5" />
+                        الخصوصية والأمان
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-4">
+                        <Button variant="outline" className="w-full justify-start">
+                          تغيير كلمة المرور
+                        </Button>
+                        <Button variant="outline" className="w-full justify-start">
+                          إعداد المصادقة الثنائية
+                        </Button>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">مشاركة البيانات للتطوير</p>
+                            <p className="text-sm text-gray-600">المساعدة في تحسين النظام (بيانات مجهولة)</p>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input type="checkbox" className="rounded" />
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">حفظ جلسات العمل</p>
+                            <p className="text-sm text-gray-600">البقاء مسجلاً لفترة أطول</p>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <input type="checkbox" defaultChecked className="rounded" />
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Data Management */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Download className="w-5 h-5" />
+                        إدارة البيانات
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <Download className="w-4 h-4" />
+                          تصدير بيانات المرضى
+                        </Button>
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          تصدير التقارير
+                        </Button>
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <Users className="w-4 h-4" />
+                          نسخ احتياطية
+                        </Button>
+                        <Button variant="outline" className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50">
+                          <Activity className="w-4 h-4" />
+                          حذف البيانات
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Support & Help */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Stethoscope className="w-5 h-5" />
+                        الدعم والمساعدة
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          دليل المستخدم
+                        </Button>
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <Activity className="w-4 h-4" />
+                          التواصل مع الدعم
+                        </Button>
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <Star className="w-4 h-4" />
+                          تقييم التطبيق
+                        </Button>
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <Brain className="w-4 h-4" />
+                          معلومات النسخة
+                        </Button>
+                      </div>
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <h4 className="font-medium mb-2">معلومات النسخة</h4>
+                        <div className="text-sm text-gray-600 space-y-1">
+                          <p>Ortho Smart v2.1.0</p>
+                          <p>تاريخ آخر تحديث: 15 يناير 2024</p>
+                          <p>رقم البناء: 2024.01.15.001</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </TabsContent>
             </Tabs>
           </div>
