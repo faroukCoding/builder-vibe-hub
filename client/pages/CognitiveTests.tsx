@@ -56,7 +56,7 @@ interface FeedbackState {
 // =============================================================================
 
 const IMAGE_CATEGORIES = {
-  // الملابس والإكسسوار����ت
+  // الملابس والإكس��وار��ت
   clothes: [
     {
       id: 1,
@@ -349,7 +349,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 10,
       name: "دجاجة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdb7fb90da95846b98bf4c482240cd189?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb66111cc2ffc4fa184ce71f8acee5273?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -400,7 +400,7 @@ const IMAGE_CATEGORIES = {
   vehicles: [
     {
       id: 1,
-      name: "طائر�� هليكوبتر",
+      name: "��ائرة هليكوبتر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbe4a29629e1473a96ed091dd66f1950?format=webp&width=800",
       category: "مركبات"
     },
@@ -517,7 +517,7 @@ const BODY_PARTS = [
   { name: "أنف", emoji: "��", category: "وجه" },
   { name: "فم", emoji: "👄", category: "وجه" },
   { name: "أذن", emoji: "👂", category: "وجه" },
-  { name: "يد", emoji: "✋", category: "أطراف" },
+  { name: "يد", emoji: "✋", category: "أ��راف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
   { name: "رأس", emoji: "🗣️", category: "جسم" },
   { name: "بطن", emoji: "🫃", category: "��سم" },
@@ -574,7 +574,7 @@ export default function CognitiveTests() {
           // أنماط الخضروات
           'cucumber|خيار': { name: 'خيار', category: 'خضروات', confidence: 95 },
           'carrot|جزر': { name: 'جزر', category: 'خضروات', confidence: 98 },
-          'tomato|طماطم': { name: 'طماطم', category: 'خضروا��', confidence: 97 },
+          'tomato|طماطم': { name: 'طماطم', category: 'خ��روات', confidence: 97 },
           'onion|بصل': { name: 'بصل', category: 'خضروات', confidence: 94 },
           'garlic|ثوم': { name: 'ثوم', category: 'خضروات', confidence: 96 },
           'eggplant|باذنجان': { name: 'باذنجان', category: 'خضروات', confidence: 93 },
@@ -606,7 +606,7 @@ export default function CognitiveTests() {
           'giraffe|زرافة': { name: 'زرافة', category: 'حيوانات', confidence: 99 },
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
           'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
-          'camel|جمل': { name: 'ج��ل', category: 'حيوانات', confidence: 98 },
+          'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
           'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
           'horse|حصان': { name: 'حصان', category: 'حيوانات', confidence: 97 },
@@ -636,7 +636,7 @@ export default function CognitiveTests() {
           'fire.truck|إطفاء': { name: 'سيارة إطفاء', category: 'مركبات', confidence: 98 },
           'tractor|جرار': { name: 'جرار زراعي', category: 'مركبات', confidence: 97 },
           'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مركبات', confidence: 98 },
-          'truck|شاحنة': { name: 'شاحنة', category: 'مركبات', confidence: 96 },
+          'truck|شاحنة': { name: 'شاحنة', category: 'مركبا��', confidence: 96 },
           'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
           'bicycle|دراجة.هوائية': { name: 'دراجة هوائ��ة', category: 'مركبات', confidence: 94 },
           'tram|ترام': { name: 'ترام', category: 'مركبات', confidence: 93 },
@@ -995,7 +995,7 @@ export default function CognitiveTests() {
     <ImageRecognitionTest
       category="clothes"
       categoryArabic="الملابس"
-      question="ما اسم هذه القطعة من الملابس؟"
+      question="ما اسم هذه القطعة من الملاب��؟"
       images={IMAGE_CATEGORIES.clothes}
       testType="clothes"
       color="indigo"
@@ -1238,7 +1238,7 @@ export default function CognitiveTests() {
             <div className="flex gap-4 justify-center">
               <Button onClick={() => startTest('numbers')} className="bg-red-600 hover:bg-red-700">
                 <RotateCcw className="w-4 h-4 ml-2" />
-                إعادة الاختبار
+                ��عادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
                 العودة للقائمة
@@ -1500,7 +1500,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار أعضاء الجسم
+              ملخص اختبار أ��ضاء الجسم
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1613,7 +1613,7 @@ export default function CognitiveTests() {
       <Card className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
         <CardContent className="p-8 text-center">
           <Brain className="w-16 h-16 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold mb-2">اختبارات الإدراك والمكتسبات القبلية</h1>
+          <h1 className="text-3xl font-bold mb-2">اختبارات الإدراك والمكتسب��ت القبلية</h1>
           <p className="text-purple-100">برنامج شامل لتقييم المهارات الإدراكية والمعرفية للأطفال</p>
         </CardContent>
       </Card>
@@ -1692,7 +1692,7 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">الحيوانات</h3>
-                <p className="text-gray-600 text-sm">التعرف على أسماء الحيوانات</p>
+                <p className="text-gray-600 text-sm">التعرف على أسما�� الحيوانات</p>
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
@@ -1802,7 +1802,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              10 أعضاء جسم ��� مفاهيم تشريحية
+              10 أعضاء جسم • مفاهيم تشريحية
             </div>
             <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1906,7 +1906,7 @@ export default function CognitiveTests() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
                 <li>• تغذية راجعة فورية باللغة العربية</li>
-                <li>• حساب دقيق ��ن��بة النجاح</li>
+                <li>• حساب دقيق ����نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
             </div>
