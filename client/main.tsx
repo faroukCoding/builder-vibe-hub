@@ -13,6 +13,7 @@ import SpecialistRegister from "./pages/SpecialistRegister";
 import ParentDashboard from "./pages/ParentDashboard";
 import SpecialistDashboard from "./pages/SpecialistDashboard";
 import AttentionExercises from "./pages/AttentionExercises";
+import CognitiveTests from "./pages/CognitiveTests";
 import PatientForm from "./pages/PatientForm";
 
 const queryClient = new QueryClient();
