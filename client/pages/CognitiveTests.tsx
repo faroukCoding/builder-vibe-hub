@@ -132,60 +132,60 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الخضروات - مصححة حسب المحتوى الفعلي
+  // الخضروات - الصور الجديدة المرفوعة
   vegetables: [
     {
       id: 1,
-      name: "خيار",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8691ed83b7434d08af3374ff5b93824d?format=webp&width=800",
+      name: "طماطم",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ffbab14c8295d4919be368220cfd689c9?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 2,
-      name: "جزر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb986297ad7c349daa4bc4cc1d97085cc?format=webp&width=800",
+      name: "بصل أحمر",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb14104d5718c449fb362f5f9f9f26ca5?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 3,
-      name: "طماطم",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F91d60d50f8f6461f94db54d5f81265be?format=webp&width=800",
+      name: "ثوم",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F47ce5c086a054c7d87c3ef80e94a1568?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 4,
-      name: "بصل",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F793222dcb33f4642aa6253c90cdc392f?format=webp&width=800",
+      name: "باذنجان",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7633a0a50e644886951f1bb44516a2c2?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 5,
-      name: "ثوم",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7027cc0b30f646c5a264be0f71a4a0a0?format=webp&width=800",
+      name: "فلفل أخضر",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5737efba3aea43e28ae248188752848f?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 6,
-      name: "باذنجان",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F16a8fb132bf941c5b78d0b83afc9fe49?format=webp&width=800",
+      name: "فطر",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F4ca538409cb1450595bbaa1e2a01ff23?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 7,
-      name: "فلفل أخضر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8b298b7119ee460c9636216d7db59a9d?format=webp&width=800",
+      name: "بطاطس",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F0af5f7c0ac5443ffa8616b47450d7183?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 8,
-      name: "فطر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe294ceefdadb4d4ea175c8c7df4efa86?format=webp&width=800",
+      name: "جزر",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcf22556c95014df6847800eea8c8c8d3?format=webp&width=800",
       category: "خضروات"
     },
     {
       id: 9,
-      name: "بطاطس",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F934953a939b3429f80e24ef402339e6a?format=webp&width=800",
+      name: "خيار",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ffa3b55a2aceb45cda2f9cd4c0e1014d6?format=webp&width=800",
       category: "خضروات"
     }
   ],
@@ -386,13 +386,13 @@ const IMAGE_CATEGORIES = {
       id: 16,
       name: "كلب",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1def7d453ce04c81a7e7e97df6e2fd50?format=webp&width=800",
-      category: "حيوانات"
+      category: "حيو��نات"
     },
     {
       id: 17,
       name: "قطة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
-      category: "حيو����ات"
+      category: "حيوا��ات"
     }
   ],
 
@@ -509,7 +509,7 @@ const SHAPES = [
   { name: "نجمة", type: "star", description: "شكل نجمة" },
   { name: "قلب", type: "heart", description: "شكل قلب" },
   { name: "معين", type: "diamond", description: "شكل معين" },
-  { name: "بيضاوي", type: "oval", description: "شكل بيضاوي" }
+  { name: "بيضاوي", type: "oval", description: "شك�� بيضاوي" }
 ];
 
 const BODY_PARTS = [
@@ -586,7 +586,7 @@ export default function CognitiveTests() {
           'grape|عنب': { name: 'عنب', category: 'فواكه', confidence: 96 },
           'cherry|كرز': { name: 'كرز', category: 'فواكه', confidence: 94 },
           'banana|موز': { name: 'موز', category: 'فواكه', confidence: 99 },
-          'pineapple|أناناس': { name: 'أناناس', category: 'فواكه', confidence: 98 },
+          'pineapple|أناناس': { name: 'أناناس', category: 'فوا��ه', confidence: 98 },
           'orange|برتقال': { name: 'برتقال', category: 'فواكه', confidence: 97 },
           'strawberry|فراولة': { name: 'فراولة', category: 'فواكه', confidence: 95 },
           'apple|تفاح': { name: 'تفاح', category: 'فواكه', confidence: 98 },
@@ -2452,7 +2452,7 @@ export default function CognitiveTests() {
   // MAIN RENDER
   // =============================================================================
 
-  // إذا كان في وضع التحقق من الصور
+  // إذا كان في وضع التحقق ��ن الصور
   if (isVerificationMode) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50" dir="rtl">
