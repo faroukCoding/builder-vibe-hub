@@ -76,7 +76,7 @@ export default function ParentDashboard() {
       id: 2,
       date: "2024-01-12",
       type: "علاج النطق",
-      duration: "60 دقيقة",
+      duration: "60 دق��قة",
       progress: 78,
       notes: "تحسن في نطق حرف الراء",
       activities: ["تمارين اللسان", "تكرار الكلمات"]
@@ -288,7 +288,7 @@ export default function ParentDashboard() {
                         'border-red-500 text-red-700'
                       }`}
                     >
-                      {session.progress}% تقدم
+                      {session.progress}% ت��دم
                     </Badge>
                   </div>
 
@@ -377,7 +377,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Star className="w-5 h-5" />
-            إنجا��ات {childData.name}
+            إنجازات {childData.name}
           </CardTitle>
           <CardDescription>
             الإنجازات والأهداف المحققة
@@ -666,7 +666,7 @@ export default function ParentDashboard() {
                 <div className="text-2xl font-bold text-purple-600">
                   {geographicalData.length}
                 </div>
-                <div className="text-sm text-purple-700">المناطق المغطاة</div>
+                <div className="text-sm text-purple-700">الولايات المغطاة</div>
               </CardContent>
             </Card>
             <Card className="bg-orange-50 border-orange-200">
