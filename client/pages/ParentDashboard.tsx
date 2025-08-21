@@ -97,7 +97,7 @@ export default function ParentDashboard() {
     { title: "5 جلسات", earned: true, date: "2024-01-10", icon: "⭐" },
     { title: "تحسن 50%", earned: true, date: "2024-01-12", icon: "📈" },
     { title: "10 جلسات", earned: false, date: null, icon: "🏆" },
-    { title: "تحسن 75%", earned: false, date: null, icon: "🎉" },
+    { title: "ت��سن 75%", earned: false, date: null, icon: "🎉" },
   ];
 
   const reports = [
@@ -613,8 +613,24 @@ export default function ParentDashboard() {
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={geographicalData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="region" angle={-45} textAnchor="end" height={80} />
-                    <YAxis />
+                    <XAxis
+                      dataKey="region"
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                      axisLine={true}
+                      tickLine={true}
+                      type="category"
+                      orientation="bottom"
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis
+                      axisLine={true}
+                      tickLine={true}
+                      type="number"
+                      orientation="left"
+                      tick={{ fontSize: 12 }}
+                    />
                     <Tooltip />
                     <Bar dataKey="success" fill="#10b981" name="نسبة النجاح %" />
                   </BarChart>
