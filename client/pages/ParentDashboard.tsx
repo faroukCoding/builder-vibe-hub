@@ -87,7 +87,7 @@ export default function ParentDashboard() {
       type: "تقييم شامل",
       duration: "90 دقيقة",
       progress: 70,
-      notes: "��قييم الميزانية الأرطوفونية",
+      notes: "تقييم الميزانية ال��رطوفونية",
       activities: ["فحص النطق", "اختبارات الإدراك"]
     }
   ];
@@ -578,7 +578,7 @@ export default function ParentDashboard() {
             {/* مخطط نسب النجاح */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">نسب النجاح حسب المنطقة</CardTitle>
+                <CardTitle className="text-lg">نسب النجاح حسب الولاية</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
