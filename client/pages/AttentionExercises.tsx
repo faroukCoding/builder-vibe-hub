@@ -331,7 +331,7 @@ export default function AttentionExercises() {
                 variant="outline"
               >
                 <RotateCcw className="w-5 h-5 ml-2" />
-                مهمة جديدة
+                م��مة جديدة
               </Button>
             </>
           )}
@@ -444,6 +444,564 @@ export default function AttentionExercises() {
                     {gameSession.totalQuestions > 0 ? Math.round((gameSession.correctAnswers / gameSession.totalQuestions) * 100) : 0}%
                   </div>
                   <div className="text-sm text-gray-600">معدل النجاح</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
+  };
+
+  // تمرين الانتباه السمعي
+  const AuditoryAttentionGame = () => {
+    const [currentSequence, setCurrentSequence] = useState([]);
+    const [userSequence, setUserSequence] = useState([]);
+    const [feedback, setFeedback] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const sounds = [
+      { name: "طقطقة", sound: "tick", emoji: "🔔", color: "#3B82F6" },
+      { name: "صفير", sound: "whistle", emoji: "🎵", color: "#EF4444" },
+      { name: "نقرة", sound: "click", emoji: "👆", color: "#10B981" },
+      { name: "طبلة", sound: "drum", emoji: "🥁", color: "#F59E0B" }
+    ];
+
+    const generateSequence = () => {
+      const level = Math.min(Math.floor(gameSession.currentQuestion / 2) + 2, 6);
+      const sequence = [];
+      for (let i = 0; i < level; i++) {
+        sequence.push(sounds[Math.floor(Math.random() * sounds.length)]);
+      }
+      setCurrentSequence(sequence);
+      setUserSequence([]);
+      playSequence(sequence);
+    };
+
+    const playSequence = async (sequence) => {
+      setIsPlaying(true);
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance('استمع للتسلسل وأعد ترتيبه');
+        utterance.lang = 'ar-SA';
+        speechSynthesis.speak(utterance);
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+
+      for (let i = 0; i < sequence.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(sequence[i].name);
+          utterance.lang = 'ar-SA';
+          speechSynthesis.speak(utterance);
+        }
+      }
+
+      setIsPlaying(false);
+    };
+
+    const handleSoundClick = (sound) => {
+      if (!gameSession.isGameActive || isPlaying) return;
+
+      const newUserSequence = [...userSequence, sound];
+      setUserSequence(newUserSequence);
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(sound.name);
+        utterance.lang = 'ar-SA';
+        speechSynthesis.speak(utterance);
+      }
+
+      // Check if sequence is complete
+      if (newUserSequence.length === currentSequence.length) {
+        const isCorrect = newUserSequence.every((sound, index) =>
+          sound.name === currentSequence[index].name
+        );
+
+        if (isCorrect) {
+          setFeedback({ type: 'success', message: 'ممتاز! التسلسل صحيح!' });
+          setGameSession(prev => ({
+            ...prev,
+            correctAnswers: prev.correctAnswers + 1,
+            currentQuestion: prev.currentQuestion + 1,
+            totalQuestions: prev.totalQuestions + 1
+          }));
+
+          if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance('ممتاز! التسلسل صحيح!');
+            utterance.lang = 'ar-SA';
+            speechSynthesis.speak(utterance);
+          }
+
+          setTimeout(() => {
+            setFeedback(null);
+            if (gameSession.currentQuestion < 10) {
+              generateSequence();
+            } else {
+              endGame();
+            }
+          }, 2500);
+
+        } else {
+          setFeedback({ type: 'error', message: 'التسلسل غير صحيح، حاول مرة أخرى' });
+          setGameSession(prev => ({
+            ...prev,
+            wrongAnswers: prev.wrongAnswers + 1,
+            totalQuestions: prev.totalQuestions + 1
+          }));
+
+          if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance('التسلسل غير صحيح');
+            utterance.lang = 'ar-SA';
+            speechSynthesis.speak(utterance);
+          }
+
+          setTimeout(() => {
+            setFeedback(null);
+            setUserSequence([]);
+          }, 2000);
+        }
+      }
+    };
+
+    const startGame = () => {
+      setGameSession({
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        totalQuestions: 0,
+        currentQuestion: 1,
+        isGameActive: true,
+        timeElapsed: 0,
+        level: 1
+      });
+      generateSequence();
+    };
+
+    const endGame = () => {
+      setGameSession(prev => ({ ...prev, isGameActive: false }));
+    };
+
+    return (
+      <div className="space-y-6">
+        {/* Game Header */}
+        <Card className="bg-gradient-to-r from-green-500 to-blue-500 text-white">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">🎵 الانتباه السمعي</h2>
+                <p className="text-green-100">استمع للتسلسل وأعد ترتيبه</p>
+              </div>
+              <Volume2 className="w-16 h-16 text-green-200" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Game Stats */}
+        <div className="grid grid-cols-3 gap-4">
+          <Card className="bg-green-50 border-green-200">
+            <CardContent className="p-4 text-center">
+              <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
+              <div className="text-sm text-green-700">تسلسلات صحيحة</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-red-50 border-red-200">
+            <CardContent className="p-4 text-center">
+              <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
+              <div className="text-sm text-red-700">أخطاء</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-4 text-center">
+              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-blue-600">{currentSequence.length}</div>
+              <div className="text-sm text-blue-700">طول التسلسل</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Game Controls */}
+        <div className="flex justify-center gap-4">
+          {!gameSession.isGameActive ? (
+            <Button
+              onClick={startGame}
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <Play className="w-5 h-5 ml-2" />
+              ابدأ التمرين
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={endGame}
+                size="lg"
+                variant="outline"
+              >
+                <Pause className="w-5 h-5 ml-2" />
+                إيقاف
+              </Button>
+              <Button
+                onClick={() => playSequence(currentSequence)}
+                size="lg"
+                variant="outline"
+                disabled={isPlaying}
+              >
+                <Volume2 className="w-5 h-5 ml-2" />
+                إعادة التشغيل
+              </Button>
+            </>
+          )}
+        </div>
+
+        {/* Game Area */}
+        {gameSession.isGameActive && (
+          <Card className="min-h-96">
+            <CardHeader className="text-center">
+              <CardTitle className="text-xl">
+                {isPlaying ? "🎵 استمع للتسلسل..." : "🎯 أعد ترتيب التسلسل"}
+              </CardTitle>
+              <div className="text-sm text-gray-600">
+                المطلوب: {currentSequence.length} أصوات | تم اختيار: {userSequence.length}
+              </div>
+            </CardHeader>
+            <CardContent className="p-8">
+              <div className="relative">
+                {/* Feedback */}
+                {feedback && (
+                  <div className={`absolute inset-0 flex items-center justify-center z-10 ${
+                    feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
+                  } text-white rounded-lg`}>
+                    <div className="text-center">
+                      {feedback.type === 'success' ? (
+                        <CheckCircle className="w-16 h-16 mx-auto mb-4" />
+                      ) : (
+                        <XCircle className="w-16 h-16 mx-auto mb-4" />
+                      )}
+                      <div className="text-2xl font-bold">{feedback.message}</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* User Sequence Display */}
+                {userSequence.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-center">تسلسلك:</h3>
+                    <div className="flex justify-center gap-2 flex-wrap">
+                      {userSequence.map((sound, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-lg"
+                        >
+                          <span className="text-2xl">{sound.emoji}</span>
+                          <span className="font-medium">{sound.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Sound Buttons */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
+                  {sounds.map((sound, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleSoundClick(sound)}
+                      disabled={isPlaying}
+                      className={`
+                        h-24 flex flex-col gap-2 text-white text-lg
+                        ${isPlaying ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}
+                      `}
+                      style={{ backgroundColor: sound.color }}
+                    >
+                      <span className="text-3xl">{sound.emoji}</span>
+                      <span>{sound.name}</span>
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Progress Bar */}
+                <div className="mt-8 max-w-md mx-auto">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>التقدم</span>
+                    <span>{gameSession.currentQuestion}/10</span>
+                  </div>
+                  <Progress value={(gameSession.currentQuestion / 10) * 100} className="h-3" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
+  };
+
+  // تمرين الانتباه المستمر
+  const SustainedAttentionGame = () => {
+    const [targetLetter, setTargetLetter] = useState('');
+    const [currentLetter, setCurrentLetter] = useState('');
+    const [feedback, setFeedback] = useState(null);
+    const [isActive, setIsActive] = useState(false);
+    const [timeRemaining, setTimeRemaining] = useState(60);
+
+    const arabicLetters = [
+      'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر',
+      'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
+      'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'
+    ];
+
+    const generateNewLetter = () => {
+      const newLetter = arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
+      setCurrentLetter(newLetter);
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(newLetter);
+        utterance.lang = 'ar-SA';
+        speechSynthesis.speak(utterance);
+      }
+    };
+
+    const handleLetterClick = () => {
+      if (!gameSession.isGameActive || !isActive) return;
+
+      if (currentLetter === targetLetter) {
+        setFeedback({ type: 'success', message: 'صحيح! ✓' });
+        setGameSession(prev => ({
+          ...prev,
+          correctAnswers: prev.correctAnswers + 1
+        }));
+
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance('صحيح');
+          utterance.lang = 'ar-SA';
+          speechSynthesis.speak(utterance);
+        }
+
+      } else {
+        setFeedback({ type: 'error', message: 'خطأ! ✗' });
+        setGameSession(prev => ({
+          ...prev,
+          wrongAnswers: prev.wrongAnswers + 1
+        }));
+      }
+
+      setTimeout(() => setFeedback(null), 1000);
+    };
+
+    const startGame = () => {
+      const target = arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
+      setTargetLetter(target);
+      setTimeRemaining(60);
+      setIsActive(true);
+      setGameSession({
+        correctAnswers: 0,
+        wrongAnswers: 0,
+        totalQuestions: 0,
+        currentQuestion: 1,
+        isGameActive: true,
+        timeElapsed: 0,
+        level: 1
+      });
+
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(`ابحث عن حرف ${target}`);
+        utterance.lang = 'ar-SA';
+        speechSynthesis.speak(utterance);
+      }
+
+      generateNewLetter();
+    };
+
+    const endGame = () => {
+      setGameSession(prev => ({ ...prev, isGameActive: false }));
+      setIsActive(false);
+    };
+
+    useEffect(() => {
+      let letterInterval;
+      let timerInterval;
+
+      if (isActive && gameSession.isGameActive) {
+        letterInterval = setInterval(generateNewLetter, 2000);
+
+        timerInterval = setInterval(() => {
+          setTimeRemaining(prev => {
+            if (prev <= 1) {
+              endGame();
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+
+      return () => {
+        clearInterval(letterInterval);
+        clearInterval(timerInterval);
+      };
+    }, [isActive, gameSession.isGameActive]);
+
+    return (
+      <div className="space-y-6">
+        {/* Game Header */}
+        <Card className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">⏰ الانتباه المستمر</h2>
+                <p className="text-orange-100">اضغط عندما تسمع الحرف المطلوب</p>
+              </div>
+              <div className="text-right">
+                <div className="text-sm text-orange-100 mb-1">الوقت المتبقي</div>
+                <div className="text-2xl font-bold">{timeRemaining}ث</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Target Letter Display */}
+        {targetLetter && (
+          <Card className="bg-yellow-50 border-yellow-200">
+            <CardContent className="p-6 text-center">
+              <div className="text-lg font-semibold mb-2">الحرف المطلوب:</div>
+              <div className="text-6xl font-bold text-yellow-600 mb-2">{targetLetter}</div>
+              <div className="text-sm text-gray-600">اضغط على الحرف الكبير عندما تسمع هذا الحرف</div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Game Stats */}
+        <div className="grid grid-cols-3 gap-4">
+          <Card className="bg-green-50 border-green-200">
+            <CardContent className="p-4 text-center">
+              <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
+              <div className="text-sm text-green-700">إجابات صحيحة</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-red-50 border-red-200">
+            <CardContent className="p-4 text-center">
+              <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
+              <div className="text-sm text-red-700">أخطاء</div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-4 text-center">
+              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-blue-600">
+                {gameSession.correctAnswers + gameSession.wrongAnswers > 0
+                  ? Math.round((gameSession.correctAnswers / (gameSession.correctAnswers + gameSession.wrongAnswers)) * 100)
+                  : 0}%
+              </div>
+              <div className="text-sm text-blue-700">دقة</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Game Controls */}
+        <div className="flex justify-center gap-4">
+          {!gameSession.isGameActive ? (
+            <Button
+              onClick={startGame}
+              size="lg"
+              className="bg-orange-600 hover:bg-orange-700 text-white"
+            >
+              <Play className="w-5 h-5 ml-2" />
+              ابدأ التمرين
+            </Button>
+          ) : (
+            <Button
+              onClick={endGame}
+              size="lg"
+              variant="outline"
+            >
+              <Pause className="w-5 h-5 ml-2" />
+              إيقاف
+            </Button>
+          )}
+        </div>
+
+        {/* Game Area */}
+        {gameSession.isGameActive && (
+          <Card className="min-h-96">
+            <CardContent className="p-8">
+              <div className="relative">
+                {/* Feedback */}
+                {feedback && (
+                  <div className={`absolute top-4 right-4 z-10 px-4 py-2 rounded-lg text-white font-bold ${
+                    feedback.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                  }`}>
+                    {feedback.message}
+                  </div>
+                )}
+
+                {/* Current Letter Display */}
+                <div className="text-center">
+                  <div
+                    onClick={handleLetterClick}
+                    className={`
+                      mx-auto w-48 h-48 flex items-center justify-center rounded-lg cursor-pointer
+                      transition-all duration-200 border-8 hover:scale-105 text-8xl font-bold
+                      ${currentLetter === targetLetter
+                        ? 'border-green-500 bg-green-100 text-green-700'
+                        : 'border-gray-300 bg-gray-100 text-gray-700'
+                      }
+                    `}
+                  >
+                    {currentLetter}
+                  </div>
+                  <div className="mt-4 text-lg text-gray-600">
+                    اضغط على الحرف إذا كان هو الحرف المطلوب: <span className="font-bold text-2xl">{targetLetter}</span>
+                  </div>
+                </div>
+
+                {/* Timer Progress */}
+                <div className="mt-8 max-w-md mx-auto">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>الوقت المتبقي</span>
+                    <span>{timeRemaining} ثانية</span>
+                  </div>
+                  <Progress value={(timeRemaining / 60) * 100} className="h-3" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Game Summary */}
+        {!gameSession.isGameActive && (gameSession.correctAnswers > 0 || gameSession.wrongAnswers > 0) && (
+          <Card className="bg-blue-50 border-blue-200">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-6 h-6 text-yellow-600" />
+                ملخص الجلسة
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
+                  <div className="text-sm text-gray-600">إجابات صحيحة</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
+                  <div className="text-sm text-gray-600">أخطاء</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {gameSession.correctAnswers + gameSession.wrongAnswers > 0
+                      ? Math.round((gameSession.correctAnswers / (gameSession.correctAnswers + gameSession.wrongAnswers)) * 100)
+                      : 0}%
+                  </div>
+                  <div className="text-sm text-gray-600">معدل الدقة</div>
                 </div>
               </div>
             </CardContent>
@@ -570,7 +1128,7 @@ export default function AttentionExercises() {
               variant="outline"
             >
               <Pause className="w-5 h-5 ml-2" />
-              إيقاف
+              إيق��ف
             </Button>
           )}
         </div>
@@ -656,7 +1214,7 @@ export default function AttentionExercises() {
             </div>
             <div className="space-y-2 text-sm text-gray-600 mb-4">
               <p>• تطوير الانتباه البصري</p>
-              <p>• تحسين التركيز والملاحظة</p>
+              <p>• تحسين التركيز وا��ملاحظة</p>
               <p>• تعزيز سرعة الاستجابة</p>
             </div>
             <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white">
