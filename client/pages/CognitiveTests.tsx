@@ -1,9 +1,9 @@
-import { 
-  ArrowLeft, 
-  Brain, 
-  Eye, 
-  Palette, 
-  Shapes, 
+import {
+  ArrowLeft,
+  Brain,
+  Eye,
+  Palette,
+  Shapes,
   Car,
   Heart,
   Play,
@@ -231,7 +231,42 @@ export default function CognitiveTests() {
     { name: "بني", color: "#a3a3a3", rgb: "163,163,163" }
   ];
 
-  const numbers = Array.from({ length: 10 }, (_, i) => i + 1);
+  const numbers = [
+    { number: 1, name: "واحد", symbol: "١" },
+    { number: 2, name: "اثنان", symbol: "٢" },
+    { number: 3, name: "ثلاثة", symbol: "٣" },
+    { number: 4, name: "أربعة", symbol: "٤" },
+    { number: 5, name: "خمسة", symbol: "٥" },
+    { number: 6, name: "ستة", symbol: "٦" },
+    { number: 7, name: "سبعة", symbol: "٧" },
+    { number: 8, name: "ثمانية", symbol: "٨" },
+    { number: 9, name: "تسعة", symbol: "٩" },
+    { number: 10, name: "عشرة", symbol: "١٠" }
+  ];
+
+  const shapes = [
+    { name: "دائرة", type: "circle", description: "شكل دائري" },
+    { name: "مربع", type: "square", description: "شكل بأربعة أضلاع متساوية" },
+    { name: "مثلث", type: "triangle", description: "شكل بثلاثة أضلاع" },
+    { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أضلاع مستطيل" },
+    { name: "نجمة", type: "star", description: "شكل نجمة" },
+    { name: "قلب", type: "heart", description: "شكل قلب" },
+    { name: "معين", type: "diamond", description: "شكل معين" },
+    { name: "بيضاوي", type: "oval", description: "شكل بيضاوي" }
+  ];
+
+  const bodyParts = [
+    { name: "عين", emoji: "👁️", category: "وجه" },
+    { name: "أنف", emoji: "👃", category: "وجه" },
+    { name: "فم", emoji: "👄", category: "وجه" },
+    { name: "أذن", emoji: "👂", category: "وجه" },
+    { name: "يد", emoji: "✋", category: "أطراف" },
+    { name: "قدم", emoji: "🦶", category: "أطراف" },
+    { name: "رأس", emoji: "🗣️", category: "جسم" },
+    { name: "بطن", emoji: "🫃", category: "جسم" },
+    { name: "ظهر", emoji: "🫲", category: "جسم" },
+    { name: "ركبة", emoji: "🦵", category: "أطراف" }
+  ];
 
   const playAudio = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -245,7 +280,7 @@ export default function CognitiveTests() {
     if (!testSession.isTestActive) return;
 
     const isCorrect = selectedAnswer === correctAnswer;
-    
+
     if (isCorrect) {
       setFeedback({ type: 'success', message: 'ممتاز! إجابة صحيحة!' });
       setTestSession(prev => ({
@@ -314,9 +349,9 @@ export default function CognitiveTests() {
         .filter(animal => animal.id !== randomAnimal.id)
         .sort(() => 0.5 - Math.random())
         .slice(0, 3);
-      
+
       const allOptions = [randomAnimal, ...wrongOptions].sort(() => 0.5 - Math.random());
-      
+
       setCurrentAnimal(randomAnimal);
       setOptions(allOptions);
       playAudio(`ما اسم هذا الحيوان؟`);
@@ -397,8 +432,8 @@ export default function CognitiveTests() {
           {currentAnimal && (
             <div className="space-y-6">
               <div className="text-center">
-                <img 
-                  src={currentAnimal.src} 
+                <img
+                  src={currentAnimal.src}
                   alt={currentAnimal.name}
                   className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
                 />
@@ -449,9 +484,9 @@ export default function CognitiveTests() {
         .filter(vehicle => vehicle.id !== randomVehicle.id)
         .sort(() => 0.5 - Math.random())
         .slice(0, 3);
-      
+
       const allOptions = [randomVehicle, ...wrongOptions].sort(() => 0.5 - Math.random());
-      
+
       setCurrentVehicle(randomVehicle);
       setOptions(allOptions);
       playAudio(`ما اسم هذه المركبة؟`);
@@ -532,8 +567,8 @@ export default function CognitiveTests() {
           {currentVehicle && (
             <div className="space-y-6">
               <div className="text-center">
-                <img 
-                  src={currentVehicle.src} 
+                <img
+                  src={currentVehicle.src}
                   alt={currentVehicle.name}
                   className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
                 />
@@ -584,9 +619,9 @@ export default function CognitiveTests() {
         .filter(color => color.name !== randomColor.name)
         .sort(() => 0.5 - Math.random())
         .slice(0, 3);
-      
+
       const allOptions = [randomColor, ...wrongOptions].sort(() => 0.5 - Math.random());
-      
+
       setCurrentColor(randomColor);
       setOptions(allOptions);
       playAudio(`ما لون هذا المربع؟`);
@@ -667,7 +702,7 @@ export default function CognitiveTests() {
           {currentColor && (
             <div className="space-y-6">
               <div className="text-center">
-                <div 
+                <div
                   className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300"
                   style={{ backgroundColor: currentColor.color }}
                 />
@@ -847,8 +882,8 @@ export default function CognitiveTests() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={() => {
                   if (currentTest === "menu") {
@@ -874,7 +909,7 @@ export default function CognitiveTests() {
                 </div>
               </div>
             </div>
-            <Button 
+            <Button
               variant="outline"
               onClick={() => navigate('/specialist-dashboard')}
               className="flex items-center gap-2"
