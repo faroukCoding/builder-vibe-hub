@@ -73,7 +73,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 3,
       name: "وشاح شتوي",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fbd9717ee86334f08a792864780f53887?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd0cde76030774a0ca41d2a2f13165f02?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -154,7 +154,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 4,
-      name: "باذنجان",
+      name: "با��نجان",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7633a0a50e644886951f1bb44516a2c2?format=webp&width=800",
       category: "خضروات"
     },
@@ -286,7 +286,7 @@ const IMAGE_CATEGORIES = {
       id: 16,
       name: "مشمش",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd6e82105d82246699b915c7cb39526b3?format=webp&width=800",
-      category: "فواكه"
+      category: "فو��كه"
     }
   ],
 
@@ -573,7 +573,7 @@ export default function CognitiveTests() {
         const aiAnalysisResults = {
           // أنماط الخضروات
           'cucumber|خيار': { name: 'خيار', category: 'خضروات', confidence: 95 },
-          'carrot|جزر': { name: 'جزر', category: 'خضروات', confidence: 98 },
+          'carrot|جزر': { name: 'جزر', category: '��ضروات', confidence: 98 },
           'tomato|طماطم': { name: 'طماطم', category: 'خضروات', confidence: 97 },
           'onion|بصل': { name: 'بصل', category: 'خضروات', confidence: 94 },
           'garlic|ثوم': { name: 'ثوم', category: 'خضروات', confidence: 96 },
@@ -995,7 +995,7 @@ export default function CognitiveTests() {
     <ImageRecognitionTest
       category="clothes"
       categoryArabic="الملابس"
-      question="ما اسم هذه القطعة م�� الملابس؟"
+      question="ما اسم هذه القطعة من الملابس؟"
       images={IMAGE_CATEGORIES.clothes}
       testType="clothes"
       color="indigo"
@@ -1078,7 +1078,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار الألوان
+              ملخص اخت��ار الألوان
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1500,7 +1500,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اخ��بار أعضاء الجسم
+              ملخص اختبار أعضاء الجسم
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1760,7 +1760,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              الأرقام العربية 1-10 • مفاهيم عددية
+              الأرقام ا��عربية 1-10 • مفاهيم عددية
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1895,7 +1895,7 @@ export default function CognitiveTests() {
             <div>
               <h4 className="font-semibold mb-3 text-gray-800">هدف الاختبارات:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• تقييم المكتسبات القبلية للأطفال</li>
+                <li>• ��قييم المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري والسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
@@ -2263,7 +2263,7 @@ export default function CognitiveTests() {
             <Progress value={progress} className="w-full" />
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* الصورة الحالية */}
+            {/* ا��صورة الحالية */}
             <div className="text-center">
               <div className="inline-block p-4 bg-gray-100 rounded-lg">
                 <img
