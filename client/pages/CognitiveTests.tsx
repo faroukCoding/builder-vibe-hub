@@ -148,7 +148,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 3,
-      name: "طماطم",
+      name: "طما��م",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F91d60d50f8f6461f94db54d5f81265be?format=webp&width=800",
       category: "خضروات"
     },
@@ -543,7 +543,7 @@ export default function CognitiveTests() {
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // واجهة التحقق من الصور
+  // واجهة التحقق من ��لصور
   const [isVerificationMode, setIsVerificationMode] = useState(false);
   const [currentVerificationIndex, setCurrentVerificationIndex] = useState(0);
   const [verificationData, setVerificationData] = useState<{item: TestItem, originalCategory: string}[]>([]);
@@ -1081,7 +1081,7 @@ export default function CognitiveTests() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">اختبار التعرف على الأرقام</CardTitle>
+          <CardTitle className="text-center">اختبار التعرف على ال��رقام</CardTitle>
           <CardDescription className="text-center">
             السؤال {testSession.currentQuestion} من 10
           </CardDescription>
@@ -1108,7 +1108,7 @@ export default function CognitiveTests() {
                 <div className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300 bg-white flex items-center justify-center">
                   <span className="text-8xl font-bold text-blue-600">{currentNumber.symbol}</span>
                 </div>
-                <p className="text-lg font-semibold mb-4">ما هذا الرقم؟</p>
+                <p className="text-lg font-semibold mb-4">ما هذا الرق��؟</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1864,6 +1864,34 @@ export default function CognitiveTests() {
   // =============================================================================
   // MAIN RENDER
   // =============================================================================
+
+  // إذا كان في وضع التحقق من الصور
+  if (isVerificationMode) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50" dir="rtl">
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsVerificationMode(false)}
+                  className="text-gray-600"
+                >
+                  <ArrowLeft className="w-4 h-4 ml-1" />
+                  العودة للقائمة الرئيسية
+                </Button>
+                <div className="h-6 w-px bg-gray-300" />
+                <h1 className="text-xl font-bold">تحقق من الصور والأسماء</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ImageVerification />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50" dir="rtl">
