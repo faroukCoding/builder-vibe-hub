@@ -1,9 +1,9 @@
-import { 
-  Users, 
-  Plus, 
-  FileText, 
-  Search, 
-  Calendar, 
+import {
+  Users,
+  Plus,
+  FileText,
+  Search,
+  Calendar,
   Activity,
   User,
   ArrowLeft,
@@ -76,7 +76,7 @@ export default function SpecialistDashboard() {
     {
       id: "balance",
       title: "الميزانية الأرطوفونية",
-      description: "استمارة سريرية شاملة للتقييم",
+      description: "استمارة سريرية ��املة للتقييم",
       icon: FileText,
       color: "blue",
       route: "/orthophonic-balance"
@@ -199,7 +199,7 @@ export default function SpecialistDashboard() {
         <CardContent>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {assessmentTools.map((tool) => (
-              <Card 
+              <Card
                 key={tool.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-gray-300"
                 onClick={() => navigate(tool.route)}
@@ -234,8 +234,8 @@ export default function SpecialistDashboard() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input 
-                placeholder="البحث عن مريض..." 
+              <Input
+                placeholder="البحث عن مريض..."
                 className="pr-10 w-64"
               />
             </div>
@@ -262,19 +262,19 @@ export default function SpecialistDashboard() {
                   </div>
                 </div>
                 <div className="text-left">
-                  <Badge 
+                  <Badge
                     variant={patient.status === "متابعة" ? "default" : "secondary"}
                     className="mb-2"
                   >
                     {patient.status}
                   </Badge>
                   <div className="text-sm text-gray-600">
-                    آخر زيا��ة: {patient.lastVisit}
+                    آخر زيارة: {patient.lastVisit}
                   </div>
                   <div className="flex items-center gap-2 mt-1">
                     <div className="bg-gray-200 rounded-full h-2 w-16">
-                      <div 
-                        className="bg-green-500 rounded-full h-2" 
+                      <div
+                        className="bg-green-500 rounded-full h-2"
                         style={{ width: `${patient.progress}%` }}
                       ></div>
                     </div>
@@ -305,7 +305,7 @@ export default function SpecialistDashboard() {
       <CardHeader>
         <CardTitle className="text-xl">التقارير والإحصائيات</CardTitle>
         <CardDescription>
-          تقارير مفصلة حول أداء ��لمرضى والتقدم العلاجي
+          تقارير مفصلة حول أداء المرضى والتقدم العلاجي
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -357,8 +357,8 @@ export default function SpecialistDashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={() => navigate('/')}
                 className="flex items-center gap-2"
@@ -433,7 +433,7 @@ export default function SpecialistDashboard() {
               <TabsContent value="settings">
                 <Card>
                   <CardHeader>
-                    <CardTitle>الإعداد��ت</CardTitle>
+                    <CardTitle>الإعدادات</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600">قريباً - إعدادات الحساب والتفضيلات</p>
@@ -480,24 +480,24 @@ export default function SpecialistDashboard() {
                 <CardTitle className="text-lg">إجراءات سريعة</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full justify-start"
                   onClick={() => navigate('/attention-exercises')}
                 >
                   <Target className="w-4 h-4 ml-2" />
                   تمارين الانتباه
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full justify-start"
                   onClick={() => navigate('/orthophonic-balance')}
                 >
                   <FileText className="w-4 h-4 ml-2" />
                   الميزانية الأرطوفونية
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full justify-start"
                   onClick={() => navigate('/age-calculator')}
                 >
