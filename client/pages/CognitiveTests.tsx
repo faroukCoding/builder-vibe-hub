@@ -150,7 +150,7 @@ const IMAGE_CATEGORIES = {
       id: 3,
       name: "ثوم",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F47ce5c086a054c7d87c3ef80e94a1568?format=webp&width=800",
-      category: "خضر��ات"
+      category: "خ��ر��ات"
     },
     {
       id: 4,
@@ -307,7 +307,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 3,
       name: "دب",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F25d2db6beec64c938f1b3f106525863e?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc268e6a5d9dc47d6bb454edd9a2422f0?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -460,7 +460,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 11,
-      name: "طائ��ة",
+      name: "طائرة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcba25725a99c48688321df072fd908c1?format=webp&width=800",
       category: "مركبات"
     },
@@ -654,7 +654,7 @@ export default function CognitiveTests() {
           }
         }
 
-        // إذا لم يتم العثور على نمط، نحلل بناءً على hash في URL
+        // إذا لم يتم العثور على نمط، نحلل ب��اءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
         const categories = ['ملابس', 'خضروات', 'فواكه', 'حيو��نات', 'مركبات'];
@@ -1039,7 +1039,7 @@ export default function CognitiveTests() {
     <ImageRecognitionTest
       category="vehicles"
       categoryArabic="المركبات"
-      question="م�� اسم هذه المركبة؟"
+      question="ما اسم هذه المركبة؟"
       images={IMAGE_CATEGORIES.vehicles}
       testType="vehicles"
       color="blue"
@@ -1211,7 +1211,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار الأرقام
+              ��لخص اختبار الأرقام
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1368,7 +1368,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار الأشكا��
+              ملخص اختبار الأشكال
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1877,7 +1877,7 @@ export default function CognitiveTests() {
             </Button>
           </div>
           <div className="mt-3 text-sm text-gray-600">
-            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاس�� والفئة الصحيحة
+            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاس�� والفئة الص��يحة
           </div>
         </CardContent>
       </Card>
@@ -1904,7 +1904,7 @@ export default function CognitiveTests() {
             <div>
               <h4 className="font-semibold mb-3 text-gray-800">معايير التقييم:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• كل اختبار يحتوي على 10 أسئلة</li>
+                <li>• كل اختبار يحتو�� على 10 أسئلة</li>
                 <li>• تغذية راجعة فورية باللغة العربية</li>
                 <li>• حساب دقيق ��نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
