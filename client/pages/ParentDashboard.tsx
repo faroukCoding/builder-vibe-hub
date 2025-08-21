@@ -50,7 +50,7 @@ export default function ParentDashboard() {
     name: "أحمد محمد",
     age: parentData?.childAge || 6,
     diagnosis: "تأخر في النطق",
-    specialist: "د. فاطمة أحمد",
+    specialist: "د. فاطمة أ��مد",
     startDate: "2024-01-01",
     totalSessions: 12,
     completedSessions: 8,
@@ -491,7 +491,7 @@ export default function ParentDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
-              التقدم الشهري في التم��رين
+              التقدم الشهري في التمارين
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -557,7 +557,7 @@ export default function ParentDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid lg:grid-cols-2 gap-6">
-            {/* مخطط المرضى حسب المناطق */}
+            {/* م��طط المرضى حسب المناطق */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">عدد المرضى حسب المنطقة</CardTitle>
@@ -728,14 +728,22 @@ export default function ParentDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Tabs Navigation */}
           <div className="bg-white rounded-lg p-2 shadow-sm">
-            <TabsList className="grid grid-cols-4 w-full">
+            <TabsList className="grid grid-cols-6 w-full">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Activity className="w-4 h-4" />
                 نظرة عامة
               </TabsTrigger>
+              <TabsTrigger value="cognitive" className="flex items-center gap-2">
+                <Brain className="w-4 h-4" />
+                التمارين المعرفية
+              </TabsTrigger>
               <TabsTrigger value="sessions" className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 الجلسات
+              </TabsTrigger>
+              <TabsTrigger value="geography" className="flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                المخطط الجغرافي
               </TabsTrigger>
               <TabsTrigger value="reports" className="flex items-center gap-2">
                 <FileText className="w-4 h-4" />
