@@ -76,7 +76,7 @@ export default function ParentDashboard() {
       id: 2,
       date: "2024-01-12",
       type: "علاج النطق",
-      duration: "60 دق��قة",
+      duration: "60 دقيقة",
       progress: 78,
       notes: "تحسن في نطق حرف الراء",
       activities: ["تمارين اللسان", "تكرار الكلمات"]
@@ -288,7 +288,7 @@ export default function ParentDashboard() {
                         'border-red-500 text-red-700'
                       }`}
                     >
-                      {session.progress}% ت��دم
+                      {session.progress}% تقدم
                     </Badge>
                   </div>
 
@@ -498,8 +498,21 @@ export default function ParentDashboard() {
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={cognitiveTestsProgress}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
+                <XAxis
+                  dataKey="month"
+                  axisLine={true}
+                  tickLine={true}
+                  type="category"
+                  orientation="bottom"
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis
+                  axisLine={true}
+                  tickLine={true}
+                  type="number"
+                  orientation="left"
+                  tick={{ fontSize: 12 }}
+                />
                 <Tooltip />
                 <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="الفواكه" />
                 <Line type="monotone" dataKey="vegetables" stroke="#4ecdc4" strokeWidth={2} name="الخضروات" />
