@@ -285,7 +285,7 @@ export default function CognitiveTests() {
         id: 3,
         name: "دب",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F25d2db6beec64c938f1b3f106525863e?format=webp&width=800",
-        category: "حيوانات"
+        category: "حي��انات"
       },
       {
         id: 4,
@@ -393,7 +393,7 @@ export default function CognitiveTests() {
       },
       {
         id: 4,
-        name: "سيارة إسع��ف",
+        name: "سيارة إسعاف",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5272a8084f114b36be05e3435795b5b1?format=webp&width=800",
         category: "مركبات"
       },
@@ -454,7 +454,7 @@ export default function CognitiveTests() {
     { name: "أخضر", color: "#22c55e", rgb: "34,197,94" },
     { name: "أصفر", color: "#eab308", rgb: "234,179,8" },
     { name: "برتقالي", color: "#f97316", rgb: "249,115,22" },
-    { name: "ب��فسجي", color: "#a855f7", rgb: "168,85,247" },
+    { name: "بنفسجي", color: "#a855f7", rgb: "168,85,247" },
     { name: "وردي", color: "#ec4899", rgb: "236,72,153" },
     { name: "بني", color: "#a3a3a3", rgb: "163,163,163" }
   ];
@@ -519,7 +519,7 @@ export default function CognitiveTests() {
       }));
       playAudio('ممتاز! إجابة صحيحة!');
     } else {
-      setFeedback({ type: 'error', message: `غير صحي��. الإجابة الصحيحة هي: ${correctAnswer}` });
+      setFeedback({ type: 'error', message: `غير صحيح. الإجابة الصحيحة هي: ${correctAnswer}` });
       setTestSession(prev => ({
         ...prev,
         wrongAnswers: prev.wrongAnswers + 1,
@@ -1290,7 +1290,7 @@ export default function CognitiveTests() {
                 <div className="text-3xl font-bold text-purple-600">
                   {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
                 </div>
-                <div className="text-sm text-gray-600">نسبة ��لنجاح</div>
+                <div className="text-sm text-gray-600">نسبة النجاح</div>
               </div>
             </div>
             <div className="flex gap-4 justify-center">
@@ -1720,6 +1720,42 @@ export default function CognitiveTests() {
           </CardContent>
         </Card>
 
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('clothes')}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-indigo-100 p-3 rounded-lg">
+                <Shirt className="w-8 h-8 text-indigo-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold">التعرف على الملابس</h3>
+                <p className="text-gray-600">تقييم معرفة أسماء الملابس</p>
+              </div>
+            </div>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ الاختبار
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('food')}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-emerald-100 p-3 rounded-lg">
+                <Apple className="w-8 h-8 text-emerald-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold">التعرف على الطعام</h3>
+                <p className="text-gray-600">تقييم معرفة أسماء الأطعمة</p>
+              </div>
+            </div>
+            <Button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ الاختبار
+            </Button>
+          </CardContent>
+        </Card>
+
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('colors')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
@@ -1733,7 +1769,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              ابدأ الاختبا��
             </Button>
           </CardContent>
         </Card>
