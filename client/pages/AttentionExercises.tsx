@@ -102,7 +102,7 @@ export default function AttentionExercises() {
 
     const handleStarClick = (star: Star) => {
       if (!gameActive) return;
-      
+
       if (star.isRed) {
         setScore(prev => prev + 10);
         setRedStarClicked(true);
@@ -136,7 +136,7 @@ export default function AttentionExercises() {
 
       const starCreationInterval = setInterval(createStar, 1500);
       const starMovementInterval = setInterval(() => {
-        setStars(prev => 
+        setStars(prev =>
           prev.map(star => ({
             ...star,
             y: star.y + star.speed
@@ -201,7 +201,7 @@ export default function AttentionExercises() {
               )}
             </div>
 
-            <div 
+            <div
               ref={gameAreaRef}
               className="relative w-full h-96 bg-gradient-to-b from-indigo-900 to-purple-900 rounded-lg overflow-hidden border-4 border-yellow-400"
               style={{ position: 'relative' }}
@@ -217,10 +217,10 @@ export default function AttentionExercises() {
                   }}
                   onClick={() => handleStarClick(star)}
                 >
-                  <Star 
+                  <Star
                     className={`w-8 h-8 ${
-                      star.isRed 
-                        ? 'text-red-400 fill-red-400 animate-pulse' 
+                      star.isRed
+                        ? 'text-red-400 fill-red-400 animate-pulse'
                         : 'text-blue-400 fill-blue-400'
                     } hover:scale-110 transition-transform`}
                   />
@@ -272,22 +272,46 @@ export default function AttentionExercises() {
     ];
 
     const generateItems = () => {
-      const numItems = 6 + level * 2; // زيادة العناصر مع المستوى
+      const numItems = Math.min(8, 6 + level); // حد أقصى 8 عناصر
       const newItems: ColoredItem[] = [];
-      
-      for (let i = 0; i < numItems; i++) {
-        const item = items[Math.floor(Math.random() * items.length)];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        newItems.push({
-          id: `${i}-${Date.now()}`,
-          name: item.name,
-          color: color.value,
-          emoji: item.emoji,
-          x: 10 + Math.random() * 80,
-          y: 10 + Math.random() * 70
-        });
+
+      // تأكد من وجود على الأقل عنصرين من اللون المطلوب
+      const targetColorObj = colors.find(c => c.value === targetColor);
+      if (targetColorObj) {
+        const minTargetItems = Math.max(2, Math.floor(numItems / 3));
+
+        // إضافة العناصر من اللون المطلوب
+        for (let i = 0; i < minTargetItems; i++) {
+          const item = items[Math.floor(Math.random() * items.length)];
+          newItems.push({
+            id: `target-${i}-${Date.now()}-${Math.random()}`,
+            name: item.name,
+            color: targetColor,
+            emoji: item.emoji,
+            x: 15 + Math.random() * 70,
+            y: 15 + Math.random() * 70
+          });
+        }
+
+        // إضافة باقي العناصر بألوان مختلفة
+        for (let i = minTargetItems; i < numItems; i++) {
+          const item = items[Math.floor(Math.random() * items.length)];
+          const availableColors = colors.filter(c => c.value !== targetColor);
+          const color = availableColors[Math.floor(Math.random() * availableColors.length)];
+          newItems.push({
+            id: `other-${i}-${Date.now()}-${Math.random()}`,
+            name: item.name,
+            color: color.value,
+            emoji: item.emoji,
+            x: 15 + Math.random() * 70,
+            y: 15 + Math.random() * 70
+          });
+        }
       }
-      setColoredItems(newItems);
+
+      // خلط العناصر
+      const shuffledItems = newItems.sort(() => Math.random() - 0.5);
+      setColoredItems(shuffledItems);
     };
 
     const startSelectiveGame = () => {
@@ -307,7 +331,7 @@ export default function AttentionExercises() {
         setScore(prev => prev + 10);
         speakArabic("ممتاز!");
         setColoredItems(prev => prev.filter(i => i.id !== item.id));
-        
+
         // تحقق من انتهاء المستوى
         if (coloredItems.filter(i => i.color === targetColor).length === 1) {
           setTimeout(() => {
@@ -412,7 +436,7 @@ export default function AttentionExercises() {
                   }}
                   onClick={() => handleItemClick(item)}
                 >
-                  <div className={`p-3 rounded-full border-4 border-gray-600 
+                  <div className={`p-3 rounded-full border-4 border-gray-600
                     ${item.color === 'red' ? 'bg-red-400' : ''}
                     ${item.color === 'blue' ? 'bg-blue-400' : ''}
                     ${item.color === 'green' ? 'bg-green-400' : ''}
@@ -475,14 +499,14 @@ export default function AttentionExercises() {
         emoji: char.emoji,
         hasMessage: false
       }));
-      
+
       // اختيار شخصية عشوائية لتحمل الرسالة
       const randomIndex = Math.floor(Math.random() * newCharacters.length);
       const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      
+
       newCharacters[randomIndex].hasMessage = true;
       newCharacters[randomIndex].message = randomMessage;
-      
+
       setCharacters(newCharacters);
       setTargetCharacter(newCharacters[randomIndex].name);
       setCurrentMessage(randomMessage);
@@ -504,7 +528,7 @@ export default function AttentionExercises() {
       if (character.hasMessage) {
         setScore(prev => prev + 20);
         speakArabic(`ممتاز! ${character.name} يقول: ${character.message}`);
-        
+
         setTimeout(() => {
           setRound(prev => prev + 1);
           generateCharacters();
@@ -651,12 +675,12 @@ export default function AttentionExercises() {
     const generateColorQuestion = () => {
       const correctColor = colorsData[Math.floor(Math.random() * colorsData.length)];
       setCurrentColor(correctColor.value);
-      
+
       // إنشاء خيارات (الصحيح + 3 خاطئة)
       const wrongOptions = colorsData.filter(c => c.value !== correctColor.value);
       const selectedWrong = wrongOptions.sort(() => 0.5 - Math.random()).slice(0, 3);
       const allOptions = [correctColor, ...selectedWrong].sort(() => 0.5 - Math.random());
-      
+
       setColorOptions(allOptions.map(c => c.value));
       speakArabic(`اختر اللون ${correctColor.name}`);
     };
@@ -674,7 +698,7 @@ export default function AttentionExercises() {
       if (selectedColor === currentColor) {
         setScore(prev => prev + 10);
         speakArabic("ممتاز!");
-        
+
         if (question < 10) {
           setQuestion(prev => prev + 1);
           setTimeout(generateColorQuestion, 1000);
@@ -785,7 +809,7 @@ export default function AttentionExercises() {
     const generateNumberQuestion = () => {
       const correctNumber = Math.floor(Math.random() * 10) + 1; // 1-10
       setCurrentNumber(correctNumber);
-      
+
       // إنشاء خيارات (الصحيح + 3 خاطئة)
       const wrongOptions = [];
       while (wrongOptions.length < 3) {
@@ -794,7 +818,7 @@ export default function AttentionExercises() {
           wrongOptions.push(wrongNum);
         }
       }
-      
+
       const allOptions = [correctNumber, ...wrongOptions].sort(() => 0.5 - Math.random());
       setNumberOptions(allOptions);
       speakArabic(`اختر الرقم ${correctNumber}`);
@@ -813,7 +837,7 @@ export default function AttentionExercises() {
       if (selectedNumber === currentNumber) {
         setScore(prev => prev + 10);
         speakArabic("ممتاز!");
-        
+
         if (question < 10) {
           setQuestion(prev => prev + 1);
           setTimeout(generateNumberQuestion, 1000);
@@ -838,7 +862,7 @@ export default function AttentionExercises() {
             <ArrowLeft className="w-4 h-4 ml-2" />
             العودة للقائمة
           </Button>
-          <h2 className="text-2xl font-bold text-center">تعلم الأرقام</h2>
+          <h2 className="text-2xl font-bold text-center">تعل�� الأرقام</h2>
           <div></div>
         </div>
 
@@ -945,7 +969,7 @@ export default function AttentionExercises() {
       if (selectedDirection === currentDirection) {
         setScore(prev => prev + 10);
         speakArabic("ممتاز!");
-        
+
         if (question < 8) {
           setQuestion(prev => prev + 1);
           setTimeout(generateSpatialQuestion, 1000);
@@ -1007,7 +1031,7 @@ export default function AttentionExercises() {
               <div className="text-center space-y-6">
                 <div className="p-6 bg-gray-100 rounded-lg">
                   <p className="text-xl font-bold mb-6">أين الكرة؟</p>
-                  
+
                   <div className="relative w-48 h-48 mx-auto">
                     {/* الصندوق */}
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -1015,7 +1039,7 @@ export default function AttentionExercises() {
                         <span className="text-2xl">📦</span>
                       </div>
                     </div>
-                    
+
                     {/* الكرة */}
                     <div className={`absolute ${objectPosition} left-1/2 transform -translate-x-1/2 ${currentDirection === 'left' || currentDirection === 'right' ? '-translate-y-1/2 top-1/2' : ''}`}>
                       <div className="w-12 h-12 bg-red-500 rounded-full border-4 border-red-700 shadow-lg flex items-center justify-center">
@@ -1088,7 +1112,7 @@ export default function AttentionExercises() {
       if (selectedPart === currentBodyPart) {
         setScore(prev => prev + 10);
         speakArabic("ممتاز!");
-        
+
         if (question < 6) {
           setQuestion(prev => prev + 1);
           setTimeout(generateBodyPartQuestion, 1000);
@@ -1411,7 +1435,7 @@ export default function AttentionExercises() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تطوير أنواع مختلفة من الانتباه</li>
                 <li>• تحسين التركيز والتحكم المعرفي</li>
-                <li>• زيادة مدة الانتباه وجودته</li>
+                <li>• ��يادة مدة الانتباه وجودته</li>
                 <li>• تعلم المهارات الأساسية</li>
                 <li>• تعزيز المعالجة البصرية والسمعية</li>
               </ul>
