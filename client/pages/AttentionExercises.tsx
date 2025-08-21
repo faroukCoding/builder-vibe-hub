@@ -14,7 +14,12 @@ import {
   CheckCircle,
   XCircle,
   Home,
-  Search
+  Search,
+  Users,
+  Palette,
+  Hash,
+  MapPin,
+  User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,9 +28,37 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
+interface Star {
+  id: string;
+  x: number;
+  y: number;
+  isRed: boolean;
+  speed: number;
+}
+
+interface Character {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  color: string;
+  emoji: string;
+  hasMessage: boolean;
+  message?: string;
+}
+
+interface ColoredItem {
+  id: string;
+  name: string;
+  color: string;
+  emoji: string;
+  x: number;
+  y: number;
+}
+
 export default function AttentionExercises() {
   const navigate = useNavigate();
-  const [currentGame, setCurrentGame] = useState("menu"); // menu, visual-attention, auditory-attention, sustained-attention, selective-attention
+  const [currentGame, setCurrentGame] = useState("menu");
   const [gameSession, setGameSession] = useState({
     correctAnswers: 0,
     wrongAnswers: 0,
@@ -33,1190 +66,1188 @@ export default function AttentionExercises() {
     currentQuestion: 1,
     isGameActive: false,
     timeElapsed: 0,
-    level: 1
+    level: 1,
+    score: 0
   });
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [gameData, setGameData] = useState({
-    shapes: [],
-    colors: [],
-    targetPosition: 0,
-    currentScene: null,
-    missingItem: null,
-    sequence: [],
-    userSequence: []
-  });
+  const speakArabic = (text: string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ar-SA';
+      utterance.rate = 0.8;
+      speechSynthesis.speak(utterance);
+    }
+  };
 
-  // تمرين الانتباه البصري
-  const VisualAttentionGame = () => {
-    const [currentTask, setCurrentTask] = useState(null);
-    const [feedback, setFeedback] = useState(null);
-    const [taskType, setTaskType] = useState("shapes"); // shapes, colors, patterns, numbers
+  // الانتباه المتواصل - نجوم متساقطة
+  const SustainedAttentionGame = () => {
+    const [stars, setStars] = useState<Star[]>([]);
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(60);
+    const [redStarClicked, setRedStarClicked] = useState(false);
+    const gameAreaRef = useRef<HTMLDivElement>(null);
 
-    const shapes = [
-      { name: "مربع", icon: "⬜", color: "#3B82F6" },
-      { name: "دائرة", icon: "🔵", color: "#EF4444" },
-      { name: "مثلث", icon: "🔺", color: "#10B981" },
-      { name: "نجمة", icon: "⭐", color: "#F59E0B" },
-      { name: "قلب", icon: "❤️", color: "#EC4899" },
-      { name: "معين", icon: "🔷", color: "#8B5CF6" }
+    const createStar = () => {
+      const isRed = Math.random() < 0.15; // 15% احتمال للنجمة الحمراء
+      const newStar: Star = {
+        id: Math.random().toString(36).substr(2, 9),
+        x: Math.random() * 90, // نسبة مئوية من العرض
+        y: -5,
+        isRed,
+        speed: 1 + Math.random() * 2
+      };
+      setStars(prev => [...prev, newStar]);
+    };
+
+    const handleStarClick = (star: Star) => {
+      if (!gameActive) return;
+      
+      if (star.isRed) {
+        setScore(prev => prev + 10);
+        setRedStarClicked(true);
+        speakArabic("ممتاز! نجمة حمراء");
+        setTimeout(() => setRedStarClicked(false), 500);
+      } else {
+        setScore(prev => Math.max(0, prev - 5));
+        speakArabic("انتبه! هذه نجمة زرقاء");
+      }
+
+      // إزالة النجمة المضغوطة
+      setStars(prev => prev.filter(s => s.id !== star.id));
+    };
+
+    const startSustainedGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setTimeLeft(60);
+      setStars([]);
+      speakArabic("ابدأ! اضغط على النجوم الحمراء فقط");
+    };
+
+    const endSustainedGame = () => {
+      setGameActive(false);
+      setStars([]);
+      speakArabic(`انتهت اللعبة! نقاطك ${score}`);
+    };
+
+    useEffect(() => {
+      if (!gameActive) return;
+
+      const starCreationInterval = setInterval(createStar, 1500);
+      const starMovementInterval = setInterval(() => {
+        setStars(prev => 
+          prev.map(star => ({
+            ...star,
+            y: star.y + star.speed
+          })).filter(star => star.y < 100) // إزالة النجوم التي خرجت من الشاشة
+        );
+      }, 50);
+
+      const timerInterval = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            endSustainedGame();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => {
+        clearInterval(starCreationInterval);
+        clearInterval(starMovementInterval);
+        clearInterval(timerInterval);
+      };
+    }, [gameActive]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">الانتباه المتواصل</h2>
+          <div></div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Star className="w-6 h-6 text-yellow-500" />
+              لعبة النجوم المتساقطة
+            </CardTitle>
+            <CardDescription>
+              اضغط على النجوم الحمراء فقط! تجنب النجوم الزرقاء
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">الوقت: {timeLeft}ث</Badge>
+              </div>
+              {!gameActive ? (
+                <Button onClick={startSustainedGame} className="bg-green-500 hover:bg-green-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ اللعبة
+                </Button>
+              ) : (
+                <Button onClick={endSustainedGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
+
+            <div 
+              ref={gameAreaRef}
+              className="relative w-full h-96 bg-gradient-to-b from-indigo-900 to-purple-900 rounded-lg overflow-hidden border-4 border-yellow-400"
+              style={{ position: 'relative' }}
+            >
+              {stars.map(star => (
+                <div
+                  key={star.id}
+                  className={`absolute cursor-pointer transition-all duration-100 ${redStarClicked ? 'animate-pulse' : ''}`}
+                  style={{
+                    left: `${star.x}%`,
+                    top: `${star.y}%`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                  onClick={() => handleStarClick(star)}
+                >
+                  <Star 
+                    className={`w-8 h-8 ${
+                      star.isRed 
+                        ? 'text-red-400 fill-red-400 animate-pulse' 
+                        : 'text-blue-400 fill-blue-400'
+                    } hover:scale-110 transition-transform`}
+                  />
+                </div>
+              ))}
+              {!gameActive && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="text-center text-white">
+                    <Star className="w-16 h-16 mx-auto mb-4 text-yellow-400" />
+                    <p className="text-xl mb-2">اضغط على "ابدأ اللعبة" للبدء</p>
+                    <p className="text-sm">اضغط على النجوم الحمراء فقط!</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // الانتباه الانتقائي - اختيار الألوان
+  const SelectiveAttentionGame = () => {
+    const [coloredItems, setColoredItems] = useState<ColoredItem[]>([]);
+    const [targetColor, setTargetColor] = useState("");
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [level, setLevel] = useState(1);
+    const [timeLeft, setTimeLeft] = useState(45);
+
+    const items = [
+      { name: "تفاحة", emoji: "🍎" },
+      { name: "كرة", emoji: "⚽" },
+      { name: "سيارة", emoji: "🚗" },
+      { name: "زهرة", emoji: "🌸" },
+      { name: "قلم", emoji: "✏️" },
+      { name: "كتاب", emoji: "📖" },
+      { name: "بيت", emoji: "🏠" },
+      { name: "شمس", emoji: "☀️" }
     ];
 
     const colors = [
-      { name: "أحمر", value: "#EF4444", emoji: "🔴" },
-      { name: "أزرق", value: "#3B82F6", emoji: "🔵" },
-      { name: "أخضر", value: "#10B981", emoji: "🟢" },
-      { name: "أصفر", value: "#F59E0B", emoji: "🟡" },
-      { name: "بنفسجي", value: "#8B5CF6", emoji: "🟣" },
-      { name: "برتقالي", value: "#F97316", emoji: "🟠" }
+      { name: "أحمر", value: "red", bg: "bg-red-400" },
+      { name: "أزرق", value: "blue", bg: "bg-blue-400" },
+      { name: "أخضر", value: "green", bg: "bg-green-400" },
+      { name: "أصفر", value: "yellow", bg: "bg-yellow-400" },
+      { name: "برتقالي", value: "orange", bg: "bg-orange-400" },
+      { name: "بنفسجي", value: "purple", bg: "bg-purple-400" }
     ];
 
-    const generateTask = () => {
-      const level = Math.min(Math.floor(gameSession.currentQuestion / 3) + 1, 4);
-      const gridSize = Math.min(3 + level, 6);
-
-      if (taskType === "shapes") {
-        const targetShape = shapes[Math.floor(Math.random() * shapes.length)];
-        const distractors = shapes.filter(s => s.name !== targetShape.name);
-        const items = [];
-
-        // Add target shapes (1-3 based on level)
-        const targetCount = Math.min(level, 3);
-        for (let i = 0; i < targetCount; i++) {
-          items.push({ ...targetShape, isTarget: true, id: `target-${i}` });
-        }
-
-        // Fill remaining spots with distractors
-        while (items.length < gridSize * gridSize) {
-          const distractor = distractors[Math.floor(Math.random() * distractors.length)];
-          items.push({ ...distractor, isTarget: false, id: `dist-${items.length}` });
-        }
-
-        // Shuffle array
-        for (let i = items.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [items[i], items[j]] = [items[j], items[i]];
-        }
-
-        setCurrentTask({
-          type: "shapes",
-          target: targetShape,
-          items: items,
-          gridSize: gridSize,
-          instruction: `ابحث عن جميع ${targetShape.name}`
-        });
-
-      } else if (taskType === "colors") {
-        const targetColor = colors[Math.floor(Math.random() * colors.length)];
-        const distractors = colors.filter(c => c.name !== targetColor.name);
-        const items = [];
-
-        const targetCount = Math.min(level, 3);
-        for (let i = 0; i < targetCount; i++) {
-          items.push({ ...targetColor, isTarget: true, id: `target-${i}` });
-        }
-
-        while (items.length < gridSize * gridSize) {
-          const distractor = distractors[Math.floor(Math.random() * distractors.length)];
-          items.push({ ...distractor, isTarget: false, id: `dist-${items.length}` });
-        }
-
-        for (let i = items.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [items[i], items[j]] = [items[j], items[i]];
-        }
-
-        setCurrentTask({
-          type: "colors",
-          target: targetColor,
-          items: items,
-          gridSize: gridSize,
-          instruction: `ابحث عن جميع الألوان ${targetColor.name}`
+    const generateItems = () => {
+      const numItems = 6 + level * 2; // زيادة العناصر مع المستوى
+      const newItems: ColoredItem[] = [];
+      
+      for (let i = 0; i < numItems; i++) {
+        const item = items[Math.floor(Math.random() * items.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        newItems.push({
+          id: `${i}-${Date.now()}`,
+          name: item.name,
+          color: color.value,
+          emoji: item.emoji,
+          x: 10 + Math.random() * 80,
+          y: 10 + Math.random() * 70
         });
       }
-
-      playInstruction();
+      setColoredItems(newItems);
     };
 
-    const playInstruction = () => {
-      if ('speechSynthesis' in window && currentTask) {
-        const utterance = new SpeechSynthesisUtterance(currentTask.instruction);
-        utterance.lang = 'ar-SA';
-        speechSynthesis.speak(utterance);
-      }
+    const startSelectiveGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setTimeLeft(45);
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      setTargetColor(randomColor.value);
+      generateItems();
+      speakArabic(`اختر الأشياء باللون ${randomColor.name}`);
     };
 
-    const handleItemClick = (item) => {
-      if (!gameSession.isGameActive) return;
+    const handleItemClick = (item: ColoredItem) => {
+      if (!gameActive) return;
 
-      const newItems = currentTask.items.map(i =>
-        i.id === item.id ? { ...i, clicked: true } : i
-      );
-
-      setCurrentTask(prev => ({ ...prev, items: newItems }));
-
-      if (item.isTarget) {
-        // Check if all targets are found
-        const allTargetsFound = newItems.filter(i => i.isTarget).every(i => i.clicked);
-
-        if (allTargetsFound) {
-          setFeedback({ type: 'success', message: 'ممتاز! وجدت كل الأهداف!' });
-          setGameSession(prev => ({
-            ...prev,
-            correctAnswers: prev.correctAnswers + 1,
-            currentQuestion: prev.currentQuestion + 1,
-            totalQuestions: prev.totalQuestions + 1
-          }));
-
-          if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance('ممتاز! أحسنت!');
-            utterance.lang = 'ar-SA';
-            speechSynthesis.speak(utterance);
-          }
-
+      if (item.color === targetColor) {
+        setScore(prev => prev + 10);
+        speakArabic("ممتاز!");
+        setColoredItems(prev => prev.filter(i => i.id !== item.id));
+        
+        // تحقق من انتهاء المستوى
+        if (coloredItems.filter(i => i.color === targetColor).length === 1) {
           setTimeout(() => {
-            setFeedback(null);
-            if (gameSession.currentQuestion < 10) {
-              generateTask();
-            } else {
-              endGame();
-            }
-          }, 2500);
-        } else {
-          // Positive feedback for finding one target
-          if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance('أحسنت! ابحث عن المزيد');
-            utterance.lang = 'ar-SA';
-            speechSynthesis.speak(utterance);
-          }
+            setLevel(prev => prev + 1);
+            generateItems();
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            setTargetColor(randomColor.value);
+            speakArabic(`مس��وى جديد! اختر الأشياء باللون ${colors.find(c => c.value === randomColor.value)?.name}`);
+          }, 1000);
         }
-
       } else {
-        setFeedback({ type: 'error', message: 'ليس هذا الهدف، حاول مرة أخرى' });
-        setGameSession(prev => ({
-          ...prev,
-          wrongAnswers: prev.wrongAnswers + 1
-        }));
-
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('ليس هذا الهدف');
-          utterance.lang = 'ar-SA';
-          speechSynthesis.speak(utterance);
-        }
-
-        setTimeout(() => setFeedback(null), 1500);
+        setScore(prev => Math.max(0, prev - 5));
+        speakArabic("حاول مرة أخرى");
       }
     };
 
-    const startGame = () => {
-      setGameSession({
-        correctAnswers: 0,
-        wrongAnswers: 0,
-        totalQuestions: 0,
-        currentQuestion: 1,
-        isGameActive: true,
-        timeElapsed: 0,
-        level: 1
-      });
-      generateTask();
-    };
-
-    const endGame = () => {
-      setGameSession(prev => ({ ...prev, isGameActive: false }));
+    const endSelectiveGame = () => {
+      setGameActive(false);
+      setColoredItems([]);
+      speakArabic(`انتهت اللعبة! نقاطك ${score}`);
     };
 
     useEffect(() => {
-      if (gameSession.isGameActive && gameSession.currentQuestion === 1) {
-        generateTask();
-      }
-    }, [gameSession.isGameActive, taskType]);
+      if (!gameActive) return;
+
+      const timerInterval = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            endSelectiveGame();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timerInterval);
+    }, [gameActive]);
+
+    const currentColorName = colors.find(c => c.value === targetColor)?.name || "";
+    const currentColorBg = colors.find(c => c.value === targetColor)?.bg || "";
 
     return (
-      <div className="space-y-6">
-        {/* Game Header */}
-        <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">👁️ الانتباه البصري</h2>
-                <p className="text-blue-100">ابحث عن الأشكال أو الألوان المطلوبة</p>
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">الانتباه الانتقائي</h2>
+          <div></div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Palette className="w-6 h-6" />
+              لعبة اختيار الألوان
+            </CardTitle>
+            <CardDescription>
+              اختر الأشياء باللون المطلوب فقط
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">المستوى: {level}</Badge>
+                <Badge variant="outline">الوقت: {timeLeft}ث</Badge>
               </div>
-              <div className="text-right">
-                <div className="text-sm text-blue-100 mb-1">المستوى</div>
-                <div className="text-2xl font-bold">{Math.min(Math.floor(gameSession.currentQuestion / 3) + 1, 4)}</div>
+              {!gameActive ? (
+                <Button onClick={startSelectiveGame} className="bg-blue-500 hover:bg-blue-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ اللعبة
+                </Button>
+              ) : (
+                <Button onClick={endSelectiveGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
+
+            {gameActive && targetColor && (
+              <div className="mb-4 p-4 bg-gray-100 rounded-lg text-center">
+                <p className="text-lg font-bold mb-2">اختر الأشياء باللون:</p>
+                <div className="flex items-center justify-center gap-2">
+                  <div className={`w-8 h-8 rounded-full ${currentColorBg} border-2 border-gray-600`}></div>
+                  <span className="text-xl font-bold">{currentColorName}</span>
+                </div>
               </div>
+            )}
+
+            <div className="relative w-full h-96 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg border-4 border-blue-300 overflow-hidden">
+              {coloredItems.map(item => (
+                <div
+                  key={item.id}
+                  className="absolute cursor-pointer transition-all duration-200 hover:scale-110"
+                  style={{
+                    left: `${item.x}%`,
+                    top: `${item.y}%`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                  onClick={() => handleItemClick(item)}
+                >
+                  <div className={`p-3 rounded-full border-4 border-gray-600 
+                    ${item.color === 'red' ? 'bg-red-400' : ''}
+                    ${item.color === 'blue' ? 'bg-blue-400' : ''}
+                    ${item.color === 'green' ? 'bg-green-400' : ''}
+                    ${item.color === 'yellow' ? 'bg-yellow-400' : ''}
+                    ${item.color === 'orange' ? 'bg-orange-400' : ''}
+                    ${item.color === 'purple' ? 'bg-purple-400' : ''}
+                    shadow-lg hover:shadow-xl transition-shadow`}>
+                    <span className="text-2xl">{item.emoji}</span>
+                  </div>
+                </div>
+              ))}
+              {!gameActive && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="text-center text-white">
+                    <Palette className="w-16 h-16 mx-auto mb-4 text-blue-400" />
+                    <p className="text-xl mb-2">اضغط على "ابدأ اللعبة" للبدء</p>
+                    <p className="text-sm">اختر الأشياء باللون المطلوب!</p>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
-
-        {/* Task Type Selection */}
-        {!gameSession.isGameActive && (
-          <Card>
-            <CardHeader>
-              <CardTitle>اختر نوع التمرين</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                <Button
-                  variant={taskType === "shapes" ? "default" : "outline"}
-                  onClick={() => setTaskType("shapes")}
-                  className="p-6 h-auto flex flex-col gap-2"
-                >
-                  <div className="text-2xl">🔷</div>
-                  <div>الأشكال</div>
-                </Button>
-                <Button
-                  variant={taskType === "colors" ? "default" : "outline"}
-                  onClick={() => setTaskType("colors")}
-                  className="p-6 h-auto flex flex-col gap-2"
-                >
-                  <div className="text-2xl">🎨</div>
-                  <div>الألوان</div>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Game Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="bg-green-50 border-green-200">
-            <CardContent className="p-4 text-center">
-              <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-              <div className="text-sm text-green-700">مهام مكتملة</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-red-50 border-red-200">
-            <CardContent className="p-4 text-center">
-              <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-              <div className="text-sm text-red-700">أخطاء</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-blue-50 border-blue-200">
-            <CardContent className="p-4 text-center">
-              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-blue-600">{gameSession.currentQuestion}/10</div>
-              <div className="text-sm text-blue-700">التقدم</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Game Controls */}
-        <div className="flex justify-center gap-4">
-          {!gameSession.isGameActive ? (
-            <Button
-              onClick={startGame}
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Play className="w-5 h-5 ml-2" />
-              ابدأ التمرين
-            </Button>
-          ) : (
-            <>
-              <Button
-                onClick={endGame}
-                size="lg"
-                variant="outline"
-              >
-                <Pause className="w-5 h-5 ml-2" />
-                ��يقاف
-              </Button>
-              <Button
-                onClick={generateTask}
-                size="lg"
-                variant="outline"
-              >
-                <RotateCcw className="w-5 h-5 ml-2" />
-                مهمة جديدة
-              </Button>
-            </>
-          )}
-        </div>
-
-        {/* Game Area */}
-        {gameSession.isGameActive && currentTask && (
-          <Card className="min-h-96">
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl">{currentTask.instruction}</CardTitle>
-              {currentTask.target && (
-                <div className="flex items-center justify-center gap-2 text-lg">
-                  <span>الهدف:</span>
-                  {currentTask.type === "shapes" ? (
-                    <span className="text-2xl">{currentTask.target.icon}</span>
-                  ) : (
-                    <div
-                      className="w-8 h-8 rounded-full border-2 border-gray-300"
-                      style={{ backgroundColor: currentTask.target.value }}
-                    ></div>
-                  )}
-                  <span className="font-bold">{currentTask.target.name}</span>
-                </div>
-              )}
-            </CardHeader>
-            <CardContent className="p-8">
-              <div className="relative">
-                {/* Feedback */}
-                {feedback && (
-                  <div className={`absolute inset-0 flex items-center justify-center z-10 ${
-                    feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
-                  } text-white rounded-lg`}>
-                    <div className="text-center">
-                      {feedback.type === 'success' ? (
-                        <CheckCircle className="w-16 h-16 mx-auto mb-4" />
-                      ) : (
-                        <XCircle className="w-16 h-16 mx-auto mb-4" />
-                      )}
-                      <div className="text-2xl font-bold">{feedback.message}</div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Items Grid */}
-                <div
-                  className={`grid gap-4 max-w-4xl mx-auto`}
-                  style={{
-                    gridTemplateColumns: `repeat(${currentTask.gridSize}, minmax(0, 1fr))`
-                  }}
-                >
-                  {currentTask.items.map((item, index) => (
-                    <div
-                      key={item.id}
-                      onClick={() => handleItemClick(item)}
-                      className={`
-                        aspect-square flex items-center justify-center rounded-lg cursor-pointer
-                        transition-all duration-200 border-4 hover:scale-105 text-4xl
-                        ${item.clicked
-                          ? (item.isTarget ? 'border-green-500 bg-green-100' : 'border-red-500 bg-red-100')
-                          : 'border-gray-300 bg-white hover:bg-gray-50'
-                        }
-                      `}
-                    >
-                      {currentTask.type === "shapes" ? (
-                        <span>{item.icon}</span>
-                      ) : (
-                        <div
-                          className="w-16 h-16 rounded-full border-2 border-gray-300"
-                          style={{ backgroundColor: item.value }}
-                        ></div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Progress Bar */}
-                <div className="mt-8 max-w-md mx-auto">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>التقدم</span>
-                    <span>{gameSession.currentQuestion}/10</span>
-                  </div>
-                  <Progress value={(gameSession.currentQuestion / 10) * 100} className="h-3" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Game Summary */}
-        {!gameSession.isGameActive && gameSession.totalQuestions > 0 && (
-          <Card className="bg-blue-50 border-blue-200">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-6 h-6 text-yellow-600" />
-                ملخص الجلسة
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-                  <div className="text-sm text-gray-600">مهام مكتملة</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-                  <div className="text-sm text-gray-600">أخطاء</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-purple-600">
-                    {gameSession.totalQuestions > 0 ? Math.round((gameSession.correctAnswers / gameSession.totalQuestions) * 100) : 0}%
-                  </div>
-                  <div className="text-sm text-gray-600">معدل النجاح</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
       </div>
     );
   };
 
-  // تمرين الانتباه السمعي
-  const AuditoryAttentionGame = () => {
-    const [currentSequence, setCurrentSequence] = useState([]);
-    const [userSequence, setUserSequence] = useState([]);
-    const [feedback, setFeedback] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(false);
+  // الانتباه المشترك - شخصيات متحركة
+  const JointAttentionGame = () => {
+    const [characters, setCharacters] = useState<Character[]>([]);
+    const [currentMessage, setCurrentMessage] = useState("");
+    const [targetCharacter, setTargetCharacter] = useState("");
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [round, setRound] = useState(1);
 
-    const sounds = [
-      { name: "طقطقة", sound: "tick", emoji: "🔔", color: "#3B82F6" },
-      { name: "صفير", sound: "whistle", emoji: "🎵", color: "#EF4444" },
-      { name: "نقرة", sound: "click", emoji: "👆", color: "#10B981" },
-      { name: "طبلة", sound: "drum", emoji: "🥁", color: "#F59E0B" }
+    const characterData = [
+      { name: "أحمد", color: "red", emoji: "👦" },
+      { name: "فاطمة", color: "blue", emoji: "👧" },
+      { name: "علي", color: "green", emoji: "🧒" },
+      { name: "زينب", color: "purple", emoji: "👶" }
     ];
 
-    const generateSequence = () => {
-      const level = Math.min(Math.floor(gameSession.currentQuestion / 2) + 2, 6);
-      const sequence = [];
-      for (let i = 0; i < level; i++) {
-        sequence.push(sounds[Math.floor(Math.random() * sounds.length)]);
-      }
-      setCurrentSequence(sequence);
-      setUserSequence([]);
-      playSequence(sequence);
+    const messages = [
+      "أريد أن ألعب",
+      "هل يمكنك مساعدتي؟",
+      "أنا جائع",
+      "أريد أن أذهب للحديقة",
+      "هل نقرأ قصة؟",
+      "أريد أن أرسم"
+    ];
+
+    const generateCharacters = () => {
+      const newCharacters: Character[] = characterData.map((char, index) => ({
+        id: char.name,
+        name: char.name,
+        x: 20 + (index * 20),
+        y: 50 + Math.sin(index) * 20,
+        color: char.color,
+        emoji: char.emoji,
+        hasMessage: false
+      }));
+      
+      // اختيار شخصية عشوائية لتحمل الرسالة
+      const randomIndex = Math.floor(Math.random() * newCharacters.length);
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      
+      newCharacters[randomIndex].hasMessage = true;
+      newCharacters[randomIndex].message = randomMessage;
+      
+      setCharacters(newCharacters);
+      setTargetCharacter(newCharacters[randomIndex].name);
+      setCurrentMessage(randomMessage);
     };
 
-    const playSequence = async (sequence) => {
-      setIsPlaying(true);
-
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance('استمع للتسلسل وأ��د ترتيبه');
-        utterance.lang = 'ar-SA';
-        speechSynthesis.speak(utterance);
-
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      }
-
-      for (let i = 0; i < sequence.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance(sequence[i].name);
-          utterance.lang = 'ar-SA';
-          speechSynthesis.speak(utterance);
-        }
-      }
-
-      setIsPlaying(false);
+    const startJointGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setRound(1);
+      generateCharacters();
+      setTimeout(() => {
+        speakArabic("اختر الشخصية التي تحمل الرسالة");
+      }, 1000);
     };
 
-    const handleSoundClick = (sound) => {
-      if (!gameSession.isGameActive || isPlaying) return;
+    const handleCharacterClick = (character: Character) => {
+      if (!gameActive) return;
 
-      const newUserSequence = [...userSequence, sound];
-      setUserSequence(newUserSequence);
-
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(sound.name);
-        utterance.lang = 'ar-SA';
-        speechSynthesis.speak(utterance);
-      }
-
-      // Check if sequence is complete
-      if (newUserSequence.length === currentSequence.length) {
-        const isCorrect = newUserSequence.every((sound, index) =>
-          sound.name === currentSequence[index].name
-        );
-
-        if (isCorrect) {
-          setFeedback({ type: 'success', message: 'ممتاز! التسلسل صحيح!' });
-          setGameSession(prev => ({
-            ...prev,
-            correctAnswers: prev.correctAnswers + 1,
-            currentQuestion: prev.currentQuestion + 1,
-            totalQuestions: prev.totalQuestions + 1
-          }));
-
-          if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance('ممتاز! التسلسل صحيح!');
-            utterance.lang = 'ar-SA';
-            speechSynthesis.speak(utterance);
-          }
-
-          setTimeout(() => {
-            setFeedback(null);
-            if (gameSession.currentQuestion < 10) {
-              generateSequence();
-            } else {
-              endGame();
-            }
-          }, 2500);
-
-        } else {
-          setFeedback({ type: 'error', message: 'التسلسل غير صحيح، حاول مرة أخرى' });
-          setGameSession(prev => ({
-            ...prev,
-            wrongAnswers: prev.wrongAnswers + 1,
-            totalQuestions: prev.totalQuestions + 1
-          }));
-
-          if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance('التسلسل غير صحيح');
-            utterance.lang = 'ar-SA';
-            speechSynthesis.speak(utterance);
-          }
-
-          setTimeout(() => {
-            setFeedback(null);
-            setUserSequence([]);
-          }, 2000);
-        }
+      if (character.hasMessage) {
+        setScore(prev => prev + 20);
+        speakArabic(`ممتاز! ${character.name} يقول: ${character.message}`);
+        
+        setTimeout(() => {
+          setRound(prev => prev + 1);
+          generateCharacters();
+          speakArabic("جولة جديدة! اختر الشخصية التي تحمل الرسالة");
+        }, 2000);
+      } else {
+        setScore(prev => Math.max(0, prev - 10));
+        speakArabic(`هذا ${character.name}، لكنه لا يحمل رسالة`);
       }
     };
 
-    const startGame = () => {
-      setGameSession({
-        correctAnswers: 0,
-        wrongAnswers: 0,
-        totalQuestions: 0,
-        currentQuestion: 1,
-        isGameActive: true,
-        timeElapsed: 0,
-        level: 1
-      });
-      generateSequence();
+    const endJointGame = () => {
+      setGameActive(false);
+      setCharacters([]);
+      speakArabic(`انتهت اللعبة! أكملت ${round} جولات بنقاط ${score}`);
     };
 
-    const endGame = () => {
-      setGameSession(prev => ({ ...prev, isGameActive: false }));
-    };
+    // تحريك الشخص��ات
+    useEffect(() => {
+      if (!gameActive) return;
+
+      const animationInterval = setInterval(() => {
+        setCharacters(prev => prev.map(char => ({
+          ...char,
+          y: char.y + Math.sin(Date.now() * 0.001 + char.x * 0.1) * 0.5
+        })));
+      }, 100);
+
+      return () => clearInterval(animationInterval);
+    }, [gameActive]);
 
     return (
-      <div className="space-y-6">
-        {/* Game Header */}
-        <Card className="bg-gradient-to-r from-green-500 to-blue-500 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">🎵 الانتباه السمعي</h2>
-                <p className="text-green-100">استمع للتسلسل وأعد ترتيبه</p>
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">الانتباه المشترك</h2>
+          <div></div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="w-6 h-6" />
+              لعبة الشخصيات المتحركة
+            </CardTitle>
+            <CardDescription>
+              اختر الشخصية التي تحمل الرسالة
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">الجولة: {round}</Badge>
               </div>
-              <Volume2 className="w-16 h-16 text-green-200" />
+              {!gameActive ? (
+                <Button onClick={startJointGame} className="bg-purple-500 hover:bg-purple-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ اللعبة
+                </Button>
+              ) : (
+                <Button onClick={endJointGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
+
+            {gameActive && currentMessage && (
+              <div className="mb-4 p-4 bg-yellow-100 rounded-lg text-center border-2 border-yellow-300">
+                <p className="text-lg font-bold text-yellow-800">الرسالة: "{currentMessage}"</p>
+                <p className="text-sm text-yellow-600 mt-1">اضغط على الشخصية التي تحمل هذه الرسالة</p>
+              </div>
+            )}
+
+            <div className="relative w-full h-96 bg-gradient-to-br from-pink-100 to-yellow-100 rounded-lg border-4 border-pink-300 overflow-hidden">
+              {characters.map(character => (
+                <div
+                  key={character.id}
+                  className="absolute cursor-pointer transition-all duration-200 hover:scale-110"
+                  style={{
+                    left: `${character.x}%`,
+                    top: `${character.y}%`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                  onClick={() => handleCharacterClick(character)}
+                >
+                  <div className={`relative p-4 rounded-full border-4 border-gray-600 shadow-lg hover:shadow-xl transition-shadow
+                    ${character.color === 'red' ? 'bg-red-200' : ''}
+                    ${character.color === 'blue' ? 'bg-blue-200' : ''}
+                    ${character.color === 'green' ? 'bg-green-200' : ''}
+                    ${character.color === 'purple' ? 'bg-purple-200' : ''}
+                    ${character.hasMessage ? 'animate-bounce' : ''}`}>
+                    <span className="text-4xl">{character.emoji}</span>
+                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-700">
+                      {character.name}
+                    </div>
+                    {character.hasMessage && (
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full border-2 border-white flex items-center justify-center">
+                        <span className="text-xs">💬</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {!gameActive && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="text-center text-white">
+                    <Users className="w-16 h-16 mx-auto mb-4 text-purple-400" />
+                    <p className="text-xl mb-2">اضغط على "ابدأ اللعبة" للبدء</p>
+                    <p className="text-sm">اختر الشخصية التي تحمل الرسالة!</p>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
+      </div>
+    );
+  };
 
-        {/* Game Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="bg-green-50 border-green-200">
-            <CardContent className="p-4 text-center">
-              <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-              <div className="text-sm text-green-700">تسلسلات صحيحة</div>
-            </CardContent>
-          </Card>
+  // المهارات الأساسية - الألوان
+  const ColorsSkillGame = () => {
+    const [currentColor, setCurrentColor] = useState("");
+    const [colorOptions, setColorOptions] = useState<string[]>([]);
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [question, setQuestion] = useState(1);
 
-          <Card className="bg-red-50 border-red-200">
-            <CardContent className="p-4 text-center">
-              <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-              <div className="text-sm text-red-700">أخطاء</div>
-            </CardContent>
-          </Card>
+    const colorsData = [
+      { name: "أحمر", value: "red", bg: "bg-red-500" },
+      { name: "أزرق", value: "blue", bg: "bg-blue-500" },
+      { name: "أخضر", value: "green", bg: "bg-green-500" },
+      { name: "أصفر", value: "yellow", bg: "bg-yellow-500" },
+      { name: "برتقالي", value: "orange", bg: "bg-orange-500" },
+      { name: "بنفسجي", value: "purple", bg: "bg-purple-500" },
+      { name: "وردي", value: "pink", bg: "bg-pink-500" },
+      { name: "بني", value: "brown", bg: "bg-amber-700" }
+    ];
 
-          <Card className="bg-blue-50 border-blue-200">
-            <CardContent className="p-4 text-center">
-              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-blue-600">{currentSequence.length}</div>
-              <div className="text-sm text-blue-700">طول التسلسل</div>
-            </CardContent>
-          </Card>
+    const generateColorQuestion = () => {
+      const correctColor = colorsData[Math.floor(Math.random() * colorsData.length)];
+      setCurrentColor(correctColor.value);
+      
+      // إنشاء خيارات (الصحيح + 3 خاطئة)
+      const wrongOptions = colorsData.filter(c => c.value !== correctColor.value);
+      const selectedWrong = wrongOptions.sort(() => 0.5 - Math.random()).slice(0, 3);
+      const allOptions = [correctColor, ...selectedWrong].sort(() => 0.5 - Math.random());
+      
+      setColorOptions(allOptions.map(c => c.value));
+      speakArabic(`اختر اللون ${correctColor.name}`);
+    };
+
+    const startColorsGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setQuestion(1);
+      generateColorQuestion();
+    };
+
+    const handleColorClick = (selectedColor: string) => {
+      if (!gameActive) return;
+
+      if (selectedColor === currentColor) {
+        setScore(prev => prev + 10);
+        speakArabic("ممتاز!");
+        
+        if (question < 10) {
+          setQuestion(prev => prev + 1);
+          setTimeout(generateColorQuestion, 1000);
+        } else {
+          endColorsGame();
+        }
+      } else {
+        setScore(prev => Math.max(0, prev - 5));
+        speakArabic("حاول مرة أخرى");
+      }
+    };
+
+    const endColorsGame = () => {
+      setGameActive(false);
+      speakArabic(`انتهت اللعبة! نقاطك ${score} من ${question * 10}`);
+    };
+
+    const getCurrentColorName = () => {
+      return colorsData.find(c => c.value === currentColor)?.name || "";
+    };
+
+    const getColorBg = (color: string) => {
+      return colorsData.find(c => c.value === color)?.bg || "";
+    };
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">تع��م الألوان</h2>
+          <div></div>
         </div>
 
-        {/* Game Controls */}
-        <div className="flex justify-center gap-4">
-          {!gameSession.isGameActive ? (
-            <Button
-              onClick={startGame}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white"
-            >
-              <Play className="w-5 h-5 ml-2" />
-              ابدأ التمرين
-            </Button>
-          ) : (
-            <>
-              <Button
-                onClick={endGame}
-                size="lg"
-                variant="outline"
-              >
-                <Pause className="w-5 h-5 ml-2" />
-                إيقاف
-              </Button>
-              <Button
-                onClick={() => playSequence(currentSequence)}
-                size="lg"
-                variant="outline"
-                disabled={isPlaying}
-              >
-                <Volume2 className="w-5 h-5 ml-2" />
-                إعادة التشغيل
-              </Button>
-            </>
-          )}
-        </div>
-
-        {/* Game Area */}
-        {gameSession.isGameActive && (
-          <Card className="min-h-96">
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl">
-                {isPlaying ? "🎵 استمع للتسلسل..." : "🎯 أعد ترتيب التسلسل"}
-              </CardTitle>
-              <div className="text-sm text-gray-600">
-                المطلوب: {currentSequence.length} أصوات | تم اختيار: {userSequence.length}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Palette className="w-6 h-6" />
+              اختبار الألوان
+            </CardTitle>
+            <CardDescription>
+              اختر اللون الصحيح
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">السؤال: {question}/10</Badge>
               </div>
-            </CardHeader>
-            <CardContent className="p-8">
-              <div className="relative">
-                {/* Feedback */}
-                {feedback && (
-                  <div className={`absolute inset-0 flex items-center justify-center z-10 ${
-                    feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
-                  } text-white rounded-lg`}>
-                    <div className="text-center">
-                      {feedback.type === 'success' ? (
-                        <CheckCircle className="w-16 h-16 mx-auto mb-4" />
-                      ) : (
-                        <XCircle className="w-16 h-16 mx-auto mb-4" />
-                      )}
-                      <div className="text-2xl font-bold">{feedback.message}</div>
-                    </div>
-                  </div>
-                )}
+              {!gameActive ? (
+                <Button onClick={startColorsGame} className="bg-red-500 hover:bg-red-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ الاختبار
+                </Button>
+              ) : (
+                <Button onClick={endColorsGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
 
-                {/* User Sequence Display */}
-                {userSequence.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3 text-center">تسلسلك:</h3>
-                    <div className="flex justify-center gap-2 flex-wrap">
-                      {userSequence.map((sound, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-lg"
-                        >
-                          <span className="text-2xl">{sound.emoji}</span>
-                          <span className="font-medium">{sound.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            {gameActive && currentColor && (
+              <div className="text-center space-y-6">
+                <div className="p-6 bg-gray-100 rounded-lg">
+                  <p className="text-2xl font-bold mb-4">اختر اللون: {getCurrentColorName()}</p>
+                </div>
 
-                {/* Sound Buttons */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-                  {sounds.map((sound, index) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {colorOptions.map((color, index) => (
                     <Button
                       key={index}
-                      onClick={() => handleSoundClick(sound)}
-                      disabled={isPlaying}
-                      className={`
-                        h-24 flex flex-col gap-2 text-white text-lg
-                        ${isPlaying ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}
-                      `}
-                      style={{ backgroundColor: sound.color }}
+                      onClick={() => handleColorClick(color)}
+                      className={`h-24 w-full ${getColorBg(color)} hover:scale-105 transition-transform border-4 border-gray-600`}
+                      variant="outline"
                     >
-                      <span className="text-3xl">{sound.emoji}</span>
-                      <span>{sound.name}</span>
+                      <div className="w-full h-full rounded-lg"></div>
                     </Button>
                   ))}
                 </div>
-
-                {/* Progress Bar */}
-                <div className="mt-8 max-w-md mx-auto">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>التقدم</span>
-                    <span>{gameSession.currentQuestion}/10</span>
-                  </div>
-                  <Progress value={(gameSession.currentQuestion / 10) * 100} className="h-3" />
-                </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
+            )}
+
+            {!gameActive && (
+              <div className="text-center py-12">
+                <Palette className="w-16 h-16 mx-auto mb-4 text-red-400" />
+                <p className="text-xl mb-2">اضغط على "ابدأ الاختبار" للبدء</p>
+                <p className="text-sm text-gray-600">اختر اللون الصحيح من الخيارات!</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     );
   };
 
-  // تمرين الانتباه المستمر
-  const SustainedAttentionGame = () => {
-    const [targetLetter, setTargetLetter] = useState('');
-    const [currentLetter, setCurrentLetter] = useState('');
-    const [feedback, setFeedback] = useState(null);
-    const [isActive, setIsActive] = useState(false);
-    const [timeRemaining, setTimeRemaining] = useState(60);
+  // المهارات الأساسية - الأرقام
+  const NumbersSkillGame = () => {
+    const [currentNumber, setCurrentNumber] = useState(0);
+    const [numberOptions, setNumberOptions] = useState<number[]>([]);
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [question, setQuestion] = useState(1);
 
-    const arabicLetters = [
-      'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر',
-      'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
-      'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'
-    ];
-
-    const generateNewLetter = () => {
-      const newLetter = arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
-      setCurrentLetter(newLetter);
-
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(newLetter);
-        utterance.lang = 'ar-SA';
-        speechSynthesis.speak(utterance);
+    const generateNumberQuestion = () => {
+      const correctNumber = Math.floor(Math.random() * 10) + 1; // 1-10
+      setCurrentNumber(correctNumber);
+      
+      // إنشاء خيارات (الصحيح + 3 خاطئة)
+      const wrongOptions = [];
+      while (wrongOptions.length < 3) {
+        const wrongNum = Math.floor(Math.random() * 10) + 1;
+        if (wrongNum !== correctNumber && !wrongOptions.includes(wrongNum)) {
+          wrongOptions.push(wrongNum);
+        }
       }
+      
+      const allOptions = [correctNumber, ...wrongOptions].sort(() => 0.5 - Math.random());
+      setNumberOptions(allOptions);
+      speakArabic(`اختر الرقم ${correctNumber}`);
     };
 
-    const handleLetterClick = () => {
-      if (!gameSession.isGameActive || !isActive) return;
+    const startNumbersGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setQuestion(1);
+      generateNumberQuestion();
+    };
 
-      if (currentLetter === targetLetter) {
-        setFeedback({ type: 'success', message: 'صحيح! ✓' });
-        setGameSession(prev => ({
-          ...prev,
-          correctAnswers: prev.correctAnswers + 1
-        }));
+    const handleNumberClick = (selectedNumber: number) => {
+      if (!gameActive) return;
 
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('صحيح');
-          utterance.lang = 'ar-SA';
-          speechSynthesis.speak(utterance);
+      if (selectedNumber === currentNumber) {
+        setScore(prev => prev + 10);
+        speakArabic("ممتاز!");
+        
+        if (question < 10) {
+          setQuestion(prev => prev + 1);
+          setTimeout(generateNumberQuestion, 1000);
+        } else {
+          endNumbersGame();
         }
-
       } else {
-        setFeedback({ type: 'error', message: 'خطأ! ✗' });
-        setGameSession(prev => ({
-          ...prev,
-          wrongAnswers: prev.wrongAnswers + 1
-        }));
-      }
-
-      setTimeout(() => setFeedback(null), 1000);
-    };
-
-    const startGame = () => {
-      const target = arabicLetters[Math.floor(Math.random() * arabicLetters.length)];
-      setTargetLetter(target);
-      setTimeRemaining(60);
-      setIsActive(true);
-      setGameSession({
-        correctAnswers: 0,
-        wrongAnswers: 0,
-        totalQuestions: 0,
-        currentQuestion: 1,
-        isGameActive: true,
-        timeElapsed: 0,
-        level: 1
-      });
-
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(`ابحث عن حرف ${target}`);
-        utterance.lang = 'ar-SA';
-        speechSynthesis.speak(utterance);
-      }
-
-      generateNewLetter();
-    };
-
-    const endGame = () => {
-      setGameSession(prev => ({ ...prev, isGameActive: false }));
-      setIsActive(false);
-    };
-
-    useEffect(() => {
-      let letterInterval;
-      let timerInterval;
-
-      if (isActive && gameSession.isGameActive) {
-        letterInterval = setInterval(generateNewLetter, 2000);
-
-        timerInterval = setInterval(() => {
-          setTimeRemaining(prev => {
-            if (prev <= 1) {
-              endGame();
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
-      }
-
-      return () => {
-        clearInterval(letterInterval);
-        clearInterval(timerInterval);
-      };
-    }, [isActive, gameSession.isGameActive]);
-
-    return (
-      <div className="space-y-6">
-        {/* Game Header */}
-        <Card className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">⏰ الانتباه المستمر</h2>
-                <p className="text-orange-100">اضغط عندما تسمع الحرف المطلوب</p>
-              </div>
-              <div className="text-right">
-                <div className="text-sm text-orange-100 mb-1">الوقت المتبقي</div>
-                <div className="text-2xl font-bold">{timeRemaining}ث</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Target Letter Display */}
-        {targetLetter && (
-          <Card className="bg-yellow-50 border-yellow-200">
-            <CardContent className="p-6 text-center">
-              <div className="text-lg font-semibold mb-2">الحرف المطلوب:</div>
-              <div className="text-6xl font-bold text-yellow-600 mb-2">{targetLetter}</div>
-              <div className="text-sm text-gray-600">اضغط على الحرف الكبير عندما تسمع هذا الحرف</div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Game Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="bg-green-50 border-green-200">
-            <CardContent className="p-4 text-center">
-              <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-              <div className="text-sm text-green-700">إجابات صحيحة</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-red-50 border-red-200">
-            <CardContent className="p-4 text-center">
-              <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-              <div className="text-sm text-red-700">أخطاء</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-blue-50 border-blue-200">
-            <CardContent className="p-4 text-center">
-              <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-blue-600">
-                {gameSession.correctAnswers + gameSession.wrongAnswers > 0
-                  ? Math.round((gameSession.correctAnswers / (gameSession.correctAnswers + gameSession.wrongAnswers)) * 100)
-                  : 0}%
-              </div>
-              <div className="text-sm text-blue-700">دقة</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Game Controls */}
-        <div className="flex justify-center gap-4">
-          {!gameSession.isGameActive ? (
-            <Button
-              onClick={startGame}
-              size="lg"
-              className="bg-orange-600 hover:bg-orange-700 text-white"
-            >
-              <Play className="w-5 h-5 ml-2" />
-              ابدأ التمرين
-            </Button>
-          ) : (
-            <Button
-              onClick={endGame}
-              size="lg"
-              variant="outline"
-            >
-              <Pause className="w-5 h-5 ml-2" />
-              إيقاف
-            </Button>
-          )}
-        </div>
-
-        {/* Game Area */}
-        {gameSession.isGameActive && (
-          <Card className="min-h-96">
-            <CardContent className="p-8">
-              <div className="relative">
-                {/* Feedback */}
-                {feedback && (
-                  <div className={`absolute top-4 right-4 z-10 px-4 py-2 rounded-lg text-white font-bold ${
-                    feedback.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-                  }`}>
-                    {feedback.message}
-                  </div>
-                )}
-
-                {/* Current Letter Display */}
-                <div className="text-center">
-                  <div
-                    onClick={handleLetterClick}
-                    className={`
-                      mx-auto w-48 h-48 flex items-center justify-center rounded-lg cursor-pointer
-                      transition-all duration-200 border-8 hover:scale-105 text-8xl font-bold
-                      ${currentLetter === targetLetter
-                        ? 'border-green-500 bg-green-100 text-green-700'
-                        : 'border-gray-300 bg-gray-100 text-gray-700'
-                      }
-                    `}
-                  >
-                    {currentLetter}
-                  </div>
-                  <div className="mt-4 text-lg text-gray-600">
-                    اضغط على الحرف إذا كان هو الحرف المطلوب: <span className="font-bold text-2xl">{targetLetter}</span>
-                  </div>
-                </div>
-
-                {/* Timer Progress */}
-                <div className="mt-8 max-w-md mx-auto">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>الوقت المتبقي</span>
-                    <span>{timeRemaining} ثانية</span>
-                  </div>
-                  <Progress value={(timeRemaining / 60) * 100} className="h-3" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Game Summary */}
-        {!gameSession.isGameActive && (gameSession.correctAnswers > 0 || gameSession.wrongAnswers > 0) && (
-          <Card className="bg-blue-50 border-blue-200">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-6 h-6 text-yellow-600" />
-                ملخص الجلسة
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-green-600">{gameSession.correctAnswers}</div>
-                  <div className="text-sm text-gray-600">إجابات صحيحة</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-red-600">{gameSession.wrongAnswers}</div>
-                  <div className="text-sm text-gray-600">أخطاء</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-purple-600">
-                    {gameSession.correctAnswers + gameSession.wrongAnswers > 0
-                      ? Math.round((gameSession.correctAnswers / (gameSession.correctAnswers + gameSession.wrongAnswers)) * 100)
-                      : 0}%
-                  </div>
-                  <div className="text-sm text-gray-600">معدل الدقة</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    );
-  };
-
-  const FindMissingGame = () => {
-    const scenes = [
-      {
-        id: 1,
-        name: "غرفة المعيشة",
-        description: "ابحث عن الكرسي المفقود",
-        items: ["أريكة", "طاولة", "تلفزيون", "كرسي"],
-        missingItem: "كرسي",
-        emoji: "🪑"
-      },
-      {
-        id: 2,
-        name: "المطبخ",
-        description: "أين الكوب؟",
-        items: ["طباخ", "ثلاجة", "حوض", "كوب"],
-        missingItem: "كوب",
-        emoji: "🥤"
-      },
-      {
-        id: 3,
-        name: "الحديقة",
-        description: "ابحث عن الكرة",
-        items: ["شجرة", "زهور", "مقعد", "كرة"],
-        missingItem: "كرة",
-        emoji: "⚽"
-      }
-    ];
-
-    const [currentScene, setCurrentScene] = useState(null);
-    const [feedback, setFeedback] = useState(null);
-
-    const startFindingGame = () => {
-      const randomScene = scenes[Math.floor(Math.random() * scenes.length)];
-      setCurrentScene(randomScene);
-      setGameSession(prev => ({ ...prev, isGameActive: true }));
-
-      // تشغيل التعليمات الصوتية
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(randomScene.description);
-        utterance.lang = 'ar-SA';
-        speechSynthesis.speak(utterance);
+        setScore(prev => Math.max(0, prev - 5));
+        speakArabic("حاول مرة أخرى");
       }
     };
 
-    const handleItemClick = (item: string) => {
-      if (!gameSession.isGameActive || !currentScene) return;
-
-      if (item === currentScene.missingItem) {
-        setFeedback({ type: 'success', message: 'ممتاز! وجدته!' });
-        setGameSession(prev => ({
-          ...prev,
-          correctAnswers: prev.correctAnswers + 1,
-          totalQuestions: prev.totalQuestions + 1
-        }));
-
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('ممتاز! وجدته!');
-          utterance.lang = 'ar-SA';
-          speechSynthesis.speak(utterance);
-        }
-
-        setTimeout(() => {
-          setFeedback(null);
-          startFindingGame();
-        }, 2000);
-
-      } else {
-        setFeedback({ type: 'error', message: 'ليس هذا، حاول مرة أخرى' });
-        setGameSession(prev => ({
-          ...prev,
-          wrongAnswers: prev.wrongAnswers + 1,
-          totalQuestions: prev.totalQuestions + 1
-        }));
-
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('ليس هذا، حاول مرة أخرى');
-          utterance.lang = 'ar-SA';
-          speechSynthesis.speak(utterance);
-        }
-
-        setTimeout(() => setFeedback(null), 1500);
-      }
+    const endNumbersGame = () => {
+      setGameActive(false);
+      speakArabic(`انتهت اللعبة! نقاطك ${score} من ${question * 10}`);
     };
 
     return (
-      <div className="space-y-6">
-        {/* Game Header */}
-        <Card className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">🔍 البحث عن الأشياء المفقودة</h2>
-                <p className="text-purple-100">ابحث عن الأشياء المفقودة في المشاهد المختلفة</p>
-              </div>
-              <Eye className="w-16 h-16 text-purple-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Game Controls */}
-        <div className="flex justify-center">
-          {!gameSession.isGameActive ? (
-            <Button
-              onClick={startFindingGame}
-              size="lg"
-              className="bg-purple-600 hover:bg-purple-700 text-white"
-            >
-              <Play className="w-5 h-5 ml-2" />
-              ابدأ البحث
-            </Button>
-          ) : (
-            <Button
-              onClick={() => setGameSession(prev => ({ ...prev, isGameActive: false }))}
-              size="lg"
-              variant="outline"
-            >
-              <Pause className="w-5 h-5 ml-2" />
-              إيقاف
-            </Button>
-          )}
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">تعلم الأرقام</h2>
+          <div></div>
         </div>
 
-        {/* Game Area */}
-        {gameSession.isGameActive && currentScene && (
-          <Card className="min-h-96">
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl">{currentScene.name}</CardTitle>
-              <CardDescription className="text-lg font-medium">
-                {currentScene.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-8">
-              <div className="relative">
-                {/* Feedback */}
-                {feedback && (
-                  <div className={`absolute inset-0 flex items-center justify-center z-10 ${
-                    feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
-                  } text-white rounded-lg`}>
-                    <div className="text-center">
-                      {feedback.type === 'success' ? (
-                        <CheckCircle className="w-16 h-16 mx-auto mb-4" />
-                      ) : (
-                        <XCircle className="w-16 h-16 mx-auto mb-4" />
-                      )}
-                      <div className="text-2xl font-bold">{feedback.message}</div>
-                    </div>
-                  </div>
-                )}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Hash className="w-6 h-6" />
+              اختبار الأرقام
+            </CardTitle>
+            <CardDescription>
+              اختر الرقم الصحيح
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">السؤال: {question}/10</Badge>
+              </div>
+              {!gameActive ? (
+                <Button onClick={startNumbersGame} className="bg-blue-500 hover:bg-blue-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ الاختبار
+                </Button>
+              ) : (
+                <Button onClick={endNumbersGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
 
-                {/* Scene Items */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
-                  {currentScene.items.map((item, index) => (
-                    <div
+            {gameActive && currentNumber && (
+              <div className="text-center space-y-6">
+                <div className="p-6 bg-gray-100 rounded-lg">
+                  <p className="text-2xl font-bold mb-4">اختر الرقم: {currentNumber}</p>
+                  <div className="flex justify-center">
+                    {[...Array(currentNumber)].map((_, i) => (
+                      <Circle key={i} className="w-6 h-6 text-blue-500 fill-blue-500 mx-1" />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {numberOptions.map((number, index) => (
+                    <Button
                       key={index}
-                      onClick={() => handleItemClick(item)}
-                      className={`
-                        h-32 flex flex-col items-center justify-center rounded-lg cursor-pointer
-                        transition-all duration-200 border-4 hover:scale-105
-                        ${item === currentScene.missingItem
-                          ? 'border-purple-400 bg-purple-100 hover:bg-purple-200'
-                          : 'border-gray-300 bg-gray-100 hover:bg-gray-200'
-                        }
-                      `}
+                      onClick={() => handleNumberClick(number)}
+                      className="h-20 text-3xl font-bold bg-blue-100 hover:bg-blue-200 text-blue-800 border-4 border-blue-300 hover:scale-105 transition-transform"
+                      variant="outline"
                     >
-                      <div className="text-4xl mb-2">
-                        {item === currentScene.missingItem ? currentScene.emoji : "📦"}
-                      </div>
-                      <div className="text-sm font-medium text-gray-700">{item}</div>
-                    </div>
+                      {number}
+                    </Button>
                   ))}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
+            )}
+
+            {!gameActive && (
+              <div className="text-center py-12">
+                <Hash className="w-16 h-16 mx-auto mb-4 text-blue-400" />
+                <p className="text-xl mb-2">اضغط على "ابدأ الاختبار" للبدء</p>
+                <p className="text-sm text-gray-600">اختر الرقم الصحيح!</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     );
   };
 
+  // المهارات الأساسية - المفاهيم المكانية
+  const SpatialSkillGame = () => {
+    const [currentDirection, setCurrentDirection] = useState("");
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [question, setQuestion] = useState(1);
+    const [objectPosition, setObjectPosition] = useState("");
+
+    const directions = [
+      { name: "فوق", value: "top", position: "top-4" },
+      { name: "تحت", value: "bottom", position: "bottom-4" },
+      { name: "يمين", value: "right", position: "right-4" },
+      { name: "يسار", value: "left", position: "left-4" }
+    ];
+
+    const generateSpatialQuestion = () => {
+      const direction = directions[Math.floor(Math.random() * directions.length)];
+      setCurrentDirection(direction.value);
+      setObjectPosition(direction.position);
+      speakArabic(`أين الكرة؟ الكرة ${direction.name} الصندوق`);
+    };
+
+    const startSpatialGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setQuestion(1);
+      generateSpatialQuestion();
+    };
+
+    const handleDirectionClick = (selectedDirection: string) => {
+      if (!gameActive) return;
+
+      if (selectedDirection === currentDirection) {
+        setScore(prev => prev + 10);
+        speakArabic("ممتاز!");
+        
+        if (question < 8) {
+          setQuestion(prev => prev + 1);
+          setTimeout(generateSpatialQuestion, 1000);
+        } else {
+          endSpatialGame();
+        }
+      } else {
+        setScore(prev => Math.max(0, prev - 5));
+        speakArabic("حاول مرة أخرى");
+      }
+    };
+
+    const endSpatialGame = () => {
+      setGameActive(false);
+      speakArabic(`انتهت اللعبة! نقاطك ${score} من ${question * 10}`);
+    };
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">المفاهيم المكانية</h2>
+          <div></div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="w-6 h-6" />
+              اختبار المفاهيم المكانية
+            </CardTitle>
+            <CardDescription>
+              حدد موقع الكرة بالنسبة للصندوق
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">السؤال: {question}/8</Badge>
+              </div>
+              {!gameActive ? (
+                <Button onClick={startSpatialGame} className="bg-green-500 hover:bg-green-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ الاختبار
+                </Button>
+              ) : (
+                <Button onClick={endSpatialGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
+
+            {gameActive && currentDirection && (
+              <div className="text-center space-y-6">
+                <div className="p-6 bg-gray-100 rounded-lg">
+                  <p className="text-xl font-bold mb-6">أين الكرة؟</p>
+                  
+                  <div className="relative w-48 h-48 mx-auto">
+                    {/* الصندوق */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-24 h-24 bg-amber-600 rounded-lg border-4 border-amber-800 shadow-lg flex items-center justify-center">
+                        <span className="text-2xl">📦</span>
+                      </div>
+                    </div>
+                    
+                    {/* الكرة */}
+                    <div className={`absolute ${objectPosition} left-1/2 transform -translate-x-1/2 ${currentDirection === 'left' || currentDirection === 'right' ? '-translate-y-1/2 top-1/2' : ''}`}>
+                      <div className="w-12 h-12 bg-red-500 rounded-full border-4 border-red-700 shadow-lg flex items-center justify-center">
+                        <span className="text-lg">⚽</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {directions.map((direction, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleDirectionClick(direction.value)}
+                      className="h-16 text-xl font-bold bg-green-100 hover:bg-green-200 text-green-800 border-4 border-green-300 hover:scale-105 transition-transform"
+                      variant="outline"
+                    >
+                      {direction.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!gameActive && (
+              <div className="text-center py-12">
+                <MapPin className="w-16 h-16 mx-auto mb-4 text-green-400" />
+                <p className="text-xl mb-2">اضغط على "ابدأ الاختبار" للبدء</p>
+                <p className="text-sm text-gray-600">حدد موقع الكرة بالنسبة للصندوق!</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // المهارات الأساسية - أجزاء الجسم
+  const BodyPartsSkillGame = () => {
+    const [currentBodyPart, setCurrentBodyPart] = useState("");
+    const [gameActive, setGameActive] = useState(false);
+    const [score, setScore] = useState(0);
+    const [question, setQuestion] = useState(1);
+
+    const bodyParts = [
+      { name: "رأس", value: "head", position: "top-4" },
+      { name: "عين", value: "eye", position: "top-12" },
+      { name: "أنف", value: "nose", position: "top-16" },
+      { name: "فم", value: "mouth", position: "top-20" },
+      { name: "يد", value: "hand", position: "top-32" },
+      { name: "قدم", value: "foot", position: "bottom-8" }
+    ];
+
+    const generateBodyPartQuestion = () => {
+      const bodyPart = bodyParts[Math.floor(Math.random() * bodyParts.length)];
+      setCurrentBodyPart(bodyPart.value);
+      speakArabic(`أين ${bodyPart.name}؟`);
+    };
+
+    const startBodyPartsGame = () => {
+      setGameActive(true);
+      setScore(0);
+      setQuestion(1);
+      generateBodyPartQuestion();
+    };
+
+    const handleBodyPartClick = (selectedPart: string) => {
+      if (!gameActive) return;
+
+      if (selectedPart === currentBodyPart) {
+        setScore(prev => prev + 10);
+        speakArabic("ممتاز!");
+        
+        if (question < 6) {
+          setQuestion(prev => prev + 1);
+          setTimeout(generateBodyPartQuestion, 1000);
+        } else {
+          endBodyPartsGame();
+        }
+      } else {
+        setScore(prev => Math.max(0, prev - 5));
+        speakArabic("حاول مرة أخرى");
+      }
+    };
+
+    const endBodyPartsGame = () => {
+      setGameActive(false);
+      speakArabic(`انتهت اللعبة! نقاطك ${score} من ${question * 10}`);
+    };
+
+    const getCurrentBodyPartName = () => {
+      return bodyParts.find(p => p.value === currentBodyPart)?.name || "";
+    };
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={() => setCurrentGame("menu")} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للقائمة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">أجزاء الجسم</h2>
+          <div></div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="w-6 h-6" />
+              اختبار أجزاء الجسم
+            </CardTitle>
+            <CardDescription>
+              اضغط على الجزء الصحيح من الجسم
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-4">
+                <Badge variant="outline">النقاط: {score}</Badge>
+                <Badge variant="outline">السؤال: {question}/6</Badge>
+              </div>
+              {!gameActive ? (
+                <Button onClick={startBodyPartsGame} className="bg-purple-500 hover:bg-purple-600">
+                  <Play className="w-4 h-4 ml-2" />
+                  ابدأ الاختبار
+                </Button>
+              ) : (
+                <Button onClick={endBodyPartsGame} variant="destructive">
+                  <Pause className="w-4 h-4 ml-2" />
+                  إيقاف
+                </Button>
+              )}
+            </div>
+
+            {gameActive && currentBodyPart && (
+              <div className="text-center space-y-6">
+                <div className="p-6 bg-gray-100 rounded-lg">
+                  <p className="text-2xl font-bold mb-4">أين {getCurrentBodyPartName()}؟</p>
+                </div>
+
+                <div className="relative w-64 h-96 mx-auto bg-gradient-to-b from-pink-100 to-blue-100 rounded-3xl border-4 border-gray-400">
+                  {/* الرأس */}
+                  <button
+                    onClick={() => handleBodyPartClick("head")}
+                    className="absolute top-4 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-yellow-300 rounded-full border-4 border-yellow-600 hover:scale-110 transition-transform"
+                  >
+                    <span className="text-2xl">👤</span>
+                  </button>
+
+                  {/* العين */}
+                  <button
+                    onClick={() => handleBodyPartClick("eye")}
+                    className="absolute top-12 left-1/2 transform -translate-x-1/2 translate-x-2 w-6 h-6 bg-blue-400 rounded-full border-2 border-blue-600 hover:scale-110 transition-transform"
+                  >
+                    <span className="text-xs">👁️</span>
+                  </button>
+
+                  {/* الأنف */}
+                  <button
+                    onClick={() => handleBodyPartClick("nose")}
+                    className="absolute top-16 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-pink-400 rounded border-2 border-pink-600 hover:scale-110 transition-transform"
+                  >
+                    <span className="text-xs">👃</span>
+                  </button>
+
+                  {/* الفم */}
+                  <button
+                    onClick={() => handleBodyPartClick("mouth")}
+                    className="absolute top-20 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-red-400 rounded-full border-2 border-red-600 hover:scale-110 transition-transform"
+                  >
+                    <span className="text-xs">👄</span>
+                  </button>
+
+                  {/* اليد */}
+                  <button
+                    onClick={() => handleBodyPartClick("hand")}
+                    className="absolute top-32 right-4 w-12 h-12 bg-orange-300 rounded-full border-4 border-orange-600 hover:scale-110 transition-transform"
+                  >
+                    <span className="text-lg">✋</span>
+                  </button>
+
+                  {/* القدم */}
+                  <button
+                    onClick={() => handleBodyPartClick("foot")}
+                    className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-brown-400 rounded-lg border-4 border-amber-700 hover:scale-110 transition-transform"
+                  >
+                    <span className="text-lg">🦶</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {!gameActive && (
+              <div className="text-center py-12">
+                <User className="w-16 h-16 mx-auto mb-4 text-purple-400" />
+                <p className="text-xl mb-2">اضغط على "ابدأ الاختبار" للبدء</p>
+                <p className="text-sm text-gray-600">اضغط على الجزء الصحيح من الجسم!</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // القائمة الرئيسية
   const MainMenu = () => (
-    <div className="space-y-6">
+    <div className="space-y-8" dir="rtl">
       <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <CardContent className="p-8 text-center">
-          <Target className="w-16 h-16 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold mb-2">تمارين الانتباه والتركيز</h1>
-          <p className="text-blue-100">برنامج شامل لتطوير مهارات الانتباه المختلفة</p>
-        </CardContent>
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold mb-2">تمارين الانتباه والمهارات الأساسية</CardTitle>
+          <p className="text-blue-100">برنامج شامل لتطوير مهارات الانتباه والمهارات الأساسية</p>
+        </CardHeader>
       </Card>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("visual-attention")}>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* تمارين الانتباه */}
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("sustained-attention")}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="bg-blue-100 p-3 rounded-lg">
-                <Eye className="w-8 h-8 text-blue-600" />
+                <Star className="w-8 h-8 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">الانتباه البصري</h3>
-                <p className="text-gray-600 text-sm">تمييز الأشكال والألوان</p>
+                <h3 className="text-lg font-bold">الانتباه المتواصل</h3>
+                <p className="text-gray-600 text-sm">نجوم متساقطة</p>
               </div>
             </div>
             <div className="space-y-1 text-xs text-gray-600 mb-4">
-              <p>• تطوير الانتباه الانتقائي</p>
-              <p>• تحسين التمييز البصري</p>
-              <p>• تعزيز سرعة المعالجة</p>
+              <p>• تطوير التركيز المستمر</p>
+              <p>• تحسين الانتباه الانتقائي</p>
+              <p>• تعزيز سرعة الاستجابة</p>
             </div>
             <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1225,21 +1256,21 @@ export default function AttentionExercises() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("auditory-attention")}>
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("selective-attention")}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="bg-green-100 p-3 rounded-lg">
-                <Volume2 className="w-8 h-8 text-green-600" />
+                <Palette className="w-8 h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">الانتباه السمعي</h3>
-                <p className="text-gray-600 text-sm">تذكر التسلسلات الصوتية</p>
+                <h3 className="text-lg font-bold">الانتباه الانتقائي</h3>
+                <p className="text-gray-600 text-sm">اختيار الألوان</p>
               </div>
             </div>
             <div className="space-y-1 text-xs text-gray-600 mb-4">
-              <p>• تقوية الذاكرة السمعية</p>
-              <p>• تحسين التتابع السمعي</p>
-              <p>• تطوير المعالجة السمعية</p>
+              <p>• تطوير الانتباه الانتقائي</p>
+              <p>• تحسين التمييز البصري</p>
+              <p>• تعزيز التركيز</p>
             </div>
             <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1248,44 +1279,114 @@ export default function AttentionExercises() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("sustained-attention")}>
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("joint-attention")}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="bg-orange-100 p-3 rounded-lg">
-                <Target className="w-8 h-8 text-orange-600" />
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <Users className="w-8 h-8 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">الانتباه المستمر</h3>
-                <p className="text-gray-600 text-sm">التركيز لفترة طويلة</p>
+                <h3 className="text-lg font-bold">الانتباه المشترك</h3>
+                <p className="text-gray-600 text-sm">شخصيات متحركة</p>
               </div>
             </div>
             <div className="space-y-1 text-xs text-gray-600 mb-4">
-              <p>• زيادة مدة التركيز</p>
-              <p>• تحسين اليقظة</p>
-              <p>• تطوير المثابرة</p>
+              <p>• تطوير الانتباه المشترك</p>
+              <p>• تحسين التفاعل الاجتماعي</p>
+              <p>• تعزيز التواصل</p>
             </div>
-            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+            <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
               ابدأ التمرين
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("find-missing")}>
+        {/* المهارات الأساسية */}
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("colors-skill")}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="bg-purple-100 p-3 rounded-lg">
-                <Search className="w-8 h-8 text-purple-600" />
+              <div className="bg-red-100 p-3 rounded-lg">
+                <Palette className="w-8 h-8 text-red-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">البحث البصري</h3>
-                <p className="text-gray-600 text-sm">العثور على الأشياء المخفية</p>
+                <h3 className="text-lg font-bold">تعلم الألوان</h3>
+                <p className="text-gray-600 text-sm">المهارات الأساسية</p>
               </div>
             </div>
             <div className="space-y-1 text-xs text-gray-600 mb-4">
-              <p>• تطوير الاستكشاف البصري</p>
-              <p>• تحسين التنظيم المكاني</p>
-              <p>• تعزيز حل المشكلات</p>
+              <p>• تعلم أسماء الألوان</p>
+              <p>• تطوير التمييز اللوني</p>
+              <p>• تحسين المفردات</p>
+            </div>
+            <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ التمرين
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("numbers-skill")}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <Hash className="w-8 h-8 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">تعلم الأرقام</h3>
+                <p className="text-gray-600 text-sm">المهارات الأساسية</p>
+              </div>
+            </div>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• تعلم الأرقام 1-10</p>
+              <p>• تطوير مهارات العد</p>
+              <p>• تحسين الذاكرة العددية</p>
+            </div>
+            <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ التمرين
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("spatial-skill")}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-green-100 p-3 rounded-lg">
+                <MapPin className="w-8 h-8 text-green-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">المفاهيم المكانية</h3>
+                <p className="text-gray-600 text-sm">المهارات الأساسية</p>
+              </div>
+            </div>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• تعلم الاتجاهات</p>
+              <p>• تطوير الوعي المكاني</p>
+              <p>• تحسين الإدراك البصري</p>
+            </div>
+            <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ التمرين
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("body-parts-skill")}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <User className="w-8 h-8 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">أجزاء الجسم</h3>
+                <p className="text-gray-600 text-sm">المهارات الأساسية</p>
+              </div>
+            </div>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• تعلم أجزاء الجسم</p>
+              <p>• تطوير الوعي الجسدي</p>
+              <p>• تحسين المفردات</p>
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1306,11 +1407,12 @@ export default function AttentionExercises() {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-3 text-gray-800">الهدف من التمارين:</h4>
+              <h4 className="font-semibold mb-3 text-gray-800">أهداف التمارين:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تطوير أنواع مختلفة من الانتباه</li>
                 <li>• تحسين التركيز والتحكم المعرفي</li>
                 <li>• زيادة مدة الانتباه وجودته</li>
+                <li>• تعلم المهارات الأساسية</li>
                 <li>• تعزيز المعالجة البصرية والسمعية</li>
               </ul>
             </div>
@@ -1319,7 +1421,7 @@ export default function AttentionExercises() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تأكد من بيئة هادئة وخالية من المشتتات</li>
                 <li>• ابدأ بالمستويات السهلة وارتق تدريجياً</li>
-                <li>• خذ استراح��ت منتظمة لتجنب التعب</li>
+                <li>• خذ استراحات منتظمة لتجنب التعب</li>
                 <li>• مارس التمارين بانتظام للحصول على تحسن مستمر</li>
               </ul>
             </div>
@@ -1331,14 +1433,20 @@ export default function AttentionExercises() {
 
   const renderCurrentGame = () => {
     switch (currentGame) {
-      case "visual-attention":
-        return <VisualAttentionGame />;
-      case "auditory-attention":
-        return <AuditoryAttentionGame />;
       case "sustained-attention":
         return <SustainedAttentionGame />;
-      case "find-missing":
-        return <FindMissingGame />;
+      case "selective-attention":
+        return <SelectiveAttentionGame />;
+      case "joint-attention":
+        return <JointAttentionGame />;
+      case "colors-skill":
+        return <ColorsSkillGame />;
+      case "numbers-skill":
+        return <NumbersSkillGame />;
+      case "spatial-skill":
+        return <SpatialSkillGame />;
+      case "body-parts-skill":
+        return <BodyPartsSkillGame />;
       default:
         return <MainMenu />;
     }
@@ -1348,49 +1456,26 @@ export default function AttentionExercises() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  if (currentGame === "menu") {
-                    navigate('/specialist-dashboard');
-                  } else {
-                    setCurrentGame("menu");
-                  }
-                }}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                {currentGame === "menu" ? "العودة للوحة التحكم" : "القائمة الرئيسية"}
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 rounded-lg">
-                  <Target className="w-6 h-6" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-800">
-                    تمارين الانتباه
-                  </h1>
-                  <p className="text-gray-600">Ortho Smart</p>
-                </div>
-              </div>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
             <Button
-              variant="outline"
               onClick={() => navigate('/specialist-dashboard')}
+              variant="outline"
               className="flex items-center gap-2"
             >
               <Home className="w-4 h-4" />
-              الرئيسية
+              العودة للوحة التحكم
             </Button>
+            <h1 className="text-2xl font-bold text-gray-900">تمارين الانتباه والمهارات الأساسية</h1>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline">النقاط الإجمالية: {gameSession.score}</Badge>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderCurrentGame()}
       </div>
     </div>
