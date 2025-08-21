@@ -40,6 +40,232 @@ export default function CognitiveTests() {
 
   // بيانات الصور المرفقة
   const imageCategories = {
+    clothes: [
+      {
+        id: 1,
+        name: "بدلة رسمية",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5581dd13e7614e508185741483efb417?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 2,
+        name: "ربطة عنق",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97cdfa6b148a494db9f6899c1d766e47?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 3,
+        name: "وشاح",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fbd9717ee86334f08a792864780f53887?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 4,
+        name: "قفازات",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F56f902a4cc1343e0970ecf447c54ffef?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 5,
+        name: "أحذية رياضية",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F22a372c46a5240b3a6a530be95dfe12d?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 6,
+        name: "جوارب",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F0fa7216b9e704dcf8ed2fa71dcc0b4f9?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 7,
+        name: "تنورة",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fadebd9eb74c2414b9dba46679536a966?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 8,
+        name: "فستان",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fccd949c8a80d424d85f64dca3ce8d1bd?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 9,
+        name: "قبعة",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6fd23237e667429f8fb3ae7bd71eaf96?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 10,
+        name: "جاكيت",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fccabfd5123524d85b0ab3000f4d4c545?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 11,
+        name: "بنطلون",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe29382794879491384e2df520674e988?format=webp&width=800",
+        category: "ملابس"
+      },
+      {
+        id: 12,
+        name: "قميص",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa4a6d473f5fb43f18d40b4df6568691f?format=webp&width=800",
+        category: "ملابس"
+      }
+    ],
+    food: [
+      {
+        id: 1,
+        name: "خيار",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8691ed83b7434d08af3374ff5b93824d?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 2,
+        name: "جزر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb986297ad7c349daa4bc4cc1d97085cc?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 3,
+        name: "طماطم",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F91d60d50f8f6461f94db54d5f81265be?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 4,
+        name: "بصل",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F793222dcb33f4642aa6253c90cdc392f?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 5,
+        name: "ثوم",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7027cc0b30f646c5a264be0f71a4a0a0?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 6,
+        name: "باذنجان",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F16a8fb132bf941c5b78d0b83afc9fe49?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 7,
+        name: "فلفل أخضر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8b298b7119ee460c9636216d7db59a9d?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 8,
+        name: "فطر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe294ceefdadb4d4ea175c8c7df4efa86?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 9,
+        name: "بطاطس",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F934953a939b3429f80e24ef402339e6a?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 10,
+        name: "عنب",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F4fac31da6fc6430ea785b18a04e9619b?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 11,
+        name: "كرز",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F99f30099d7ba407982ae098eea98bd0a?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 12,
+        name: "موز",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc6452635bcb5423f91f73be23e069129?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 13,
+        name: "أناناس",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe9b45c0781994f3e8c301e466cc3afdb?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 14,
+        name: "برتقال",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa0a8a1743a044678a5788cb781fd3f14?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 15,
+        name: "عنب أحمر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F113bbc8fdbdb4ef5a2fdf650f3940739?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 16,
+        name: "فراولة",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb64e31c417f34adc942b7514c3e38602?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 17,
+        name: "تفاح",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F546b00f6c81947f7bc5e2bffee0fb0ff?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 18,
+        name: "ليمون",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1aaffded6b2c4bd2ae5a436345e5796a?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 19,
+        name: "خوخ",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa86743cc0a724321bb57fcda1d55852f?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 20,
+        name: "عنب أخضر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F94022a0bd4ff4e6d84a625bdf37ef5a6?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 21,
+        name: "بطيخ",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc8f96384f92e4b34ad6ee861050ceb3f?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 22,
+        name: "تمر",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6105aeeac2c34b0dbc7e9a6ebd2dd90b?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 23,
+        name: "توت",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ff2d501123a604a018594aabd1856707e?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 24,
+        name: "رمان",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7c2d1ef2ba1449ea8fa3d2e1dcaaed18?format=webp&width=800",
+        category: "طعام"
+      },
+      {
+        id: 25,
+        name: "مشمش",
+        src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcd138451db15487498db4ddcc3cc5e2c?format=webp&width=800",
+        category: "طعام"
+      }
+    ],
     animals: [
       {
         id: 1,
@@ -1081,7 +1307,7 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-red-600">{testSession.wrongAnswers}</div>
-                <div className="text-sm text-gray-600">خاطئة</div>
+                <div className="text-sm text-gray-600">خاطئ��</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
