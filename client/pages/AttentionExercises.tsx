@@ -317,11 +317,16 @@ export default function AttentionExercises() {
     const startSelectiveGame = () => {
       setGameActive(true);
       setScore(0);
-      setTimeLeft(45);
+      setLevel(1);
+      setTimeLeft(60);
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       setTargetColor(randomColor.value);
-      generateItems();
-      speakArabic(`اختر الأشياء باللون ${randomColor.name}`);
+
+      // انتظار تحديث الحالة قبل توليد العناصر
+      setTimeout(() => {
+        generateItems();
+        speakArabic(`اختر الأشياء باللون ${randomColor.name}`);
+      }, 100);
     };
 
     const handleItemClick = (item: ColoredItem) => {
@@ -329,7 +334,7 @@ export default function AttentionExercises() {
 
       if (item.color === targetColor) {
         setScore(prev => prev + 10);
-        speakArabic("ممتاز!");
+        speakArabic("مم��از!");
         setColoredItems(prev => prev.filter(i => i.id !== item.id));
 
         // تحقق من انتهاء المستوى
@@ -862,7 +867,7 @@ export default function AttentionExercises() {
             <ArrowLeft className="w-4 h-4 ml-2" />
             العودة للقائمة
           </Button>
-          <h2 className="text-2xl font-bold text-center">تعل�� الأرقام</h2>
+          <h2 className="text-2xl font-bold text-center">تعلم الأرقام</h2>
           <div></div>
         </div>
 
@@ -1250,7 +1255,7 @@ export default function AttentionExercises() {
     <div className="space-y-8" dir="rtl">
       <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold mb-2">تمارين الانتباه والمهارات الأساسية</CardTitle>
+          <CardTitle className="text-3xl font-bold mb-2">تمارين الا��تباه والمهارات الأساسية</CardTitle>
           <p className="text-blue-100">برنامج شامل لتطوير مهارات الانتباه والمهارات الأساسية</p>
         </CardHeader>
       </Card>
@@ -1435,7 +1440,7 @@ export default function AttentionExercises() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تطوير أنواع مختلفة من الانتباه</li>
                 <li>• تحسين التركيز والتحكم المعرفي</li>
-                <li>• ��يادة مدة الانتباه وجودته</li>
+                <li>• زيادة مدة الانتباه وجودته</li>
                 <li>• تعلم المهارات الأساسية</li>
                 <li>• تعزيز المعالجة البصرية والسمعية</li>
               </ul>
