@@ -85,7 +85,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 5,
       name: "��ذاء ر��اضي",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F22a372c46a5240b3a6a530be95dfe12d?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F137d89668c214b1f8d7a8e70acc765cc?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -154,7 +154,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 4,
-      name: "باذنج��ن",
+      name: "باذنجان",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7633a0a50e644886951f1bb44516a2c2?format=webp&width=800",
       category: "خضروات"
     },
@@ -516,7 +516,7 @@ const BODY_PARTS = [
   { name: "عين", emoji: "👁️", category: "وجه" },
   { name: "أنف", emoji: "👃", category: "وجه" },
   { name: "فم", emoji: "👄", category: "وجه" },
-  { name: "أذ��", emoji: "👂", category: "وجه" },
+  { name: "أذن", emoji: "👂", category: "وجه" },
   { name: "يد", emoji: "✋", category: "أطراف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
   { name: "رأس", emoji: "🗣️", category: "جسم" },
@@ -573,7 +573,7 @@ export default function CognitiveTests() {
         const aiAnalysisResults = {
           // أنماط الخضروات
           'cucumber|خيار': { name: 'خيار', category: 'خضروات', confidence: 95 },
-          'carrot|جزر': { name: 'جزر', category: 'خضر��ات', confidence: 98 },
+          'carrot|جزر': { name: 'جزر', category: 'خضروات', confidence: 98 },
           'tomato|طماطم': { name: 'طماطم', category: 'خضروات', confidence: 97 },
           'onion|بصل': { name: 'بصل', category: 'خضروات', confidence: 94 },
           'garlic|ثوم': { name: 'ثوم', category: 'خضروات', confidence: 96 },
@@ -1650,11 +1650,11 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <h3 className="text-xl font-bold">الخضروات</h3>
-                <p className="text-gray-600 text-sm">ال��عرف على أنواع الخضروات</p>
+                <p className="text-gray-600 text-sm">التعرف على أنواع الخضروات</p>
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              9 أنواع خضروات • صور حقيقية
+              9 أنو��ع خضروات • صور حقيقية
             </div>
             <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1760,7 +1760,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              الأرقام العر��ية 1-10 • مفاهيم عددية
+              الأرقام العربية 1-10 • مفاهيم عددية
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1895,9 +1895,9 @@ export default function CognitiveTests() {
             <div>
               <h4 className="font-semibold mb-3 text-gray-800">هدف الاختبارات:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• تقي��م المكتسبات القبلية للأطفال</li>
+                <li>• تقييم المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري والسمعي</li>
-                <li>• تحديد نقاط القوة والضعف المعرفية</li>
+                <li>��� تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
               </ul>
             </div>
@@ -1992,7 +1992,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'error',
-            message: `❌ غير صحيح! الذكاء الاصطناعي ��قترح "${aiAnalysis.name}" لهذه الصورة`
+            message: `❌ غير صحيح! الذكاء الاصطناعي يقترح "${aiAnalysis.name}" لهذه الصورة`
           });
           playAudio('حاول مرة أخرى');
         }
@@ -2127,7 +2127,7 @@ export default function CognitiveTests() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Eye className="w-5 h-5" />
-                  اختر صورة
+                  اختر ��ورة
                   {selectedImage && (
                     <Badge className="bg-blue-500">
                       مختارة: {selectedImage.name}
@@ -2263,7 +2263,7 @@ export default function CognitiveTests() {
             <Progress value={progress} className="w-full" />
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* الصو��ة الحالية */}
+            {/* الصورة الحالية */}
             <div className="text-center">
               <div className="inline-block p-4 bg-gray-100 rounded-lg">
                 <img
