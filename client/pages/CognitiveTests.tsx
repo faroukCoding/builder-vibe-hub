@@ -24,7 +24,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // =============================================================================
 // DATA DEFINITIONS
@@ -497,7 +497,7 @@ const NUMBERS = [
   { number: 6, name: "ستة", symbol: "٦" },
   { number: 7, name: "سبعة", symbol: "٧" },
   { number: 8, name: "ثمانية", symbol: "٨" },
-  { number: 9, name: "تسعة", symbol: "٩" },
+  { number: 9, name: "تسعة", symbol: "��" },
   { number: 10, name: "عشرة", symbol: "١٠" }
 ];
 
@@ -520,7 +520,7 @@ const BODY_PARTS = [
   { name: "يد", emoji: "✋", category: "أطراف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
   { name: "رأس", emoji: "🗣️", category: "جسم" },
-  { name: "بطن", emoji: "🫃", category: "جسم" },
+  { name: "بطن", emoji: "🫃", category: "��سم" },
   { name: "ظهر", emoji: "🫲", category: "جسم" },
   { name: "ركبة", emoji: "🦵", category: "أطراف" }
 ];
@@ -592,7 +592,7 @@ export default function CognitiveTests() {
           'apple|تفاح': { name: 'تفاح', category: 'فواكه', confidence: 98 },
           'lemon|ليمون': { name: 'ليمون', category: 'فو��كه', confidence: 96 },
           'peach|خوخ': { name: 'خوخ', category: 'فواكه', confidence: 93 },
-          'watermelon|بطيخ': { name: 'بطيخ', category: 'فواكه', confidence: 97 },
+          'watermelon|بطيخ': { name: 'بط��خ', category: 'فواكه', confidence: 97 },
           'dates|تمر': { name: 'تمر', category: 'فواكه', confidence: 94 },
           'berry|توت': { name: 'توت', category: 'فواكه', confidence: 91 },
           'pomegranate|رمان': { name: 'رمان', category: 'فواكه', confidence: 92 },
@@ -624,7 +624,7 @@ export default function CognitiveTests() {
           'gloves|قفازات': { name: 'قفازات', category: 'ملابس', confidence: 93 },
           'shoes|حذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
           'socks|جوارب': { name: 'جوارب', category: 'ملابس', confidence: 94 },
-          'skirt|تنورة': { name: 'تنورة', category: 'ملابس', confidence: 95 },
+          'skirt|��نورة': { name: 'تنورة', category: 'ملابس', confidence: 95 },
           'dress|فستان': { name: 'فستان', category: 'ملابس', confidence: 97 },
           'hat|قبعة': { name: 'قبعة', category: 'ملابس', confidence: 96 },
           'jacket|جاكيت': { name: 'جاكيت', category: 'ملابس', confidence: 95 },
@@ -638,7 +638,7 @@ export default function CognitiveTests() {
           'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مركبات', confidence: 98 },
           'truck|شاحنة': { name: 'شاحنة', category: 'مركبات', confidence: 96 },
           'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
-          'bicycle|دراجة.هوائية': { name: 'دراجة هوائية', category: 'مركبات', confidence: 94 },
+          'bicycle|دراجة.هوائية': { name: 'دراجة هوائ��ة', category: 'مركبات', confidence: 94 },
           'tram|ترام': { name: 'ترام', category: 'مركبات', confidence: 93 },
           'train|قطار': { name: 'قطار', category: 'مركبات', confidence: 97 },
           'bus|حافلة': { name: 'حافلة', category: 'مركبات', confidence: 96 },
@@ -1108,7 +1108,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائمة
+                ا��عودة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1865,7 +1865,7 @@ export default function CognitiveTests() {
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
               <Brain className="w-4 h-4 ml-2" />
-              تصحيح تلقائي بالذكاء الاصطناعي
+              تصحيح تلقائي بال��كاء الاصطناعي
             </Button>
             <Button
               onClick={startImageVerification}
@@ -1898,7 +1898,7 @@ export default function CognitiveTests() {
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري و��لسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
-                <li>• إعداد خطط العلاج المناسبة</li>
+                <li>• إعداد ��طط العلاج المناسبة</li>
               </ul>
             </div>
             <div>
@@ -2001,7 +2001,7 @@ export default function CognitiveTests() {
         setGameFeedback({
           show: true,
           type: 'error',
-          message: 'حدث خطأ في التحليل'
+          message: 'حدث خطأ في ا��تحليل'
         });
       } finally {
         setIsAnalyzing(false);
@@ -2070,7 +2070,7 @@ export default function CognitiveTests() {
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
             <p className="text-blue-800 font-semibold mb-2">📋 التعليمات:</p>
             <p className="text-blue-700">
-              اختر صورة ثم اختر الاسم المطابق لها. سيتم فحص إجابتك بالذكاء الاصطناعي للتأكد من صحتها!
+              اختر صورة ثم اختر الاسم المطابق لها. سيتم فحص إجا��تك بالذكاء الاصطناعي للتأكد من صحتها!
             </p>
           </div>
         </div>
