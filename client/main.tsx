@@ -8,6 +8,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import ChildInterface from "./pages/ChildInterface";
+import PatientForm from "./pages/PatientForm";
 
 const queryClient = new QueryClient();
 
