@@ -178,7 +178,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 8,
-      name: "فطر",
+      name: "ف��ر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe294ceefdadb4d4ea175c8c7df4efa86?format=webp&width=800",
       category: "خضروات"
     },
@@ -617,7 +617,7 @@ export default function CognitiveTests() {
           'dog|كلب': { name: 'كلب', category: 'حيوانات', confidence: 99 },
           'cat|قطة': { name: 'قطة', category: 'حيوانات', confidence: 98 },
 
-          // أنماط الملابس
+          // أ��ماط الملابس
           'suit|بدلة': { name: 'بدلة رسمية', category: 'ملابس', confidence: 95 },
           'tie|ربطة': { name: 'ربطة عنق', category: 'ملابس', confidence: 94 },
           'scarf|وشاح': { name: 'وشاح شتوي', category: 'ملابس', confidence: 92 },
@@ -728,7 +728,7 @@ export default function CognitiveTests() {
 
   const applyAICorrections = (correctedImages: TestItem[]) => {
     // هنا يمكن تطبيق التصحيحات على البيانات الأصلية
-    // في تطبيق حقيقي، سيتم حفظ التغييرات في قاعدة البيانات
+    // في تطبيق حقيقي، س��تم حفظ التغييرات في قاعدة البيانات
     console.log('تم تطبيق التصحيحات:', correctedImages);
   };
 
@@ -1743,7 +1743,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              اب��أ الاختبار
+              ابدأ الاختبار
             </Button>
           </CardContent>
         </Card>
@@ -1843,7 +1843,7 @@ export default function CognitiveTests() {
             </Button>
           </div>
           <div className="mt-3 text-sm text-gray-600">
-            💡 التصحيح التلقائي يحلل كل صورة ويقترح الاسم والفئة الصحيحة
+            💡 التصحيح التلقائي يحلل كل صورة ويقترح الاسم والفئة الصح��حة
           </div>
         </CardContent>
       </Card>
@@ -1862,7 +1862,7 @@ export default function CognitiveTests() {
               <h4 className="font-semibold mb-3 text-gray-800">هدف الاختبارات:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
-                <li>• قياس مستوى ال��دراك البصري والسمعي</li>
+                <li>• قياس مستوى الإدراك البصري والسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
               </ul>
@@ -1891,6 +1891,8 @@ export default function CognitiveTests() {
 
     const { item, originalCategory } = verificationData[currentVerificationIndex];
     const progress = ((currentVerificationIndex + 1) / verificationData.length) * 100;
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [aiResult, setAiResult] = useState<{name: string, category: string, confidence: number} | null>(null);
 
     const categories = [
       { key: 'clothes', name: 'ملابس', color: 'blue' },
@@ -1899,6 +1901,18 @@ export default function CognitiveTests() {
       { key: 'animals', name: 'حيوانات', color: 'yellow' },
       { key: 'vehicles', name: 'مركبات', color: 'purple' }
     ];
+
+    const handleAIAnalysis = async () => {
+      setIsAnalyzing(true);
+      try {
+        const result = await analyzeImageWithAI(item.src);
+        setAiResult(result);
+      } catch (error) {
+        console.error('فشل التحليل:', error);
+      } finally {
+        setIsAnalyzing(false);
+      }
+    };
 
     return (
       <div className="max-w-4xl mx-auto p-6">
@@ -1952,7 +1966,7 @@ export default function CognitiveTests() {
                   variant="outline"
                   onClick={() => setCurrentVerificationIndex(prev => prev + 1)}
                 >
-                  تح��اج تصحيح
+                  تحتاج تصحيح
                 </Button>
               </div>
 
