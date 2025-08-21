@@ -260,7 +260,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 12,
-      name: "��طيخ",
+      name: "بطيخ",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcbf84b70c17f46a6b1701a8a8a6d0443?format=webp&width=800",
       category: "فواكه"
     },
@@ -326,7 +326,7 @@ const IMAGE_CATEGORIES = {
       id: 6,
       name: "ذئب",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F18ff4c13294840f49ef57311d63b3d67?format=webp&width=800",
-      category: "حي����نات"
+      category: "حي��انات"
     },
     {
       id: 7,
@@ -590,7 +590,7 @@ export default function CognitiveTests() {
           'orange|برتقال': { name: 'برتقال', category: 'فواكه', confidence: 97 },
           'strawberry|فراولة': { name: 'فراولة', category: 'فواكه', confidence: 95 },
           'apple|تفاح': { name: 'تفاح', category: 'فواكه', confidence: 98 },
-          'lemon|ليمون': { name: 'ليمون', category: 'فواكه', confidence: 96 },
+          'lemon|ليمون': { name: 'ليمون', category: 'فو��كه', confidence: 96 },
           'peach|خوخ': { name: 'خوخ', category: 'فواكه', confidence: 93 },
           'watermelon|بطيخ': { name: 'بطيخ', category: 'فواكه', confidence: 97 },
           'dates|تمر': { name: 'تمر', category: 'فواكه', confidence: 94 },
@@ -607,7 +607,7 @@ export default function CognitiveTests() {
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
           'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
           'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
-          'duck|بطة': { name: '��طة', category: 'حيوانات', confidence: 93 },
+          'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
           'horse|حصان': { name: 'حصان', category: 'حيوانات', confidence: 97 },
           'donkey|حمار': { name: 'حمار', category: 'حيوانات', confidence: 94 },
@@ -657,7 +657,7 @@ export default function CognitiveTests() {
         // إذا لم يتم العثور على نمط، نحلل بناءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
-        const categories = ['ملابس', 'خضروات', 'فواكه', 'حيوانات', 'مركبات'];
+        const categories = ['ملابس', 'خضروات', 'فواكه', 'حيو��نات', 'مركبات'];
         const categoryIndex = hashInt % categories.length;
 
         resolve({
@@ -665,7 +665,7 @@ export default function CognitiveTests() {
           category: categories[categoryIndex],
           confidence: 75
         });
-      }, 1500); // محاكاة وقت المعالجة
+      }, 1500); // محا��اة وقت المعالجة
     });
   };
 
@@ -1241,7 +1241,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائ��ة
+                العودة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1654,7 +1654,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              9 أنواع ��ضروات • صور حقيقية
+              9 أنواع خضروات • صور حقيقية
             </div>
             <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1896,7 +1896,7 @@ export default function CognitiveTests() {
               <h4 className="font-semibold mb-3 text-gray-800">هدف الاختبارات:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
-                <li>• قياس مستوى الإدراك البصري والسمعي</li>
+                <li>• قياس مستوى الإدراك البصري و��لسمعي</li>
                 <li>• تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
               </ul>
@@ -2183,7 +2183,7 @@ export default function CognitiveTests() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                   {gameData.names.map((name, index) => (
                     <Button
-                      key={index}
+                      key={`name-${index}-${name}`}
                       variant={selectedName === name ? "default" : "outline"}
                       onClick={() => handleNameSelect(name)}
                       className={`h-auto p-4 text-center ${
@@ -2229,7 +2229,7 @@ export default function CognitiveTests() {
 
     const categories = [
       { key: 'clothes', name: 'ملابس', color: 'blue' },
-      { key: 'vegetables', name: 'خض��وات', color: 'green' },
+      { key: 'vegetables', name: 'خضروات', color: 'green' },
       { key: 'fruits', name: 'فواكه', color: 'red' },
       { key: 'animals', name: 'حيوانات', color: 'yellow' },
       { key: 'vehicles', name: 'مركبات', color: 'purple' }
