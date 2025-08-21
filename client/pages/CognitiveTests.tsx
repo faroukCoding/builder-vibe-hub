@@ -70,7 +70,7 @@ export default function CognitiveTests() {
       },
       {
         id: 5,
-        name: "أحذية رياضية",
+        name: "أحذية رياضي��",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F22a372c46a5240b3a6a530be95dfe12d?format=webp&width=800",
         category: "ملابس"
       },
@@ -236,7 +236,7 @@ export default function CognitiveTests() {
       },
       {
         id: 11,
-        name: "عنب أخضر",
+        name: "عن�� أخضر",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F94022a0bd4ff4e6d84a625bdf37ef5a6?format=webp&width=800",
         category: "فواكه"
       },
@@ -1050,7 +1050,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائمة
+                الع��دة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1261,6 +1261,276 @@ export default function CognitiveTests() {
     );
   };
 
+  // اختبار التعرف على الخضروات
+  const VegetablesRecognitionTest = () => {
+    const [currentVegetable, setCurrentVegetable] = useState(null);
+    const [options, setOptions] = useState([]);
+
+    const generateQuestion = () => {
+      const randomVegetable = imageCategories.vegetables[Math.floor(Math.random() * imageCategories.vegetables.length)];
+      const wrongOptions = imageCategories.vegetables
+        .filter(vegetable => vegetable.id !== randomVegetable.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const allOptions = [randomVegetable, ...wrongOptions].sort(() => 0.5 - Math.random());
+
+      setCurrentVegetable(randomVegetable);
+      setOptions(allOptions);
+      playAudio(`ما اسم هذه الخضروات؟`);
+    };
+
+    if (testSession.isTestActive && !currentVegetable && testSession.currentQuestion <= 10) {
+      generateQuestion();
+    }
+
+    if (!testSession.isTestActive || testSession.currentQuestion > 10) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-6 h-6 text-yellow-600" />
+              ملخص اختبار الخضروات
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-6">
+              <div>
+                <div className="text-3xl font-bold text-green-600">{testSession.correctAnswers}</div>
+                <div className="text-sm text-gray-600">صحيحة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600">{testSession.wrongAnswers}</div>
+                <div className="text-sm text-gray-600">خاطئة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
+                <div className="text-sm text-gray-600">إجمالي</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-600">
+                  {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
+                </div>
+                <div className="text-sm text-gray-600">نسبة النجاح</div>
+              </div>
+            </div>
+            <div className="flex gap-4 justify-center">
+              <Button onClick={() => startTest('vegetables')} className="bg-green-600 hover:bg-green-700">
+                <RotateCcw className="w-4 h-4 ml-2" />
+                إعادة الاختبار
+              </Button>
+              <Button onClick={resetTest} variant="outline">
+                العودة للقائمة
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">اختبار التعرف على الخضروات</CardTitle>
+          <CardDescription className="text-center">
+            السؤال {testSession.currentQuestion} من 10
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {feedback && (
+            <div className={`absolute inset-0 flex items-center justify-center z-10 ${
+              feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
+            } text-white rounded-lg`}>
+              <div className="text-center">
+                {feedback.type === 'success' ? (
+                  <CheckCircle className="w-16 h-16 mx-auto mb-4" />
+                ) : (
+                  <XCircle className="w-16 h-16 mx-auto mb-4" />
+                )}
+                <div className="text-xl font-bold">{feedback.message}</div>
+              </div>
+            </div>
+          )}
+
+          {currentVegetable && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <img
+                  src={currentVegetable.src}
+                  alt={currentVegetable.name}
+                  className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
+                />
+                <p className="text-lg font-semibold mb-4">ما اسم هذه الخضروات؟</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {options.map((option, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="h-16 text-lg"
+                    onClick={() => {
+                      handleAnswer(option.name, currentVegetable.name, "ما اسم هذه الخضروات؟");
+                      setTimeout(() => {
+                        if (testSession.currentQuestion <= 10) {
+                          generateQuestion();
+                        }
+                      }, 3500);
+                    }}
+                  >
+                    {option.name}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="mt-6">
+                <Progress value={(testSession.currentQuestion - 1) / 10 * 100} className="h-3" />
+                <div className="text-center text-sm text-gray-600 mt-2">
+                  التقدم: {testSession.currentQuestion - 1}/10
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
+
+  // اختبار التعرف على الفواكه
+  const FruitsRecognitionTest = () => {
+    const [currentFruit, setCurrentFruit] = useState(null);
+    const [options, setOptions] = useState([]);
+
+    const generateQuestion = () => {
+      const randomFruit = imageCategories.fruits[Math.floor(Math.random() * imageCategories.fruits.length)];
+      const wrongOptions = imageCategories.fruits
+        .filter(fruit => fruit.id !== randomFruit.id)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+
+      const allOptions = [randomFruit, ...wrongOptions].sort(() => 0.5 - Math.random());
+
+      setCurrentFruit(randomFruit);
+      setOptions(allOptions);
+      playAudio(`ما اسم هذه الفاكهة؟`);
+    };
+
+    if (testSession.isTestActive && !currentFruit && testSession.currentQuestion <= 10) {
+      generateQuestion();
+    }
+
+    if (!testSession.isTestActive || testSession.currentQuestion > 10) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-6 h-6 text-yellow-600" />
+              ملخص اختبار الفواكه
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-6">
+              <div>
+                <div className="text-3xl font-bold text-green-600">{testSession.correctAnswers}</div>
+                <div className="text-sm text-gray-600">صحيحة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600">{testSession.wrongAnswers}</div>
+                <div className="text-sm text-gray-600">خاطئة</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
+                <div className="text-sm text-gray-600">إجمالي</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-600">
+                  {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
+                </div>
+                <div className="text-sm text-gray-600">نسبة النجاح</div>
+              </div>
+            </div>
+            <div className="flex gap-4 justify-center">
+              <Button onClick={() => startTest('fruits')} className="bg-red-600 hover:bg-red-700">
+                <RotateCcw className="w-4 h-4 ml-2" />
+                إعادة الاختبار
+              </Button>
+              <Button onClick={resetTest} variant="outline">
+                العودة للقائمة
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-center">اختبار التعرف على الفواكه</CardTitle>
+          <CardDescription className="text-center">
+            السؤال {testSession.currentQuestion} من 10
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {feedback && (
+            <div className={`absolute inset-0 flex items-center justify-center z-10 ${
+              feedback.type === 'success' ? 'bg-green-500/90' : 'bg-red-500/90'
+            } text-white rounded-lg`}>
+              <div className="text-center">
+                {feedback.type === 'success' ? (
+                  <CheckCircle className="w-16 h-16 mx-auto mb-4" />
+                ) : (
+                  <XCircle className="w-16 h-16 mx-auto mb-4" />
+                )}
+                <div className="text-xl font-bold">{feedback.message}</div>
+              </div>
+            </div>
+          )}
+
+          {currentFruit && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <img
+                  src={currentFruit.src}
+                  alt={currentFruit.name}
+                  className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
+                />
+                <p className="text-lg font-semibold mb-4">ما اسم هذه الفاكهة؟</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {options.map((option, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="h-16 text-lg"
+                    onClick={() => {
+                      handleAnswer(option.name, currentFruit.name, "ما اسم هذه الفاكهة؟");
+                      setTimeout(() => {
+                        if (testSession.currentQuestion <= 10) {
+                          generateQuestion();
+                        }
+                      }, 3500);
+                    }}
+                  >
+                    {option.name}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="mt-6">
+                <Progress value={(testSession.currentQuestion - 1) / 10 * 100} className="h-3" />
+                <div className="text-center text-sm text-gray-600 mt-2">
+                  التقدم: {testSession.currentQuestion - 1}/10
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
+
   // اختبار الألوان
   const ColorRecognitionTest = () => {
     const [currentColor, setCurrentColor] = useState(null);
@@ -1359,7 +1629,7 @@ export default function CognitiveTests() {
                   className="w-48 h-48 mx-auto mb-4 rounded-lg shadow-lg border-4 border-gray-300"
                   style={{ backgroundColor: currentColor.color }}
                 />
-                <p className="text-lg font-semibold mb-4">ما لو�� هذا المربع؟</p>
+                <p className="text-lg font-semibold mb-4">ما لون هذا المربع؟</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1846,7 +2116,7 @@ export default function CognitiveTests() {
                 <Heart className="w-8 h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">التعرف على الحيوانات</h3>
+                <h3 className="text-xl font-bold">التعرف على الحيوان��ت</h3>
                 <p className="text-gray-600">تقييم معرفة أسماء الحيوانات</p>
               </div>
             </div>
@@ -2029,7 +2299,7 @@ export default function CognitiveTests() {
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                {currentTest === "menu" ? "العودة للوحة التحكم" : "ال��ائمة الرئيسية"}
+                {currentTest === "menu" ? "العودة للوحة التحكم" : "القائمة الرئيسية"}
               </Button>
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-lg">
