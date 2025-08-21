@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 export default function SpecialistDashboard() {
   const navigate = useNavigate();
@@ -489,7 +490,7 @@ export default function SpecialistDashboard() {
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">تنبيهات المواعيد</p>
+                          <p className="font-medium">تنبيهات ��لمواعيد</p>
                           <p className="text-sm text-gray-600">إرسال تذكير قبل المواعيد</p>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -707,7 +708,7 @@ export default function SpecialistDashboard() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  مواعيد اليوم
+                  مواع��د اليوم
                 </CardTitle>
               </CardHeader>
               <CardContent>
