@@ -40,7 +40,7 @@ export default function CognitiveTests() {
   const [feedback, setFeedback] = useState(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // بيانات الصور المرفقة
+  // بيانات الصور المرفقة - مصححة حسب المحتوى الفعلي
   const imageCategories = {
     clothes: [
       {
@@ -730,7 +730,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار المركبات
+              ��لخص اختبار المركبات
             </CardTitle>
           </CardHeader>
           <CardContent>
