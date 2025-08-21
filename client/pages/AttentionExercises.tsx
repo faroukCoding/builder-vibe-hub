@@ -331,7 +331,7 @@ export default function AttentionExercises() {
                 variant="outline"
               >
                 <RotateCcw className="w-5 h-5 ml-2" />
-                م��مة جديدة
+                مهمة جديدة
               </Button>
             </>
           )}
@@ -1128,7 +1128,7 @@ export default function AttentionExercises() {
               variant="outline"
             >
               <Pause className="w-5 h-5 ml-2" />
-              إيق��ف
+              إيقاف
             </Button>
           )}
         </div>
@@ -1196,30 +1196,76 @@ export default function AttentionExercises() {
         <CardContent className="p-8 text-center">
           <Target className="w-16 h-16 mx-auto mb-4" />
           <h1 className="text-3xl font-bold mb-2">تمارين الانتباه والتركيز</h1>
-          <p className="text-blue-100">ألعاب تفاعلية لتطوير مهارات الانتباه والتركيز</p>
+          <p className="text-blue-100">برنامج شامل لتطوير مهارات الانتباه المختلفة</p>
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("star-selection")}>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("visual-attention")}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="bg-yellow-100 p-3 rounded-lg">
-                <Star className="w-8 h-8 text-yellow-600" />
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <Eye className="w-8 h-8 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">اختيار النجمة</h3>
-                <p className="text-gray-600">ابحث عن النجمة بين الأشكال</p>
+                <h3 className="text-lg font-bold">الانتباه البصري</h3>
+                <p className="text-gray-600 text-sm">تمييز الأشكال والألوان</p>
               </div>
             </div>
-            <div className="space-y-2 text-sm text-gray-600 mb-4">
-              <p>• تطوير الانتباه البصري</p>
-              <p>• تحسين التركيز وا��ملاحظة</p>
-              <p>• تعزيز سرعة الاستجابة</p>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• تطوير الانتباه الانتقائي</p>
+              <p>• تحسين التمييز البصري</p>
+              <p>• تعزيز سرعة المعالجة</p>
             </div>
-            <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white">
+            <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ اللعبة
+              ابدأ التمرين
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("auditory-attention")}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-green-100 p-3 rounded-lg">
+                <Volume2 className="w-8 h-8 text-green-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">الانتباه السمعي</h3>
+                <p className="text-gray-600 text-sm">تذكر التسلسلات الصوتية</p>
+              </div>
+            </div>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• تقوية الذاكرة السمعي��</p>
+              <p>• تحسين التتابع السمعي</p>
+              <p>• تطوير المعالجة السمعية</p>
+            </div>
+            <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ التمرين
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setCurrentGame("sustained-attention")}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-orange-100 p-3 rounded-lg">
+                <Target className="w-8 h-8 text-orange-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">الانتباه المستمر</h3>
+                <p className="text-gray-600 text-sm">التركيز لفترة طويلة</p>
+              </div>
+            </div>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• زيادة مدة التركيز</p>
+              <p>• تحسين اليقظة</p>
+              <p>• تطوير المثابرة</p>
+            </div>
+            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ التمرين
             </Button>
           </CardContent>
         </Card>
@@ -1228,25 +1274,57 @@ export default function AttentionExercises() {
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="bg-purple-100 p-3 rounded-lg">
-                <Eye className="w-8 h-8 text-purple-600" />
+                <Search className="w-8 h-8 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">البحث عن المفقود</h3>
-                <p className="text-gray-600">ابحث عن الأشياء المفقودة</p>
+                <h3 className="text-lg font-bold">البحث البصري</h3>
+                <p className="text-gray-600 text-sm">العثور على الأشياء المخفية</p>
               </div>
             </div>
-            <div className="space-y-2 text-sm text-gray-600 mb-4">
-              <p>• تطوير مهارات الملاحظة</p>
-              <p>• تقوية الذاكرة البصرية</p>
-              <p>• تحسين التركيز المكاني</p>
+            <div className="space-y-1 text-xs text-gray-600 mb-4">
+              <p>• تطوير الاستكشاف البصري</p>
+              <p>• تحسين التنظيم المكاني</p>
+              <p>• تعزيز حل المشكلات</p>
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ اللعبة
+              ابدأ التمرين
             </Button>
           </CardContent>
         </Card>
       </div>
+
+      {/* Instructions Section */}
+      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-green-700">
+            <Circle className="w-5 h-5" />
+            إرشادات التمارين
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-semibold mb-3 text-gray-800">الهدف من التمارين:</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• تطوير أنواع مختلفة من الانتباه</li>
+                <li>• تحسين التركيز والتحكم المعرفي</li>
+                <li>• زيادة مدة الانتباه وجودته</li>
+                <li>• تعزيز المعالجة البصرية والسمعية</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-3 text-gray-800">نصائح للحصول على أفضل النتائج:</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• تأكد من بيئة هادئة وخالية من المشتتات</li>
+                <li>• ابدأ بالمستويات السهلة وارتق تدريجياً</li>
+                <li>• خذ استراحات منتظمة لتجنب التعب</li>
+                <li>• مارس التمارين بانتظام للحصول على تحسن مستمر</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 
