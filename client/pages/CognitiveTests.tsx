@@ -108,8 +108,8 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 9,
-      name: "قبعة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6fd23237e667429f8fb3ae7bd71eaf96?format=webp&width=800",
+      name: "قبعة رياضية",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1d4424c0536a491bb2369e32189fca14?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -392,7 +392,7 @@ const IMAGE_CATEGORIES = {
       id: 17,
       name: "قطة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
-      category: "حي��ا��ات"
+      category: "حيوا��ات"
     }
   ],
 
@@ -515,7 +515,7 @@ const SHAPES = [
 const BODY_PARTS = [
   { name: "عين", emoji: "👁️", category: "وجه" },
   { name: "أنف", emoji: "👃", category: "وجه" },
-  { name: "فم", emoji: "👄", category: "و��ه" },
+  { name: "فم", emoji: "👄", category: "وجه" },
   { name: "أذن", emoji: "👂", category: "وجه" },
   { name: "يد", emoji: "✋", category: "أطراف" },
   { name: "قدم", emoji: "🦶", category: "أطراف" },
@@ -635,7 +635,7 @@ export default function CognitiveTests() {
           'helicopter|هليكوبتر': { name: 'طائرة هليكوبتر', category: 'مركبات', confidence: 99 },
           'fire.truck|إطفاء': { name: 'سيارة إطفاء', category: 'مركبات', confidence: 98 },
           'tractor|جرار': { name: 'جرار زراعي', category: 'مركبات', confidence: 97 },
-          'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مرك��ات', confidence: 98 },
+          'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مركبات', confidence: 98 },
           'truck|شاحنة': { name: 'شاحنة', category: 'مركبات', confidence: 96 },
           'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
           'bicycle|دراجة.هوائية': { name: 'دراجة هوائية', category: 'مركبات', confidence: 94 },
@@ -769,7 +769,7 @@ export default function CognitiveTests() {
       setCurrentVerificationIndex(prev => prev + 1);
     } else {
       setIsVerificationMode(false);
-      alert(`تم الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
+      alert(`تم الانتهاء من التحق��! تم ��صحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -1173,7 +1173,7 @@ export default function CognitiveTests() {
               <div className="mt-6">
                 <Progress value={(testSession.currentQuestion - 1) / 10 * 100} className="h-3" />
                 <div className="text-center text-sm text-gray-600 mt-2">
-                  ال��قدم: {testSession.currentQuestion - 1}/10
+                  التقدم: {testSession.currentQuestion - 1}/10
                 </div>
               </div>
             </div>
@@ -1613,7 +1613,7 @@ export default function CognitiveTests() {
       <Card className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
         <CardContent className="p-8 text-center">
           <Brain className="w-16 h-16 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold mb-2">��ختبارات الإدراك والمكتسبات القبلية</h1>
+          <h1 className="text-3xl font-bold mb-2">اختبارات الإدراك والمكتسبات القبلية</h1>
           <p className="text-purple-100">برنامج شامل لتقييم المهارات الإدراكية والمعرفية للأطفال</p>
         </CardContent>
       </Card>
@@ -1905,7 +1905,7 @@ export default function CognitiveTests() {
               <h4 className="font-semibold mb-3 text-gray-800">معايير التقييم:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
-                <li>• تغذية راجعة فورية باللغة الع��بية</li>
+                <li>• تغذية راجعة فورية باللغة العربية</li>
                 <li>• حساب دقيق ��نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
@@ -1992,7 +1992,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'error',
-            message: `❌ غير صحيح! الذكاء الاصطناعي يقترح "${aiAnalysis.name}" لهذه الصورة`
+            message: `❌ غير صحي��! الذكاء الاصطناعي يقترح "${aiAnalysis.name}" لهذه الصورة`
           });
           playAudio('حاول مرة أخرى');
         }
@@ -2366,7 +2366,7 @@ export default function CognitiveTests() {
                       key={category.key}
                       variant="outline"
                       onClick={() => {
-                        const newName = prompt(`أد��ل الاسم الصحيح للصورة في فئة ${category.name}:`);
+                        const newName = prompt(`أدخل الاسم الصحيح للصورة في فئة ${category.name}:`);
                         if (newName) {
                           handleImageCorrection(
                             { ...item, name: newName },
