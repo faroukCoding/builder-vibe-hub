@@ -120,8 +120,8 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 11,
-      name: "بنطلون",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe29382794879491384e2df520674e988?format=webp&width=800",
+      name: "بنطلون جينز",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa918212399584e72a3394a76a22915c8?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -254,7 +254,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 11,
-      name: "عنب أخض��",
+      name: "عنب أخضر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1588ab16af9e4fad912e048a6d0d1f11?format=webp&width=800",
       category: "فواكه"
     },
@@ -320,7 +320,7 @@ const IMAGE_CATEGORIES = {
       id: 5,
       name: "زرافة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6932171555a342309126302e012c11d3?format=webp&width=800",
-      category: "حيوانات"
+      category: "��يوانات"
     },
     {
       id: 6,
@@ -491,7 +491,7 @@ const COLORS = [
 const NUMBERS = [
   { number: 1, name: "واحد", symbol: "١" },
   { number: 2, name: "اثنان", symbol: "٢" },
-  { number: 3, name: "ث��اثة", symbol: "٣" },
+  { number: 3, name: "ثلاثة", symbol: "٣" },
   { number: 4, name: "أربعة", symbol: "٤" },
   { number: 5, name: "خمسة", symbol: "٥" },
   { number: 6, name: "ستة", symbol: "٦" },
@@ -620,7 +620,7 @@ export default function CognitiveTests() {
           // أنماط الملابس
           'suit|بدلة': { name: 'بدلة رسمية', category: 'ملابس', confidence: 95 },
           'tie|ربطة': { name: 'ربطة عنق', category: 'ملابس', confidence: 94 },
-          'scarf|وشاح': { name: 'وشاح شتوي', category: '��لابس', confidence: 92 },
+          'scarf|وشاح': { name: 'وشاح شتوي', category: 'ملابس', confidence: 92 },
           'gloves|قفازات': { name: 'قفازات', category: 'ملابس', confidence: 93 },
           'shoes|حذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
           'socks|جوارب': { name: 'جوارب', category: 'ملابس', confidence: 94 },
@@ -635,7 +635,7 @@ export default function CognitiveTests() {
           'helicopter|هليكوبتر': { name: 'طائرة هليكوبتر', category: 'مركبات', confidence: 99 },
           'fire.truck|إطفاء': { name: 'سيارة إطفاء', category: 'مركبات', confidence: 98 },
           'tractor|جرار': { name: 'جرار زراعي', category: 'مركبات', confidence: 97 },
-          'ambulance|إسعاف': { name: 'سيارة إس����ف', category: 'مركبات', confidence: 98 },
+          'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مركبات', confidence: 98 },
           'truck|شاحنة': { name: 'شاحنة', category: 'مركبات', confidence: 96 },
           'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
           'bicycle|دراجة.هوائية': { name: 'دراجة هوائية', category: 'مركبات', confidence: 94 },
@@ -769,7 +769,7 @@ export default function CognitiveTests() {
       setCurrentVerificationIndex(prev => prev + 1);
     } else {
       setIsVerificationMode(false);
-      alert(`تم الانتهاء من التح����! تم تصحيح ${correctedImages.length} صورة.`);
+      alert(`تم الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -994,7 +994,7 @@ export default function CognitiveTests() {
   const ClothesRecognitionTest = () => (
     <ImageRecognitionTest
       category="clothes"
-      categoryArabic="المل��بس"
+      categoryArabic="الملابس"
       question="ما اسم هذه القطعة من الملابس؟"
       images={IMAGE_CATEGORIES.clothes}
       testType="clothes"
@@ -1905,7 +1905,7 @@ export default function CognitiveTests() {
               <h4 className="font-semibold mb-3 text-gray-800">معايير التقييم:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
-                <li>• تغذية راجعة فور��ة باللغة العربية</li>
+                <li>• تغذية راجعة فورية باللغة العربية</li>
                 <li>• حساب دقيق ��نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
@@ -2171,7 +2171,7 @@ export default function CognitiveTests() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Volume2 className="w-5 h-5" />
-                  اختر ال��سم المطابق
+                  اختر الاسم المطابق
                   {selectedName && (
                     <Badge className="bg-green-500">
                       مختار: {selectedName}
