@@ -1,8 +1,8 @@
-import { 
-  ArrowLeft, 
-  Star, 
-  Circle, 
-  Square, 
+import {
+  ArrowLeft,
+  Star,
+  Circle,
+  Square,
   Triangle,
   Play,
   Pause,
@@ -24,22 +24,26 @@ import { useState, useEffect, useRef } from "react";
 
 export default function AttentionExercises() {
   const navigate = useNavigate();
-  const [currentGame, setCurrentGame] = useState("menu"); // menu, star-selection, find-missing
+  const [currentGame, setCurrentGame] = useState("menu"); // menu, visual-attention, auditory-attention, sustained-attention, selective-attention
   const [gameSession, setGameSession] = useState({
     correctAnswers: 0,
     wrongAnswers: 0,
     totalQuestions: 0,
     currentQuestion: 1,
     isGameActive: false,
-    timeElapsed: 0
+    timeElapsed: 0,
+    level: 1
   });
-  
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [gameData, setGameData] = useState({
     shapes: [],
+    colors: [],
     targetPosition: 0,
     currentScene: null,
-    missingItem: null
+    missingItem: null,
+    sequence: [],
+    userSequence: []
   });
 
   // تمرين اختيار النجمة
@@ -53,7 +57,7 @@ export default function AttentionExercises() {
       const numShapes = Math.min(4 + Math.floor(gameSession.currentQuestion / 3), 8);
       const shuffledShapes = [];
       const starPosition = Math.floor(Math.random() * numShapes);
-      
+
       for (let i = 0; i < numShapes; i++) {
         if (i === starPosition) {
           shuffledShapes.push({ Component: Star, isTarget: true, id: i });
@@ -62,7 +66,7 @@ export default function AttentionExercises() {
           shuffledShapes.push({ Component: randomShape, isTarget: false, id: i });
         }
       }
-      
+
       setCurrentShapes(shuffledShapes);
       setTargetIndex(starPosition);
       playInstruction();
@@ -88,14 +92,14 @@ export default function AttentionExercises() {
           currentQuestion: prev.currentQuestion + 1,
           totalQuestions: prev.totalQuestions + 1
         }));
-        
+
         // تشغيل صوت التصفيق
         if ('speechSynthesis' in window) {
           const utterance = new SpeechSynthesisUtterance('أحسنت! ممتاز');
           utterance.lang = 'ar-SA';
           speechSynthesis.speak(utterance);
         }
-        
+
         setTimeout(() => {
           setFeedback(null);
           if (gameSession.currentQuestion < 10) {
@@ -104,7 +108,7 @@ export default function AttentionExercises() {
             endGame();
           }
         }, 2000);
-        
+
       } else {
         setFeedback({ type: 'error', message: 'أعد المحاولة' });
         setGameSession(prev => ({
@@ -112,14 +116,14 @@ export default function AttentionExercises() {
           wrongAnswers: prev.wrongAnswers + 1,
           totalQuestions: prev.totalQuestions + 1
         }));
-        
+
         // تشغيل صوت "أعد المحاولة"
         if ('speechSynthesis' in window) {
           const utterance = new SpeechSynthesisUtterance('أعد المحاولة');
           utterance.lang = 'ar-SA';
           speechSynthesis.speak(utterance);
         }
-        
+
         setTimeout(() => setFeedback(null), 1500);
       }
     };
@@ -173,7 +177,7 @@ export default function AttentionExercises() {
               <div className="text-sm text-green-700">إجابات صحيحة</div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-red-50 border-red-200">
             <CardContent className="p-4 text-center">
               <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
@@ -181,7 +185,7 @@ export default function AttentionExercises() {
               <div className="text-sm text-red-700">إجابات خاطئة</div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-blue-50 border-blue-200">
             <CardContent className="p-4 text-center">
               <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
@@ -196,9 +200,9 @@ export default function AttentionExercises() {
         {/* Game Controls */}
         <div className="flex justify-center gap-4">
           {!gameSession.isGameActive ? (
-            <Button 
-              onClick={startGame} 
-              size="lg" 
+            <Button
+              onClick={startGame}
+              size="lg"
               className="bg-green-600 hover:bg-green-700 text-white"
             >
               <Play className="w-5 h-5 ml-2" />
@@ -206,17 +210,17 @@ export default function AttentionExercises() {
             </Button>
           ) : (
             <>
-              <Button 
-                onClick={endGame} 
-                size="lg" 
+              <Button
+                onClick={endGame}
+                size="lg"
                 variant="outline"
               >
                 <Pause className="w-5 h-5 ml-2" />
                 إيقاف
               </Button>
-              <Button 
-                onClick={generateLevel} 
-                size="lg" 
+              <Button
+                onClick={generateLevel}
+                size="lg"
                 variant="outline"
               >
                 <RotateCcw className="w-5 h-5 ml-2" />
@@ -256,14 +260,14 @@ export default function AttentionExercises() {
                       className={`
                         w-20 h-20 flex items-center justify-center rounded-lg cursor-pointer
                         transition-all duration-200 border-4 hover:scale-110
-                        ${shape.isTarget 
-                          ? 'border-yellow-400 bg-yellow-100 hover:bg-yellow-200' 
+                        ${shape.isTarget
+                          ? 'border-yellow-400 bg-yellow-100 hover:bg-yellow-200'
                           : 'border-gray-300 bg-gray-100 hover:bg-gray-200'
                         }
                         ${feedback?.type === 'error' && !shape.isTarget ? 'animate-pulse border-red-400' : ''}
                       `}
                     >
-                      <shape.Component 
+                      <shape.Component
                         className={`w-12 h-12 ${
                           shape.isTarget ? 'text-yellow-600' : 'text-gray-600'
                         }`}
@@ -357,7 +361,7 @@ export default function AttentionExercises() {
       const randomScene = scenes[Math.floor(Math.random() * scenes.length)];
       setCurrentScene(randomScene);
       setGameSession(prev => ({ ...prev, isGameActive: true }));
-      
+
       // تشغيل التعليمات الصوتية
       if ('speechSynthesis' in window) {
         const utterance = new SpeechSynthesisUtterance(randomScene.description);
@@ -376,18 +380,18 @@ export default function AttentionExercises() {
           correctAnswers: prev.correctAnswers + 1,
           totalQuestions: prev.totalQuestions + 1
         }));
-        
+
         if ('speechSynthesis' in window) {
           const utterance = new SpeechSynthesisUtterance('ممتاز! وجدته!');
           utterance.lang = 'ar-SA';
           speechSynthesis.speak(utterance);
         }
-        
+
         setTimeout(() => {
           setFeedback(null);
           startFindingGame();
         }, 2000);
-        
+
       } else {
         setFeedback({ type: 'error', message: 'ليس هذا، حاول مرة أخرى' });
         setGameSession(prev => ({
@@ -395,13 +399,13 @@ export default function AttentionExercises() {
           wrongAnswers: prev.wrongAnswers + 1,
           totalQuestions: prev.totalQuestions + 1
         }));
-        
+
         if ('speechSynthesis' in window) {
           const utterance = new SpeechSynthesisUtterance('ليس هذا، حاول مرة أخرى');
           utterance.lang = 'ar-SA';
           speechSynthesis.speak(utterance);
         }
-        
+
         setTimeout(() => setFeedback(null), 1500);
       }
     };
@@ -424,18 +428,18 @@ export default function AttentionExercises() {
         {/* Game Controls */}
         <div className="flex justify-center">
           {!gameSession.isGameActive ? (
-            <Button 
-              onClick={startFindingGame} 
-              size="lg" 
+            <Button
+              onClick={startFindingGame}
+              size="lg"
               className="bg-purple-600 hover:bg-purple-700 text-white"
             >
               <Play className="w-5 h-5 ml-2" />
               ابدأ البحث
             </Button>
           ) : (
-            <Button 
-              onClick={() => setGameSession(prev => ({ ...prev, isGameActive: false }))} 
-              size="lg" 
+            <Button
+              onClick={() => setGameSession(prev => ({ ...prev, isGameActive: false }))}
+              size="lg"
               variant="outline"
             >
               <Pause className="w-5 h-5 ml-2" />
@@ -480,8 +484,8 @@ export default function AttentionExercises() {
                       className={`
                         h-32 flex flex-col items-center justify-center rounded-lg cursor-pointer
                         transition-all duration-200 border-4 hover:scale-105
-                        ${item === currentScene.missingItem 
-                          ? 'border-purple-400 bg-purple-100 hover:bg-purple-200' 
+                        ${item === currentScene.missingItem
+                          ? 'border-purple-400 bg-purple-100 hover:bg-purple-200'
                           : 'border-gray-300 bg-gray-100 hover:bg-gray-200'
                         }
                       `}
@@ -579,8 +583,8 @@ export default function AttentionExercises() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={() => {
                   if (currentGame === "menu") {
@@ -606,7 +610,7 @@ export default function AttentionExercises() {
                 </div>
               </div>
             </div>
-            <Button 
+            <Button
               variant="outline"
               onClick={() => navigate('/specialist-dashboard')}
               className="flex items-center gap-2"
