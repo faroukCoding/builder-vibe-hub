@@ -70,7 +70,7 @@ export default function CognitiveTests() {
       },
       {
         id: 5,
-        name: "أحذية رياضي��",
+        name: "أحذية رياضية",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F22a372c46a5240b3a6a530be95dfe12d?format=webp&width=800",
         category: "ملابس"
       },
@@ -236,7 +236,7 @@ export default function CognitiveTests() {
       },
       {
         id: 11,
-        name: "عن�� أخضر",
+        name: "عنب أخضر",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F94022a0bd4ff4e6d84a625bdf37ef5a6?format=webp&width=800",
         category: "فواكه"
       },
@@ -771,7 +771,7 @@ export default function CognitiveTests() {
                 <div className="text-3xl font-bold text-purple-600">
                   {testSession.totalQuestions > 0 ? Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) : 0}%
                 </div>
-                <div className="text-sm text-gray-600">نسبة النجاح</div>
+                <div className="text-sm text-gray-600">نسبة الن��اح</div>
               </div>
             </div>
             <div className="flex gap-4 justify-center">
@@ -1050,7 +1050,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                الع��دة للقائمة
+                العودة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -2116,7 +2116,7 @@ export default function CognitiveTests() {
                 <Heart className="w-8 h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">التعرف على الحيوان��ت</h3>
+                <h3 className="text-xl font-bold">التعرف على الحيوانات</h3>
                 <p className="text-gray-600">تقييم معرفة أسماء الحيوانات</p>
               </div>
             </div>
@@ -2163,18 +2163,36 @@ export default function CognitiveTests() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('food')}>
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('vegetables')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="bg-emerald-100 p-3 rounded-lg">
-                <Apple className="w-8 h-8 text-emerald-600" />
+              <div className="bg-green-100 p-3 rounded-lg">
+                <Carrot className="w-8 h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">التعرف على الطعام</h3>
-                <p className="text-gray-600">تقييم معرفة أسماء الأطعمة</p>
+                <h3 className="text-xl font-bold">التعرف على الخضروات</h3>
+                <p className="text-gray-600">تقييم معرفة أسماء الخضروات</p>
               </div>
             </div>
-            <Button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white">
+            <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+              <Play className="w-4 h-4 ml-2" />
+              ابدأ الاختبار
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('fruits')}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-red-100 p-3 rounded-lg">
+                <Apple className="w-8 h-8 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold">التعرف على الفواكه</h3>
+                <p className="text-gray-600">تقييم معرفة أسماء الفواكه</p>
+              </div>
+            </div>
+            <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
               ابدأ الاختبار
             </Button>
