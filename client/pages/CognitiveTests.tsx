@@ -361,7 +361,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 12,
       name: "حمار",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb107c72f7a1645299f3e5c23a9b04b8f?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8267a96071a141cbbed544e48231692a?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -400,7 +400,7 @@ const IMAGE_CATEGORIES = {
   vehicles: [
     {
       id: 1,
-      name: "��ائرة هليكوبت��",
+      name: "����ائرة هليكوبتر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbe4a29629e1473a96ed091dd66f1950?format=webp&width=800",
       category: "مركبات"
     },
@@ -606,7 +606,7 @@ export default function CognitiveTests() {
           'giraffe|زرافة': { name: 'زرافة', category: 'حيوانات', confidence: 99 },
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
           'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
-          'camel|��مل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
+          'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
           'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
           'horse|حصان': { name: 'حصان', category: 'حيوانات', confidence: 97 },
@@ -1760,7 +1760,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              الأرقام العربية 1-10 • مفاهيم عددية
+              ��لأرقام العربية 1-10 • مفاهيم عددية
             </div>
             <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -2329,7 +2329,7 @@ export default function CognitiveTests() {
                     variant="outline"
                     className="w-full"
                   >
-                    تح��يل مرة أخرى
+                    تحليل مرة أخرى
                   </Button>
                 </div>
               )}
