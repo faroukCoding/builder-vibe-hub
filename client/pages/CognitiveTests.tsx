@@ -126,8 +126,8 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 12,
-      name: "قميص",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa4a6d473f5fb43f18d40b4df6568691f?format=webp&width=800",
+      name: "قميص رياضي",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb30802917b81409b804e5ceb5926f25e?format=webp&width=800",
       category: "ملابس"
     }
   ],
@@ -150,7 +150,7 @@ const IMAGE_CATEGORIES = {
       id: 3,
       name: "ثوم",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F47ce5c086a054c7d87c3ef80e94a1568?format=webp&width=800",
-      category: "خضروات"
+      category: "خضر��ات"
     },
     {
       id: 4,
@@ -320,7 +320,7 @@ const IMAGE_CATEGORIES = {
       id: 5,
       name: "زرافة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6932171555a342309126302e012c11d3?format=webp&width=800",
-      category: "��يوانات"
+      category: "حيوانات"
     },
     {
       id: 6,
@@ -386,7 +386,7 @@ const IMAGE_CATEGORIES = {
       id: 16,
       name: "كلب",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1def7d453ce04c81a7e7e97df6e2fd50?format=webp&width=800",
-      category: "حيو��نات"
+      category: "حيو����نات"
     },
     {
       id: 17,
@@ -2508,7 +2508,7 @@ export default function CognitiveTests() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-800">
-                    اختبارات الإدراك
+                    اخت��ارات الإدراك
                   </h1>
                   <p className="text-gray-600">Ortho Smart</p>
                 </div>
