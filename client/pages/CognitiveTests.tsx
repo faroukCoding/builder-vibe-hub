@@ -301,7 +301,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 2,
       name: "نمر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc2d6db367e694b6e934d63edff635ead?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -460,7 +460,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 11,
-      name: "طائرة",
+      name: "طائ��ة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcba25725a99c48688321df072fd908c1?format=webp&width=800",
       category: "مركبات"
     },
@@ -1039,7 +1039,7 @@ export default function CognitiveTests() {
     <ImageRecognitionTest
       category="vehicles"
       categoryArabic="المركبات"
-      question="ما اسم هذه المركبة؟"
+      question="م�� اسم هذه المركبة؟"
       images={IMAGE_CATEGORIES.vehicles}
       testType="vehicles"
       color="blue"
@@ -1368,7 +1368,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار الأشكال
+              ملخص اختبار الأشكا��
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1811,7 +1811,7 @@ export default function CognitiveTests() {
           </CardContent>
         </Card>
 
-        {/* تمرين ال��طابقة الذكي */}
+        {/* تمرين المطابقة الذكي */}
         <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-300 col-span-full" onClick={() => setCurrentTest('matching')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
@@ -2452,7 +2452,7 @@ export default function CognitiveTests() {
   // MAIN RENDER
   // =============================================================================
 
-  // إذا ��ان في وضع التحقق ��ن الصور
+  // إذا كان في وضع التحقق ��ن الصور
   if (isVerificationMode) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50" dir="rtl">
