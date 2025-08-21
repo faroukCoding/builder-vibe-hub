@@ -90,8 +90,8 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 6,
-      name: "جوارب",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F0fa7216b9e704dcf8ed2fa71dcc0b4f9?format=webp&width=800",
+      name: "جوارب طويلة",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc78cb950ba284dbb8c2d0a30c9a9eddd?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -324,7 +324,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 6,
-      name: "ذئب",
+      name: "ذئ��",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F18ff4c13294840f49ef57311d63b3d67?format=webp&width=800",
       category: "حي��انات"
     },
@@ -390,7 +390,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 17,
-      name: "قطة",
+      name: "��طة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
       category: "حيوا��ات"
     }
@@ -589,7 +589,7 @@ export default function CognitiveTests() {
           'pineapple|أناناس': { name: 'أناناس', category: 'فوا��ه', confidence: 98 },
           'orange|برتقال': { name: 'برتقال', category: 'فواكه', confidence: 97 },
           'strawberry|فراولة': { name: 'فراولة', category: 'فواكه', confidence: 95 },
-          'apple|تفاح': { name: 'تفاح', category: 'فواكه', confidence: 98 },
+          'apple|تف��ح': { name: 'تفاح', category: 'فواكه', confidence: 98 },
           'lemon|ليمون': { name: 'ليمون', category: 'فواكه', confidence: 96 },
           'peach|خوخ': { name: 'خوخ', category: 'فواكه', confidence: 93 },
           'watermelon|بطيخ': { name: 'بطيخ', category: 'فواكه', confidence: 97 },
@@ -605,7 +605,7 @@ export default function CognitiveTests() {
           'fox|ثعلب': { name: 'ثعلب', category: 'حيوانات', confidence: 95 },
           'giraffe|زرافة': { name: 'زرافة', category: 'حيوانات', confidence: 99 },
           'wolf|ذئب': { name: 'ذئب', category: 'حيوانات', confidence: 96 },
-          'rooster|ديك': { name: 'ديك', category: 'حيوانات', confidence: 94 },
+          'rooster|ديك': { name: '��يك', category: 'حيوانات', confidence: 94 },
           'camel|جمل': { name: 'جمل', category: 'حيوانات', confidence: 98 },
           'duck|بطة': { name: 'بطة', category: 'حيوانات', confidence: 93 },
           'chicken|دجاجة': { name: 'دجاجة', category: 'حيوانات', confidence: 95 },
@@ -995,7 +995,7 @@ export default function CognitiveTests() {
     <ImageRecognitionTest
       category="clothes"
       categoryArabic="الملابس"
-      question="ما اسم هذه القطعة من الملابس؟"
+      question="ما اسم هذه ا��قطعة من الملابس؟"
       images={IMAGE_CATEGORIES.clothes}
       testType="clothes"
       color="indigo"
@@ -1395,7 +1395,7 @@ export default function CognitiveTests() {
             <div className="flex gap-4 justify-center">
               <Button onClick={() => startTest('shapes')} className="bg-orange-600 hover:bg-orange-700">
                 <RotateCcw className="w-4 h-4 ml-2" />
-                إعادة الاختبار
+                إعادة ا��اختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
                 العودة للقائمة
@@ -1500,7 +1500,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار أعضاء الجسم
+              ��لخص اختبار أعضاء الجسم
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1654,7 +1654,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="text-xs text-gray-500 mb-3">
-              9 أنو��ع خضروات • صور حقيقية
+              9 أنواع خضروات • صور حقيقية
             </div>
             <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
               <Play className="w-4 h-4 ml-2" />
@@ -1897,7 +1897,7 @@ export default function CognitiveTests() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تقييم المكتسبات القبلية للأطفال</li>
                 <li>• قياس مستوى الإدراك البصري والسمعي</li>
-                <li>��� تحديد نقاط القوة والضعف المعرفية</li>
+                <li>• تحديد نقاط القوة والضعف المعرفية</li>
                 <li>• إعداد خطط العلاج المناسبة</li>
               </ul>
             </div>
@@ -1992,7 +1992,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'error',
-            message: `❌ غير صحيح! الذكاء الاصطناعي يقترح "${aiAnalysis.name}" لهذه الصورة`
+            message: `❌ غير صحيح! الذكاء الاصطناع�� يقترح "${aiAnalysis.name}" لهذه الصورة`
           });
           playAudio('حاول مرة أخرى');
         }
@@ -2127,7 +2127,7 @@ export default function CognitiveTests() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Eye className="w-5 h-5" />
-                  اختر ��ورة
+                  اختر صورة
                   {selectedImage && (
                     <Badge className="bg-blue-500">
                       مختارة: {selectedImage.name}
