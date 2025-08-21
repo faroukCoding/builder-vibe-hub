@@ -379,7 +379,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 15,
       name: "خروف",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F2027cb53fd2846e1b16b0fafc4d85cc9?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd9efa0b8e8de4179bee1959f45d53219?format=webp&width=800",
       category: "حيوانات"
     },
     {
@@ -574,7 +574,7 @@ export default function CognitiveTests() {
           // أنماط الخضروات
           'cucumber|خيار': { name: 'خيار', category: 'خضروات', confidence: 95 },
           'carrot|جزر': { name: 'جزر', category: 'خضروات', confidence: 98 },
-          'tomato|طماطم': { name: 'طماطم', category: 'خ��روات', confidence: 97 },
+          'tomato|طم��طم': { name: 'طماطم', category: 'خ��روات', confidence: 97 },
           'onion|بصل': { name: 'بصل', category: 'خضروات', confidence: 94 },
           'garlic|ثوم': { name: 'ثوم', category: 'خضروات', confidence: 96 },
           'eggplant|باذنجان': { name: 'باذنجان', category: 'خضروات', confidence: 93 },
@@ -636,7 +636,7 @@ export default function CognitiveTests() {
           'fire.truck|إطفاء': { name: 'سيارة إطفاء', category: 'مركبات', confidence: 98 },
           'tractor|جرار': { name: 'جرار زراعي', category: 'مركبات', confidence: 97 },
           'ambulance|إسعاف': { name: 'سيارة إس��اف', category: 'مركبات', confidence: 98 },
-          'truck|شاحنة': { name: 'شاحنة', category: 'مركبا��', confidence: 96 },
+          'truck|شا��نة': { name: 'شاحنة', category: 'مركبا��', confidence: 96 },
           'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
           'bicycle|دراجة.هوائية': { name: 'دراجة هوائ��ة', category: 'مركبات', confidence: 94 },
           'tram|ترام': { name: 'ترام', category: 'مركبات', confidence: 93 },
@@ -1637,7 +1637,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              ابدأ الاخت��ار
             </Button>
           </CardContent>
         </Card>
@@ -1649,7 +1649,7 @@ export default function CognitiveTests() {
                 <Carrot className="w-8 h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">ا��خضروات</h3>
+                <h3 className="text-xl font-bold">الخضروات</h3>
                 <p className="text-gray-600 text-sm">التعرف على أنواع الخضروات</p>
               </div>
             </div>
@@ -1823,7 +1823,7 @@ export default function CognitiveTests() {
                 <p className="text-gray-600 text-base">تمرين تفاعلي مع الذكاء الاصطناعي لتطوير مهارات الإدراك</p>
               </div>
               <div className="text-right">
-                <Badge className="bg-purple-500 text-white mb-2">جديد!</Badge>
+                <Badge className="bg-purple-500 text-white mb-2">جد��د!</Badge>
                 <div className="text-sm text-gray-500">
                   ⭐ تحليل ذكي • ⚡ تغذية راجعة فورية
                 </div>
@@ -1905,7 +1905,7 @@ export default function CognitiveTests() {
               <h4 className="font-semibold mb-3 text-gray-800">معايير التقييم:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• كل اختبار يحتوي على 10 أسئلة</li>
-                <li>• تغذية راجعة فورية باللغة العربية</li>
+                <li>• تغذية راجعة فورية ��اللغة العربية</li>
                 <li>• حساب دقيق ����نسبة النجاح</li>
                 <li>• إمكانية إعادة الاخ��بار عدة مرات</li>
               </ul>
@@ -1976,7 +1976,7 @@ export default function CognitiveTests() {
           setGameFeedback({
             show: true,
             type: 'success',
-            message: `🎉 ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
+            message: `��� ممتاز! "${name}" مطابق للصورة بنسبة ${aiAnalysis.confidence}%`
           });
           setScore(prev => prev + 1);
           setMatches(prev => [...prev, { image, name }]);
@@ -2089,7 +2089,7 @@ export default function CognitiveTests() {
               <div className="flex gap-4 justify-center">
                 <Button onClick={resetGame} className="bg-green-500 hover:bg-green-600">
                   <RotateCcw className="w-4 h-4 ml-2" />
-                  لعب مر�� أخرى
+                  لعب مرة أخرى
                 </Button>
                 <Button variant="outline" onClick={() => setCurrentTest("menu")}>
                   <Home className="w-4 h-4 ml-2" />
@@ -2301,7 +2301,7 @@ export default function CognitiveTests() {
               {isAnalyzing && (
                 <div className="text-center py-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                  <p className="text-blue-600">جاري التحليل...</p>
+                  <p className="text-blue-600">ج��ري التحليل...</p>
                 </div>
               )}
 
