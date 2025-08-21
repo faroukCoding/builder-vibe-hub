@@ -8,8 +8,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import DoctorDashboard from "./pages/DoctorDashboard";
-import ChildInterface from "./pages/ChildInterface";
+import ParentRegister from "./pages/ParentRegister";
+import SpecialistRegister from "./pages/SpecialistRegister";
+import ParentDashboard from "./pages/ParentDashboard";
+import SpecialistDashboard from "./pages/SpecialistDashboard";
+import AttentionExercises from "./pages/AttentionExercises";
 import PatientForm from "./pages/PatientForm";
 
 const queryClient = new QueryClient();
