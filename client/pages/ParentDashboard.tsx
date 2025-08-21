@@ -94,7 +94,7 @@ export default function ParentDashboard() {
 
   const achievements = [
     { title: "أول جلسة", earned: true, date: "2024-01-01", icon: "🎯" },
-    { title: "5 جلسات", earned: true, date: "2024-01-10", icon: "⭐" },
+    { title: "5 ج��سات", earned: true, date: "2024-01-10", icon: "⭐" },
     { title: "تحسن 50%", earned: true, date: "2024-01-12", icon: "📈" },
     { title: "10 جلسات", earned: false, date: null, icon: "🏆" },
     { title: "تحسن 75%", earned: false, date: null, icon: "🎉" },
@@ -119,16 +119,16 @@ export default function ParentDashboard() {
     }
   ];
 
-  // بيانات المخطط الجغرافي
+  // بيانات المخطط الجغرافي - الجزائر
   const geographicalData = [
-    { region: "الرياض", patients: 156, success: 85, cases: 200 },
-    { region: "جدة", patients: 134, success: 78, cases: 180 },
-    { region: "الدمام", patients: 98, success: 82, cases: 120 },
-    { region: "مكة", patients: 87, success: 89, cases: 110 },
-    { region: "المدينة", patients: 76, success: 86, cases: 95 },
-    { region: "الطائف", patients: 65, success: 90, cases: 80 },
-    { region: "القصيم", patients: 54, success: 83, cases: 70 },
-    { region: "حائل", patients: 43, success: 87, cases: 55 },
+    { region: "الجزائر العاصمة", patients: 142, success: 88, cases: 185 },
+    { region: "وهران", patients: 118, success: 84, cases: 150 },
+    { region: "قسنطينة", patients: 95, success: 86, cases: 125 },
+    { region: "عنابة", patients: 78, success: 82, cases: 105 },
+    { region: "سطيف", patients: 67, success: 89, cases: 85 },
+    { region: "باتنة", patients: 54, success: 85, cases: 70 },
+    { region: "تيزي وزو", patients: 49, success: 91, cases: 65 },
+    { region: "بسكرة", patients: 38, success: 83, cases: 50 },
   ];
 
   const cognitiveTestsProgress = [
@@ -501,7 +501,7 @@ export default function ParentDashboard() {
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="ال��واكه" />
+                <Line type="monotone" dataKey="fruits" stroke="#ff6b6b" strokeWidth={2} name="الفواكه" />
                 <Line type="monotone" dataKey="vegetables" stroke="#4ecdc4" strokeWidth={2} name="الخضروات" />
                 <Line type="monotone" dataKey="clothes" stroke="#45b7d1" strokeWidth={2} name="الملابس" />
                 <Line type="monotone" dataKey="animals" stroke="#96ceb4" strokeWidth={2} name="الحيوانات" />
