@@ -37,7 +37,7 @@ export default function SpecialistDashboard() {
   const patients = [
     {
       id: 1,
-      name: "أحمد محمد السعيد",
+      name: "أحمد ��حمد السعيد",
       age: 6,
       lastVisit: "2024-01-15",
       status: "متابعة",
@@ -71,6 +71,28 @@ export default function SpecialistDashboard() {
     { time: "09:00", patient: "أحمد محمد", type: "متابعة", parent: "فاطمة السعيد" },
     { time: "10:30", patient: "سارة علي", type: "تقييم أولي", parent: "نورا أحمد" },
     { time: "14:00", patient: "يوسف عبدالله", type: "جلسة علاج", parent: "خديجة عبدالله" },
+  ];
+
+  // بيانات جغرافية للجزائر
+  const geographicalData = [
+    { region: "الجزائر العاصمة", patients: 142, success: 88, cases: 185 },
+    { region: "وهران", patients: 118, success: 84, cases: 150 },
+    { region: "قسنطينة", patients: 95, success: 79, cases: 120 },
+    { region: "عنابة", patients: 87, success: 82, cases: 110 },
+    { region: "سطيف", patients: 76, success: 76, cases: 98 },
+    { region: "باتنة", patients: 69, success: 73, cases: 89 },
+    { region: "بجاية", patients: 58, success: 80, cases: 74 },
+    { region: "تلمسان", patients: 52, success: 77, cases: 68 },
+    { region: "البليدة", patients: 64, success: 85, cases: 78 },
+    { region: "مستغانم", patients: 45, success: 74, cases: 61 }
+  ];
+
+  // بيانات توزيع الحالات
+  const casesDistribution = [
+    { name: "تأخر النطق", value: 35, color: "#0088FE" },
+    { name: "صعوبة النطق", value: 28, color: "#00C49F" },
+    { name: "التلعثم", value: 20, color: "#FFBB28" },
+    { name: "اضطرابات الصوت", value: 17, color: "#FF8042" }
   ];
 
   const assessmentTools = [
@@ -555,7 +577,7 @@ export default function SpecialistDashboard() {
                         <div className="space-y-2">
                           <label className="text-sm font-medium">تنسيق التاريخ</label>
                           <select className="w-full p-2 border rounded-md">
-                            <option value="dd/mm/yyyy">يوم/شهر/سنة</option>
+                            <option value="dd/mm/yyyy">ي��م/شهر/سنة</option>
                             <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
                             <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
                           </select>
@@ -602,7 +624,7 @@ export default function SpecialistDashboard() {
                     <CardContent className="space-y-4">
                       <div className="space-y-4">
                         <Button variant="outline" className="w-full justify-start">
-                          تغيير كلمة المرور
+                          تغيير كلمة ا��مرور
                         </Button>
                         <Button variant="outline" className="w-full justify-start">
                           إعداد المصادقة الثنائية
