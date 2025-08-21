@@ -14,6 +14,7 @@ import ParentDashboard from "./pages/ParentDashboard";
 import SpecialistDashboard from "./pages/SpecialistDashboard";
 import AttentionExercises from "./pages/AttentionExercises";
 import CognitiveTests from "./pages/CognitiveTests";
+import TheoryOfMind from "./pages/TheoryOfMind";
 import PatientForm from "./pages/PatientForm";
 
 const queryClient = new QueryClient();
