@@ -285,7 +285,7 @@ export default function CognitiveTests() {
         id: 3,
         name: "دب",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F25d2db6beec64c938f1b3f106525863e?format=webp&width=800",
-        category: "حي��انات"
+        category: "حيوانات"
       },
       {
         id: 4,
@@ -473,7 +473,7 @@ export default function CognitiveTests() {
   ];
 
   const shapes = [
-    { name: "دائرة", type: "circle", description: "شكل دائري" },
+    { name: "دائرة", type: "circle", description: "شكل دائ��ي" },
     { name: "مربع", type: "square", description: "شكل بأربعة أضلاع متساوية" },
     { name: "مثلث", type: "triangle", description: "شكل بثلاثة أضلاع" },
     { name: "مستطيل", type: "rectangle", description: "شكل بأربعة أضلاع مستطيل" },
@@ -1769,7 +1769,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-purple-500 hover:bg-purple-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبا��
+              ابدأ الاختبار
             </Button>
           </CardContent>
         </Card>
@@ -1837,6 +1837,10 @@ export default function CognitiveTests() {
         return <AnimalRecognitionTest />;
       case "vehicles":
         return <VehicleRecognitionTest />;
+      case "clothes":
+        return <ClothesRecognitionTest />;
+      case "food":
+        return <FoodRecognitionTest />;
       case "colors":
         return <ColorRecognitionTest />;
       case "numbers":
