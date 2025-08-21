@@ -536,7 +536,7 @@ export default function CognitiveTests() {
       },
       {
         id: 2,
-        name: "سيارة إطفاء",
+        name: "سيارة إطف��ء",
         src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ff2add4a77dbb4d8abae8b7621e504230?format=webp&width=800",
         category: "مركبات"
       },
@@ -1090,7 +1090,7 @@ export default function CognitiveTests() {
                   alt={currentClothes.name}
                   className="w-48 h-48 object-contain mx-auto mb-4 rounded-lg shadow-lg"
                 />
-                <p className="text-lg font-semibold mb-4">ما اسم هذه القطعة من الملابس؟</p>
+                <p className="text-lg font-semibold mb-4">ما اسم ��ذه القطعة من الملابس؟</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1320,7 +1320,7 @@ export default function CognitiveTests() {
                 إعادة الاختبار
               </Button>
               <Button onClick={resetTest} variant="outline">
-                العودة للقائم��
+                العودة للقائمة
               </Button>
             </div>
           </CardContent>
@@ -1386,7 +1386,7 @@ export default function CognitiveTests() {
               <div className="mt-6">
                 <Progress value={(testSession.currentQuestion - 1) / 10 * 100} className="h-3" />
                 <div className="text-center text-sm text-gray-600 mt-2">
-                  التقدم: {testSession.currentQuestion - 1}/10
+                  ال��قدم: {testSession.currentQuestion - 1}/10
                 </div>
               </div>
             </div>
@@ -1709,7 +1709,7 @@ export default function CognitiveTests() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-600">{testSession.totalQuestions}</div>
-                <div className="text-sm text-gray-600">إجما��ي</div>
+                <div className="text-sm text-gray-600">إجمالي</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-purple-600">
@@ -2097,7 +2097,7 @@ export default function CognitiveTests() {
     );
   };
 
-  // القائمة الرئيسي��
+  // القائمة الرئيسية
   const MainMenu = () => (
     <div className="space-y-6">
       <Card className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
@@ -2108,7 +2108,7 @@ export default function CognitiveTests() {
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => startTest('animals')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
