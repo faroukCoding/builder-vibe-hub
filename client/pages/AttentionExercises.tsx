@@ -751,7 +751,7 @@ export default function AttentionExercises() {
 
     const arabicLetters = [
       'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر',
-      'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
+      'ز', 'س', 'ش', 'ص', 'ض', '��', 'ظ', 'ع', 'غ', 'ف',
       'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'
     ];
 
@@ -1236,7 +1236,7 @@ export default function AttentionExercises() {
               </div>
             </div>
             <div className="space-y-1 text-xs text-gray-600 mb-4">
-              <p>• تقوية الذاكرة السمعي��</p>
+              <p>• تقوية الذاكرة السمعية</p>
               <p>• تحسين التتابع السمعي</p>
               <p>• تطوير المعالجة السمعية</p>
             </div>
@@ -1314,7 +1314,7 @@ export default function AttentionExercises() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3 text-gray-800">نصائح للحصول على أفضل النتائج:</h4>
+              <h4 className="font-semibold mb-3 text-gray-800">نصائح للحصول على أفضل النتائ��:</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• تأكد من بيئة هادئة وخالية من المشتتات</li>
                 <li>• ابدأ بالمستويات السهلة وارتق تدريجياً</li>
@@ -1330,8 +1330,12 @@ export default function AttentionExercises() {
 
   const renderCurrentGame = () => {
     switch (currentGame) {
-      case "star-selection":
-        return <StarSelectionGame />;
+      case "visual-attention":
+        return <VisualAttentionGame />;
+      case "auditory-attention":
+        return <AuditoryAttentionGame />;
+      case "sustained-attention":
+        return <SustainedAttentionGame />;
       case "find-missing":
         return <FindMissingGame />;
       default:
