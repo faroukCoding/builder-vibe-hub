@@ -37,6 +37,7 @@ const App = () => (
           <Route path="/cognitive-tests" element={<CognitiveTests />} />
           <Route path="/theory-of-mind" element={<TheoryOfMind />} />
           <Route path="/portage-report" element={<PortageReport />} />
+          <Route path="/age-calculator" element={<AgeCalculator />} />
           <Route path="/patient-form" element={<PatientForm />} />
           <Route path="/orthophonic-balance" element={<PatientForm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
