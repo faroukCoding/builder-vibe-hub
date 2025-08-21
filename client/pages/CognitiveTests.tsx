@@ -90,7 +90,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 6,
-      name: "جوا��ب ��ويلة",
+      name: "جوا��ب ����ويلة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc78cb950ba284dbb8c2d0a30c9a9eddd?format=webp&width=800",
       category: "ملابس"
     },
@@ -190,7 +190,7 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // ال��واكه - الصور الجديدة المرفوعة
+  // ��ل��واكه - الصور الجديدة المرفوعة
   fruits: [
     {
       id: 1,
@@ -391,7 +391,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 17,
       name: "قطة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5d5d832e02ec4a92a62b029ff20388a6?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F961f1b16b5f44dffaa93026cec1f228a?format=webp&width=800",
       category: "حيوا��ات"
     }
   ],
@@ -621,7 +621,7 @@ export default function CognitiveTests() {
           'suit|بدلة': { name: 'بدلة رسمية', category: 'ملابس', confidence: 95 },
           'tie|ربطة': { name: 'ربطة ع��ق', category: 'ملابس', confidence: 94 },
           'scarf|وشاح': { name: 'وشاح شتوي', category: 'ملابس', confidence: 92 },
-          'gloves|قفازات': { name: 'قفازات', category: 'ملابس', confidence: 93 },
+          'gloves|قفازات': { name: 'قفازات', category: 'م��ابس', confidence: 93 },
           'shoes|��ذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
           'socks|جوارب': { name: 'جوارب', category: 'ملابس', confidence: 94 },
           'skirt|��نورة': { name: 'تنورة', category: 'ملابس', confidence: 95 },
@@ -769,7 +769,7 @@ export default function CognitiveTests() {
       setCurrentVerificationIndex(prev => prev + 1);
     } else {
       setIsVerificationMode(false);
-      alert(`تم الانتهاء من التحق��! تم تصحيح ${correctedImages.length} صورة.`);
+      alert(`تم الانتهاء من التحق��! ت�� تصحيح ${correctedImages.length} صورة.`);
     }
   };
 
@@ -2285,7 +2285,7 @@ export default function CognitiveTests() {
             <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
               <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center gap-2">
                 <Brain className="w-5 h-5" />
-                تحليل الذكاء الاصطناعي
+                تحليل ال��كاء الاصطناعي
               </h3>
 
               {!aiResult && !isAnalyzing && (
