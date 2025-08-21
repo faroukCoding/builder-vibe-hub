@@ -119,6 +119,33 @@ export default function ParentDashboard() {
     }
   ];
 
+  // بيانات المخطط الجغرافي
+  const geographicalData = [
+    { region: "الرياض", patients: 156, success: 85, cases: 200 },
+    { region: "جدة", patients: 134, success: 78, cases: 180 },
+    { region: "الدمام", patients: 98, success: 82, cases: 120 },
+    { region: "مكة", patients: 87, success: 89, cases: 110 },
+    { region: "المدينة", patients: 76, success: 86, cases: 95 },
+    { region: "الطائف", patients: 65, success: 90, cases: 80 },
+    { region: "القصيم", patients: 54, success: 83, cases: 70 },
+    { region: "حائل", patients: 43, success: 87, cases: 55 },
+  ];
+
+  const cognitiveTestsProgress = [
+    { month: "يناير", fruits: 75, vegetables: 68, clothes: 82, animals: 90, vehicles: 77 },
+    { month: "فبراير", fruits: 78, vegetables: 72, clothes: 85, animals: 92, vehicles: 80 },
+    { month: "مارس", fruits: 82, vegetables: 75, clothes: 88, animals: 94, vehicles: 83 },
+    { month: "أبريل", fruits: 85, vegetables: 78, clothes: 90, animals: 96, vehicles: 86 },
+  ];
+
+  const testCategories = [
+    { name: "الفواكه", value: 85, color: "#ff6b6b" },
+    { name: "الخضروات", value: 78, color: "#4ecdc4" },
+    { name: "الملابس", value: 90, color: "#45b7d1" },
+    { name: "الحيوانات", value: 96, color: "#96ceb4" },
+    { name: "المركبات", value: 86, color: "#ffeaa7" },
+  ];
+
   const OverviewTab = () => (
     <div className="space-y-6">
       {/* Child Progress Overview */}
