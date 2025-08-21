@@ -69,7 +69,7 @@ export default function ParentDashboard() {
       type: "تمارين الانتباه",
       duration: "45 دقيقة",
       progress: 85,
-      notes: "تحسن ملحوظ في التركيز والانتباه",
+      notes: "تحسن ملحوظ في التركي�� والانتباه",
       activities: ["اختيار النجمة", "البحث عن المفقود"]
     },
     {
@@ -87,7 +87,7 @@ export default function ParentDashboard() {
       type: "تقييم شامل",
       duration: "90 دقيقة",
       progress: 70,
-      notes: "تقييم الميزانية ال��رطوفونية",
+      notes: "تقييم الميزانية الأرطوفونية",
       activities: ["فحص النطق", "اختبارات الإدراك"]
     }
   ];
@@ -472,7 +472,7 @@ export default function ParentDashboard() {
               className="h-24 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-2"
             >
               <div className="text-2xl">🚗</div>
-              <span>المركبات</span>
+              <span>��لمركبات</span>
             </Button>
             <Button
               onClick={() => navigate('/cognitive-tests')}
@@ -604,7 +604,7 @@ export default function ParentDashboard() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-right p-3">المنطقة</th>
+                      <th className="text-right p-3">الولاية</th>
                       <th className="text-right p-3">عدد المرضى</th>
                       <th className="text-right p-3">إجمالي الحالات</th>
                       <th className="text-right p-3">نسبة النجاح</th>
@@ -735,7 +735,7 @@ export default function ParentDashboard() {
               </TabsTrigger>
               <TabsTrigger value="cognitive" className="flex items-center gap-2">
                 <Brain className="w-4 h-4" />
-                التمارين المعرفية
+                التمارين ��لمعرفية
               </TabsTrigger>
               <TabsTrigger value="sessions" className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
