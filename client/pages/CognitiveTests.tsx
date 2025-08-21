@@ -190,102 +190,102 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الفواكه - مصححة حسب المحت��ى الفعلي
+  // الفواكه - الصور الجديدة المرفوعة
   fruits: [
     {
       id: 1,
-      name: "عنب",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F4fac31da6fc6430ea785b18a04e9619b?format=webp&width=800",
+      name: "عنب مشكل",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F0374674ed0f246e0a5dfa282ab918e3f?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 2,
       name: "كرز",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F99f30099d7ba407982ae098eea98bd0a?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6703fb31e795473f93605747cb65ac90?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 3,
       name: "موز",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc6452635bcb5423f91f73be23e069129?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F13f41111890646b894b825ce6b2f1832?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 4,
       name: "أناناس",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe9b45c0781994f3e8c301e466cc3afdb?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F693e761483a844548b8a7df387a6cdf6?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 5,
       name: "برتقال",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa0a8a1743a044678a5788cb781fd3f14?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F8cc2e508a60e4905960628da1aa52209?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 6,
       name: "عنب أحمر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F113bbc8fdbdb4ef5a2fdf650f3940739?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdb5e3fa42a8540cbad88da1aaa1ef65c?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 7,
       name: "فراولة",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb64e31c417f34adc942b7514c3e38602?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd889c41ee07040d992913077430a6838?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 8,
-      name: "تفاح",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F546b00f6c81947f7bc5e2bffee0fb0ff?format=webp&width=800",
+      name: "تفاح أحمر",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcf5999f0d43c4811ac84e407bc738360?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 9,
       name: "ليمون",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1aaffded6b2c4bd2ae5a436345e5796a?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F23f29467c6794af0951440cc23f310c9?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 10,
       name: "خوخ",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fa86743cc0a724321bb57fcda1d55852f?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F78464e05da0746e6a579994d14430139?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 11,
       name: "عنب أخضر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F94022a0bd4ff4e6d84a625bdf37ef5a6?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F1588ab16af9e4fad912e048a6d0d1f11?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 12,
       name: "بطيخ",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fc8f96384f92e4b34ad6ee861050ceb3f?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcbf84b70c17f46a6b1701a8a8a6d0443?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 13,
       name: "تمر",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F6105aeeac2c34b0dbc7e9a6ebd2dd90b?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5f73e03705dd447ca82c1ecc6d81fb93?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 14,
-      name: "توت",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Ff2d501123a604a018594aabd1856707e?format=webp&width=800",
+      name: "توت أسود",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fdbb8c87d10584fd08e62855f67b17dd8?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 15,
       name: "رمان",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F7c2d1ef2ba1449ea8fa3d2e1dcaaed18?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F320e2269103d44359e1954c71bee4b0b?format=webp&width=800",
       category: "فواكه"
     },
     {
       id: 16,
       name: "مشمش",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcd138451db15487498db4ddcc3cc5e2c?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fd6e82105d82246699b915c7cb39526b3?format=webp&width=800",
       category: "فواكه"
     }
   ],
@@ -720,7 +720,7 @@ export default function CognitiveTests() {
 
     // انتهاء التحليل
     setIsVerificationMode(false);
-    alert(`✅ انتهى التحليل بواسطة الذكاء الاصطناعي!\n\nتم تحليل ${images.length} صورة\nتم تصحيح ${correctedImages.length} صورة\n\nسيتم تطبيق التصحيحات تلقائياً.`);
+    alert(`✅ انتهى التحليل بواسطة الذكاء الاصطناعي!\n\nتم تحليل ${images.length} صورة\nتم ��صحيح ${correctedImages.length} صورة\n\nسيتم تطبيق التصحيحات تلقائياً.`);
 
     // تطبيق التصحيحات على البيانات الأصلية
     applyAICorrections(correctedImages);
@@ -1721,7 +1721,7 @@ export default function CognitiveTests() {
             </div>
             <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
               <Play className="w-4 h-4 ml-2" />
-              ابدأ الاختبار
+              ابدأ ��لاختبار
             </Button>
           </CardContent>
         </Card>
@@ -1877,7 +1877,7 @@ export default function CognitiveTests() {
             </Button>
           </div>
           <div className="mt-3 text-sm text-gray-600">
-            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاسم والفئة الصحيحة
+            💡 التصحيح التلقائي يحلل كل صورة وي��ترح الاس�� والفئة الصحيحة
           </div>
         </CardContent>
       </Card>
@@ -1933,7 +1933,7 @@ export default function CognitiveTests() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [score, setScore] = useState(0);
 
-    // إعداد البيانات عند تحميل التمرين
+    // إعداد البيانات ع��د تحميل التمرين
     useState(() => {
       const allItems: TestItem[] = [];
       Object.values(IMAGE_CATEGORIES).forEach(category => {
@@ -2276,7 +2276,7 @@ export default function CognitiveTests() {
                 />
               </div>
               <div className="mt-4">
-                <p className="text-lg font-semibold">الاسم المقترح: "{item.name}"</p>
+                <p className="text-lg font-semibold">الاسم ا��مقترح: "{item.name}"</p>
                 <p className="text-sm text-gray-600">الفئة الحالية: {item.category}</p>
               </div>
             </div>
