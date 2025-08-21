@@ -99,7 +99,7 @@ export default function SpecialistDashboard() {
     {
       id: "balance",
       title: "الميزانية الأرطوفونية",
-      description: "استمارة سريرية ��املة للتقييم",
+      description: "استمارة سريرية ��املة للتقي��م",
       icon: FileText,
       color: "blue",
       route: "/orthophonic-balance"
@@ -339,7 +339,7 @@ export default function SpecialistDashboard() {
                 <div className="bg-blue-100 p-3 rounded-lg">
                   <BarChart3 className="w-6 h-6 text-blue-600" />
                 </div>
-                <h3 className="font-semibold">تقرير شامل للمرضى</h3>
+                <h3 className="font-semibold">تقرير ��امل للمرضى</h3>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 تقرير تفصيلي عن جميع المرضى وتقدمهم العلاجي
@@ -450,7 +450,155 @@ export default function SpecialistDashboard() {
               </TabsContent>
 
               <TabsContent value="reports">
-                <ReportsTab />
+                <div className="space-y-6">
+                  <ReportsTab />
+
+                  {/* الرسم البياني الجغرافي */}
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <BarChart3 className="w-5 h-5 text-blue-600" />
+                          التوزيع الجغرافي للمرضى - الجزائر
+                        </CardTitle>
+                        <CardDescription>
+                          عدد المرضى حسب الولايات الجزائرية
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-80">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={geographicalData}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis
+                                dataKey="region"
+                                tick={{ fontSize: 12 }}
+                                angle={-45}
+                                textAnchor="end"
+                                height={80}
+                              />
+                              <YAxis />
+                              <Tooltip
+                                formatter={(value, name) => [value, name === 'patients' ? 'عدد المرضى' : 'معدل النجاح']}
+                                labelFormatter={(label) => `الولاية: ${label}`}
+                              />
+                              <Bar dataKey="patients" fill="#3B82F6" name="عدد المرضى" />
+                              <Bar dataKey="success" fill="#10B981" name="معدل النجاح %" />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                          <div className="text-center p-3 bg-blue-50 rounded-lg">
+                            <div className="text-2xl font-bold text-blue-600">
+                              {geographicalData.reduce((sum, item) => sum + item.patients, 0)}
+                            </div>
+                            <div className="text-sm text-gray-600">إجمالي المرضى</div>
+                          </div>
+                          <div className="text-center p-3 bg-green-50 rounded-lg">
+                            <div className="text-2xl font-bold text-green-600">
+                              {Math.round(geographicalData.reduce((sum, item) => sum + item.success, 0) / geographicalData.length)}%
+                            </div>
+                            <div className="text-sm text-gray-600">متوسط معدل النجاح</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Activity className="w-5 h-5 text-purple-600" />
+                          توزيع أنواع الحالات
+                        </CardTitle>
+                        <CardDescription>
+                          التوزيع النسبي لأنواع اضطرابات النطق
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-80">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                              <Pie
+                                data={casesDistribution}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={120}
+                                paddingAngle={5}
+                                dataKey="value"
+                              >
+                                {casesDistribution.map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                              </Pie>
+                              <Tooltip formatter={(value) => [`${value}%`, 'النسبة']} />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 mt-4">
+                          {casesDistribution.map((item, index) => (
+                            <div key={index} className="flex items-center gap-2 text-sm">
+                              <div
+                                className="w-4 h-4 rounded"
+                                style={{ backgroundColor: item.color }}
+                              ></div>
+                              <span>{item.name}</span>
+                              <span className="font-semibold text-gray-600">{item.value}%</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* جدول تفصيلي للبيانات الجغرافية */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-indigo-600" />
+                        تفاصيل البيانات الجغرافية
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="text-right p-3 font-semibold">الولاية</th>
+                              <th className="text-right p-3 font-semibold">عدد المرضى</th>
+                              <th className="text-right p-3 font-semibold">إجمالي الحالات</th>
+                              <th className="text-right p-3 font-semibold">معدل النجاح</th>
+                              <th className="text-right p-3 font-semibold">الحالة</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {geographicalData.map((item, index) => (
+                              <tr key={index} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-medium">{item.region}</td>
+                                <td className="p-3">{item.patients}</td>
+                                <td className="p-3">{item.cases}</td>
+                                <td className="p-3">
+                                  <span className={`px-2 py-1 rounded-full text-xs ${
+                                    item.success >= 80 ? 'bg-green-100 text-green-800' :
+                                    item.success >= 70 ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-red-100 text-red-800'
+                                  }`}>
+                                    {item.success}%
+                                  </span>
+                                </td>
+                                <td className="p-3">
+                                  <Badge variant={item.success >= 80 ? 'default' : 'secondary'}>
+                                    {item.success >= 80 ? 'ممتاز' : item.success >= 70 ? 'جيد' : 'يحتاج تحسين'}
+                                  </Badge>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </TabsContent>
 
               <TabsContent value="settings">
