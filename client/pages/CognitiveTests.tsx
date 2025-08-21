@@ -67,7 +67,7 @@ const IMAGE_CATEGORIES = {
     {
       id: 2,
       name: "ربطة عنق",
-      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97cdfa6b148a494db9f6899c1d766e47?format=webp&width=800",
+      src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F89dcc198110d4e2f8eca8403ea14d5a6?format=webp&width=800",
       category: "ملابس"
     },
     {
@@ -180,7 +180,7 @@ const IMAGE_CATEGORIES = {
       id: 8,
       name: "جزر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fcf22556c95014df6847800eea8c8c8d3?format=webp&width=800",
-      category: "��ضروات"
+      category: "خضروات"
     },
     {
       id: 9,
@@ -543,7 +543,7 @@ export default function CognitiveTests() {
   const [feedback, setFeedback] = useState<FeedbackState | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // واجهة التحقق م�� الصور
+  // واجهة التحقق من الصور
   const [isVerificationMode, setIsVerificationMode] = useState(false);
   const [currentVerificationIndex, setCurrentVerificationIndex] = useState(0);
   const [verificationData, setVerificationData] = useState<{item: TestItem, originalCategory: string}[]>([]);
@@ -995,7 +995,7 @@ export default function CognitiveTests() {
     <ImageRecognitionTest
       category="clothes"
       categoryArabic="الملابس"
-      question="ما اسم هذه القطعة من الملابس؟"
+      question="ما اسم هذه القطعة م�� الملابس؟"
       images={IMAGE_CATEGORIES.clothes}
       testType="clothes"
       color="indigo"
@@ -1500,7 +1500,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار أعضاء الجسم
+              ملخص اخ��بار أعضاء الجسم
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1945,7 +1945,7 @@ export default function CognitiveTests() {
       const shuffledNames = shuffledImages.map(item => item.name).sort(() => Math.random() - 0.5);
 
       setGameData({
-        images: shuffledImages.slice(0, 15), // 15 صورة لل��ب
+        images: shuffledImages.slice(0, 15), // 15 صورة للعب
         names: shuffledNames.slice(0, 15)
       });
     });
