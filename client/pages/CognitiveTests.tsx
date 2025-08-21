@@ -178,7 +178,7 @@ const IMAGE_CATEGORIES = {
     },
     {
       id: 8,
-      name: "ف��ر",
+      name: "فطر",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe294ceefdadb4d4ea175c8c7df4efa86?format=webp&width=800",
       category: "خضروات"
     },
@@ -290,7 +290,7 @@ const IMAGE_CATEGORIES = {
     }
   ],
 
-  // الحيوانات (الموجودة مسبقاً)
+  // الحيوانات (المو��ودة مسبقاً)
   animals: [
     {
       id: 1,
@@ -456,7 +456,7 @@ const IMAGE_CATEGORIES = {
       id: 10,
       name: "حافلة",
       src: "https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fb8fe0a7b5baf4a8abbba37cbe393790d?format=webp&width=800",
-      category: "مركبات"
+      category: "م��كبات"
     },
     {
       id: 11,
@@ -617,12 +617,12 @@ export default function CognitiveTests() {
           'dog|كلب': { name: 'كلب', category: 'حيوانات', confidence: 99 },
           'cat|قطة': { name: 'قطة', category: 'حيوانات', confidence: 98 },
 
-          // أ��ماط الملابس
+          // أنماط الملابس
           'suit|بدلة': { name: 'بدلة رسمية', category: 'ملابس', confidence: 95 },
-          'tie|ربطة': { name: 'ربطة عنق', category: 'ملابس', confidence: 94 },
+          'tie|ربطة': { name: 'ربطة عنق', category: 'ملا��س', confidence: 94 },
           'scarf|وشاح': { name: 'وشاح شتوي', category: 'ملابس', confidence: 92 },
           'gloves|قفازات': { name: 'قفازات', category: 'ملابس', confidence: 93 },
-          'shoes|حذاء': { name: 'حذاء رياضي', category: 'ملابس', confidence: 96 },
+          'shoes|حذاء': { name: 'حذ��ء رياضي', category: 'ملابس', confidence: 96 },
           'socks|جوارب': { name: 'جوارب', category: 'ملابس', confidence: 94 },
           'skirt|تنورة': { name: 'تنورة', category: 'ملابس', confidence: 95 },
           'dress|فستان': { name: 'فستان', category: 'ملابس', confidence: 97 },
@@ -637,7 +637,7 @@ export default function CognitiveTests() {
           'tractor|جرار': { name: 'جرار زراعي', category: 'مركبات', confidence: 97 },
           'ambulance|إسعاف': { name: 'سيارة إسعاف', category: 'مركبات', confidence: 98 },
           'truck|شاحنة': { name: 'شاحنة', category: 'مركبات', confidence: 96 },
-          'motorcycle|دراجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
+          'motorcycle|��راجة.نارية': { name: 'دراجة نارية', category: 'مركبات', confidence: 95 },
           'bicycle|دراجة.هوائية': { name: 'دراجة هوائية', category: 'مركبات', confidence: 94 },
           'tram|ترام': { name: 'ترام', category: 'مركبات', confidence: 93 },
           'train|قطار': { name: 'قطار', category: 'مركبات', confidence: 97 },
@@ -657,7 +657,7 @@ export default function CognitiveTests() {
         // إذا لم يتم العثور على نمط، نحلل بناءً على hash في URL
         const hash = imageUrl.split('%2F').pop()?.split('?')[0] || '';
         const hashInt = parseInt(hash.slice(0, 8), 16);
-        const categories = ['ملابس', 'خضروات', 'فواكه', 'حيوانات', 'مركبات'];
+        const categories = ['ملابس', 'خضروات', 'فوا��ه', 'حيوانات', 'مركبات'];
         const categoryIndex = hashInt % categories.length;
 
         resolve({
@@ -728,7 +728,7 @@ export default function CognitiveTests() {
 
   const applyAICorrections = (correctedImages: TestItem[]) => {
     // هنا يمكن تطبيق التصحيحات على البيانات الأصلية
-    // في تطبيق حقيقي، س��تم حفظ التغييرات في قاعدة البيانات
+    // في تطبيق حقيقي، سيتم حفظ التغييرات في قاعدة البيانات
     console.log('تم تطبيق التصحيحات:', correctedImages);
   };
 
@@ -1368,7 +1368,7 @@ export default function CognitiveTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-6 h-6 text-yellow-600" />
-              ملخص اختبار الأشكال
+              ملخص اختبار ال��شكال
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1843,7 +1843,7 @@ export default function CognitiveTests() {
             </Button>
           </div>
           <div className="mt-3 text-sm text-gray-600">
-            💡 التصحيح التلقائي يحلل كل صورة ويقترح الاسم والفئة الصح��حة
+            💡 التصحيح التلقائي يحلل كل صورة ويقترح الاسم والفئة الصحيحة
           </div>
         </CardContent>
       </Card>
@@ -1948,9 +1948,63 @@ export default function CognitiveTests() {
               </div>
             </div>
 
+            {/* تحليل الذكاء الاصطناعي */}
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                <Brain className="w-5 h-5" />
+                تحليل الذكاء الاصطناعي
+              </h3>
+
+              {!aiResult && !isAnalyzing && (
+                <Button
+                  onClick={handleAIAnalysis}
+                  className="bg-blue-500 hover:bg-blue-600 text-white w-full"
+                >
+                  <Brain className="w-4 h-4 ml-2" />
+                  تحليل هذه الصورة بالذكاء الاصطناعي
+                </Button>
+              )}
+
+              {isAnalyzing && (
+                <div className="text-center py-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                  <p className="text-blue-600">جاري التحليل...</p>
+                </div>
+              )}
+
+              {aiResult && (
+                <div className="space-y-3">
+                  <div className="bg-white rounded p-3 border">
+                    <p className="font-semibold">نتيجة التحليل:</p>
+                    <p className="text-lg text-blue-700">📝 الاسم: <strong>{aiResult.name}</strong></p>
+                    <p className="text-lg text-green-700">📂 الفئة: <strong>{aiResult.category}</strong></p>
+                    <p className="text-sm text-gray-600">🎯 مستوى الثقة: {aiResult.confidence}%</p>
+                  </div>
+
+                  {aiResult.confidence > 85 && (
+                    <Button
+                      onClick={() => handleImageCorrection({...item, name: aiResult.name}, aiResult.category)}
+                      className="bg-green-500 hover:bg-green-600 text-white w-full"
+                    >
+                      <CheckCircle className="w-4 h-4 ml-2" />
+                      تطبيق تصحيح الذكاء الاصطناعي
+                    </Button>
+                  )}
+
+                  <Button
+                    onClick={() => setAiResult(null)}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    تحليل مرة أخرى
+                  </Button>
+                </div>
+              )}
+            </div>
+
             {/* أسئلة التحقق */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">هل هذه المعلومات صحيحة؟</h3>
+              <h3 className="text-lg font-semibold">المراجعة اليدوية:</h3>
 
               {/* إذا كان الاسم صحيحاً */}
               <div className="grid grid-cols-2 gap-4">
@@ -2081,7 +2135,7 @@ export default function CognitiveTests() {
                   العودة للقائمة الرئيسية
                 </Button>
                 <div className="h-6 w-px bg-gray-300" />
-                <h1 className="text-xl font-bold">تحقق من الصور والأسماء</h1>
+                <h1 className="text-xl font-bold">تحقق من الصور والأ��ماء</h1>
               </div>
             </div>
           </div>
