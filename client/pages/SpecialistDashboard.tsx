@@ -121,7 +121,7 @@ export default function SpecialistDashboard() {
     { region: "مستغانم", patients: 45, success: 74, cases: 61 },
   ];
 
-  // بيانات ��وزيع الحالات
+  // بيانات توزيع الحالات
   const casesDistribution = [
     { name: "تأخر النطق", value: 35, color: "#0088FE" },
     { name: "صعوبة النطق", value: 28, color: "#00C49F" },
@@ -295,7 +295,7 @@ export default function SpecialistDashboard() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input placeholder="ال��حث عن مريض..." className="pr-10 w-64" />
+              <Input placeholder="البحث عن مريض..." className="pr-10 w-64" />
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 ml-2" />
@@ -356,7 +356,7 @@ export default function SpecialistDashboard() {
                   عرض الملف
                 </Button>
                 <Button size="sm" variant="outline">
-                  بدء ج��سة
+                  بدء جلسة
                 </Button>
                 <Button size="sm" variant="outline">
                   التقارير
@@ -773,7 +773,7 @@ export default function SpecialistDashboard() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">
-                            رقم الهاتف
+                            رق�� الهاتف
                           </label>
                           <Input defaultValue="+966 50 123 4567" />
                         </div>
@@ -852,7 +852,7 @@ export default function SpecialistDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">
-                            تنبيهات البريد الإلكتروني
+                            تنبيهات البريد ا��إلكتروني
                           </p>
                           <p className="text-sm text-gray-600">
                             استقبال التنبيهات عبر البريد
@@ -903,7 +903,7 @@ export default function SpecialistDashboard() {
                             تنسيق التاريخ
                           </label>
                           <select className="w-full p-2 border rounded-md">
-                            <option value="dd/mm/yyyy">ي����م/شهر/سنة</option>
+                            <option value="dd/mm/yyyy">ي���م/شهر/سنة</option>
                             <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
                             <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
                           </select>
@@ -1074,7 +1074,7 @@ export default function SpecialistDashboard() {
                           className="flex items-center gap-2"
                         >
                           <Star className="w-4 h-4" />
-                          تقييم التطبيق
+                          تقيي�� التطبيق
                         </Button>
                         <Button
                           variant="outline"
@@ -1157,6 +1157,14 @@ export default function SpecialistDashboard() {
                 >
                   <Brain className="w-4 h-4 ml-2" />
                   ألعاب نظرية العقل
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate("/diagnostic-response-sheet")}
+                >
+                  <FileText className="w-4 h-4 ml-2" />
+                  ورقة الاستجابة
                 </Button>
                 <Button
                   variant="outline"
