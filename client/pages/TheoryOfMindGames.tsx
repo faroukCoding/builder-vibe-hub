@@ -139,7 +139,7 @@ export default function TheoryOfMindGames() {
     {
       id: 'khalid-gift',
       title: 'خالد وهدية العيد',
-      description: 'سوء الفهم والتوقعات',
+      description: 'س��ء الفهم والتوقعات',
       icon: '🎁',
       difficulty: 4,
       color: 'bg-pink-500'
@@ -353,11 +353,11 @@ export default function TheoryOfMindGames() {
         question: null
       },
       {
-        text: 'ماذا تريد م��ا؟',
+        text: 'ماذا تريد مها؟',
         image: '👧',
         question: {
           text: 'ماذا تريد مها؟',
-          options: ['🍪 بسكويت', '🍎 تفاحة', '🧃 عصير'],
+          options: ['🍪 بسكويت', '���� تفاحة', '🧃 عصير'],
           correct: 0
         }
       },
@@ -374,6 +374,26 @@ export default function TheoryOfMindGames() {
 
     const handleAnswer = (selectedIndex: number) => {
       const correct = selectedIndex === story[currentStep].question?.correct;
+      const timeSpent = Date.now() - questionStartTime;
+      const questionData = story[currentStep].question;
+
+      if (questionData) {
+        // حفظ الإجابة المفصلة
+        const detailedAnswer: DetailedAnswer = {
+          question_id: questionCounter + 4 + detailedAnswers.length + 1, // 4 من المهمة A
+          task: 'B',
+          question_text: questionData.text,
+          chosen_answer: questionData.options[selectedIndex],
+          correct_answer: questionData.options[questionData.correct],
+          is_correct: correct,
+          score: correct ? 1 : 0,
+          time_spent_ms: timeSpent,
+          skill_group: 'الرغبات والمشاعر'
+        };
+
+        setDetailedAnswers(prev => [...prev, detailedAnswer]);
+      }
+
       setAttempts(prev => prev + 1);
 
       if (correct) {
@@ -384,15 +404,26 @@ export default function TheoryOfMindGames() {
         setTimeout(() => {
           if (currentStep < story.length - 1) {
             setCurrentStep(prev => prev + 1);
+            setQuestionStartTime(Date.now());
             setFeedback(null);
           } else {
             onComplete({
               taskId: 'maha-cookie',
-              score,
+              score: score + 1,
               totalQuestions: story.filter(s => s.question).length,
               attempts,
               completed: true
-            });
+            }, detailedAnswers.concat(questionData ? [{
+              question_id: questionCounter + 4 + detailedAnswers.length + 1,
+              task: 'B',
+              question_text: questionData.text,
+              chosen_answer: questionData.options[selectedIndex],
+              correct_answer: questionData.options[questionData.correct],
+              is_correct: correct,
+              score: correct ? 1 : 0,
+              time_spent_ms: timeSpent,
+              skill_group: 'الرغبات والمشاعر'
+            }] : []));
           }
         }, 2000);
       } else {
@@ -617,10 +648,10 @@ export default function TheoryOfMindGames() {
         question: null
       },
       {
-        text: 'ياسمينه ترى الجهة الأمامية للتمث��ل',
+        text: 'ياسمينه ترى الجهة الأمامية للتمثال',
         image: '👧➡️🗿',
         question: {
-          text: 'ماذا ترى ياسمينه؟',
+          text: 'ماذا ترى ياس��ينه؟',
           options: ['😊 وجه التمثال', '🔙 ظهر التمثال', '👂 جانب التمثال'],
           correct: 0
         }
@@ -1084,10 +1115,10 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'خالد يريد طائرة كهد��ة عيد',
+        text: 'خالد يريد طائرة كهدية عيد',
         image: '👦✈️💭',
         question: {
-          text: 'ماذا يريد خالد؟',
+          text: 'ماذا يري�� خالد؟',
           options: ['✈️ طائرة', '🚂 قطار', '🚗 سيارة'],
           correct: 0
         }
@@ -1233,7 +1264,7 @@ export default function TheoryOfMindGames() {
         text: 'مريم بدّلت أماكن الصحون',
         image: '👧🔄🍝🥗',
         question: {
-          text: 'أي صح�� وضعته مريم بجانب الموقد؟',
+          text: 'أي صحن وضعته مريم بجانب الموقد؟',
           options: ['🍝 المكرونة', '🥗 السلطة', '🍞 الخبز'],
           correct: 1
         }
@@ -1349,7 +1380,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'الأم خبأ�� دراجة منصور كمفاجأة',
+        text: 'الأم خبأت دراجة منصور كمفاجأة',
         image: '👩🚲📦',
         question: null
       },
