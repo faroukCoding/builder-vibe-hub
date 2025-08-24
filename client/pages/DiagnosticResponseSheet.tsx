@@ -1,3 +1,4 @@
+import React from "react";
 import {
   ArrowLeft,
   Home,
@@ -141,7 +142,7 @@ export default function DiagnosticResponseSheet() {
       label: "كيف ستشعر مها؟",
       skill_group: "الرغبات والمشاعر",
       media: { image_url: "/assets/maha/cookie2.png", audio_url: "/assets/audio/q6.mp3" },
-      correct_answer: "😊 س��يدة",
+      correct_answer: "😊 سعيدة",
       choices: ["😊 سعيدة", "😢 حزينة", "😠 غاضبة"]
     },
     // المهمة C: أمجاد والنظارة (7)
@@ -330,7 +331,7 @@ export default function DiagnosticResponseSheet() {
       { question_id: 6, task: "B", chosen_answer: "😊 سعيدة", correct_answer: "😊 سعيدة", is_correct: true, score: 1, time_spent_ms: 3800 },
       { question_id: 7, task: "C", chosen_answer: "📦 في الدرج", correct_answer: "📱 على الطاولة", is_correct: false, score: 0, time_spent_ms: 6500 },
       { question_id: 8, task: "D", chosen_answer: "😊 وجه التمثال", correct_answer: "😊 وجه التمثال", is_correct: true, score: 1, time_spent_ms: 5200 },
-      { question_id: 9, task: "D", chosen_answer: "🔙 ظهر التمثال", correct_answer: "🔙 ��هر التمثال", is_correct: true, score: 1, time_spent_ms: 4800 },
+      { question_id: 9, task: "D", chosen_answer: "🔙 ظهر التمثال", correct_answer: "🔙 ظهر التمثال", is_correct: true, score: 1, time_spent_ms: 4800 },
       { question_id: 10, task: "E", chosen_answer: "👖 في جيبه", correct_answer: "👖 في جيبه", is_correct: true, score: 1, time_spent_ms: 5800 },
       { question_id: 11, task: "F", chosen_answer: "📱 على الطاولة", correct_answer: "📱 على الطاولة", is_correct: true, score: 1, time_spent_ms: 4200 },
       { question_id: 12, task: "F", chosen_answer: "📦 في الدرج", correct_answer: "📦 في الدرج", is_correct: true, score: 1, time_spent_ms: 3900 },
@@ -725,7 +726,7 @@ export default function DiagnosticResponseSheet() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-teal-600">•</span>
-                    <span>تطبيق أ��شطة التفكير الاجتماعي في الحياة اليومية</span>
+                    <span>تطبيق أنشطة التفكير الاجتماعي في الحياة اليومية</span>
                   </li>
                 </ul>
               </div>
