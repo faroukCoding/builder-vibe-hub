@@ -343,6 +343,8 @@ export default function TheoryOfMindGames() {
     const [score, setScore] = useState(0);
     const [attempts, setAttempts] = useState(0);
     const [feedback, setFeedback] = useState<string | null>(null);
+    const [detailedAnswers, setDetailedAnswers] = useState<DetailedAnswer[]>([]);
+    const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
     const story = [
       {
@@ -351,7 +353,7 @@ export default function TheoryOfMindGames() {
         question: null
       },
       {
-        text: 'ماذا تريد مها؟',
+        text: 'ماذا تريد م��ا؟',
         image: '👧',
         question: {
           text: 'ماذا تريد مها؟',
@@ -601,7 +603,7 @@ export default function TheoryOfMindGames() {
     );
   };
 
-  // المهمة D: ياسمينه وسع��د مع التمثال
+  // المهمة D: ياسمينه وسعيد مع التمثال
   const YasminaSaeedTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [score, setScore] = useState(0);
@@ -615,7 +617,7 @@ export default function TheoryOfMindGames() {
         question: null
       },
       {
-        text: 'ياسمينه ترى الجهة الأمامية للتمثال',
+        text: 'ياسمينه ترى الجهة الأمامية للتمث��ل',
         image: '👧➡️🗿',
         question: {
           text: 'ماذا ترى ياسمينه؟',
@@ -1082,7 +1084,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'خالد يريد طائرة كهدية عيد',
+        text: 'خالد يريد طائرة كهد��ة عيد',
         image: '👦✈️💭',
         question: {
           text: 'ماذا يريد خالد؟',
@@ -1103,7 +1105,7 @@ export default function TheoryOfMindGames() {
         text: 'الأب اشترى قطارًا لخالد',
         image: '👨🛍️🚂',
         question: {
-          text: 'كيف سيشعر ��الد عندما يرى القطار؟',
+          text: 'كيف سيشعر خالد عندما يرى القطار؟',
           options: ['😊 سعيد', '😢 حزين', '😐 عادي'],
           correct: 1
         }
@@ -1231,7 +1233,7 @@ export default function TheoryOfMindGames() {
         text: 'مريم بدّلت أماكن الصحون',
         image: '👧🔄🍝🥗',
         question: {
-          text: 'أي صحن وضعته مريم بجانب الموقد؟',
+          text: 'أي صح�� وضعته مريم بجانب الموقد؟',
           options: ['🍝 المكرونة', '🥗 السلطة', '🍞 الخبز'],
           correct: 1
         }
@@ -1347,7 +1349,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'الأم خبأت دراجة منصور كمفاجأة',
+        text: 'الأم خبأ�� دراجة منصور كمفاجأة',
         image: '👩🚲📦',
         question: null
       },
