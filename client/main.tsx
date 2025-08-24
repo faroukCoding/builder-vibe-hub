@@ -40,6 +40,7 @@ const App = () => (
           <Route path="/cognitive-tests" element={<CognitiveTests />} />
           <Route path="/theory-of-mind" element={<TheoryOfMind />} />
           <Route path="/theory-of-mind-games" element={<TheoryOfMindGames />} />
+          <Route path="/diagnostic-response-sheet" element={<DiagnosticResponseSheet />} />
           <Route path="/portage-report" element={<PortageReport />} />
           <Route path="/age-calculator" element={<AgeCalculator />} />
           <Route path="/patient-form" element={<PatientForm />} />
