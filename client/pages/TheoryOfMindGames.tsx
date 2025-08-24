@@ -132,7 +132,7 @@ export default function TheoryOfMindGames() {
       id: 'faisal-book',
       title: 'فيصل والكتاب',
       description: 'تغيير المواقع والبحث',
-      icon: '📚',
+      icon: '����',
       difficulty: 3,
       color: 'bg-red-500'
     },
@@ -184,7 +184,7 @@ export default function TheoryOfMindGames() {
     updatedResults.push(result);
 
     if (updatedResults.length === tasks.length && updatedResults.every(r => r.completed)) {
-      // إكمال الاختبار والانتقال لورقة الا��تجابة
+      // إكمال الاختبار والانتقال لورقة الاستجابة
       finalizeTest(updatedResults);
     }
   };
@@ -216,6 +216,8 @@ export default function TheoryOfMindGames() {
     const [score, setScore] = useState(0);
     const [attempts, setAttempts] = useState(0);
     const [feedback, setFeedback] = useState<string | null>(null);
+    const [detailedAnswers, setDetailedAnswers] = useState<DetailedAnswer[]>([]);
+    const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
     const emotions = [
       { emoji: '😊', name: 'سعيد', color: 'bg-green-200' },
@@ -374,7 +376,7 @@ export default function TheoryOfMindGames() {
           }
         }, 2000);
       } else {
-        setFeedback('❌ حاول مرة أخر��');
+        setFeedback('❌ حاول مرة أخرى');
         speakArabic('حاول مرة أخرى');
         setTimeout(() => setFeedback(null), 2000);
       }
@@ -477,7 +479,7 @@ export default function TheoryOfMindGames() {
         text: 'عادت أمجاد وتريد نظارتها',
         image: '👩❓',
         question: {
-          text: 'أين تظن أمجاد أن نظارتها ستكون؟',
+          text: 'أين تظن أمجاد أن نظارت��ا ستكون؟',
           options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
           correct: 0
         }
@@ -620,7 +622,7 @@ export default function TheoryOfMindGames() {
 
       if (correct) {
         setScore(prev => prev + 1);
-        setFeedback('✅ ممتاز! كل شخص يرى التمثال من زاوية مختلفة');
+        setFeedback('✅ ممتاز! كل ��خص يرى التمثال من زاوية مختلفة');
         speakArabic('ممتاز! كل شخص يرى التمثال من زاوية مختلفة');
 
         setTimeout(() => {
@@ -935,7 +937,7 @@ export default function TheoryOfMindGames() {
     const story = [
       {
         text: 'فيصل وضع كتابه على الطاولة',
-        image: '👦📚📱',
+        image: '����📚📱',
         question: {
           text: 'أين وضع فيصل الكتاب؟',
           options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
@@ -947,7 +949,7 @@ export default function TheoryOfMindGames() {
         image: '👧📚📦',
         question: {
           text: 'أين الكتاب الآن؟',
-          options: ['📱 على الطاولة', '���� في الدرج', '🛏️ على السرير'],
+          options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
           correct: 1
         }
       },
@@ -1062,7 +1064,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'خالد يريد طائرة كهدية ع��د',
+        text: 'خالد يريد طائرة كهدية عيد',
         image: '👦✈️💭',
         question: {
           text: 'ماذا يريد خالد؟',
@@ -1211,7 +1213,7 @@ export default function TheoryOfMindGames() {
         text: 'مريم بدّلت أماكن الصحون',
         image: '👧🔄🍝🥗',
         question: {
-          text: 'أي صحن وض��ته مريم بجانب الموقد؟',
+          text: 'أي صحن وضعته مريم بجانب الموقد؟',
           options: ['🍝 المكرونة', '🥗 السلطة', '🍞 الخبز'],
           correct: 1
         }
@@ -1327,7 +1329,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'الأم خبأت در��جة منصور كمفاجأة',
+        text: 'الأم خبأت دراجة منصور كمفاجأة',
         image: '👩🚲📦',
         question: null
       },
