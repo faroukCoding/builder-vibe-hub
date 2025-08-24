@@ -17,6 +17,7 @@ import CognitiveTests from "./pages/CognitiveTests";
 import TheoryOfMind from "./pages/TheoryOfMind";
 import TheoryOfMindGames from "./pages/TheoryOfMindGames";
 import DiagnosticResponseSheet from "./pages/DiagnosticResponseSheet";
+import DiagnosticTests from "./pages/DiagnosticTests";
 import PortageReport from "./pages/PortageReport";
 import AgeCalculator from "./pages/AgeCalculator";
 import PatientForm from "./pages/PatientForm";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/theory-of-mind" element={<TheoryOfMind />} />
           <Route path="/theory-of-mind-games" element={<TheoryOfMindGames />} />
           <Route path="/diagnostic-response-sheet" element={<DiagnosticResponseSheet />} />
+          <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
           <Route path="/portage-report" element={<PortageReport />} />
           <Route path="/age-calculator" element={<AgeCalculator />} />
           <Route path="/patient-form" element={<PatientForm />} />
