@@ -114,7 +114,7 @@ export default function TheoryOfMindGames() {
     },
     {
       id: 'yasmina-saeed',
-      title: 'ياسمينه وسعيد مع التمثال',
+      title: 'ياسمي��ه وسعيد مع التمثال',
       description: 'وجهات النظر المختلفة',
       icon: '🗿',
       difficulty: 2,
@@ -199,7 +199,7 @@ export default function TheoryOfMindGames() {
     // حفظ النتائج في localStorage
     localStorage.setItem('theory_of_mind_results', JSON.stringify(finalSession));
 
-    // الانتقال لورقة الاستجابة
+    // الانتقال لورقة ال��ستجابة
     navigate('/diagnostic-response-sheet', {
       state: { sessionData: finalSession }
     });
@@ -968,15 +968,34 @@ export default function TheoryOfMindGames() {
         })}
       </div>
 
-      <div className="text-center">
+      <div className="flex gap-4 justify-center">
         <Button
           onClick={() => navigate('/specialist-dashboard')}
           variant="outline"
-          className="mx-auto"
         >
           <Home className="w-4 h-4 ml-2" />
           العودة للوحة التحكم
         </Button>
+
+        {gameResults.length > 0 && (
+          <Button
+            onClick={() => {
+              const incompleteSession: TestSession = {
+                ...testSession,
+                end_time: new Date().toISOString(),
+                total_score: gameResults.reduce((sum, r) => sum + r.score, 0)
+              };
+              localStorage.setItem('theory_of_mind_results', JSON.stringify(incompleteSession));
+              navigate('/diagnostic-response-sheet', {
+                state: { sessionData: incompleteSession }
+              });
+            }}
+            className="bg-green-500 hover:bg-green-600 text-white"
+          >
+            <FileText className="w-4 h-4 ml-2" />
+            عرض النتائج الحالية
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -1431,7 +1450,7 @@ export default function TheoryOfMindGames() {
           }
         }, 2000);
       } else {
-        setFeedback('❌ فكر في الحقيقة مقابل ما تريد الأم ��ن يصدقه منصور');
+        setFeedback('❌ فكر في الحقيقة مقابل ما تريد الأم أن يصدقه منصور');
         speakArabic('فكر في الحقيقة مقابل ما تريد الأم أن يصدقه منصور');
         setTimeout(() => setFeedback(null), 3000);
       }
@@ -1465,7 +1484,7 @@ export default function TheoryOfMindGames() {
                 onClick={() => speakArabic(story[currentStep].text)}
               >
                 <Volume2 className="w-4 h-4 ml-2" />
-                إعا��ة القصة
+                إعادة القصة
               </Button>
 
               {story[currentStep].question && (
