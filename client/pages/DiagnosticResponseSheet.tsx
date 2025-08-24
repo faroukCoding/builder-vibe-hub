@@ -89,7 +89,7 @@ export default function DiagnosticResponseSheet() {
 
   // مفتاح الإجابات الصحيحة
   const answerKey: QuestionMetadata[] = [
-    // المهمة A: الوجوه الانفعالية (1-4)
+    // المهمة A: الوجوه الانفع��لية (1-4)
     {
       question_id: 1,
       task: "A",
@@ -298,7 +298,7 @@ export default function DiagnosticResponseSheet() {
     }
   ];
 
-  // محاكاة البيانات (في التطبيق الحقيقي ستأتي من localStorage أو قاعدة البيانات)
+  // محاكاة البيانات (في التطبيق الحقيقي ستأتي م�� localStorage أو قاعدة البيانات)
   const mockResponseData: ResponseSheetData = {
     child: {
       child_id: "child_001",
@@ -604,6 +604,36 @@ export default function DiagnosticResponseSheet() {
 
         {/* ملخص النتائج */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
+          {/* مخطط دائري للنتيجة الإجمالية */}
+          <Card className="md:col-span-4 lg:col-span-1 mb-6 bg-gradient-to-br from-blue-50 to-purple-50">
+            <CardContent className="p-6 text-center">
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                  <circle
+                    cx="60" cy="60" r="50"
+                    stroke="#e5e7eb" strokeWidth="8"
+                    fill="transparent"
+                  />
+                  <circle
+                    cx="60" cy="60" r="50"
+                    stroke={responseData.summary.completion_percentage >= 85 ? "#10b981" :
+                           responseData.summary.completion_percentage >= 70 ? "#f59e0b" : "#ef4444"}
+                    strokeWidth="8"
+                    fill="transparent"
+                    strokeDasharray={`${responseData.summary.completion_percentage * 3.14} 314`}
+                    strokeLinecap="round"
+                    className="transition-all duration-1000"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-gray-800">
+                    {responseData.summary.completion_percentage}%
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">نسبة الإنجاز</p>
+            </CardContent>
+          </Card>
           <Card className="border-2 border-blue-200 bg-blue-50">
             <CardContent className="p-6 text-center">
               <Trophy className="w-8 h-8 text-blue-600 mx-auto mb-2" />
@@ -639,7 +669,7 @@ export default function DiagnosticResponseSheet() {
           </Card>
         </div>
 
-        {/* النتائج حسب المجموعات */}
+        {/* النتائج حسب ا��مجموعات */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
