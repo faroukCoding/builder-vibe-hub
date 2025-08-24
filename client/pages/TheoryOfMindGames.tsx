@@ -32,6 +32,30 @@ interface GameResult {
   completed: boolean;
 }
 
+interface DetailedAnswer {
+  question_id: number;
+  task: string;
+  question_text: string;
+  chosen_answer: string;
+  correct_answer: string;
+  is_correct: boolean;
+  score: number;
+  time_spent_ms: number;
+  skill_group: string;
+}
+
+interface TestSession {
+  child_id: string;
+  child_name: string;
+  child_age: number;
+  child_grade: string;
+  start_time: string;
+  end_time?: string;
+  answers: DetailedAnswer[];
+  total_score: number;
+  max_score: number;
+}
+
 interface TaskProps {
   onComplete: (result: GameResult) => void;
   onBack: () => void;
@@ -56,7 +80,7 @@ export default function TheoryOfMindGames() {
     {
       id: 'emotions',
       title: 'الوجوه الانفعالية',
-      description: 'تعرف على المشاعر المختلفة',
+      description: 'تعرف على المشاعر المختلف��',
       icon: '😊',
       difficulty: 1,
       color: 'bg-green-500'
@@ -105,7 +129,7 @@ export default function TheoryOfMindGames() {
       id: 'khalid-gift',
       title: 'خالد وهدية العيد',
       description: 'سوء الفهم والتوقعات',
-      icon: '🎁',
+      icon: '����',
       difficulty: 4,
       color: 'bg-pink-500'
     },
@@ -273,7 +297,7 @@ export default function TheoryOfMindGames() {
         text: 'مها حصلت على البسكويت!',
         image: '👧🍪',
         question: {
-          text: 'كيف ستشعر مها��',
+          text: 'كيف ستشعر مها؟',
           options: ['😊 سعيدة', '😢 حزينة', '😠 غاضبة'],
           correct: 0
         }
@@ -321,7 +345,7 @@ export default function TheoryOfMindGames() {
             <ArrowLeft className="w-4 h-4 ml-2" />
             العودة
           </Button>
-          <h2 className="text-2xl font-bold text-center">مها والبسك��يت</h2>
+          <h2 className="text-2xl font-bold text-center">مها والبسكويت</h2>
           <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
         </div>
 
@@ -1288,7 +1312,7 @@ export default function TheoryOfMindGames() {
       if (correct) {
         setScore(prev => prev + 1);
         setFeedback('✅ عظيم! فهمت الفرق بين الحقيقة والكذبة البيضاء');
-        speakArabic('عظيم! فهمت ��لفرق بين الحقيقة والكذبة البيضاء');
+        speakArabic('عظيم! فهمت الفرق بين الحقيقة والكذبة البيضاء');
 
         setTimeout(() => {
           if (currentStep < story.length - 1) {
