@@ -99,7 +99,7 @@ export default function TheoryOfMindGames() {
     {
       id: 'maha-cookie',
       title: 'مها والبسكويت',
-      description: 'فهم الرغبات والمشاعر',
+      description: 'فهم الرغبات والم��اعر',
       icon: '🍪',
       difficulty: 1,
       color: 'bg-yellow-500'
@@ -147,7 +147,7 @@ export default function TheoryOfMindGames() {
     {
       id: 'rami-mariam',
       title: 'رامي ومريم مع الصحون',
-      description: 'تبديل الأماكن والذاكرة',
+      description: 'تبديل الأماكن والذ��كرة',
       icon: '🍝',
       difficulty: 4,
       color: 'bg-teal-500'
@@ -695,7 +695,7 @@ export default function TheoryOfMindGames() {
         }, 2000);
       } else {
         setFeedback('❌ فكر في الموقع الذي يقف فيه كل شخص');
-        speakArabic('فكر في الموقع الذي يقف فيه كل شخص');
+        speakArabic('فك�� في الموقع الذي يقف فيه كل شخص');
         setTimeout(() => setFeedback(null), 2000);
       }
     };
@@ -925,9 +925,7 @@ export default function TheoryOfMindGames() {
         {tasks.map((task) => {
           const result = gameResults.find(r => r.taskId === task.id);
           const isCompleted = result?.completed || false;
-          const isLocked = task.difficulty > 1 && !gameResults.some(r =>
-            tasks.find(t => t.id === r.taskId)?.difficulty === task.difficulty - 1 && r.completed
-          );
+          const isLocked = false; // جميع الألعاب متاحة الآن
 
           return (
             <Card
@@ -1012,7 +1010,7 @@ export default function TheoryOfMindGames() {
         text: 'فيصل وضع كتابه على الطاولة',
         image: '👦📚📱',
         question: {
-          text: 'أين وضع فيصل الكتاب؟',
+          text: 'أين ��ضع فيصل الكتاب؟',
           options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
           correct: 0
         }
@@ -1164,7 +1162,7 @@ export default function TheoryOfMindGames() {
         }
       },
       {
-        text: 'ماذا يظن الأب؟',
+        text: 'ماذا يظن ال��ب؟',
         image: '👨❓😊',
         question: {
           text: 'ماذا يظن الأب أن خالد سيشعر؟',
