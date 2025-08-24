@@ -283,6 +283,7 @@ export default function TheoryOfMindGames() {
 
     useEffect(() => {
       speakArabic(questions[currentQuestion].text);
+      setQuestionStartTime(Date.now());
     }, [currentQuestion]);
 
     return (
@@ -600,7 +601,7 @@ export default function TheoryOfMindGames() {
     );
   };
 
-  // المهمة D: ياسمينه وسعيد مع التمثال
+  // المهمة D: ياسمينه وسع��د مع التمثال
   const YasminaSaeedTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [score, setScore] = useState(0);
@@ -639,7 +640,7 @@ export default function TheoryOfMindGames() {
 
       if (correct) {
         setScore(prev => prev + 1);
-        setFeedback('✅ ممتاز! كل شخص يرى التمث��ل من زاوية مختلفة');
+        setFeedback('✅ ممتاز! كل شخص يرى التمثال من زاوية مختلفة');
         speakArabic('ممتاز! كل شخص يرى التمثال من زاوية مختلفة');
 
         setTimeout(() => {
@@ -676,7 +677,7 @@ export default function TheoryOfMindGames() {
             <ArrowLeft className="w-4 h-4 ml-2" />
             العودة
           </Button>
-          <h2 className="text-2xl font-bold text-center">ياسمينه وسع��د مع التمثال</h2>
+          <h2 className="text-2xl font-bold text-center">ياسمينه وسعيد مع التمثال</h2>
           <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
         </div>
 
@@ -784,7 +785,7 @@ export default function TheoryOfMindGames() {
         }, 3000);
       } else {
         setFeedback('❌ تذكر أن ناصر لا يعلم أن المفاتيح على الطاولة');
-        speakArabic('تذكر أن ناصر لا يع��م أن المفاتيح على الطاولة');
+        speakArabic('تذكر أن ناصر لا يعلم أن المفاتيح على الطاولة');
         setTimeout(() => setFeedback(null), 3000);
       }
     };
@@ -1102,7 +1103,7 @@ export default function TheoryOfMindGames() {
         text: 'الأب اشترى قطارًا لخالد',
         image: '👨🛍️🚂',
         question: {
-          text: 'كيف سيشعر خالد عندما يرى القطار؟',
+          text: 'كيف سيشعر ��الد عندما يرى القطار؟',
           options: ['😊 سعيد', '😢 حزين', '😐 عادي'],
           correct: 1
         }
