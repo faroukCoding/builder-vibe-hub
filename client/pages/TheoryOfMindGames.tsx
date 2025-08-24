@@ -162,12 +162,47 @@ export default function TheoryOfMindGames() {
     }
   ];
 
-  const handleTaskComplete = (result: GameResult) => {
+  const handleTaskComplete = (result: GameResult, detailedAnswers?: DetailedAnswer[]) => {
     setGameResults(prev => {
       const updated = prev.filter(r => r.taskId !== result.taskId);
       return [...updated, result];
     });
+
+    // إضافة الإجابات المفصلة للجلسة
+    if (detailedAnswers) {
+      setTestSession(prev => ({
+        ...prev,
+        answers: [...prev.answers.filter(a => a.task !== result.taskId), ...detailedAnswers],
+        total_score: prev.total_score + result.score
+      }));
+    }
+
     setCurrentTask(null);
+
+    // التحقق من إكمال جميع المهام
+    const updatedResults = gameResults.filter(r => r.taskId !== result.taskId);
+    updatedResults.push(result);
+
+    if (updatedResults.length === tasks.length && updatedResults.every(r => r.completed)) {
+      // إكمال الاختبار والانتقال لورقة الا��تجابة
+      finalizeTest(updatedResults);
+    }
+  };
+
+  const finalizeTest = (finalResults: GameResult[]) => {
+    const finalSession: TestSession = {
+      ...testSession,
+      end_time: new Date().toISOString(),
+      total_score: finalResults.reduce((sum, r) => sum + r.score, 0)
+    };
+
+    // حفظ النتائج في localStorage
+    localStorage.setItem('theory_of_mind_results', JSON.stringify(finalSession));
+
+    // الانتقال لورقة الاستجابة
+    navigate('/diagnostic-response-sheet', {
+      state: { sessionData: finalSession }
+    });
   };
 
   useEffect(() => {
@@ -339,7 +374,7 @@ export default function TheoryOfMindGames() {
           }
         }, 2000);
       } else {
-        setFeedback('❌ حاول مرة أخرى');
+        setFeedback('❌ حاول مرة أخر��');
         speakArabic('حاول مرة أخرى');
         setTimeout(() => setFeedback(null), 2000);
       }
@@ -442,7 +477,7 @@ export default function TheoryOfMindGames() {
         text: 'عادت أمجاد وتريد نظارتها',
         image: '👩❓',
         question: {
-          text: 'أين تظن أمجاد أن ن��ارتها ستكون؟',
+          text: 'أين تظن أمجاد أن نظارتها ستكون؟',
           options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
           correct: 0
         }
@@ -912,7 +947,7 @@ export default function TheoryOfMindGames() {
         image: '👧📚📦',
         question: {
           text: 'أين الكتاب الآن؟',
-          options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
+          options: ['📱 على الطاولة', '���� في الدرج', '🛏️ على السرير'],
           correct: 1
         }
       },
@@ -1027,7 +1062,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'خالد يريد طائرة كهدية عيد',
+        text: 'خالد يريد طائرة كهدية ع��د',
         image: '👦✈️💭',
         question: {
           text: 'ماذا يريد خالد؟',
@@ -1164,7 +1199,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'رامي وضع المكرونة ب��انب الموقد والسلطة على الطاولة',
+        text: 'رامي وضع المكرونة بجانب الموقد والسلطة على الطاولة',
         image: '👦🍝🔥🥗📱',
         question: {
           text: 'أي صحن وضعه رامي بجانب الموقد؟',
@@ -1176,7 +1211,7 @@ export default function TheoryOfMindGames() {
         text: 'مريم بدّلت أماكن الصحون',
         image: '👧🔄🍝🥗',
         question: {
-          text: 'أي صحن وضعته مريم بجانب الموقد؟',
+          text: 'أي صحن وض��ته مريم بجانب الموقد؟',
           options: ['🍝 المكرونة', '🥗 السلطة', '🍞 الخبز'],
           correct: 1
         }
@@ -1292,7 +1327,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'الأم خبأت دراجة منصور كمفاجأة',
+        text: 'الأم خبأت در��جة منصور كمفاجأة',
         image: '👩🚲📦',
         question: null
       },
