@@ -141,7 +141,7 @@ export default function DiagnosticResponseSheet() {
       label: "كيف ستشعر مها؟",
       skill_group: "الرغبات والمشاعر",
       media: { image_url: "/assets/maha/cookie2.png", audio_url: "/assets/audio/q6.mp3" },
-      correct_answer: "😊 سعيدة",
+      correct_answer: "😊 س��يدة",
       choices: ["😊 سعيدة", "😢 حزينة", "😠 غاضبة"]
     },
     // المهمة C: أمجاد والنظارة (7)
@@ -330,13 +330,13 @@ export default function DiagnosticResponseSheet() {
       { question_id: 6, task: "B", chosen_answer: "😊 سعيدة", correct_answer: "😊 سعيدة", is_correct: true, score: 1, time_spent_ms: 3800 },
       { question_id: 7, task: "C", chosen_answer: "📦 في الدرج", correct_answer: "📱 على الطاولة", is_correct: false, score: 0, time_spent_ms: 6500 },
       { question_id: 8, task: "D", chosen_answer: "😊 وجه التمثال", correct_answer: "😊 وجه التمثال", is_correct: true, score: 1, time_spent_ms: 5200 },
-      { question_id: 9, task: "D", chosen_answer: "🔙 ظهر التمثال", correct_answer: "🔙 ظهر التمثال", is_correct: true, score: 1, time_spent_ms: 4800 },
+      { question_id: 9, task: "D", chosen_answer: "🔙 ظهر التمثال", correct_answer: "🔙 ��هر التمثال", is_correct: true, score: 1, time_spent_ms: 4800 },
       { question_id: 10, task: "E", chosen_answer: "👖 في جيبه", correct_answer: "👖 في جيبه", is_correct: true, score: 1, time_spent_ms: 5800 },
       { question_id: 11, task: "F", chosen_answer: "📱 على الطاولة", correct_answer: "📱 على الطاولة", is_correct: true, score: 1, time_spent_ms: 4200 },
       { question_id: 12, task: "F", chosen_answer: "📦 في الدرج", correct_answer: "📦 في الدرج", is_correct: true, score: 1, time_spent_ms: 3900 },
       { question_id: 13, task: "F", chosen_answer: "📱 على الطاولة", correct_answer: "📱 على الطاولة", is_correct: true, score: 1, time_spent_ms: 4600 },
       { question_id: 14, task: "G", chosen_answer: "✈️ طائرة", correct_answer: "✈️ طائرة", is_correct: true, score: 1, time_spent_ms: 3800 },
-      { question_id: 15, task: "G", chosen_answer: "🚂 قطار", correct_answer: "🚂 ق��ار", is_correct: true, score: 1, time_spent_ms: 4100 },
+      { question_id: 15, task: "G", chosen_answer: "🚂 قطار", correct_answer: "🚂 قطار", is_correct: true, score: 1, time_spent_ms: 4100 },
       { question_id: 16, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😢 حزين", is_correct: false, score: 0, time_spent_ms: 7200 },
       { question_id: 17, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😊 سعيد", is_correct: true, score: 1, time_spent_ms: 5400 },
       { question_id: 18, task: "H", chosen_answer: "🍝 المكرونة", correct_answer: "🍝 المكرونة", is_correct: true, score: 1, time_spent_ms: 4800 },
@@ -392,7 +392,7 @@ export default function DiagnosticResponseSheet() {
               <p><strong>المستوى:</strong> ${responseData.child.grade_level}</p>
               <p><strong>التاريخ:</strong> ${new Date(responseData.child.test_date).toLocaleDateString('ar-SA')}</p>
             </div>
-            
+
             <div class="summary">
               <div class="card">
                 <h3>النتيجة الكلية</h3>
@@ -451,7 +451,7 @@ export default function DiagnosticResponseSheet() {
 
   const handleExportExcel = () => {
     if (!responseData) return;
-    
+
     const csvData = [
       ['رقم السؤال', 'المهمة', 'المجموعة', 'السؤال', 'إجابة الطفل', 'الإجابة الصحيحة', 'صحيح/خطأ', 'النقاط'],
       ...responseData.answers.map(answer => {
@@ -490,13 +490,13 @@ export default function DiagnosticResponseSheet() {
   const filteredAnswers = responseData?.answers.filter(answer => {
     const metadata = responseData.metadata.find(m => m.question_id === answer.question_id);
     const matchesTask = filterTask === "all" || answer.task === filterTask;
-    const matchesResult = filterResult === "all" || 
+    const matchesResult = filterResult === "all" ||
       (filterResult === "correct" && answer.is_correct) ||
       (filterResult === "incorrect" && !answer.is_correct);
-    const matchesSearch = searchTerm === "" || 
+    const matchesSearch = searchTerm === "" ||
       metadata?.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
       answer.chosen_answer.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     return matchesTask && matchesResult && matchesSearch;
   }) || [];
 
@@ -552,7 +552,7 @@ export default function DiagnosticResponseSheet() {
                 الرئيسية
               </Button>
             </div>
-            
+
             <div className="text-center">
               <h1 className="text-2xl font-bold text-gray-900">الاختبارات التشخيصية - ورقة الاستجابة</h1>
               <p className="text-sm text-gray-600">نظرية العقل</p>
@@ -660,6 +660,79 @@ export default function DiagnosticResponseSheet() {
           </CardContent>
         </Card>
 
+        {/* تفسير النتائج */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="w-5 h-5 text-purple-600" />
+              تفسير النتائج والتوصيات
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h4 className="font-semibold text-lg text-gray-800">تقييم عام:</h4>
+                {responseData.summary.completion_percentage >= 85 && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-green-800 font-medium">✅ أداء ممتاز</p>
+                    <p className="text-sm text-green-700 mt-1">
+                      الطفل يُظهر فهماً متقدماً لنظرية العقل ومهارات تفكير اجتماعي قوية.
+                    </p>
+                  </div>
+                )}
+                {responseData.summary.completion_percentage >= 70 && responseData.summary.completion_percentage < 85 && (
+                  <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-yellow-800 font-medium">⚠️ أداء جيد</p>
+                    <p className="text-sm text-yellow-700 mt-1">
+                      الطفل يُظهر فهماً أساسياً جيداً مع إمكانية للتطوير في بعض المجالات.
+                    </p>
+                  </div>
+                )}
+                {responseData.summary.completion_percentage < 70 && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-800 font-medium">🔄 يحتاج دعم إضافي</p>
+                    <p className="text-sm text-red-700 mt-1">
+                      يُنصح بالمزيد من التمارين والدعم في مهارات نظرية العقل.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-semibold text-lg text-gray-800">التوصيات:</h4>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  {responseData.summary.by_group["الانفعالات"]?.percentage < 75 && (
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600">•</span>
+                      <span>تمارين إضافية للتعرف على المشاعر والانفعالات</span>
+                    </li>
+                  )}
+                  {responseData.summary.by_group["المعتقد الخاطئ"]?.percentage < 75 && (
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">•</span>
+                      <span>أنشطة لتطوير فهم المعتقدات الخاطئة والتوقعات</span>
+                    </li>
+                  )}
+                  {responseData.summary.by_group["وجهات النظر"]?.percentage < 75 && (
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-600">•</span>
+                      <span>تمارين لفهم وجهات النظر المختلفة</span>
+                    </li>
+                  )}
+                  <li className="flex items-start gap-2">
+                    <span className="text-orange-600">•</span>
+                    <span>متابعة دورية كل 3-6 أشهر لتقييم التقدم</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-teal-600">•</span>
+                    <span>تطبيق أ��شطة التفكير الاجتماعي في الحياة اليومية</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* أدوات التصفية */}
         <Card className="mb-6">
           <CardContent className="p-4">
@@ -672,17 +745,17 @@ export default function DiagnosticResponseSheet() {
                   className="w-full"
                 />
               </div>
-              
+
               <Select value={filterTask} onValueChange={setFilterTask}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="تصفية حسب المهمة" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">جميع المهام</SelectItem>
-                  <SelectItem value="A">المهمة A - الانفعالا��</SelectItem>
+                  <SelectItem value="A">المهمة A - الانفعالات</SelectItem>
                   <SelectItem value="B">المهمة B - مها والبسكويت</SelectItem>
                   <SelectItem value="C">المهمة C - أمجاد والنظارة</SelectItem>
-                  <SelectItem value="D">المه��ة D - ياسمينه وسعيد</SelectItem>
+                  <SelectItem value="D">المهمة D - ياسمينه وسعيد</SelectItem>
                   <SelectItem value="E">المهمة E - ناصر والمفاتيح</SelectItem>
                   <SelectItem value="F">المهمة F - فيصل والكتاب</SelectItem>
                   <SelectItem value="G">المهمة G - خالد والهدية</SelectItem>
@@ -735,10 +808,10 @@ export default function DiagnosticResponseSheet() {
                   {filteredAnswers.map((answer) => {
                     const metadata = responseData.metadata.find(m => m.question_id === answer.question_id);
                     const isExpanded = expandedRows.has(answer.question_id);
-                    
+
                     return (
                       <React.Fragment key={answer.question_id}>
-                        <tr 
+                        <tr
                           className={`border-b hover:bg-gray-50 cursor-pointer ${answer.is_correct ? 'bg-green-50' : 'bg-red-50'}`}
                           onClick={() => toggleRowExpansion(answer.question_id)}
                         >
@@ -761,7 +834,7 @@ export default function DiagnosticResponseSheet() {
                             {(answer.time_spent_ms / 1000).toFixed(1)}ث
                           </td>
                         </tr>
-                        
+
                         {isExpanded && (
                           <tr className="bg-gray-100">
                             <td colSpan={8} className="p-4">
@@ -769,7 +842,7 @@ export default function DiagnosticResponseSheet() {
                                 {metadata?.media.image_url && (
                                   <div className="text-6xl">📋</div>
                                 )}
-                                
+
                                 <div className="flex-1">
                                   <p className="font-medium text-gray-800 mb-2">
                                     {metadata?.label}
