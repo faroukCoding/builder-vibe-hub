@@ -139,7 +139,7 @@ export default function TheoryOfMindGames() {
     {
       id: 'khalid-gift',
       title: 'خالد وهدية العيد',
-      description: 'س��ء الفهم والتوقعات',
+      description: 'سوء الفهم والتوقعات',
       icon: '🎁',
       difficulty: 4,
       color: 'bg-pink-500'
@@ -357,7 +357,7 @@ export default function TheoryOfMindGames() {
         image: '👧',
         question: {
           text: 'ماذا تريد مها؟',
-          options: ['🍪 بسكويت', '���� تفاحة', '🧃 عصير'],
+          options: ['🍪 بسكويت', '🍎 تفاحة', '🧃 عصير'],
           correct: 0
         }
       },
@@ -435,6 +435,9 @@ export default function TheoryOfMindGames() {
 
     useEffect(() => {
       speakArabic(story[currentStep].text);
+      if (story[currentStep].question) {
+        setQuestionStartTime(Date.now());
+      }
     }, [currentStep]);
 
     return (
@@ -651,7 +654,7 @@ export default function TheoryOfMindGames() {
         text: 'ياسمينه ترى الجهة الأمامية للتمثال',
         image: '👧➡️🗿',
         question: {
-          text: 'ماذا ترى ياس��ينه؟',
+          text: 'ماذا ترى ياسمينه؟',
           options: ['😊 وجه التمثال', '🔙 ظهر التمثال', '👂 جانب التمثال'],
           correct: 0
         }
@@ -1118,7 +1121,7 @@ export default function TheoryOfMindGames() {
         text: 'خالد يريد طائرة كهدية عيد',
         image: '👦✈️💭',
         question: {
-          text: 'ماذا يري�� خالد؟',
+          text: 'ماذا يريد خالد؟',
           options: ['✈️ طائرة', '🚂 قطار', '🚗 سيارة'],
           correct: 0
         }
@@ -1428,7 +1431,7 @@ export default function TheoryOfMindGames() {
           }
         }, 2000);
       } else {
-        setFeedback('❌ فكر في الحقيقة مقابل ما تريد الأم أن يصدقه منصور');
+        setFeedback('❌ فكر في الحقيقة مقابل ما تريد الأم ��ن يصدقه منصور');
         speakArabic('فكر في الحقيقة مقابل ما تريد الأم أن يصدقه منصور');
         setTimeout(() => setFeedback(null), 3000);
       }
@@ -1462,7 +1465,7 @@ export default function TheoryOfMindGames() {
                 onClick={() => speakArabic(story[currentStep].text)}
               >
                 <Volume2 className="w-4 h-4 ml-2" />
-                إعادة القصة
+                إعا��ة القصة
               </Button>
 
               {story[currentStep].question && (
