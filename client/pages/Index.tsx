@@ -25,17 +25,20 @@ export default function Index() {
         <CardContent className="p-12 text-center">
           {/* Logo and Title */}
           <div className="mb-8">
-            <div className="bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 p-2 rounded-3xl w-32 h-32 mx-auto mb-6 flex items-center justify-center shadow-2xl">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5e05d645cfee4c7f8b53005121a67e35?format=webp&width=800"
-                alt="Ortho Smart Logo"
-                className="w-28 h-28 rounded-2xl object-contain"
-                style={{
-                  mixBlendMode: 'multiply',
-                  filter: 'brightness(1.2) contrast(1.1)',
-                  background: 'transparent'
-                }}
-              />
+            <div className="relative bg-gradient-to-br from-orange-400 via-purple-500 to-blue-600 p-1 rounded-3xl w-32 h-32 mx-auto mb-6 shadow-2xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-teal-500 to-blue-600 opacity-70 animate-pulse"></div>
+              <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl w-full h-full flex items-center justify-center p-2">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5e05d645cfee4c7f8b53005121a67e35?format=webp&width=800"
+                  alt="Ortho Smart Logo"
+                  className="w-24 h-24 object-contain rounded-xl"
+                  style={{
+                    filter: 'brightness(1.3) contrast(1.2) saturate(1.1)',
+                    mixBlendMode: 'screen',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                  }}
+                />
+              </div>
             </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               Ortho Smart
@@ -44,7 +47,7 @@ export default function Index() {
               مرحباً بك في Ortho Smart
             </p>
             <p className="text-lg text-gray-500 leading-relaxed">
-              منصّة رقمية متخصّصة في الأرطوفونيا لتقييم ومتابعة الأطفال
+              منصّة رقمية متخصّصة في الأرطوفونيا لت��ييم ومتابعة الأطفال
             </p>
           </div>
 
@@ -304,7 +307,7 @@ export default function Index() {
               onClick={() => setCurrentView("login")}
               className="text-blue-600 hover:text-blue-700"
             >
-              تسجيل الدخول
+              تسجيل ��لدخول
             </Button>
           </div>
         </CardContent>
