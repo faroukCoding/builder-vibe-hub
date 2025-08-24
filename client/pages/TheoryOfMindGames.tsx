@@ -164,12 +164,12 @@ export default function TheoryOfMindGames() {
     const handleAnswer = (selectedEmoji: string) => {
       const correct = selectedEmoji === questions[currentQuestion].answer;
       setAttempts(prev => prev + 1);
-      
+
       if (correct) {
         setScore(prev => prev + 1);
         setFeedback('✅ أحسنت!');
         speakArabic('أحسنت! إجابة صحيحة');
-        
+
         setTimeout(() => {
           if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(prev => prev + 1);
@@ -235,7 +235,7 @@ export default function TheoryOfMindGames() {
                 </Button>
               ))}
             </div>
-            
+
             {feedback && (
               <div className="text-center mt-6 p-4 rounded-lg bg-gray-100">
                 <p className="text-2xl font-bold">{feedback}</p>
@@ -271,7 +271,7 @@ export default function TheoryOfMindGames() {
       },
       {
         text: 'مها حصلت على البسكويت!',
-        image: '👧����',
+        image: '👧🍪',
         question: {
           text: 'كيف ستشعر مها؟',
           options: ['😊 سعيدة', '😢 حزينة', '😠 غاضبة'],
@@ -283,12 +283,12 @@ export default function TheoryOfMindGames() {
     const handleAnswer = (selectedIndex: number) => {
       const correct = selectedIndex === story[currentStep].question?.correct;
       setAttempts(prev => prev + 1);
-      
+
       if (correct) {
         setScore(prev => prev + 1);
         setFeedback('✅ ممتاز!');
         speakArabic('ممتاز! إجابة صحيحة');
-        
+
         setTimeout(() => {
           if (currentStep < story.length - 1) {
             setCurrentStep(prev => prev + 1);
@@ -330,7 +330,7 @@ export default function TheoryOfMindGames() {
             <div className="text-center space-y-6">
               <div className="text-8xl mb-4">{story[currentStep].image}</div>
               <p className="text-2xl font-bold text-gray-800">{story[currentStep].text}</p>
-              
+
               <Button
                 variant="ghost"
                 onClick={() => speakArabic(story[currentStep].text)}
@@ -404,7 +404,7 @@ export default function TheoryOfMindGames() {
         question: null
       },
       {
-        text: 'عادت أمجاد وتريد نظارتها',
+        text: 'عادت أمجاد وتريد ن��ارتها',
         image: '👩❓',
         question: {
           text: 'أين تظن أمجاد أن نظارتها ستكون؟',
@@ -417,12 +417,12 @@ export default function TheoryOfMindGames() {
     const handleAnswer = (selectedIndex: number) => {
       const correct = selectedIndex === story[currentStep].question?.correct;
       setAttempts(prev => prev + 1);
-      
+
       if (correct) {
         setScore(prev => prev + 1);
         setFeedback('✅ صحيح! أمجاد لا تعلم أن والدتها نقلت النظارة');
-        speakArabic('ص��يح! أمجاد لا تعلم أن والدتها نقلت النظارة');
-        
+        speakArabic('صحيح! أمجاد لا تعلم أن والدتها نقلت النظارة');
+
         setTimeout(() => {
           onComplete({
             taskId: 'amjad-glasses',
@@ -461,7 +461,7 @@ export default function TheoryOfMindGames() {
             <div className="text-center space-y-6">
               <div className="text-6xl mb-4">{story[currentStep].image}</div>
               <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
-              
+
               <Button
                 variant="ghost"
                 onClick={() => speakArabic(story[currentStep].text)}
@@ -511,6 +511,267 @@ export default function TheoryOfMindGames() {
     );
   };
 
+  // المهمة D: ياسمينه وسعيد مع التمثال
+  const YasminaSaeedTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [score, setScore] = useState(0);
+    const [attempts, setAttempts] = useState(0);
+    const [feedback, setFeedback] = useState<string | null>(null);
+
+    const story = [
+      {
+        text: 'ياسمينه وسعيد ينظران إلى تمثال من جهتين مختلفتين',
+        image: '👧🗿👦',
+        question: null
+      },
+      {
+        text: 'ياسمينه ترى الجهة الأمامية للتمثال',
+        image: '👧➡️🗿',
+        question: {
+          text: 'ماذا ترى ياسمينه؟',
+          options: ['😊 وجه التمثال', '🔙 ظهر التمثال', '👂 جانب التمثال'],
+          correct: 0
+        }
+      },
+      {
+        text: 'سعيد ينظر من الخلف',
+        image: '🗿⬅️👦',
+        question: {
+          text: 'ماذا يرى سعيد؟',
+          options: ['😊 وجه التمثال', '🔙 ظهر التمثال', '👂 جانب التمثال'],
+          correct: 1
+        }
+      }
+    ];
+
+    const handleAnswer = (selectedIndex: number) => {
+      const correct = selectedIndex === story[currentStep].question?.correct;
+      setAttempts(prev => prev + 1);
+
+      if (correct) {
+        setScore(prev => prev + 1);
+        setFeedback('✅ ممتاز! كل شخص يرى التمثال من زاوية مختلفة');
+        speakArabic('ممتاز! كل شخص يرى التمثال من زاوية مختلفة');
+
+        setTimeout(() => {
+          if (currentStep < story.length - 1) {
+            setCurrentStep(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            onComplete({
+              taskId: 'yasmina-saeed',
+              score,
+              totalQuestions: story.filter(s => s.question).length,
+              attempts,
+              completed: true
+            });
+          }
+        }, 2000);
+      } else {
+        setFeedback('❌ فكر في الموقع الذي يقف فيه كل شخص');
+        speakArabic('فكر في الموقع الذي يقف فيه كل شخص');
+        setTimeout(() => setFeedback(null), 2000);
+      }
+    };
+
+    useEffect(() => {
+      if (story[currentStep].text) {
+        speakArabic(story[currentStep].text);
+      }
+    }, [currentStep]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={onBack} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">ياسمينه وسعيد مع التمثال</h2>
+          <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
+        </div>
+
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              <div className="text-6xl mb-4">{story[currentStep].image}</div>
+              <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
+
+              <Button
+                variant="ghost"
+                onClick={() => speakArabic(story[currentStep].text)}
+              >
+                <Volume2 className="w-4 h-4 ml-2" />
+                إعادة القصة
+              </Button>
+
+              {story[currentStep].question && (
+                <div className="space-y-4">
+                  <p className="text-xl font-semibold text-purple-600">
+                    {story[currentStep].question?.text}
+                  </p>
+                  <div className="grid gap-4">
+                    {story[currentStep].question?.options.map((option, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => handleAnswer(index)}
+                        className="h-16 text-lg bg-purple-100 hover:bg-purple-200 text-gray-800 border-2 border-purple-300"
+                        variant="outline"
+                      >
+                        {option}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {!story[currentStep].question && currentStep < story.length - 1 && (
+                <Button
+                  onClick={() => setCurrentStep(prev => prev + 1)}
+                  className="bg-purple-500 hover:bg-purple-600 text-white"
+                >
+                  التالي
+                </Button>
+              )}
+
+              {feedback && (
+                <div className="p-4 rounded-lg bg-gray-100">
+                  <p className="text-lg font-bold">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // المهمة E: ناصر والمفاتيح
+  const NasserKeysTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [score, setScore] = useState(0);
+    const [attempts, setAttempts] = useState(0);
+    const [feedback, setFeedback] = useState<string | null>(null);
+
+    const story = [
+      {
+        text: 'ناصر يظن أن مفاتيحه في جيبه',
+        image: '👨🔑👖',
+        question: null
+      },
+      {
+        text: 'لكن المفاتيح في الحقيقة على الطاولة',
+        image: '🔑📱',
+        question: null
+      },
+      {
+        text: 'ناصر يريد مفاتيحه الآن',
+        image: '👨❓🔑',
+        question: {
+          text: 'أين سيبحث ناصر أولاً؟',
+          options: ['👖 في جيبه', '📱 على الطاولة', '🚗 في السيارة'],
+          correct: 0
+        }
+      }
+    ];
+
+    const handleAnswer = (selectedIndex: number) => {
+      const correct = selectedIndex === story[currentStep].question?.correct;
+      setAttempts(prev => prev + 1);
+
+      if (correct) {
+        setScore(prev => prev + 1);
+        setFeedback('✅ صحيح! ناصر سيبحث حيث يظن أنها موجودة');
+        speakArabic('صحيح! ناصر سيبحث حيث يظن أنها موجودة');
+
+        setTimeout(() => {
+          onComplete({
+            taskId: 'nasser-keys',
+            score,
+            totalQuestions: 1,
+            attempts,
+            completed: true
+          });
+        }, 3000);
+      } else {
+        setFeedback('❌ تذكر أن ناصر لا يعلم أن المفاتيح على الطاولة');
+        speakArabic('تذكر أن ناصر لا يعلم أن المفاتيح على الطاولة');
+        setTimeout(() => setFeedback(null), 3000);
+      }
+    };
+
+    useEffect(() => {
+      if (story[currentStep].text) {
+        speakArabic(story[currentStep].text);
+      }
+    }, [currentStep]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={onBack} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">ناصر والمفاتيح</h2>
+          <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
+        </div>
+
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              <div className="text-6xl mb-4">{story[currentStep].image}</div>
+              <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
+
+              <Button
+                variant="ghost"
+                onClick={() => speakArabic(story[currentStep].text)}
+              >
+                <Volume2 className="w-4 h-4 ml-2" />
+                إعادة القصة
+              </Button>
+
+              {story[currentStep].question && (
+                <div className="space-y-4">
+                  <p className="text-xl font-semibold text-orange-600">
+                    {story[currentStep].question?.text}
+                  </p>
+                  <div className="grid gap-4">
+                    {story[currentStep].question?.options.map((option, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => handleAnswer(index)}
+                        className="h-16 text-lg bg-orange-100 hover:bg-orange-200 text-gray-800 border-2 border-orange-300"
+                        variant="outline"
+                      >
+                        {option}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {!story[currentStep].question && currentStep < story.length - 1 && (
+                <Button
+                  onClick={() => setCurrentStep(prev => prev + 1)}
+                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                >
+                  التالي
+                </Button>
+              )}
+
+              {feedback && (
+                <div className="p-4 rounded-lg bg-gray-100">
+                  <p className="text-lg font-bold">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
   // قائمة المهام الرئيسية
   const TasksMenu = () => (
     <div className="space-y-6" dir="rtl">
@@ -522,7 +783,7 @@ export default function TheoryOfMindGames() {
         <p className="text-lg text-gray-600">
           تعلم فهم مشاعر وأفكار الآخرين من خلال قصص تفاعلية ممتعة
         </p>
-        
+
         {overallProgress > 0 && (
           <div className="max-w-md mx-auto">
             <div className="flex items-center justify-between mb-2">
@@ -538,12 +799,12 @@ export default function TheoryOfMindGames() {
         {tasks.map((task) => {
           const result = gameResults.find(r => r.taskId === task.id);
           const isCompleted = result?.completed || false;
-          const isLocked = task.difficulty > 1 && !gameResults.some(r => 
+          const isLocked = task.difficulty > 1 && !gameResults.some(r =>
             tasks.find(t => t.id === r.taskId)?.difficulty === task.difficulty - 1 && r.completed
           );
 
           return (
-            <Card 
+            <Card
               key={task.id}
               className={`group hover:shadow-xl transition-all duration-300 cursor-pointer ${
                 isLocked ? 'opacity-50 cursor-not-allowed' : ''
@@ -554,10 +815,10 @@ export default function TheoryOfMindGames() {
                 <div className={`${task.color} text-white p-4 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform`}>
                   {isLocked ? '🔒' : task.icon}
                 </div>
-                
+
                 <h3 className="text-lg font-bold text-gray-800 mb-2">{task.title}</h3>
                 <p className="text-sm text-gray-600 mb-4">{task.description}</p>
-                
+
                 <div className="flex items-center justify-center gap-2 mb-4">
                   {Array.from({ length: task.difficulty }).map((_, i) => (
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
