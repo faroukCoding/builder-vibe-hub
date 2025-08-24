@@ -273,7 +273,7 @@ export default function TheoryOfMindGames() {
         text: 'مها حصلت على البسكويت!',
         image: '👧🍪',
         question: {
-          text: 'كيف ستشعر مها؟',
+          text: 'كيف ستشعر مها��',
           options: ['😊 سعيدة', '😢 حزينة', '😠 غاضبة'],
           correct: 0
         }
@@ -321,7 +321,7 @@ export default function TheoryOfMindGames() {
             <ArrowLeft className="w-4 h-4 ml-2" />
             العودة
           </Button>
-          <h2 className="text-2xl font-bold text-center">مها والبسكويت</h2>
+          <h2 className="text-2xl font-bold text-center">مها والبسك��يت</h2>
           <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
         </div>
 
@@ -404,7 +404,7 @@ export default function TheoryOfMindGames() {
         question: null
       },
       {
-        text: 'عادت أمجاد وتريد ن��ارتها',
+        text: 'عادت أمجاد وتريد نظارتها',
         image: '👩❓',
         question: {
           text: 'أين تظن أمجاد أن نظارتها ستكون؟',
@@ -855,6 +855,534 @@ export default function TheoryOfMindGames() {
     </div>
   );
 
+  // المهمة F: فيصل والكتاب
+  const FaisalBookTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [score, setScore] = useState(0);
+    const [attempts, setAttempts] = useState(0);
+    const [feedback, setFeedback] = useState<string | null>(null);
+
+    const story = [
+      {
+        text: 'فيصل وضع كتابه على الطاولة',
+        image: '👦📚📱',
+        question: {
+          text: 'أين وضع فيصل الكتاب؟',
+          options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
+          correct: 0
+        }
+      },
+      {
+        text: 'سلمى نقلت الكتاب إلى الدرج',
+        image: '👧📚📦',
+        question: {
+          text: 'أين الكتاب الآن؟',
+          options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
+          correct: 1
+        }
+      },
+      {
+        text: 'فيصل عاد ويريد كتابه',
+        image: '👦❓📚',
+        question: {
+          text: 'أين سيبحث فيصل أولاً؟',
+          options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
+          correct: 0
+        }
+      }
+    ];
+
+    const handleAnswer = (selectedIndex: number) => {
+      const correct = selectedIndex === story[currentStep].question?.correct;
+      setAttempts(prev => prev + 1);
+
+      if (correct) {
+        setScore(prev => prev + 1);
+        setFeedback('✅ صحيح!');
+        speakArabic('صحيح! إجابة ممتازة');
+
+        setTimeout(() => {
+          if (currentStep < story.length - 1) {
+            setCurrentStep(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            onComplete({
+              taskId: 'faisal-book',
+              score,
+              totalQuestions: story.length,
+              attempts,
+              completed: true
+            });
+          }
+        }, 2000);
+      } else {
+        setFeedback('❌ حاول مرة أخرى');
+        speakArabic('حاول مرة أخرى');
+        setTimeout(() => setFeedback(null), 2000);
+      }
+    };
+
+    useEffect(() => {
+      if (story[currentStep].text) {
+        speakArabic(story[currentStep].text);
+      }
+    }, [currentStep]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={onBack} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">فيصل والكتاب</h2>
+          <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
+        </div>
+
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              <div className="text-6xl mb-4">{story[currentStep].image}</div>
+              <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
+
+              <Button
+                variant="ghost"
+                onClick={() => speakArabic(story[currentStep].text)}
+              >
+                <Volume2 className="w-4 h-4 ml-2" />
+                إعادة القصة
+              </Button>
+
+              <div className="space-y-4">
+                <p className="text-xl font-semibold text-red-600">
+                  {story[currentStep].question?.text}
+                </p>
+                <div className="grid gap-4">
+                  {story[currentStep].question?.options.map((option, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleAnswer(index)}
+                      className="h-16 text-lg bg-red-100 hover:bg-red-200 text-gray-800 border-2 border-red-300"
+                      variant="outline"
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {feedback && (
+                <div className="p-4 rounded-lg bg-gray-100">
+                  <p className="text-lg font-bold">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // المهمة G: خالد وهدية العيد
+  const KhalidGiftTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [score, setScore] = useState(0);
+    const [attempts, setAttempts] = useState(0);
+    const [feedback, setFeedback] = useState<string | null>(null);
+
+    const story = [
+      {
+        text: 'خالد يريد طائرة كهدية عيد',
+        image: '👦✈️💭',
+        question: {
+          text: 'ماذا يريد خالد؟',
+          options: ['✈️ طائرة', '🚂 قطار', '🚗 سيارة'],
+          correct: 0
+        }
+      },
+      {
+        text: 'والد خالد يظن أنه يريد قطارًا',
+        image: '👨🚂💭',
+        question: {
+          text: 'ماذا يعتقد الأب أن خالد يريد؟',
+          options: ['✈️ طائرة', '🚂 قطار', '🚗 سيارة'],
+          correct: 1
+        }
+      },
+      {
+        text: 'الأب اشترى قطارًا لخالد',
+        image: '👨🛍️🚂',
+        question: {
+          text: 'كيف سيشعر خالد عندما يرى القطار؟',
+          options: ['😊 سعيد', '😢 حزين', '😐 عادي'],
+          correct: 1
+        }
+      },
+      {
+        text: 'ماذا يظن الأب؟',
+        image: '👨❓😊',
+        question: {
+          text: 'ماذا يظن الأب أن خالد سيشعر؟',
+          options: ['😊 سعيد', '😢 حزين', '😐 عادي'],
+          correct: 0
+        }
+      }
+    ];
+
+    const handleAnswer = (selectedIndex: number) => {
+      const correct = selectedIndex === story[currentStep].question?.correct;
+      setAttempts(prev => prev + 1);
+
+      if (correct) {
+        setScore(prev => prev + 1);
+        setFeedback('✅ ممتاز! فهمت الموقف بشكل رائع');
+        speakArabic('ممتاز! فهمت الموقف بشكل رائع');
+
+        setTimeout(() => {
+          if (currentStep < story.length - 1) {
+            setCurrentStep(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            onComplete({
+              taskId: 'khalid-gift',
+              score,
+              totalQuestions: story.length,
+              attempts,
+              completed: true
+            });
+          }
+        }, 2000);
+      } else {
+        setFeedback('❌ فكر في ما يعرفه كل شخص');
+        speakArabic('فكر في ما يعرفه كل شخص');
+        setTimeout(() => setFeedback(null), 2000);
+      }
+    };
+
+    useEffect(() => {
+      if (story[currentStep].text) {
+        speakArabic(story[currentStep].text);
+      }
+    }, [currentStep]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={onBack} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">خالد وهدية العيد</h2>
+          <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
+        </div>
+
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              <div className="text-6xl mb-4">{story[currentStep].image}</div>
+              <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
+
+              <Button
+                variant="ghost"
+                onClick={() => speakArabic(story[currentStep].text)}
+              >
+                <Volume2 className="w-4 h-4 ml-2" />
+                إعادة القصة
+              </Button>
+
+              <div className="space-y-4">
+                <p className="text-xl font-semibold text-pink-600">
+                  {story[currentStep].question?.text}
+                </p>
+                <div className="grid gap-4">
+                  {story[currentStep].question?.options.map((option, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleAnswer(index)}
+                      className="h-16 text-lg bg-pink-100 hover:bg-pink-200 text-gray-800 border-2 border-pink-300"
+                      variant="outline"
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {feedback && (
+                <div className="p-4 rounded-lg bg-gray-100">
+                  <p className="text-lg font-bold">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // المهمة H: رامي ومريم مع الصحون
+  const RamiMariamTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [score, setScore] = useState(0);
+    const [attempts, setAttempts] = useState(0);
+    const [feedback, setFeedback] = useState<string | null>(null);
+
+    const story = [
+      {
+        text: 'رامي وضع المكرونة بجانب الموقد والسلطة على الطاولة',
+        image: '👦🍝🔥🥗📱',
+        question: {
+          text: 'أي صحن وضعه رامي بجانب الموقد؟',
+          options: ['🍝 المكرونة', '🥗 السلطة', '🍞 الخبز'],
+          correct: 0
+        }
+      },
+      {
+        text: 'مريم بدّلت أماكن الصحون',
+        image: '👧🔄🍝🥗',
+        question: {
+          text: 'أي صحن وضعته مريم بجانب الموقد؟',
+          options: ['🍝 المكرونة', '🥗 السلطة', '🍞 الخبز'],
+          correct: 1
+        }
+      },
+      {
+        text: 'رامي عاد ويريد المكرونة الساخنة',
+        image: '👦🍝🔥❓',
+        question: {
+          text: 'أين سيبحث رامي عن المكرونة؟',
+          options: ['🔥 بجانب الموقد', '📱 على الطاولة', '❄️ في الثلاجة'],
+          correct: 0
+        }
+      }
+    ];
+
+    const handleAnswer = (selectedIndex: number) => {
+      const correct = selectedIndex === story[currentStep].question?.correct;
+      setAttempts(prev => prev + 1);
+
+      if (correct) {
+        setScore(prev => prev + 1);
+        setFeedback('✅ رائع! فهمت كيف تغيرت الأماكن');
+        speakArabic('رائع! فهمت كيف تغيرت الأماكن');
+
+        setTimeout(() => {
+          if (currentStep < story.length - 1) {
+            setCurrentStep(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            onComplete({
+              taskId: 'rami-mariam',
+              score,
+              totalQuestions: story.length,
+              attempts,
+              completed: true
+            });
+          }
+        }, 2000);
+      } else {
+        setFeedback('❌ تذكر من وضع ماذا وأين');
+        speakArabic('تذكر من وضع ماذا وأين');
+        setTimeout(() => setFeedback(null), 2000);
+      }
+    };
+
+    useEffect(() => {
+      if (story[currentStep].text) {
+        speakArabic(story[currentStep].text);
+      }
+    }, [currentStep]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={onBack} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">رامي ومريم مع الصحون</h2>
+          <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
+        </div>
+
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              <div className="text-4xl mb-4">{story[currentStep].image}</div>
+              <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
+
+              <Button
+                variant="ghost"
+                onClick={() => speakArabic(story[currentStep].text)}
+              >
+                <Volume2 className="w-4 h-4 ml-2" />
+                إعادة القصة
+              </Button>
+
+              <div className="space-y-4">
+                <p className="text-xl font-semibold text-teal-600">
+                  {story[currentStep].question?.text}
+                </p>
+                <div className="grid gap-4">
+                  {story[currentStep].question?.options.map((option, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => handleAnswer(index)}
+                      className="h-16 text-lg bg-teal-100 hover:bg-teal-200 text-gray-800 border-2 border-teal-300"
+                      variant="outline"
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {feedback && (
+                <div className="p-4 rounded-lg bg-gray-100">
+                  <p className="text-lg font-bold">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  // المهمة I: منصور والدراجة
+  const MansourBikeTask: React.FC<TaskProps> = ({ onComplete, onBack }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    const [score, setScore] = useState(0);
+    const [attempts, setAttempts] = useState(0);
+    const [feedback, setFeedback] = useState<string | null>(null);
+
+    const story = [
+      {
+        text: 'الأم خبأت دراجة منصور كمفاجأة',
+        image: '👩🚲📦',
+        question: null
+      },
+      {
+        text: 'الأم قالت لمنصور أنها اشترت له سكيت',
+        image: '👩💬🛼',
+        question: {
+          text: 'ماذا يتوقع منصور أن يحصل عليه؟',
+          options: ['🚲 دراجة', '🛼 سكيت', '⚽ كرة'],
+          correct: 1
+        }
+      },
+      {
+        text: 'الجد سأل الأم عن الهدية',
+        image: '👴❓👩',
+        question: {
+          text: 'ماذا ستخبر الأم الجد؟',
+          options: ['🚲 دراجة', '🛼 سكيت', '🎁 مفاجأة'],
+          correct: 0
+        }
+      }
+    ];
+
+    const handleAnswer = (selectedIndex: number) => {
+      const correct = selectedIndex === story[currentStep].question?.correct;
+      setAttempts(prev => prev + 1);
+
+      if (correct) {
+        setScore(prev => prev + 1);
+        setFeedback('✅ عظيم! فهمت الفرق بين الحقيقة والكذبة البيضاء');
+        speakArabic('عظيم! فهمت ��لفرق بين الحقيقة والكذبة البيضاء');
+
+        setTimeout(() => {
+          if (currentStep < story.length - 1) {
+            setCurrentStep(prev => prev + 1);
+            setFeedback(null);
+          } else {
+            onComplete({
+              taskId: 'mansour-bike',
+              score,
+              totalQuestions: story.filter(s => s.question).length,
+              attempts,
+              completed: true
+            });
+          }
+        }, 2000);
+      } else {
+        setFeedback('❌ فكر في الحقيقة مقابل ما تريد الأم أن يصدقه منصور');
+        speakArabic('فكر في الحقيقة مقابل ما تريد الأم أن يصدقه منصور');
+        setTimeout(() => setFeedback(null), 3000);
+      }
+    };
+
+    useEffect(() => {
+      if (story[currentStep].text) {
+        speakArabic(story[currentStep].text);
+      }
+    }, [currentStep]);
+
+    return (
+      <div className="space-y-6" dir="rtl">
+        <div className="flex items-center justify-between">
+          <Button onClick={onBack} variant="outline">
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة
+          </Button>
+          <h2 className="text-2xl font-bold text-center">منصور والدراجة</h2>
+          <Badge variant="outline">{currentStep + 1}/{story.length}</Badge>
+        </div>
+
+        <Card>
+          <CardContent className="p-8">
+            <div className="text-center space-y-6">
+              <div className="text-6xl mb-4">{story[currentStep].image}</div>
+              <p className="text-xl font-bold text-gray-800">{story[currentStep].text}</p>
+
+              <Button
+                variant="ghost"
+                onClick={() => speakArabic(story[currentStep].text)}
+              >
+                <Volume2 className="w-4 h-4 ml-2" />
+                إعادة القصة
+              </Button>
+
+              {story[currentStep].question && (
+                <div className="space-y-4">
+                  <p className="text-xl font-semibold text-indigo-600">
+                    {story[currentStep].question?.text}
+                  </p>
+                  <div className="grid gap-4">
+                    {story[currentStep].question?.options.map((option, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => handleAnswer(index)}
+                        className="h-16 text-lg bg-indigo-100 hover:bg-indigo-200 text-gray-800 border-2 border-indigo-300"
+                        variant="outline"
+                      >
+                        {option}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {!story[currentStep].question && currentStep < story.length - 1 && (
+                <Button
+                  onClick={() => setCurrentStep(prev => prev + 1)}
+                  className="bg-indigo-500 hover:bg-indigo-600 text-white"
+                >
+                  التالي
+                </Button>
+              )}
+
+              {feedback && (
+                <div className="p-4 rounded-lg bg-gray-100">
+                  <p className="text-lg font-bold">{feedback}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
   const renderCurrentTask = () => {
     switch (currentTask) {
       case 'emotions':
@@ -863,7 +1391,18 @@ export default function TheoryOfMindGames() {
         return <MahaCookieTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
       case 'amjad-glasses':
         return <AmjadGlassesTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
-      // سيتم إضافة باقي المهام هنا
+      case 'yasmina-saeed':
+        return <YasminaSaeedTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
+      case 'nasser-keys':
+        return <NasserKeysTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
+      case 'faisal-book':
+        return <FaisalBookTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
+      case 'khalid-gift':
+        return <KhalidGiftTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
+      case 'rami-mariam':
+        return <RamiMariamTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
+      case 'mansour-bike':
+        return <MansourBikeTask onComplete={handleTaskComplete} onBack={() => setCurrentTask(null)} />;
       default:
         return <TasksMenu />;
     }
