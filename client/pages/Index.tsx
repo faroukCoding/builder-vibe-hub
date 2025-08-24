@@ -1,8 +1,8 @@
-import { 
-  User, 
-  UserPlus, 
-  LogIn, 
-  Stethoscope, 
+import {
+  User,
+  UserPlus,
+  LogIn,
+  Stethoscope,
   Baby,
   Sparkles,
   Heart,
@@ -25,8 +25,17 @@ export default function Index() {
         <CardContent className="p-12 text-center">
           {/* Logo and Title */}
           <div className="mb-8">
-            <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 rounded-3xl w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-              <Brain className="w-12 h-12" />
+            <div className="bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 p-2 rounded-3xl w-32 h-32 mx-auto mb-6 flex items-center justify-center shadow-2xl">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F5e05d645cfee4c7f8b53005121a67e35?format=webp&width=800"
+                alt="Ortho Smart Logo"
+                className="w-28 h-28 rounded-2xl object-contain"
+                style={{
+                  mixBlendMode: 'multiply',
+                  filter: 'brightness(1.2) contrast(1.1)',
+                  background: 'transparent'
+                }}
+              />
             </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
               Ortho Smart
@@ -63,28 +72,28 @@ export default function Index() {
 
           {/* Action Buttons */}
           <div className="space-y-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white text-lg py-4"
               onClick={() => setCurrentView("accountType")}
             >
               <UserPlus className="w-6 h-6 ml-3" />
               اختر نوع الحساب
             </Button>
-            
+
             <div className="flex gap-4">
-              <Button 
-                variant="outline" 
-                size="lg" 
+              <Button
+                variant="outline"
+                size="lg"
                 className="flex-1 border-2 hover:bg-blue-50 text-lg py-4"
                 onClick={() => setCurrentView("login")}
               >
                 <LogIn className="w-5 h-5 ml-2" />
                 دخول
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
+              <Button
+                variant="outline"
+                size="lg"
                 className="flex-1 border-2 hover:bg-green-50 text-lg py-4"
                 onClick={() => setCurrentView("register")}
               >
@@ -102,9 +111,9 @@ export default function Index() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
       <Card className="max-w-4xl mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center pb-6">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="absolute top-4 right-4"
             onClick={() => setCurrentView("welcome")}
           >
@@ -121,7 +130,7 @@ export default function Index() {
         <CardContent className="p-8">
           <div className="grid md:grid-cols-2 gap-8">
             {/* Parent Account */}
-            <Card 
+            <Card
               className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-green-500 cursor-pointer"
               onClick={() => navigate('/parent-register')}
             >
@@ -145,7 +154,7 @@ export default function Index() {
             </Card>
 
             {/* Specialist Account */}
-            <Card 
+            <Card
               className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-500 cursor-pointer"
               onClick={() => navigate('/specialist-register')}
             >
@@ -177,9 +186,9 @@ export default function Index() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
       <Card className="max-w-md mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="absolute top-4 right-4"
             onClick={() => setCurrentView("welcome")}
           >
@@ -196,22 +205,22 @@ export default function Index() {
           <form className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="example@email.com"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="••••••••"
               />
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-3"
               onClick={(e) => {
                 e.preventDefault();
@@ -225,8 +234,8 @@ export default function Index() {
           </form>
           <div className="text-center mt-6">
             <p className="text-gray-600">ليس لديك حساب؟</p>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               onClick={() => setCurrentView("accountType")}
               className="text-blue-600 hover:text-blue-700"
             >
@@ -242,9 +251,9 @@ export default function Index() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
       <Card className="max-w-md mx-4 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="absolute top-4 right-4"
             onClick={() => setCurrentView("welcome")}
           >
@@ -259,8 +268,8 @@ export default function Index() {
         </CardHeader>
         <CardContent className="p-6">
           <div className="space-y-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full p-4 text-right border-2 hover:border-green-500 hover:bg-green-50"
               onClick={() => navigate('/parent-register')}
             >
@@ -272,9 +281,9 @@ export default function Index() {
                 </div>
               </div>
             </Button>
-            
-            <Button 
-              variant="outline" 
+
+            <Button
+              variant="outline"
               className="w-full p-4 text-right border-2 hover:border-blue-500 hover:bg-blue-50"
               onClick={() => navigate('/specialist-register')}
             >
@@ -287,11 +296,11 @@ export default function Index() {
               </div>
             </Button>
           </div>
-          
+
           <div className="text-center mt-6">
             <p className="text-gray-600">لديك حساب بالفعل؟</p>
-            <Button 
-              variant="link" 
+            <Button
+              variant="link"
               onClick={() => setCurrentView("login")}
               className="text-blue-600 hover:text-blue-700"
             >
