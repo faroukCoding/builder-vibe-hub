@@ -103,7 +103,7 @@ export default function ParentDashboard() {
     {
       id: 3,
       date: "2024-01-08",
-      type: "تقييم شامل",
+      type: "تقيي�� شامل",
       duration: "90 دقيقة",
       progress: 70,
       notes: "تقييم الميزانية الأرطوفونية",
@@ -138,7 +138,7 @@ export default function ParentDashboard() {
     },
   ];
 
-  // بيانات المخطط الجغرافي - الجزائر
+  // بيانات المخطط الج��رافي - الجزائر
   const geographicalData = [
     { region: "الجزائر العاصمة", patients: 142, success: 88, cases: 185 },
     { region: "وهران", patients: 118, success: 84, cases: 150 },
@@ -514,7 +514,44 @@ export default function ParentDashboard() {
 
   const CognitiveTestsTab = () => (
     <div className="space-y-6">
-      {/* تمارين الإدراك المعرفية */}
+      {/* الاختبارات التشخيصية */}
+      <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Gamepad2 className="w-6 h-6 text-pink-600" />
+            الاختبارات التشخيصية
+          </CardTitle>
+          <CardDescription>
+            ألعاب نظرية العقل وأدوات التقييم التشخيصي الشاملة
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <Button
+              onClick={() => navigate("/diagnostic-tests")}
+              className="h-32 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🧠</div>
+              <div className="text-center">
+                <div className="font-semibold">ألعاب نظرية العقل</div>
+                <div className="text-xs opacity-80">9 ألعاب تشخيصية</div>
+              </div>
+            </Button>
+            <Button
+              onClick={() => navigate("/diagnostic-tests")}
+              className="h-32 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">📋</div>
+              <div className="text-center">
+                <div className="font-semibold">ورقة الاستجابة</div>
+                <div className="text-xs opacity-80">تحليل وتفسير النتائج</div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* تمارين ا��إدراك المعرفية */}
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
