@@ -22,6 +22,7 @@ import {
   Globe,
   Play,
   Award,
+  Gamepad2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,7 +104,7 @@ export default function ParentDashboard() {
     {
       id: 3,
       date: "2024-01-08",
-      type: "تقيي�� شامل",
+      type: "تقييم شامل",
       duration: "90 دقيقة",
       progress: 70,
       notes: "تقييم الميزانية الأرطوفونية",
@@ -138,7 +139,7 @@ export default function ParentDashboard() {
     },
   ];
 
-  // بيانات المخطط الج��رافي - الجزائر
+  // بيانات المخطط الجغرافي - الجزائر
   const geographicalData = [
     { region: "الجزائر العاصمة", patients: 142, success: 88, cases: 185 },
     { region: "وهران", patients: 118, success: 84, cases: 150 },
@@ -551,7 +552,7 @@ export default function ParentDashboard() {
         </CardContent>
       </Card>
 
-      {/* تمارين ا��إدراك المعرفية */}
+      {/* تمارين الإدراك المعرفية */}
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
