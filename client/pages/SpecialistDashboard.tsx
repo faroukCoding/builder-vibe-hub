@@ -163,12 +163,12 @@ export default function SpecialistDashboard() {
       route: "/cognitive-tests",
     },
     {
-      id: "theory-mind",
-      title: "اختبار نظرية العقل",
-      description: "تقييم القدرات المعرفية العليا",
-      icon: Eye,
+      id: "diagnostic-tests",
+      title: "الاختبارات التشخيصية",
+      description: "ألعاب نظرية العقل وورقة الاستجابة التشخيصية",
+      icon: Gamepad2,
       color: "pink",
-      route: "/theory-of-mind",
+      route: "/diagnostic-tests",
     },
     {
       id: "attention",
@@ -336,7 +336,7 @@ export default function SpecialistDashboard() {
                     {patient.status}
                   </Badge>
                   <div className="text-sm text-gray-600">
-                    آخر زيارة: {patient.lastVisit}
+                    آخر زيا��ة: {patient.lastVisit}
                   </div>
                   <div className="flex items-center gap-2 mt-1">
                     <div className="bg-gray-200 rounded-full h-2 w-16">
@@ -888,7 +888,7 @@ export default function SpecialistDashboard() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">
-                            المنطقة الزمنية
+                            ال��نطقة الزمنية
                           </label>
                           <select className="w-full p-2 border rounded-md">
                             <option value="Asia/Riyadh">الرياض (GMT+3)</option>
