@@ -66,6 +66,17 @@ export default function TheoryOfMindGames() {
   const [currentTask, setCurrentTask] = useState<string | null>(null);
   const [gameResults, setGameResults] = useState<GameResult[]>([]);
   const [overallProgress, setOverallProgress] = useState(0);
+  const [testSession, setTestSession] = useState<TestSession>({
+    child_id: 'child_001',
+    child_name: 'أحمد محمد الأمين',
+    child_age: 7,
+    child_grade: 'الصف الثاني الابتدائي',
+    start_time: new Date().toISOString(),
+    answers: [],
+    total_score: 0,
+    max_score: 22
+  });
+  const [questionCounter, setQuestionCounter] = useState(1);
 
   const speakArabic = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -80,7 +91,7 @@ export default function TheoryOfMindGames() {
     {
       id: 'emotions',
       title: 'الوجوه الانفعالية',
-      description: 'تعرف على المشاعر المختلف��',
+      description: 'تعرف على المشاعر المختلفة',
       icon: '😊',
       difficulty: 1,
       color: 'bg-green-500'
@@ -129,7 +140,7 @@ export default function TheoryOfMindGames() {
       id: 'khalid-gift',
       title: 'خالد وهدية العيد',
       description: 'سوء الفهم والتوقعات',
-      icon: '����',
+      icon: '🎁',
       difficulty: 4,
       color: 'bg-pink-500'
     },
@@ -431,7 +442,7 @@ export default function TheoryOfMindGames() {
         text: 'عادت أمجاد وتريد نظارتها',
         image: '👩❓',
         question: {
-          text: 'أين تظن أمجاد أن نظارتها ستكون؟',
+          text: 'أين تظن أمجاد أن ن��ارتها ستكون؟',
           options: ['📱 على الطاولة', '📦 في الدرج', '🛏️ على السرير'],
           correct: 0
         }
@@ -1153,7 +1164,7 @@ export default function TheoryOfMindGames() {
 
     const story = [
       {
-        text: 'رامي وضع المكرونة بجانب الموقد والسلطة على الطاولة',
+        text: 'رامي وضع المكرونة ب��انب الموقد والسلطة على الطاولة',
         image: '👦🍝🔥🥗📱',
         question: {
           text: 'أي صحن وضعه رامي بجانب الموقد؟',
