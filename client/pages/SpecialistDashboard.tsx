@@ -56,7 +56,7 @@ export default function SpecialistDashboard() {
   const patients = [
     {
       id: 1,
-      name: "أحمد ��حمد السعيد",
+      name: "أحمد ��حمد السع��د",
       age: 6,
       lastVisit: "2024-01-15",
       status: "متابعة",
@@ -275,7 +275,7 @@ export default function SpecialistDashboard() {
       {/* Assessment Tools Grid */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">أدوات التقييم وا��تشخيص</CardTitle>
+          <CardTitle className="text-xl">أدوات التقييم والتشخيص</CardTitle>
           <CardDescription>
             الأدوات المتاحة للتقييم الأرطوفوني الشامل
           </CardDescription>
@@ -754,7 +754,7 @@ export default function SpecialistDashboard() {
                                       ? "ممتاز"
                                       : item.success >= 70
                                         ? "جيد"
-                                        : "يحتاج تحسين"}
+                                        : "��حتاج تحسين"}
                                   </Badge>
                                 </td>
                               </tr>
@@ -1115,7 +1115,7 @@ export default function SpecialistDashboard() {
                         <h4 className="font-medium mb-2">معلومات النسخة</h4>
                         <div className="text-sm text-gray-600 space-y-1">
                           <p>Ortho Smart v2.1.0</p>
-                          <p>تاريخ آخر تحديث: 15 يناير 2024</p>
+                          <p>تاريخ آخر تحدي��: 15 يناير 2024</p>
                           <p>رقم البناء: 2024.01.15.001</p>
                         </div>
                       </div>
