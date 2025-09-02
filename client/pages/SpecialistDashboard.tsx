@@ -189,7 +189,7 @@ export default function SpecialistDashboard() {
     {
       id: "attention",
       title: "تمارين الانتباه",
-      description: "��لمتواصل، الانتقائي، المشترك",
+      description: "المتواصل، الانتقائي، المشترك",
       icon: Target,
       color: "red",
       route: "/attention-exercises",
@@ -553,10 +553,10 @@ export default function SpecialistDashboard() {
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                           <BarChart3 className="w-5 h-5 text-blue-600" />
-                          التوزيع الجغرافي للمرضى - ا��جزائر
+                          التوزيع الجغرافي للمرضى - الجزائر
                         </CardTitle>
                         <CardDescription>
-                          عدد المرضى حسب الولايات الجزائرية
+                          عدد المرضى حسب الولايات الجزا��رية
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -995,7 +995,7 @@ export default function SpecialistDashboard() {
                           variant="outline"
                           className="w-full justify-start"
                         >
-                          تغيير كلمة ا����مرور
+                          تغيير كلمة المرور
                         </Button>
                         <Button
                           variant="outline"
@@ -1009,7 +1009,7 @@ export default function SpecialistDashboard() {
                               مشاركة البيانات للتطوير
                             </p>
                             <p className="text-sm text-gray-600">
-                              المساعدة في تحسين النظا�� (بيانات مجهولة)
+                              المساعدة في تحسين النظام (بيانات مجهولة)
                             </p>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -1099,7 +1099,7 @@ export default function SpecialistDashboard() {
                           className="flex items-center gap-2"
                         >
                           <Activity className="w-4 h-4" />
-                          التواصل مع الدعم
+                          التوا��ل مع الدعم
                         </Button>
                         <Button
                           variant="outline"
@@ -1163,7 +1163,7 @@ export default function SpecialistDashboard() {
                   ))}
                 </div>
                 <Button variant="outline" className="w-full mt-4">
-                  عرض جميع المواعيد
+                  عرض جميع الموا��يد
                 </Button>
               </CardContent>
             </Card>
