@@ -403,7 +403,7 @@ export default function ImplicitGroup() {
                   المجموعة الضمنية
                 </h1>
                 <p className="text-gray-600 text-sm">
-                  تص��يف وتجميع العناصر حسب الفئات المختلفة
+                  تصنيف وتجميع العناصر حسب الفئات المختلفة
                 </p>
               </div>
             </div>
