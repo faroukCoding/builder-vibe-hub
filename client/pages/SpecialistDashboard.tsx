@@ -56,7 +56,7 @@ export default function SpecialistDashboard() {
   const patients = [
     {
       id: 1,
-      name: "أحمد ��حمد السعيد",
+      name: "أحمد محمد السعيد",
       age: 6,
       lastVisit: "2024-01-15",
       status: "متابعة",
@@ -156,7 +156,7 @@ export default function SpecialistDashboard() {
     },
     {
       id: "age-calc",
-      title: "أداة حساب العمر ا��زمني",
+      title: "أداة حساب العمر الزمني",
       description: "حساب العمر الزمني بدقة",
       icon: Calculator,
       color: "purple",
@@ -196,8 +196,8 @@ export default function SpecialistDashboard() {
     },
     {
       id: "memory",
-      title: "تمارين الذاكرة",
-      description: "ا��ذاكرة السمعية والبصرية",
+      title: "��مارين الذاكرة",
+      description: "الذاكرة السمعية والبصرية",
       icon: Brain,
       color: "cyan",
       route: "/memory-exercises",
@@ -227,7 +227,7 @@ export default function SpecialistDashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100">إجمالي المرضى</p>
+                <p className="text-blue-100">إجمالي ا��مرضى</p>
                 <p className="text-3xl font-bold">127</p>
               </div>
               <Users className="w-10 h-10 text-blue-200" />
@@ -363,7 +363,7 @@ export default function SpecialistDashboard() {
                     {patient.status}
                   </Badge>
                   <div className="text-sm text-gray-600">
-                    آخر زيا��ة: {patient.lastVisit}
+                    آخر زيارة: {patient.lastVisit}
                   </div>
                   <div className="flex items-center gap-2 mt-1">
                     <div className="bg-gray-200 rounded-full h-2 w-16">
@@ -399,7 +399,7 @@ export default function SpecialistDashboard() {
   const ReportsTab = () => (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">التقارير والإحصائيات</CardTitle>
+        <CardTitle className="text-xl">ال��قارير والإحصائيات</CardTitle>
         <CardDescription>
           تقارير مفصلة حول أداء المرضى والتقدم العلاجي
         </CardDescription>
@@ -430,7 +430,7 @@ export default function SpecialistDashboard() {
                 <div className="bg-green-100 p-3 rounded-lg">
                   <TrendingUp className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold">تقرير ا��أداء الشهري</h3>
+                <h3 className="font-semibold">تقرير الأداء الشهري</h3>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 إحصائيات شهرية عن عدد الجلسات ونسب التحسن
@@ -805,7 +805,7 @@ export default function SpecialistDashboard() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">
-                            رق�� الهاتف
+                            رقم الهاتف
                           </label>
                           <Input defaultValue="+966 50 123 4567" />
                         </div>
@@ -857,7 +857,7 @@ export default function SpecialistDashboard() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">تنبيهات المرضى الجدد</p>
+                          <p className="font-medium">تنبيهات ��لمرضى الجدد</p>
                           <p className="text-sm text-gray-600">
                             إشعار عند تسجيل مريض جديد
                           </p>
@@ -884,7 +884,7 @@ export default function SpecialistDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">
-                            تنبيهات البريد ا��إلكتروني
+                            تنبيهات البريد الإلكتروني
                           </p>
                           <p className="text-sm text-gray-600">
                             استقبال التنبيهات عبر البريد
@@ -920,7 +920,7 @@ export default function SpecialistDashboard() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">
-                            ال��نطقة الزمنية
+                            المنطقة الزمنية
                           </label>
                           <select className="w-full p-2 border rounded-md">
                             <option value="Asia/Riyadh">الرياض (GMT+3)</option>
@@ -935,7 +935,7 @@ export default function SpecialistDashboard() {
                             تنسيق التاريخ
                           </label>
                           <select className="w-full p-2 border rounded-md">
-                            <option value="dd/mm/yyyy">ي����م/شهر/سنة</option>
+                            <option value="dd/mm/yyyy">يوم/شهر/سنة</option>
                             <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
                             <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
                           </select>
@@ -1106,7 +1106,7 @@ export default function SpecialistDashboard() {
                           className="flex items-center gap-2"
                         >
                           <Star className="w-4 h-4" />
-                          تقيي�� التطبيق
+                          تقييم التطبيق
                         </Button>
                         <Button
                           variant="outline"
@@ -1138,7 +1138,7 @@ export default function SpecialistDashboard() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  مواع��د اليوم
+                  مواعيد اليوم
                 </CardTitle>
               </CardHeader>
               <CardContent>
