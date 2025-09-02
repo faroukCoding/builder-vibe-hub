@@ -30,6 +30,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [role, setRole] = useState<'specialist' | 'parent'>('specialist');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,22 +53,13 @@ export default function Login() {
     // Simulate login process
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Simple demo logic - in real app this would be API validation
-      if (email === "specialist@orthosmart.com" && password === "123456") {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userType", "specialist");
-        localStorage.setItem("userEmail", email);
-        navigate("/specialist-dashboard");
-      } else if (email === "parent@orthosmart.com" && password === "123456") {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userType", "parent");
-        localStorage.setItem("userEmail", email);
-        navigate("/parent-dashboard");
-      } else {
-        setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
-      }
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // Accept any credentials (demo mode) and respect chosen role
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userType", role);
+      localStorage.setItem("userEmail", email);
+      navigate(role === 'specialist' ? "/specialist-dashboard" : "/parent-dashboard");
     } catch (error) {
       setError("حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى");
     } finally {
@@ -80,8 +72,8 @@ export default function Login() {
       <div className="max-w-md w-full mx-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="bg-blue-600 text-white p-6 rounded-full w-20 h-20 mx-auto mb-4 shadow-lg flex items-center justify-center">
-            <Stethoscope className="w-10 h-10" />
+          <div className="bg-black text-white p-1 rounded-full w-20 h-20 mx-auto mb-4 shadow-lg flex items-center justify-center overflow-hidden">
+            <img src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97af8386d4f542668cf40857fea32999?format=webp&width=256" alt="Ortho Smart" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
             Ortho Smart
@@ -146,6 +138,15 @@ export default function Login() {
                 </div>
               </div>
 
+              {/* Role Selector */}
+              <div className="space-y-2">
+                <Label htmlFor="role">نوع الحساب</Label>
+                <select id="role" className="w-full border rounded-md p-2" value={role} onChange={(e) => setRole(e.target.value as any)}>
+                  <option value="specialist">أخصائي</option>
+                  <option value="parent">ولي أمر</option>
+                </select>
+              </div>
+
               {/* Error Message */}
               {error && (
                 <Alert variant="destructive">
@@ -175,25 +176,6 @@ export default function Login() {
               </Button>
             </form>
 
-            {/* Demo Accounts */}
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2 text-center">حسابات تجريبية</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="font-medium">أخصائي:</span>
-                  <span className="text-blue-600">specialist@orthosmart.com</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="font-medium">ولي أمر:</span>
-                  <span className="text-blue-600">parent@orthosmart.com</span>
-                </div>
-                <div className="text-center text-gray-600 mt-2">
-                  كلمة المرور: <span className="font-mono bg-gray-200 px-2 py-1 rounded">123456</span>
-                </div>
-              </div>
-            </div>
 
             {/* Navigation Links */}
             <div className="mt-6 text-center space-y-3">
