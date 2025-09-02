@@ -54,7 +54,7 @@ export default function AttentionExercises() {
       subtitle: 'الأشياء المفقودة',
       icon: <Search className="w-8 h-8" />,
       color: 'bg-green-500',
-      description: 'ابحث عن كل الأشياء باللون ا��أصفر واضغط عليها',
+      description: 'ابحث عن جميع الأشياء باللون الأصفر و��ضغط عليها',
     },
     {
       id: 'joint',
@@ -167,7 +167,7 @@ export default function AttentionExercises() {
                 <span key={i} className={`text-2xl ${i < lives ? 'text-red-500' : 'text-gray-300'}`}>❤️</span>
               ))}
             </div>
-            <div className="text-lg font-bold">النتيجة: {score}</div>
+            <div className="text-lg font-bold">��لنتيجة: {score}</div>
             <div className="text-lg font-bold">الوقت: {gameTime}ث</div>
           </div>
           
