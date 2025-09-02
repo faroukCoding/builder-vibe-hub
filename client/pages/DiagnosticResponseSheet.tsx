@@ -201,7 +201,7 @@ export default function DiagnosticResponseSheet() {
       skill_group: "المعتقد الخاطئ",
       media: { image_url: "/assets/faisal/book2.png", audio_url: "/assets/audio/q12.mp3" },
       correct_answer: "📦 في الدرج",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
+      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏�� على السرير"]
     },
     {
       question_id: 13,
@@ -262,7 +262,7 @@ export default function DiagnosticResponseSheet() {
     {
       question_id: 19,
       task: "H",
-      label: "أي صحن وضعته مريم بجانب الموقد؟",
+      label: "أي صحن وض��ته مريم بجانب الموقد؟",
       skill_group: "الأماكن والتتبع",
       media: { image_url: "/assets/rami/plates2.png", audio_url: "/assets/audio/q19.mp3" },
       correct_answer: "🥗 السلطة",
@@ -338,9 +338,9 @@ export default function DiagnosticResponseSheet() {
       { question_id: 13, task: "F", chosen_answer: "📱 على الطاولة", correct_answer: "📱 على الطاولة", is_correct: true, score: 1, time_spent_ms: 4600 },
       { question_id: 14, task: "G", chosen_answer: "✈️ طائرة", correct_answer: "✈️ طائرة", is_correct: true, score: 1, time_spent_ms: 3800 },
       { question_id: 15, task: "G", chosen_answer: "🚂 قطار", correct_answer: "🚂 قطار", is_correct: true, score: 1, time_spent_ms: 4100 },
-      { question_id: 16, task: "G", chosen_answer: "😊 س��يد", correct_answer: "😢 حزين", is_correct: false, score: 0, time_spent_ms: 7200 },
+      { question_id: 16, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😢 حزين", is_correct: false, score: 0, time_spent_ms: 7200 },
       { question_id: 17, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😊 سعيد", is_correct: true, score: 1, time_spent_ms: 5400 },
-      { question_id: 18, task: "H", chosen_answer: "🍝 ��لمكرونة", correct_answer: "🍝 المكرونة", is_correct: true, score: 1, time_spent_ms: 4800 },
+      { question_id: 18, task: "H", chosen_answer: "🍝 المكرونة", correct_answer: "🍝 المكرونة", is_correct: true, score: 1, time_spent_ms: 4800 },
       { question_id: 19, task: "H", chosen_answer: "🥗 السلطة", correct_answer: "🥗 السلطة", is_correct: true, score: 1, time_spent_ms: 4200 },
       { question_id: 20, task: "H", chosen_answer: "🔥 بجانب الموقد", correct_answer: "🔥 بجانب الموقد", is_correct: true, score: 1, time_spent_ms: 5100 },
       { question_id: 21, task: "I", chosen_answer: "🛼 سكيت", correct_answer: "🛼 سكيت", is_correct: true, score: 1, time_spent_ms: 6200 },
@@ -365,7 +365,7 @@ export default function DiagnosticResponseSheet() {
   };
 
   const handleExportPDF = async () => {
-    // في التطبيق الحقيقي، استخدم مكتبة مثل jsPDF
+    // في التطبيق الحقيق��، استخدم مكتبة مثل jsPDF
     const printWindow = window.open('', '_blank');
     if (printWindow && responseData) {
       printWindow.document.write(`
@@ -829,7 +829,7 @@ export default function DiagnosticResponseSheet() {
                     <th className="text-right p-3 font-semibold">المهمة</th>
                     <th className="text-right p-3 font-semibold">المجموعة</th>
                     <th className="text-right p-3 font-semibold">السؤال</th>
-                    <th className="text-right p-3 font-semibold">إجابة ا��طفل</th>
+                    <th className="text-right p-3 font-semibold">إجابة الطفل</th>
                     <th className="text-right p-3 font-semibold">الإجابة الصحيحة</th>
                     <th className="text-right p-3 font-semibold">النتيجة</th>
                     <th className="text-right p-3 font-semibold">الوقت</th>
@@ -897,7 +897,7 @@ export default function DiagnosticResponseSheet() {
                                     </Button>
                                   </div>
                                   <p className="text-sm text-gray-600">
-                                    ال��يارات المتاحة: {metadata?.choices.join(" | ")}
+                                    الخيارات المتاحة: {metadata?.choices.join(" | ")}
                                   </p>
                                 </div>
                               </div>
@@ -970,7 +970,7 @@ export default function DiagnosticResponseSheet() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">حفظ وإدار��</CardTitle>
+              <CardTitle className="text-lg">حفظ وإدارة</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button
