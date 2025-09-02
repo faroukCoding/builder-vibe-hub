@@ -79,7 +79,7 @@ export default function SpecialistDashboard() {
       name: "يوسف عبدالله",
       age: 7,
       lastVisit: "2024-01-08",
-      status: "علاج متقدم",
+      status: "علاج متقد��",
       diagnosis: "تلعثم في الكلام",
       progress: 90,
       parent: "خديجة عبدالله",
@@ -386,7 +386,7 @@ export default function SpecialistDashboard() {
                   بدء جلسة
                 </Button>
                 <Button size="sm" variant="outline">
-                  التقارير
+                  الت��ارير
                 </Button>
               </div>
             </div>
@@ -956,7 +956,7 @@ export default function SpecialistDashboard() {
                         <div>
                           <p className="font-medium">الوضع المظلم</p>
                           <p className="text-sm text-gray-600">
-                            تفعيل المظهر المظلم للتطبيق
+                            تفعيل المظهر المظلم لل��طبيق
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -1099,7 +1099,7 @@ export default function SpecialistDashboard() {
                           className="flex items-center gap-2"
                         >
                           <Activity className="w-4 h-4" />
-                          التوا��ل مع الدعم
+                          التواصل مع الدعم
                         </Button>
                         <Button
                           variant="outline"
@@ -1163,7 +1163,7 @@ export default function SpecialistDashboard() {
                   ))}
                 </div>
                 <Button variant="outline" className="w-full mt-4">
-                  عرض جميع الموا��يد
+                  عرض جمي�� الموا��يد
                 </Button>
               </CardContent>
             </Card>
@@ -1196,7 +1196,7 @@ export default function SpecialistDashboard() {
                   onClick={() => navigate("/diagnostic-response-sheet")}
                 >
                   <FileText className="w-4 h-4 ml-2" />
-                  ورقة الاستجابة
+                  ورقة الا��تجابة
                 </Button>
                 <Button
                   variant="outline"
