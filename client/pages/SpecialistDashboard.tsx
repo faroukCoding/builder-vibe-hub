@@ -133,17 +133,33 @@ export default function SpecialistDashboard() {
     {
       id: "balance",
       title: "الميزانية الأرطوفونية",
-      description: "استمارة سريرية ��املة للتقييم",
+      description: "استمارة سريرية شاملة للتقييم",
       icon: FileText,
       color: "blue",
       route: "/orthophonic-balance",
     },
     {
-      id: "age-calc",
-      title: "حساب العمر الزمني",
-      description: "أداة حساب العمر بدقة",
-      icon: Calculator,
+      id: "implicit-group",
+      title: "المجموعة الضمنية",
+      description: "الفواكه، الخضر، المواصلات، الطيور، المهن، الأشكال",
+      icon: Users,
       color: "green",
+      route: "/implicit-group",
+    },
+    {
+      id: "pre-basic",
+      title: "المكتسبات القبلية",
+      description: "الألوان، الأرقام، أعضاء الجسم، الجانبية",
+      icon: Brain,
+      color: "orange",
+      route: "/pre-basic-acquisitions",
+    },
+    {
+      id: "age-calc",
+      title: "أداة حساب العمر الزمني",
+      description: "حساب العمر الزمني بدقة",
+      icon: Calculator,
+      color: "purple",
       route: "/age-calculator",
     },
     {
@@ -151,32 +167,40 @@ export default function SpecialistDashboard() {
       title: "تقرير بورتاج",
       description: "حساب وعرض بياني لمقياس بورتاج",
       icon: BarChart3,
-      color: "purple",
+      color: "indigo",
       route: "/portage-report",
-    },
-    {
-      id: "cognitive",
-      title: "اختبارات الإدراك",
-      description: "المكتسبات القبلية والإدراكية",
-      icon: Brain,
-      color: "orange",
-      route: "/cognitive-tests",
     },
     {
       id: "diagnostic-tests",
       title: "الاختبارات التشخيصية",
-      description: "ألعاب نظرية العقل وورقة الاستجابة التشخيصية",
+      description: "اختبار نظرية العقل وورقة الاستجابة",
       icon: Gamepad2,
       color: "pink",
       route: "/diagnostic-tests",
     },
     {
+      id: "perceptual",
+      title: "تمارين الإدراك البصري",
+      description: "تدرج من السهل إلى الصعب - جعل التعلم ممتعاً",
+      icon: Eye,
+      color: "teal",
+      route: "/perceptual-exercises",
+    },
+    {
       id: "attention",
       title: "تمارين الانتباه",
-      description: "ألعاب تفاعلية للانتباه والتركيز",
+      description: "المتواصل، الانتقائي، المشترك",
       icon: Target,
       color: "red",
       route: "/attention-exercises",
+    },
+    {
+      id: "memory",
+      title: "تمارين الذاكرة",
+      description: "الذاكرة السمعية والبصرية",
+      icon: Brain,
+      color: "cyan",
+      route: "/memory-exercises",
     },
   ];
 
@@ -188,6 +212,9 @@ export default function SpecialistDashboard() {
       orange: "bg-orange-100 text-orange-600 hover:bg-orange-200",
       pink: "bg-pink-100 text-pink-600 hover:bg-pink-200",
       red: "bg-red-100 text-red-600 hover:bg-red-200",
+      indigo: "bg-indigo-100 text-indigo-600 hover:bg-indigo-200",
+      teal: "bg-teal-100 text-teal-600 hover:bg-teal-200",
+      cyan: "bg-cyan-100 text-cyan-600 hover:bg-cyan-200",
     };
     return colors[color] || colors.blue;
   };
@@ -248,7 +275,7 @@ export default function SpecialistDashboard() {
       {/* Assessment Tools Grid */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">أدوات التقييم والتشخيص</CardTitle>
+          <CardTitle className="text-xl">أدوات التقييم وا��تشخيص</CardTitle>
           <CardDescription>
             الأدوات المتاحة للتقييم الأرطوفوني الشامل
           </CardDescription>
