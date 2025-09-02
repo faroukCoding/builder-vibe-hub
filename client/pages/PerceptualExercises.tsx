@@ -29,9 +29,9 @@ export default function PerceptualExercises() {
   const [currentGame, setCurrentGame] = useState<string | null>(null);
 
   const speakArabic = (text: string) => {
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
+      utterance.lang = "ar-SA";
       utterance.rate = 0.8;
       speechSynthesis.speak(utterance);
     }
@@ -39,27 +39,27 @@ export default function PerceptualExercises() {
 
   const levels = [
     {
-      id: 'easy',
-      title: 'المرحلة الأولى: السهلة',
-      subtitle: 'إيجاد الشيء المختلف',
-      color: 'bg-green-500',
-      description: 'إختيار الشكل المختلف من بين 4 أشكال',
+      id: "easy",
+      title: "المرحلة الأولى: السهلة",
+      subtitle: "إيجاد الشيء المختلف",
+      color: "bg-green-500",
+      description: "إختيار الشكل المختلف من بين 4 أشكال",
       difficulty: 1,
     },
     {
-      id: 'medium',
-      title: 'المرحلة الثانية: الصعبة',
-      subtitle: 'مطابقة الأشكال',
-      color: 'bg-yellow-500',
-      description: 'اسحب الشكل إلى صورته المتطابقة',
+      id: "medium",
+      title: "المرحلة الثانية: الصعبة",
+      subtitle: "مطابقة الأشكال",
+      color: "bg-yellow-500",
+      description: "اسحب الشكل إلى صورته المتطابقة",
       difficulty: 2,
     },
     {
-      id: 'hard',
-      title: 'المرحلة الثالثة: المتوسطة',
-      subtitle: 'اختر الظل المناسب',
-      color: 'bg-red-500',
-      description: 'يعرض على الطفل شكل مع ظله ومجموعة من الظلال',
+      id: "hard",
+      title: "المرحلة الثالثة: المتوسطة",
+      subtitle: "اختر الظل المناسب",
+      color: "bg-red-500",
+      description: "يعرض على الطفل شكل مع ظله ومجموعة من الظلال",
       difficulty: 3,
     },
   ];
@@ -76,41 +76,41 @@ export default function PerceptualExercises() {
     const questions = [
       {
         shapes: [
-          { type: 'square', color: 'blue' },
-          { type: 'square', color: 'blue' },
-          { type: 'square', color: 'blue' },
-          { type: 'circle', color: 'blue' }
+          { type: "square", color: "blue" },
+          { type: "square", color: "blue" },
+          { type: "square", color: "blue" },
+          { type: "circle", color: "blue" },
         ],
-        correct: 3
+        correct: 3,
       },
       {
         shapes: [
-          { type: 'apple', color: 'red' },
-          { type: 'apple', color: 'red' },
-          { type: 'apple', color: 'green' },
-          { type: 'apple', color: 'red' }
+          { type: "apple", color: "red" },
+          { type: "apple", color: "red" },
+          { type: "apple", color: "green" },
+          { type: "apple", color: "red" },
         ],
-        correct: 2
+        correct: 2,
       },
       {
         shapes: [
-          { type: 'triangle', color: 'red' },
-          { type: 'square', color: 'red' },
-          { type: 'square', color: 'red' },
-          { type: 'square', color: 'red' }
+          { type: "triangle", color: "red" },
+          { type: "square", color: "red" },
+          { type: "square", color: "red" },
+          { type: "square", color: "red" },
         ],
-        correct: 0
-      }
+        correct: 0,
+      },
     ];
 
     const handleAnswer = (selectedIndex: number) => {
       const isCorrect = selectedIndex === questions[currentQuestion].correct;
-      
+
       if (isCorrect) {
         setScore(score + 1);
-        setFeedback('correct');
-        speakArabic('ممتاز! إجابة صحيحة');
-        
+        setFeedback("correct");
+        speakArabic("ممتاز! إجابة صحيحة");
+
         setTimeout(() => {
           if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
@@ -122,9 +122,9 @@ export default function PerceptualExercises() {
         }, 1500);
       } else {
         setAttempts(attempts + 1);
-        setFeedback('wrong');
-        speakArabic('أوووو حاول مرة أخرى');
-        
+        setFeedback("wrong");
+        speakArabic("أوووو حاول مرة أخرى");
+
         if (attempts + 1 >= maxAttempts) {
           setTimeout(() => {
             if (currentQuestion < questions.length - 1) {
@@ -140,40 +140,41 @@ export default function PerceptualExercises() {
     };
 
     const renderShape = (shape: any, index: number) => {
-      const baseClasses = "w-20 h-20 cursor-pointer hover:scale-110 transition-transform rounded-lg flex items-center justify-center text-2xl";
-      
-      if (shape.type === 'square') {
+      const baseClasses =
+        "w-20 h-20 cursor-pointer hover:scale-110 transition-transform rounded-lg flex items-center justify-center text-2xl";
+
+      if (shape.type === "square") {
         return (
-          <div 
+          <div
             key={index}
-            className={`${baseClasses} ${shape.color === 'blue' ? 'bg-blue-500' : 'bg-yellow-500'}`}
+            className={`${baseClasses} ${shape.color === "blue" ? "bg-blue-500" : "bg-yellow-500"}`}
             onClick={() => handleAnswer(index)}
           />
         );
-      } else if (shape.type === 'circle') {
+      } else if (shape.type === "circle") {
         return (
-          <div 
+          <div
             key={index}
-            className={`${baseClasses} ${shape.color === 'blue' ? 'bg-blue-500' : 'bg-yellow-500'} rounded-full`}
+            className={`${baseClasses} ${shape.color === "blue" ? "bg-blue-500" : "bg-yellow-500"} rounded-full`}
             onClick={() => handleAnswer(index)}
           />
         );
-      } else if (shape.type === 'apple') {
+      } else if (shape.type === "apple") {
         return (
-          <div 
+          <div
             key={index}
-            className={`${baseClasses} ${shape.color === 'red' ? 'text-red-500' : 'text-green-500'}`}
+            className={`${baseClasses} ${shape.color === "red" ? "text-red-500" : "text-green-500"}`}
             onClick={() => handleAnswer(index)}
           >
             🍎
           </div>
         );
-      } else if (shape.type === 'triangle') {
+      } else if (shape.type === "triangle") {
         return (
-          <div 
+          <div
             key={index}
             className={`${baseClasses} bg-red-500`}
-            style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
+            style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }}
             onClick={() => handleAnswer(index)}
           />
         );
@@ -185,8 +186,13 @@ export default function PerceptualExercises() {
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">🎉</div>
           <h3 className="text-2xl font-bold">انتهيت من المرحلة الأولى!</h3>
-          <p className="text-lg">النتيجة: {score} من {questions.length}</p>
-          <Button onClick={onComplete} className="bg-blue-600 hover:bg-blue-700">
+          <p className="text-lg">
+            النتيجة: {score} من {questions.length}
+          </p>
+          <Button
+            onClick={onComplete}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
             التالي
           </Button>
         </div>
@@ -200,32 +206,45 @@ export default function PerceptualExercises() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="flex">
               {[...Array(3)].map((_, i) => (
-                <span key={i} className="text-red-500 text-2xl">❤️</span>
+                <span key={i} className="text-red-500 text-2xl">
+                  ❤️
+                </span>
               ))}
             </div>
-            <div className="text-2xl font-bold">{currentQuestion + 1}/{questions.length}</div>
+            <div className="text-2xl font-bold">
+              {currentQuestion + 1}/{questions.length}
+            </div>
           </div>
-          <Button onClick={() => speakArabic('إختر الشكل المختلف')}>
+          <Button onClick={() => speakArabic("إختر الشكل المختلف")}>
             <Volume2 className="w-4 h-4 ml-2" />
             استمع للتعليمة
           </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
-          {questions[currentQuestion].shapes.map((shape, index) => renderShape(shape, index))}
+          {questions[currentQuestion].shapes.map((shape, index) =>
+            renderShape(shape, index),
+          )}
         </div>
 
         {feedback && (
           <div className="text-center">
-            {feedback === 'correct' ? (
-              <div className="text-green-600 text-xl font-bold">✓ إجابة صحيحة!</div>
+            {feedback === "correct" ? (
+              <div className="text-green-600 text-xl font-bold">
+                ✓ إجابة صحيحة!
+              </div>
             ) : (
-              <div className="text-red-600 text-xl font-bold">✗ حاول مرة أخرى ({attempts}/{maxAttempts})</div>
+              <div className="text-red-600 text-xl font-bold">
+                ✗ حاول مرة أخرى ({attempts}/{maxAttempts})
+              </div>
             )}
           </div>
         )}
 
-        <Progress value={(currentQuestion / questions.length) * 100} className="w-full" />
+        <Progress
+          value={(currentQuestion / questions.length) * 100}
+          className="w-full"
+        />
       </div>
     );
   };
@@ -239,41 +258,93 @@ export default function PerceptualExercises() {
     const [showResult, setShowResult] = useState(false);
 
     const shapePairs = [
-      { 
+      {
         left: [
-          { id: 'diamond-blue', shape: 'diamond', color: 'blue', symbol: '🔷' },
-          { id: 'diamond-yellow', shape: 'diamond', color: 'yellow', symbol: '🔶' },
-          { id: 'diamond-blue2', shape: 'diamond', color: 'blue', symbol: '🔷' },
-          { id: 'diamond-green', shape: 'diamond', color: 'green', symbol: '💚' },
-          { id: 'diamond-blue3', shape: 'diamond', color: 'blue', symbol: '🔷' }
+          { id: "diamond-blue", shape: "diamond", color: "blue", symbol: "🔷" },
+          {
+            id: "diamond-yellow",
+            shape: "diamond",
+            color: "yellow",
+            symbol: "🔶",
+          },
+          {
+            id: "diamond-blue2",
+            shape: "diamond",
+            color: "blue",
+            symbol: "🔷",
+          },
+          {
+            id: "diamond-green",
+            shape: "diamond",
+            color: "green",
+            symbol: "💚",
+          },
+          {
+            id: "diamond-blue3",
+            shape: "diamond",
+            color: "blue",
+            symbol: "🔷",
+          },
         ],
         right: [
-          { id: 'diamond-blue-match', shape: 'diamond', color: 'blue', symbol: '🔷' },
-          { id: 'diamond-green-match', shape: 'diamond', color: 'green', symbol: '💚' },
-          { id: 'diamond-blue2-match', shape: 'diamond', color: 'blue', symbol: '🔷' },
-          { id: 'diamond-yellow-match', shape: 'diamond', color: 'yellow', symbol: '🔶' },
-          { id: 'diamond-blue3-match', shape: 'diamond', color: 'blue', symbol: '🔷' }
-        ]
-      }
+          {
+            id: "diamond-blue-match",
+            shape: "diamond",
+            color: "blue",
+            symbol: "🔷",
+          },
+          {
+            id: "diamond-green-match",
+            shape: "diamond",
+            color: "green",
+            symbol: "💚",
+          },
+          {
+            id: "diamond-blue2-match",
+            shape: "diamond",
+            color: "blue",
+            symbol: "🔷",
+          },
+          {
+            id: "diamond-yellow-match",
+            shape: "diamond",
+            color: "yellow",
+            symbol: "🔶",
+          },
+          {
+            id: "diamond-blue3-match",
+            shape: "diamond",
+            color: "blue",
+            symbol: "🔷",
+          },
+        ],
+      },
     ];
 
     const handleDrop = (targetId: string) => {
       if (draggedItem) {
-        const sourceItem = shapePairs[0].left.find(item => item.id === draggedItem);
-        const targetItem = shapePairs[0].right.find(item => item.id === targetId);
-        
-        if (sourceItem && targetItem && 
-            sourceItem.shape === targetItem.shape && 
-            sourceItem.color === targetItem.color) {
+        const sourceItem = shapePairs[0].left.find(
+          (item) => item.id === draggedItem,
+        );
+        const targetItem = shapePairs[0].right.find(
+          (item) => item.id === targetId,
+        );
+
+        if (
+          sourceItem &&
+          targetItem &&
+          sourceItem.shape === targetItem.shape &&
+          sourceItem.color === targetItem.color
+        ) {
           setMatched([...matched, draggedItem, targetId]);
           setScore(score + 1);
-          speakArabic('ممتاز! مطابقة صحيحة');
-          
+          speakArabic("ممتاز! مطابقة صحيحة");
+
           if (matched.length + 2 >= shapePairs[0].left.length * 2) {
             setTimeout(() => setShowResult(true), 1000);
           }
         } else {
-          speakArabic('حاول مرة أخرى');
+          speakArabic("حاول مرة أخرى");
         }
         setDraggedItem(null);
       }
@@ -285,7 +356,10 @@ export default function PerceptualExercises() {
           <div className="text-6xl mb-4">🎉</div>
           <h3 className="text-2xl font-bold">انتهيت من المرحلة الثانية!</h3>
           <p className="text-lg">النتيجة: {score} مطابقات صحيحة</p>
-          <Button onClick={onComplete} className="bg-blue-600 hover:bg-blue-700">
+          <Button
+            onClick={onComplete}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
             التالي
           </Button>
         </div>
@@ -295,8 +369,10 @@ export default function PerceptualExercises() {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h3 className="text-xl font-bold mb-4">اسحب الشكل إلى صورته المتطابقة</h3>
-          <Button onClick={() => speakArabic('اسحب الشكل إلى صورته المتطابقة')}>
+          <h3 className="text-xl font-bold mb-4">
+            اسحب الشكل إلى صورته المتطابقة
+          </h3>
+          <Button onClick={() => speakArabic("اسحب الشكل إلى صورته المتطابقة")}>
             <Volume2 className="w-4 h-4 ml-2" />
             استمع للتعليمة
           </Button>
@@ -305,18 +381,23 @@ export default function PerceptualExercises() {
         <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Left side - draggable items */}
           <div className="space-y-4">
-            <h4 className="text-center font-bold">وصل الشكل بالأجزاء التي يتكون منها</h4>
+            <h4 className="text-center font-bold">
+              وصل الشكل بالأجزاء التي يتكون منها
+            </h4>
             {shapePairs[0].left.map((item, index) => (
               <div
                 key={item.id}
                 className={`p-4 border-2 border-gray-300 rounded-lg text-center cursor-move hover:shadow-lg transition-shadow ${
-                  matched.includes(item.id) ? 'opacity-50' : ''
+                  matched.includes(item.id) ? "opacity-50" : ""
                 }`}
                 draggable={!matched.includes(item.id)}
                 onDragStart={() => setDraggedItem(item.id)}
               >
                 <div className="text-3xl mb-2">{item.symbol}</div>
-                <div className="w-6 h-6 rounded-full mx-auto" style={{backgroundColor: item.color}} />
+                <div
+                  className="w-6 h-6 rounded-full mx-auto"
+                  style={{ backgroundColor: item.color }}
+                />
               </div>
             ))}
           </div>
@@ -327,7 +408,9 @@ export default function PerceptualExercises() {
               <div
                 key={item.id}
                 className={`p-4 border-2 border-dashed border-gray-400 rounded-lg text-center min-h-[80px] flex flex-col items-center justify-center hover:bg-gray-50 transition-colors ${
-                  matched.includes(item.id) ? 'bg-green-100 border-green-400' : ''
+                  matched.includes(item.id)
+                    ? "bg-green-100 border-green-400"
+                    : ""
                 }`}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(item.id)}
@@ -335,7 +418,10 @@ export default function PerceptualExercises() {
                 {matched.includes(item.id) ? (
                   <>
                     <div className="text-3xl mb-2">{item.symbol}</div>
-                    <div className="w-6 h-6 rounded-full" style={{backgroundColor: item.color}} />
+                    <div
+                      className="w-6 h-6 rounded-full"
+                      style={{ backgroundColor: item.color }}
+                    />
                   </>
                 ) : (
                   <div className="text-gray-400">اسحب هنا</div>
@@ -356,26 +442,27 @@ export default function PerceptualExercises() {
 
     const shadowQuestions = [
       {
-        object: '🐥',
-        name: 'كتكوت',
-        shadows: ['🐾', '🐥', '🦆', '🐧'],
-        correct: 1
+        object: "🐥",
+        name: "كتكوت",
+        shadows: ["🐾", "🐥", "🦆", "🐧"],
+        correct: 1,
       },
       {
-        object: '🚗',
-        name: 'سيارة',
-        shadows: ['🚲', '🚗', '🚌', '✈️'],
-        correct: 1
-      }
+        object: "🚗",
+        name: "سيارة",
+        shadows: ["🚲", "🚗", "🚌", "✈️"],
+        correct: 1,
+      },
     ];
 
     const handleAnswer = (selectedIndex: number) => {
-      const isCorrect = selectedIndex === shadowQuestions[currentQuestion].correct;
-      
+      const isCorrect =
+        selectedIndex === shadowQuestions[currentQuestion].correct;
+
       if (isCorrect) {
         setScore(score + 1);
-        speakArabic('ممتاز! إجابة صحيحة');
-        
+        speakArabic("ممتاز! إجابة صحيحة");
+
         setTimeout(() => {
           if (currentQuestion < shadowQuestions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
@@ -384,7 +471,7 @@ export default function PerceptualExercises() {
           }
         }, 1500);
       } else {
-        speakArabic('حاول مرة أخرى');
+        speakArabic("حاول مرة أخرى");
       }
     };
 
@@ -393,8 +480,13 @@ export default function PerceptualExercises() {
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">🎉</div>
           <h3 className="text-2xl font-bold">انتهيت من جميع المراحل!</h3>
-          <p className="text-lg">النتيجة النهائية: {score} من {shadowQuestions.length}</p>
-          <Button onClick={onComplete} className="bg-green-600 hover:bg-green-700">
+          <p className="text-lg">
+            النتيجة النهائية: {score} من {shadowQuestions.length}
+          </p>
+          <Button
+            onClick={onComplete}
+            className="bg-green-600 hover:bg-green-700"
+          >
             إنهاء التمارين
           </Button>
         </div>
@@ -405,9 +497,13 @@ export default function PerceptualExercises() {
       <div className="space-y-6">
         <div className="text-center">
           <h3 className="text-xl font-bold mb-4">اختر الشكل المناسب</h3>
-          <div className="text-6xl mb-4">{shadowQuestions[currentQuestion].object}</div>
-          <p className="text-lg mb-4">اختر ظل {shadowQuestions[currentQuestion].name}</p>
-          <Button onClick={() => speakArabic('إختر الظل المناسب')}>
+          <div className="text-6xl mb-4">
+            {shadowQuestions[currentQuestion].object}
+          </div>
+          <p className="text-lg mb-4">
+            اختر ظل {shadowQuestions[currentQuestion].name}
+          </p>
+          <Button onClick={() => speakArabic("إختر الظل المناسب")}>
             <Volume2 className="w-4 h-4 ml-2" />
             استمع للتعليمة
           </Button>
@@ -415,7 +511,7 @@ export default function PerceptualExercises() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
           {shadowQuestions[currentQuestion].shadows.map((shadow, index) => (
-            <Card 
+            <Card
               key={index}
               className="cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => handleAnswer(index)}
@@ -427,18 +523,21 @@ export default function PerceptualExercises() {
           ))}
         </div>
 
-        <Progress value={(currentQuestion / shadowQuestions.length) * 100} className="w-full" />
+        <Progress
+          value={(currentQuestion / shadowQuestions.length) * 100}
+          className="w-full"
+        />
       </div>
     );
   };
 
   const renderLevel = () => {
     switch (activeLevel) {
-      case 'easy':
-        return <EasyLevel onComplete={() => setActiveLevel('medium')} />;
-      case 'medium':
-        return <MediumLevel onComplete={() => setActiveLevel('hard')} />;
-      case 'hard':
+      case "easy":
+        return <EasyLevel onComplete={() => setActiveLevel("medium")} />;
+      case "medium":
+        return <MediumLevel onComplete={() => setActiveLevel("hard")} />;
+      case "hard":
         return <HardLevel onComplete={() => setActiveLevel(null)} />;
       default:
         return null;
@@ -447,7 +546,10 @@ export default function PerceptualExercises() {
 
   if (activeLevel) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+        dir="rtl"
+      >
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-4 mb-8">
@@ -460,10 +562,10 @@ export default function PerceptualExercises() {
                 العودة
               </Button>
               <h1 className="text-2xl font-bold">
-                {levels.find(l => l.id === activeLevel)?.title}
+                {levels.find((l) => l.id === activeLevel)?.title}
               </h1>
             </div>
-            
+
             {renderLevel()}
           </div>
         </div>
@@ -472,7 +574,10 @@ export default function PerceptualExercises() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -497,11 +602,7 @@ export default function PerceptualExercises() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/')}
-              >
+              <Button variant="outline" size="sm" onClick={() => navigate("/")}>
                 <Home className="w-4 h-4 ml-2" />
                 الرئيسية
               </Button>
@@ -531,7 +632,9 @@ export default function PerceptualExercises() {
               onClick={() => setActiveLevel(level.id)}
             >
               <CardHeader className="text-center">
-                <div className={`${level.color} text-white p-6 rounded-xl w-20 h-20 mx-auto mb-4 flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition-transform`}>
+                <div
+                  className={`${level.color} text-white p-6 rounded-xl w-20 h-20 mx-auto mb-4 flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition-transform`}
+                >
                   {index + 1}
                 </div>
                 <CardTitle className="text-xl">{level.title}</CardTitle>
@@ -542,16 +645,16 @@ export default function PerceptualExercises() {
                   {level.description}
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between text-sm">
                     <span>مستوى الصعوبة</span>
                     <div className="flex">
                       {[...Array(3)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`w-4 h-4 ${i < level.difficulty ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${i < level.difficulty ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
                         />
                       ))}
                     </div>
@@ -586,7 +689,9 @@ export default function PerceptualExercises() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">المرحلة الثانية - الصعبة:</h4>
+                <h4 className="font-semibold mb-2">
+                  المرحلة الثانية - الصعبة:
+                </h4>
                 <ul className="space-y-1 text-sm">
                   <li>• مطابقة الأشكال</li>
                   <li>• اسحب الشكل لصورته المتطابقة</li>
@@ -595,7 +700,9 @@ export default function PerceptualExercises() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">المرحلة الثالثة - المتوسطة:</h4>
+                <h4 className="font-semibold mb-2">
+                  المرحلة الثالثة - المتوسطة:
+                </h4>
                 <ul className="space-y-1 text-sm">
                   <li>• اختيار الظل المناسب</li>
                   <li>• ربط الشكل بظله الصحيح</li>

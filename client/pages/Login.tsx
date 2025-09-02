@@ -11,16 +11,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  ArrowLeft, 
-  LogIn, 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  ArrowLeft,
+  LogIn,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
   Stethoscope,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 
 export default function Login() {
@@ -30,7 +30,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [role, setRole] = useState<'specialist' | 'parent'>('specialist');
+  const [role, setRole] = useState<"specialist" | "parent">("specialist");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,13 +53,15 @@ export default function Login() {
     // Simulate login process
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       // Accept any credentials (demo mode) and respect chosen role
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userType", role);
       localStorage.setItem("userEmail", email);
-      navigate(role === 'specialist' ? "/specialist-dashboard" : "/parent-dashboard");
+      navigate(
+        role === "specialist" ? "/specialist-dashboard" : "/parent-dashboard",
+      );
     } catch (error) {
       setError("حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى");
     } finally {
@@ -68,19 +70,24 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center"
+      dir="rtl"
+    >
       <div className="max-w-md w-full mx-4">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="bg-black text-white p-1 rounded-full w-20 h-20 mx-auto mb-4 shadow-lg flex items-center justify-center overflow-hidden">
-            <img src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97af8386d4f542668cf40857fea32999?format=webp&width=256" alt="Ortho Smart" className="w-full h-full object-contain" />
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97af8386d4f542668cf40857fea32999?format=webp&width=256"
+              alt="Ortho Smart"
+              className="w-full h-full object-contain"
+            />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
             Ortho Smart
           </h1>
-          <p className="text-gray-600">
-            تسجيل الدخول للوصول إلى المنصة
-          </p>
+          <p className="text-gray-600">تسجيل الدخول للوصول إلى المنصة</p>
         </div>
 
         {/* Login Form */}
@@ -94,7 +101,7 @@ export default function Login() {
               أدخل بياناتك للوصول إلى حسابك
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               {/* Email Field */}
@@ -133,7 +140,11 @@ export default function Login() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -141,7 +152,12 @@ export default function Login() {
               {/* Role Selector */}
               <div className="space-y-2">
                 <Label htmlFor="role">نوع الحساب</Label>
-                <select id="role" className="w-full border rounded-md p-2" value={role} onChange={(e) => setRole(e.target.value as any)}>
+                <select
+                  id="role"
+                  className="w-full border rounded-md p-2"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as any)}
+                >
                   <option value="specialist">أخصائي</option>
                   <option value="parent">ولي أمر</option>
                 </select>
@@ -156,9 +172,9 @@ export default function Login() {
               )}
 
               {/* Login Button */}
-              <Button 
-                type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6" 
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6"
                 size="lg"
                 disabled={isLoading}
               >
@@ -176,20 +192,19 @@ export default function Login() {
               </Button>
             </form>
 
-
             {/* Navigation Links */}
             <div className="mt-6 text-center space-y-3">
               <p className="text-gray-600">ليس لديك حساب؟</p>
               <div className="flex gap-2 justify-center">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => navigate("/specialist-register")}
                   className="flex-1"
                 >
                   تسجيل أخصائي
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => navigate("/parent-register")}
                   className="flex-1"
                 >
@@ -202,8 +217,8 @@ export default function Login() {
 
         {/* Back Button */}
         <div className="text-center mt-6">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={() => navigate("/")}
             className="flex items-center gap-2"
           >

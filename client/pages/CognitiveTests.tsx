@@ -28,7 +28,8 @@ export default function CognitiveTests() {
     {
       id: "implicit-group",
       title: "المجموعة الضمنية",
-      description: "الفواكه، الخضر، المواصلات، الطيور، الملابس، الفصول، المهن، الأشكال",
+      description:
+        "الفواكه، الخضر، المواصلات، الطيور، الملابس، الفصول، المهن، الأشكال",
       icon: <Users className="w-8 h-8" />,
       color: "bg-green-500",
       route: "/implicit-group",
@@ -103,7 +104,10 @@ export default function CognitiveTests() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -128,11 +132,7 @@ export default function CognitiveTests() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/')}
-              >
+              <Button variant="outline" size="sm" onClick={() => navigate("/")}>
                 <Home className="w-4 h-4 ml-2" />
                 الرئيسية
               </Button>
@@ -149,7 +149,8 @@ export default function CognitiveTests() {
             التمارين المعرفية
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            تطوير المهارات المعرفية والإدراكية من خلال مجموعة شاملة من التمارين التفاعلية المصممة خصيصاً للأطفال
+            تطوير المهارات المعرفية والإدراكية من خلال مجموعة شاملة من التمارين
+            التفاعلية المصممة خصيصاً للأطفال
           </p>
         </div>
 
@@ -163,7 +164,9 @@ export default function CognitiveTests() {
             >
               <CardHeader>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className={`${category.color} text-white p-4 rounded-xl group-hover:scale-110 transition-transform`}>
+                  <div
+                    className={`${category.color} text-white p-4 rounded-xl group-hover:scale-110 transition-transform`}
+                  >
                     {category.icon}
                   </div>
                   <div className="flex-1">
@@ -177,13 +180,18 @@ export default function CognitiveTests() {
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent>
                 <div className="space-y-3 mb-6">
-                  <h4 className="font-semibold text-sm text-gray-700">المحتويات:</h4>
+                  <h4 className="font-semibold text-sm text-gray-700">
+                    المحتويات:
+                  </h4>
                   <div className="grid gap-2">
                     {category.details.map((detail, index) => (
-                      <div key={index} className="text-sm text-gray-600 flex items-center gap-2">
+                      <div
+                        key={index}
+                        className="text-sm text-gray-600 flex items-center gap-2"
+                      >
                         <div className="w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
                         {detail}
                       </div>
@@ -267,14 +275,12 @@ export default function CognitiveTests() {
             </div>
           </CardContent>
         </Card>
-        
+
         {/* Quick Navigation */}
         <Card className="mt-8">
           <CardHeader>
             <CardTitle>وصول سريع</CardTitle>
-            <CardDescription>
-              انتقل بسرعة إلى التمارين المختلفة
-            </CardDescription>
+            <CardDescription>انتقل بسرعة إلى التمارين المختلفة</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">

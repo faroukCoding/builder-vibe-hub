@@ -19,15 +19,31 @@ import {
   Filter,
   Search,
   Save,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -71,7 +87,10 @@ interface ResponseSheetData {
     wrong_count: number;
     completion_percentage: number;
     duration_minutes: number;
-    by_group: Record<string, { correct: number; total: number; percentage: number }>;
+    by_group: Record<
+      string,
+      { correct: number; total: number; percentage: number }
+    >;
   };
   answers: ChildAnswer[];
   metadata: QuestionMetadata[];
@@ -80,7 +99,9 @@ interface ResponseSheetData {
 export default function DiagnosticResponseSheet() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [responseData, setResponseData] = useState<ResponseSheetData | null>(null);
+  const [responseData, setResponseData] = useState<ResponseSheetData | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [filterTask, setFilterTask] = useState<string>("all");
   const [filterResult, setFilterResult] = useState<string>("all");
@@ -95,36 +116,48 @@ export default function DiagnosticResponseSheet() {
       task: "A",
       label: "ضع إصبعك على الوجه السعيد",
       skill_group: "الانفعالات",
-      media: { image_url: "/assets/emotions/happy.png", audio_url: "/assets/audio/q1.mp3" },
+      media: {
+        image_url: "/assets/emotions/happy.png",
+        audio_url: "/assets/audio/q1.mp3",
+      },
       correct_answer: "😊",
-      choices: ["😊", "😢", "😠", "😨"]
+      choices: ["😊", "😢", "😠", "😨"],
     },
     {
       question_id: 2,
       task: "A",
       label: "أين الوجه الحزين؟",
       skill_group: "الانفعالات",
-      media: { image_url: "/assets/emotions/sad.png", audio_url: "/assets/audio/q2.mp3" },
+      media: {
+        image_url: "/assets/emotions/sad.png",
+        audio_url: "/assets/audio/q2.mp3",
+      },
       correct_answer: "😢",
-      choices: ["😊", "😢", "😠", "😨"]
+      choices: ["😊", "😢", "😠", "😨"],
     },
     {
       question_id: 3,
       task: "A",
       label: "اختر الوجه الغاضب",
       skill_group: "الانفعالات",
-      media: { image_url: "/assets/emotions/angry.png", audio_url: "/assets/audio/q3.mp3" },
+      media: {
+        image_url: "/assets/emotions/angry.png",
+        audio_url: "/assets/audio/q3.mp3",
+      },
       correct_answer: "😠",
-      choices: ["😊", "😢", "😠", "😨"]
+      choices: ["😊", "😢", "😠", "😨"],
     },
     {
       question_id: 4,
       task: "A",
       label: "أين الوجه الخائف؟",
       skill_group: "الانفعالات",
-      media: { image_url: "/assets/emotions/scared.png", audio_url: "/assets/audio/q4.mp3" },
+      media: {
+        image_url: "/assets/emotions/scared.png",
+        audio_url: "/assets/audio/q4.mp3",
+      },
       correct_answer: "😨",
-      choices: ["😊", "😢", "😠", "😨"]
+      choices: ["😊", "😢", "😠", "😨"],
     },
     // المهمة B: مها والبسكويت (5-6)
     {
@@ -132,18 +165,24 @@ export default function DiagnosticResponseSheet() {
       task: "B",
       label: "ماذا تريد مها؟",
       skill_group: "الرغبات والمشاعر",
-      media: { image_url: "/assets/maha/cookie1.png", audio_url: "/assets/audio/q5.mp3" },
+      media: {
+        image_url: "/assets/maha/cookie1.png",
+        audio_url: "/assets/audio/q5.mp3",
+      },
       correct_answer: "🍪 بسكويت",
-      choices: ["🍪 بسكويت", "🍎 تفاحة", "🧃 عصير"]
+      choices: ["🍪 بسكويت", "🍎 تفاحة", "🧃 عصير"],
     },
     {
       question_id: 6,
       task: "B",
       label: "كيف ستشعر مها؟",
       skill_group: "الرغبات والمشاعر",
-      media: { image_url: "/assets/maha/cookie2.png", audio_url: "/assets/audio/q6.mp3" },
+      media: {
+        image_url: "/assets/maha/cookie2.png",
+        audio_url: "/assets/audio/q6.mp3",
+      },
       correct_answer: "😊 سعيدة",
-      choices: ["😊 سعيدة", "😢 حزينة", "😠 غاضبة"]
+      choices: ["😊 سعيدة", "😢 حزينة", "😠 غاضبة"],
     },
     // المهمة C: أمجاد والنظارة (7)
     {
@@ -151,9 +190,12 @@ export default function DiagnosticResponseSheet() {
       task: "C",
       label: "أين تظن أمجاد أن نظارتها ستكون؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/amjad/glasses.png", audio_url: "/assets/audio/q7.mp3" },
+      media: {
+        image_url: "/assets/amjad/glasses.png",
+        audio_url: "/assets/audio/q7.mp3",
+      },
       correct_answer: "📱 على الطاولة",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
+      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"],
     },
     // المهمة D: ياسمينة وسعيد مع التمثال (8-9)
     {
@@ -161,18 +203,24 @@ export default function DiagnosticResponseSheet() {
       task: "D",
       label: "ماذا ترى ياسمينة؟",
       skill_group: "وجهات النظر",
-      media: { image_url: "/assets/yasmina/statue1.png", audio_url: "/assets/audio/q8.mp3" },
+      media: {
+        image_url: "/assets/yasmina/statue1.png",
+        audio_url: "/assets/audio/q8.mp3",
+      },
       correct_answer: "😊 وجه التمثال",
-      choices: ["😊 وجه التمثال", "🔙 ظهر التمثال", "👂 جانب التمثال"]
+      choices: ["😊 وجه التمثال", "🔙 ظهر التمثال", "👂 جانب التمثال"],
     },
     {
       question_id: 9,
       task: "D",
       label: "ماذا يرى سعيد؟",
       skill_group: "وجهات النظر",
-      media: { image_url: "/assets/yasmina/statue2.png", audio_url: "/assets/audio/q9.mp3" },
+      media: {
+        image_url: "/assets/yasmina/statue2.png",
+        audio_url: "/assets/audio/q9.mp3",
+      },
       correct_answer: "🔙 ظهر التمثال",
-      choices: ["😊 وجه التمثال", "🔙 ظهر التمثال", "👂 جانب التمثال"]
+      choices: ["😊 وجه التمثال", "🔙 ظهر التمثال", "👂 جانب التمثال"],
     },
     // المهمة E: ناصر والمفاتيح (10)
     {
@@ -180,9 +228,12 @@ export default function DiagnosticResponseSheet() {
       task: "E",
       label: "أين سيبحث ناصر أولاً؟",
       skill_group: "الأماكن والتتبع",
-      media: { image_url: "/assets/nasser/keys.png", audio_url: "/assets/audio/q10.mp3" },
+      media: {
+        image_url: "/assets/nasser/keys.png",
+        audio_url: "/assets/audio/q10.mp3",
+      },
       correct_answer: "👖 في جيبه",
-      choices: ["👖 في جيبه", "📱 على الطاولة", "🚗 في السيارة"]
+      choices: ["👖 في جيبه", "📱 على الطاولة", "🚗 في السيارة"],
     },
     // المهمة F: فيصل والكتاب (11-13)
     {
@@ -190,27 +241,36 @@ export default function DiagnosticResponseSheet() {
       task: "F",
       label: "أين وضع فيصل الكتاب؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/faisal/book1.png", audio_url: "/assets/audio/q11.mp3" },
+      media: {
+        image_url: "/assets/faisal/book1.png",
+        audio_url: "/assets/audio/q11.mp3",
+      },
       correct_answer: "📱 على الطاولة",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
+      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"],
     },
     {
       question_id: 12,
       task: "F",
       label: "أين الكتاب الآن؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/faisal/book2.png", audio_url: "/assets/audio/q12.mp3" },
+      media: {
+        image_url: "/assets/faisal/book2.png",
+        audio_url: "/assets/audio/q12.mp3",
+      },
       correct_answer: "📦 في الدرج",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
+      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"],
     },
     {
       question_id: 13,
       task: "F",
       label: "أين سيبحث فيصل أولاً؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/faisal/book3.png", audio_url: "/assets/audio/q13.mp3" },
+      media: {
+        image_url: "/assets/faisal/book3.png",
+        audio_url: "/assets/audio/q13.mp3",
+      },
       correct_answer: "📱 على الطاولة",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
+      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"],
     },
     // المهمة G: خالد وهدية العيد (14-19)
     {
@@ -218,36 +278,48 @@ export default function DiagnosticResponseSheet() {
       task: "G",
       label: "ماذا يريد خالد؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/khalid/gift1.png", audio_url: "/assets/audio/q14.mp3" },
+      media: {
+        image_url: "/assets/khalid/gift1.png",
+        audio_url: "/assets/audio/q14.mp3",
+      },
       correct_answer: "✈️ طائرة",
-      choices: ["✈️ طائرة", "🚂 قطار", "🚗 سيارة"]
+      choices: ["✈️ طائرة", "🚂 قطار", "🚗 سيارة"],
     },
     {
       question_id: 15,
       task: "G",
       label: "ما��ا يعتقد الأب أن خالد يريد؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/khalid/gift2.png", audio_url: "/assets/audio/q15.mp3" },
+      media: {
+        image_url: "/assets/khalid/gift2.png",
+        audio_url: "/assets/audio/q15.mp3",
+      },
       correct_answer: "🚂 قطار",
-      choices: ["✈️ طائرة", "🚂 قطار", "🚗 سيارة"]
+      choices: ["✈️ طائرة", "🚂 قطار", "🚗 سيارة"],
     },
     {
       question_id: 16,
       task: "G",
       label: "كيف سيشعر خالد عندما يرى القطار؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/khalid/gift3.png", audio_url: "/assets/audio/q16.mp3" },
+      media: {
+        image_url: "/assets/khalid/gift3.png",
+        audio_url: "/assets/audio/q16.mp3",
+      },
       correct_answer: "😢 حزين",
-      choices: ["😊 سعيد", "😢 حزين", "😐 عادي"]
+      choices: ["😊 سعيد", "😢 حزين", "😐 عادي"],
     },
     {
       question_id: 17,
       task: "G",
       label: "ماذا يظن الأب أن خالد سيشعر؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/khalid/gift4.png", audio_url: "/assets/audio/q17.mp3" },
+      media: {
+        image_url: "/assets/khalid/gift4.png",
+        audio_url: "/assets/audio/q17.mp3",
+      },
       correct_answer: "😊 سعيد",
-      choices: ["😊 سعيد", "😢 حزين", "😐 عادي"]
+      choices: ["😊 سعيد", "😢 حزين", "😐 عادي"],
     },
     // المهمة H: رامي ومريم مع الصحون (18-22)
     {
@@ -255,27 +327,36 @@ export default function DiagnosticResponseSheet() {
       task: "H",
       label: "أي صحن وضعه رامي بجانب الموقد؟",
       skill_group: "الأماكن والتتبع",
-      media: { image_url: "/assets/rami/plates1.png", audio_url: "/assets/audio/q18.mp3" },
+      media: {
+        image_url: "/assets/rami/plates1.png",
+        audio_url: "/assets/audio/q18.mp3",
+      },
       correct_answer: "🍝 المكرونة",
-      choices: ["🍝 المكرونة", "🥗 السلطة", "🍞 الخبز"]
+      choices: ["🍝 المكرونة", "🥗 السلطة", "🍞 الخبز"],
     },
     {
       question_id: 19,
       task: "H",
       label: "أي صحن وضعته مريم بجانب الموقد؟",
       skill_group: "الأماكن والتتبع",
-      media: { image_url: "/assets/rami/plates2.png", audio_url: "/assets/audio/q19.mp3" },
+      media: {
+        image_url: "/assets/rami/plates2.png",
+        audio_url: "/assets/audio/q19.mp3",
+      },
       correct_answer: "🥗 السلطة",
-      choices: ["🍝 المكرونة", "🥗 السلطة", "🍞 الخبز"]
+      choices: ["🍝 المكرونة", "🥗 السلطة", "🍞 الخبز"],
     },
     {
       question_id: 20,
       task: "H",
       label: "أين سيبحث رامي عن المكرونة؟",
       skill_group: "الأماكن والتتبع",
-      media: { image_url: "/assets/rami/plates3.png", audio_url: "/assets/audio/q20.mp3" },
+      media: {
+        image_url: "/assets/rami/plates3.png",
+        audio_url: "/assets/audio/q20.mp3",
+      },
       correct_answer: "🔥 بجانب الموقد",
-      choices: ["🔥 بجانب الموقد", "📱 على الطاولة", "❄️ في الثلاجة"]
+      choices: ["🔥 بجانب الموقد", "📱 على الطاولة", "❄️ في الثلاجة"],
     },
     // المهمة I: منصور والدراجة (21-22)
     {
@@ -283,19 +364,25 @@ export default function DiagnosticResponseSheet() {
       task: "I",
       label: "ماذا يتوقع منصور أن يحصل عليه؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/mansour/bike1.png", audio_url: "/assets/audio/q21.mp3" },
+      media: {
+        image_url: "/assets/mansour/bike1.png",
+        audio_url: "/assets/audio/q21.mp3",
+      },
       correct_answer: "🛼 سكيت",
-      choices: ["🚲 دراجة", "🛼 سكيت", "⚽ كرة"]
+      choices: ["🚲 دراجة", "🛼 سكيت", "⚽ كرة"],
     },
     {
       question_id: 22,
       task: "I",
       label: "ماذا ستخبر الأم الجد؟",
       skill_group: "المعتقد الخاطئ",
-      media: { image_url: "/assets/mansour/bike2.png", audio_url: "/assets/audio/q22.mp3" },
+      media: {
+        image_url: "/assets/mansour/bike2.png",
+        audio_url: "/assets/audio/q22.mp3",
+      },
       correct_answer: "🚲 دراجة",
-      choices: ["🚲 دراجة", "🛼 سكيت", "🎁 مفاجأة"]
-    }
+      choices: ["🚲 دراجة", "🛼 سكيت", "🎁 مفاجأة"],
+    },
   ];
 
   // محاكاة البيانات (في التطبيق الحقيقي ستأتي من localStorage أو قاعدة البيانات)
@@ -305,7 +392,7 @@ export default function DiagnosticResponseSheet() {
       name: "أحمد محمد الأمين",
       age: 7,
       grade_level: "الصف الثاني الابتدائي",
-      test_date: new Date().toISOString()
+      test_date: new Date().toISOString(),
     },
     summary: {
       total_score: 20,
@@ -315,38 +402,214 @@ export default function DiagnosticResponseSheet() {
       completion_percentage: 91,
       duration_minutes: 8,
       by_group: {
-        "الانفعالات": { correct: 4, total: 4, percentage: 100 },
+        الانفعالات: { correct: 4, total: 4, percentage: 100 },
         "الرغبات والمشاعر": { correct: 2, total: 2, percentage: 100 },
         "وجهات النظر": { correct: 2, total: 2, percentage: 100 },
         "المعتقد الخاطئ": { correct: 8, total: 10, percentage: 80 },
-        "الأماكن والتتبع": { correct: 4, total: 4, percentage: 100 }
-      }
+        "الأماكن والتتبع": { correct: 4, total: 4, percentage: 100 },
+      },
     },
     answers: [
-      { question_id: 1, task: "A", chosen_answer: "😊", correct_answer: "😊", is_correct: true, score: 1, time_spent_ms: 3200 },
-      { question_id: 2, task: "A", chosen_answer: "😢", correct_answer: "😢", is_correct: true, score: 1, time_spent_ms: 2800 },
-      { question_id: 3, task: "A", chosen_answer: "😠", correct_answer: "😠", is_correct: true, score: 1, time_spent_ms: 2500 },
-      { question_id: 4, task: "A", chosen_answer: "😨", correct_answer: "😨", is_correct: true, score: 1, time_spent_ms: 3100 },
-      { question_id: 5, task: "B", chosen_answer: "🍪 بسكويت", correct_answer: "🍪 بسكويت", is_correct: true, score: 1, time_spent_ms: 4200 },
-      { question_id: 6, task: "B", chosen_answer: "😊 سعيدة", correct_answer: "😊 سعيدة", is_correct: true, score: 1, time_spent_ms: 3800 },
-      { question_id: 7, task: "C", chosen_answer: "📦 في الدرج", correct_answer: "📱 على الطاولة", is_correct: false, score: 0, time_spent_ms: 6500 },
-      { question_id: 8, task: "D", chosen_answer: "😊 وجه التمثال", correct_answer: "😊 وجه التمثال", is_correct: true, score: 1, time_spent_ms: 5200 },
-      { question_id: 9, task: "D", chosen_answer: "🔙 ظهر التمثال", correct_answer: "🔙 ظهر التمثال", is_correct: true, score: 1, time_spent_ms: 4800 },
-      { question_id: 10, task: "E", chosen_answer: "👖 في جيبه", correct_answer: "👖 في جيبه", is_correct: true, score: 1, time_spent_ms: 5800 },
-      { question_id: 11, task: "F", chosen_answer: "📱 على الطاولة", correct_answer: "📱 على الطاولة", is_correct: true, score: 1, time_spent_ms: 4200 },
-      { question_id: 12, task: "F", chosen_answer: "📦 في الدرج", correct_answer: "📦 في الدرج", is_correct: true, score: 1, time_spent_ms: 3900 },
-      { question_id: 13, task: "F", chosen_answer: "📱 على الطاولة", correct_answer: "📱 على الطاولة", is_correct: true, score: 1, time_spent_ms: 4600 },
-      { question_id: 14, task: "G", chosen_answer: "✈️ طائرة", correct_answer: "✈️ طائرة", is_correct: true, score: 1, time_spent_ms: 3800 },
-      { question_id: 15, task: "G", chosen_answer: "🚂 قطار", correct_answer: "🚂 قطار", is_correct: true, score: 1, time_spent_ms: 4100 },
-      { question_id: 16, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😢 حزين", is_correct: false, score: 0, time_spent_ms: 7200 },
-      { question_id: 17, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😊 سعيد", is_correct: true, score: 1, time_spent_ms: 5400 },
-      { question_id: 18, task: "H", chosen_answer: "🍝 المكرونة", correct_answer: "🍝 المكرونة", is_correct: true, score: 1, time_spent_ms: 4800 },
-      { question_id: 19, task: "H", chosen_answer: "🥗 السلطة", correct_answer: "🥗 السلطة", is_correct: true, score: 1, time_spent_ms: 4200 },
-      { question_id: 20, task: "H", chosen_answer: "🔥 بجانب الموقد", correct_answer: "🔥 بجانب الموقد", is_correct: true, score: 1, time_spent_ms: 5100 },
-      { question_id: 21, task: "I", chosen_answer: "🛼 سكيت", correct_answer: "🛼 سكيت", is_correct: true, score: 1, time_spent_ms: 6200 },
-      { question_id: 22, task: "I", chosen_answer: "🚲 دراجة", correct_answer: "🚲 دراجة", is_correct: true, score: 1, time_spent_ms: 5800 }
+      {
+        question_id: 1,
+        task: "A",
+        chosen_answer: "😊",
+        correct_answer: "😊",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 3200,
+      },
+      {
+        question_id: 2,
+        task: "A",
+        chosen_answer: "😢",
+        correct_answer: "😢",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 2800,
+      },
+      {
+        question_id: 3,
+        task: "A",
+        chosen_answer: "😠",
+        correct_answer: "😠",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 2500,
+      },
+      {
+        question_id: 4,
+        task: "A",
+        chosen_answer: "😨",
+        correct_answer: "😨",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 3100,
+      },
+      {
+        question_id: 5,
+        task: "B",
+        chosen_answer: "🍪 بسكويت",
+        correct_answer: "🍪 بسكويت",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4200,
+      },
+      {
+        question_id: 6,
+        task: "B",
+        chosen_answer: "😊 سعيدة",
+        correct_answer: "😊 سعيدة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 3800,
+      },
+      {
+        question_id: 7,
+        task: "C",
+        chosen_answer: "📦 في الدرج",
+        correct_answer: "📱 على الطاولة",
+        is_correct: false,
+        score: 0,
+        time_spent_ms: 6500,
+      },
+      {
+        question_id: 8,
+        task: "D",
+        chosen_answer: "😊 وجه التمثال",
+        correct_answer: "😊 وجه التمثال",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 5200,
+      },
+      {
+        question_id: 9,
+        task: "D",
+        chosen_answer: "🔙 ظهر التمثال",
+        correct_answer: "🔙 ظهر التمثال",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4800,
+      },
+      {
+        question_id: 10,
+        task: "E",
+        chosen_answer: "👖 في جيبه",
+        correct_answer: "👖 في جيبه",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 5800,
+      },
+      {
+        question_id: 11,
+        task: "F",
+        chosen_answer: "📱 على الطاولة",
+        correct_answer: "📱 على الطاولة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4200,
+      },
+      {
+        question_id: 12,
+        task: "F",
+        chosen_answer: "📦 في الدرج",
+        correct_answer: "📦 في الدرج",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 3900,
+      },
+      {
+        question_id: 13,
+        task: "F",
+        chosen_answer: "📱 على الطاولة",
+        correct_answer: "📱 على الطاولة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4600,
+      },
+      {
+        question_id: 14,
+        task: "G",
+        chosen_answer: "✈️ طائرة",
+        correct_answer: "✈️ طائرة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 3800,
+      },
+      {
+        question_id: 15,
+        task: "G",
+        chosen_answer: "🚂 قطار",
+        correct_answer: "🚂 قطار",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4100,
+      },
+      {
+        question_id: 16,
+        task: "G",
+        chosen_answer: "😊 سعيد",
+        correct_answer: "😢 حزين",
+        is_correct: false,
+        score: 0,
+        time_spent_ms: 7200,
+      },
+      {
+        question_id: 17,
+        task: "G",
+        chosen_answer: "😊 سعيد",
+        correct_answer: "😊 سعيد",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 5400,
+      },
+      {
+        question_id: 18,
+        task: "H",
+        chosen_answer: "🍝 المكرونة",
+        correct_answer: "🍝 المكرونة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4800,
+      },
+      {
+        question_id: 19,
+        task: "H",
+        chosen_answer: "🥗 السلطة",
+        correct_answer: "🥗 السلطة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 4200,
+      },
+      {
+        question_id: 20,
+        task: "H",
+        chosen_answer: "🔥 بجانب الموقد",
+        correct_answer: "🔥 بجانب الموقد",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 5100,
+      },
+      {
+        question_id: 21,
+        task: "I",
+        chosen_answer: "🛼 سكيت",
+        correct_answer: "🛼 سكيت",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 6200,
+      },
+      {
+        question_id: 22,
+        task: "I",
+        chosen_answer: "🚲 دراجة",
+        correct_answer: "🚲 دراجة",
+        is_correct: true,
+        score: 1,
+        time_spent_ms: 5800,
+      },
     ],
-    metadata: answerKey
+    metadata: answerKey,
   };
 
   useEffect(() => {
@@ -356,9 +619,9 @@ export default function DiagnosticResponseSheet() {
   }, []);
 
   const speakArabic = (text: string) => {
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
+      utterance.lang = "ar-SA";
       utterance.rate = 0.8;
       speechSynthesis.speak(utterance);
     }
@@ -366,7 +629,7 @@ export default function DiagnosticResponseSheet() {
 
   const handleExportPDF = async () => {
     // في التطبيق الحقيقي، استخدم مكتبة مثل jsPDF
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open("", "_blank");
     if (printWindow && responseData) {
       printWindow.document.write(`
         <html dir="rtl">
@@ -391,7 +654,7 @@ export default function DiagnosticResponseSheet() {
               <p><strong>الاسم:</strong> ${responseData.child.name}</p>
               <p><strong>العمر:</strong> ${responseData.child.age} سنوات</p>
               <p><strong>المستوى:</strong> ${responseData.child.grade_level}</p>
-              <p><strong>التاريخ:</strong> ${new Date(responseData.child.test_date).toLocaleDateString('ar-SA')}</p>
+              <p><strong>التاريخ:</strong> ${new Date(responseData.child.test_date).toLocaleDateString("ar-SA")}</p>
             </div>
 
             <div class="summary">
@@ -425,21 +688,25 @@ export default function DiagnosticResponseSheet() {
                 </tr>
               </thead>
               <tbody>
-                ${responseData.answers.map(answer => {
-                  const metadata = responseData.metadata.find(m => m.question_id === answer.question_id);
-                  return `
+                ${responseData.answers
+                  .map((answer) => {
+                    const metadata = responseData.metadata.find(
+                      (m) => m.question_id === answer.question_id,
+                    );
+                    return `
                     <tr>
                       <td>${answer.question_id}</td>
                       <td>${answer.task}</td>
-                      <td>${metadata?.label || ''}</td>
+                      <td>${metadata?.label || ""}</td>
                       <td>${answer.chosen_answer}</td>
                       <td>${answer.correct_answer}</td>
-                      <td class="${answer.is_correct ? 'correct' : 'incorrect'}">
-                        ${answer.is_correct ? '✅' : '❌'}
+                      <td class="${answer.is_correct ? "correct" : "incorrect"}">
+                        ${answer.is_correct ? "✅" : "❌"}
                       </td>
                     </tr>
                   `;
-                }).join('')}
+                  })
+                  .join("")}
               </tbody>
             </table>
           </body>
@@ -454,27 +721,38 @@ export default function DiagnosticResponseSheet() {
     if (!responseData) return;
 
     const csvData = [
-      ['رقم السؤال', 'المهمة', 'المجموعة', 'السؤال', 'إجابة الطفل', 'الإجابة الصحيحة', 'صحيح/خطأ', 'النقاط'],
-      ...responseData.answers.map(answer => {
-        const metadata = responseData.metadata.find(m => m.question_id === answer.question_id);
+      [
+        "رقم السؤال",
+        "المهمة",
+        "المجموعة",
+        "السؤال",
+        "إجابة الطفل",
+        "الإجابة الصحيحة",
+        "صحيح/خطأ",
+        "النقاط",
+      ],
+      ...responseData.answers.map((answer) => {
+        const metadata = responseData.metadata.find(
+          (m) => m.question_id === answer.question_id,
+        );
         return [
           answer.question_id,
           answer.task,
-          metadata?.skill_group || '',
-          metadata?.label || '',
+          metadata?.skill_group || "",
+          metadata?.label || "",
           answer.chosen_answer,
           answer.correct_answer,
-          answer.is_correct ? 'صحيح' : 'خطأ',
-          answer.score
+          answer.is_correct ? "صحيح" : "خطأ",
+          answer.score,
         ];
-      })
+      }),
     ];
 
-    const csvContent = csvData.map(row => row.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
+    const csvContent = csvData.map((row) => row.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `نتائج_${responseData.child.name}_${new Date().toISOString().split('T')[0]}.csv`;
+    link.download = `نتائج_${responseData.child.name}_${new Date().toISOString().split("T")[0]}.csv`;
     link.click();
   };
 
@@ -488,22 +766,30 @@ export default function DiagnosticResponseSheet() {
     setExpandedRows(newExpanded);
   };
 
-  const filteredAnswers = responseData?.answers.filter(answer => {
-    const metadata = responseData.metadata.find(m => m.question_id === answer.question_id);
-    const matchesTask = filterTask === "all" || answer.task === filterTask;
-    const matchesResult = filterResult === "all" ||
-      (filterResult === "correct" && answer.is_correct) ||
-      (filterResult === "incorrect" && !answer.is_correct);
-    const matchesSearch = searchTerm === "" ||
-      metadata?.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      answer.chosen_answer.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredAnswers =
+    responseData?.answers.filter((answer) => {
+      const metadata = responseData.metadata.find(
+        (m) => m.question_id === answer.question_id,
+      );
+      const matchesTask = filterTask === "all" || answer.task === filterTask;
+      const matchesResult =
+        filterResult === "all" ||
+        (filterResult === "correct" && answer.is_correct) ||
+        (filterResult === "incorrect" && !answer.is_correct);
+      const matchesSearch =
+        searchTerm === "" ||
+        metadata?.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        answer.chosen_answer.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return matchesTask && matchesResult && matchesSearch;
-  }) || [];
+      return matchesTask && matchesResult && matchesSearch;
+    }) || [];
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center"
+        dir="rtl"
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-xl text-gray-600">جاري تحضير ورقة الاستجابة...</p>
@@ -514,13 +800,20 @@ export default function DiagnosticResponseSheet() {
 
   if (!responseData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center"
+        dir="rtl"
+      >
         <Card className="max-w-md mx-4">
           <CardContent className="p-8 text-center">
             <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">لا توجد بيانات</h2>
-            <p className="text-gray-600 mb-6">لم يتم العثور على نتائج الاختبار</p>
-            <Button onClick={() => navigate('/theory-of-mind-games')}>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              لا توجد بيانات
+            </h2>
+            <p className="text-gray-600 mb-6">
+              لم يتم العثور على نتائج الاختبار
+            </p>
+            <Button onClick={() => navigate("/theory-of-mind-games")}>
               العودة للاختبار
             </Button>
           </CardContent>
@@ -530,14 +823,17 @@ export default function DiagnosticResponseSheet() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center gap-4">
               <Button
-                onClick={() => navigate('/theory-of-mind-games')}
+                onClick={() => navigate("/theory-of-mind-games")}
                 variant="outline"
                 className="flex items-center gap-2"
               >
@@ -545,7 +841,7 @@ export default function DiagnosticResponseSheet() {
                 العودة للاختبار
               </Button>
               <Button
-                onClick={() => navigate('/specialist-dashboard')}
+                onClick={() => navigate("/specialist-dashboard")}
                 variant="outline"
                 className="flex items-center gap-2"
               >
@@ -555,13 +851,18 @@ export default function DiagnosticResponseSheet() {
             </div>
 
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900">الاختبارات التشخيصية - ورقة الاستجابة</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                الاختبارات التشخيصية - ورقة الاستجابة
+              </h1>
               <p className="text-sm text-gray-600">نظرية العقل</p>
             </div>
 
             <div className="flex items-center gap-2">
               <Brain className="w-6 h-6 text-purple-600" />
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              <Badge
+                variant="outline"
+                className="bg-green-50 text-green-700 border-green-200"
+              >
                 اكتمل
               </Badge>
             </div>
@@ -582,20 +883,28 @@ export default function DiagnosticResponseSheet() {
             <div className="grid md:grid-cols-4 gap-6">
               <div className="text-center">
                 <p className="text-sm text-gray-600">الاسم</p>
-                <p className="text-lg font-bold text-gray-800">{responseData.child.name}</p>
+                <p className="text-lg font-bold text-gray-800">
+                  {responseData.child.name}
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-sm text-gray-600">العمر</p>
-                <p className="text-lg font-bold text-gray-800">{responseData.child.age} سنوات</p>
+                <p className="text-lg font-bold text-gray-800">
+                  {responseData.child.age} سنوات
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-sm text-gray-600">المستوى الدراسي</p>
-                <p className="text-lg font-bold text-gray-800">{responseData.child.grade_level}</p>
+                <p className="text-lg font-bold text-gray-800">
+                  {responseData.child.grade_level}
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-sm text-gray-600">تاريخ الاختبار</p>
                 <p className="text-lg font-bold text-gray-800">
-                  {new Date(responseData.child.test_date).toLocaleDateString('ar-SA')}
+                  {new Date(responseData.child.test_date).toLocaleDateString(
+                    "ar-SA",
+                  )}
                 </p>
               </div>
             </div>
@@ -608,16 +917,29 @@ export default function DiagnosticResponseSheet() {
           <Card className="md:col-span-4 lg:col-span-1 mb-6 bg-gradient-to-br from-blue-50 to-purple-50">
             <CardContent className="p-6 text-center">
               <div className="relative w-32 h-32 mx-auto mb-4">
-                <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                <svg
+                  className="w-32 h-32 transform -rotate-90"
+                  viewBox="0 0 120 120"
+                >
                   <circle
-                    cx="60" cy="60" r="50"
-                    stroke="#e5e7eb" strokeWidth="8"
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    stroke="#e5e7eb"
+                    strokeWidth="8"
                     fill="transparent"
                   />
                   <circle
-                    cx="60" cy="60" r="50"
-                    stroke={responseData.summary.completion_percentage >= 85 ? "#10b981" :
-                           responseData.summary.completion_percentage >= 70 ? "#f59e0b" : "#ef4444"}
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    stroke={
+                      responseData.summary.completion_percentage >= 85
+                        ? "#10b981"
+                        : responseData.summary.completion_percentage >= 70
+                          ? "#f59e0b"
+                          : "#ef4444"
+                    }
                     strokeWidth="8"
                     fill="transparent"
                     strokeDasharray={`${responseData.summary.completion_percentage * 3.14} 314`}
@@ -639,7 +961,8 @@ export default function DiagnosticResponseSheet() {
               <Trophy className="w-8 h-8 text-blue-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">النتيجة الكلية</p>
               <p className="text-3xl font-bold text-blue-600">
-                {responseData.summary.total_score}/{responseData.summary.max_score}
+                {responseData.summary.total_score}/
+                {responseData.summary.max_score}
               </p>
             </CardContent>
           </Card>
@@ -648,7 +971,9 @@ export default function DiagnosticResponseSheet() {
             <CardContent className="p-6 text-center">
               <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">الإجابات الصحيحة</p>
-              <p className="text-3xl font-bold text-green-600">{responseData.summary.correct_count} ✅</p>
+              <p className="text-3xl font-bold text-green-600">
+                {responseData.summary.correct_count} ✅
+              </p>
             </CardContent>
           </Card>
 
@@ -656,7 +981,9 @@ export default function DiagnosticResponseSheet() {
             <CardContent className="p-6 text-center">
               <XCircle className="w-8 h-8 text-red-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">الإجابات الخاطئة</p>
-              <p className="text-3xl font-bold text-red-600">{responseData.summary.wrong_count} ❌</p>
+              <p className="text-3xl font-bold text-red-600">
+                {responseData.summary.wrong_count} ❌
+              </p>
             </CardContent>
           </Card>
 
@@ -664,7 +991,9 @@ export default function DiagnosticResponseSheet() {
             <CardContent className="p-6 text-center">
               <Clock className="w-8 h-8 text-purple-600 mx-auto mb-2" />
               <p className="text-sm text-gray-600">المدة المستغرقة</p>
-              <p className="text-3xl font-bold text-purple-600">{responseData.summary.duration_minutes}:00</p>
+              <p className="text-3xl font-bold text-purple-600">
+                {responseData.summary.duration_minutes}:00
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -679,14 +1008,25 @@ export default function DiagnosticResponseSheet() {
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {Object.entries(responseData.summary.by_group).map(([group, stats]) => (
-                <div key={group} className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 mb-2">{group}</p>
-                  <p className="text-xl font-bold text-gray-800">{stats.correct}/{stats.total}</p>
-                  <Progress value={stats.percentage} className="h-2 mt-2" />
-                  <p className="text-xs text-gray-500 mt-1">{stats.percentage}%</p>
-                </div>
-              ))}
+              {Object.entries(responseData.summary.by_group).map(
+                ([group, stats]) => (
+                  <div
+                    key={group}
+                    className="text-center p-4 bg-gray-50 rounded-lg"
+                  >
+                    <p className="text-sm font-medium text-gray-700 mb-2">
+                      {group}
+                    </p>
+                    <p className="text-xl font-bold text-gray-800">
+                      {stats.correct}/{stats.total}
+                    </p>
+                    <Progress value={stats.percentage} className="h-2 mt-2" />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {stats.percentage}%
+                    </p>
+                  </div>
+                ),
+              )}
             </div>
           </CardContent>
         </Card>
@@ -702,26 +1042,33 @@ export default function DiagnosticResponseSheet() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg text-gray-800">تقييم عام:</h4>
+                <h4 className="font-semibold text-lg text-gray-800">
+                  تقييم عام:
+                </h4>
                 {responseData.summary.completion_percentage >= 85 && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                     <p className="text-green-800 font-medium">✅ أداء ممتاز</p>
                     <p className="text-sm text-green-700 mt-1">
-                      الطفل يُظهر فهماً متقدماً لنظرية العقل ومهارات تفكير اجتماعي قوية.
+                      الطفل يُظهر فهماً متقدماً لنظرية العقل ومهارات تفكير
+                      اجتماعي قوية.
                     </p>
                   </div>
                 )}
-                {responseData.summary.completion_percentage >= 70 && responseData.summary.completion_percentage < 85 && (
-                  <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-yellow-800 font-medium">⚠️ أداء جيد</p>
-                    <p className="text-sm text-yellow-700 mt-1">
-                      الطفل يُظهر فهماً أساسياً جيداً مع إمكانية للتطوير في بعض المجالات.
-                    </p>
-                  </div>
-                )}
+                {responseData.summary.completion_percentage >= 70 &&
+                  responseData.summary.completion_percentage < 85 && (
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-yellow-800 font-medium">⚠️ أداء جيد</p>
+                      <p className="text-sm text-yellow-700 mt-1">
+                        الطفل يُظهر فهماً أساسياً جيداً مع إمكانية للتطوير في
+                        بعض المجالات.
+                      </p>
+                    </div>
+                  )}
                 {responseData.summary.completion_percentage < 70 && (
                   <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-800 font-medium">🔄 يحتاج دعم إضافي</p>
+                    <p className="text-red-800 font-medium">
+                      🔄 يحتاج دعم إضافي
+                    </p>
                     <p className="text-sm text-red-700 mt-1">
                       يُنصح بالمزيد من التمارين والدعم في مهارات نظرية العقل.
                     </p>
@@ -730,21 +1077,26 @@ export default function DiagnosticResponseSheet() {
               </div>
 
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg text-gray-800">التوصيات:</h4>
+                <h4 className="font-semibold text-lg text-gray-800">
+                  التوصيات:
+                </h4>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  {responseData.summary.by_group["الانفعالات"]?.percentage < 75 && (
+                  {responseData.summary.by_group["الانفعالات"]?.percentage <
+                    75 && (
                     <li className="flex items-start gap-2">
                       <span className="text-blue-600">•</span>
                       <span>تمارين إضافية للتعرف على المشاعر والانفعالات</span>
                     </li>
                   )}
-                  {responseData.summary.by_group["المعتقد الخاطئ"]?.percentage < 75 && (
+                  {responseData.summary.by_group["المعتقد الخاطئ"]?.percentage <
+                    75 && (
                     <li className="flex items-start gap-2">
                       <span className="text-green-600">•</span>
                       <span>أنشطة لتطوير فهم المعتقدات الخاطئة والتوقعات</span>
                     </li>
                   )}
-                  {responseData.summary.by_group["وجهات النظر"]?.percentage < 75 && (
+                  {responseData.summary.by_group["وجهات النظر"]?.percentage <
+                    75 && (
                     <li className="flex items-start gap-2">
                       <span className="text-purple-600">•</span>
                       <span>تمارين لفهم وجهات النظر المختلفة</span>
@@ -816,9 +1168,7 @@ export default function DiagnosticResponseSheet() {
               <FileText className="w-5 h-5 text-gray-600" />
               جدول الإجابات التفصيلي
             </CardTitle>
-            <CardDescription>
-              انقر على أي صف لعرض تفاصيل إضافية
-            </CardDescription>
+            <CardDescription>انقر على أي صف لعرض تفاصيل إضافية</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -829,35 +1179,54 @@ export default function DiagnosticResponseSheet() {
                     <th className="text-right p-3 font-semibold">المهمة</th>
                     <th className="text-right p-3 font-semibold">المجموعة</th>
                     <th className="text-right p-3 font-semibold">السؤال</th>
-                    <th className="text-right p-3 font-semibold">إجابة الطفل</th>
-                    <th className="text-right p-3 font-semibold">الإجابة الصحيحة</th>
+                    <th className="text-right p-3 font-semibold">
+                      إجابة الطفل
+                    </th>
+                    <th className="text-right p-3 font-semibold">
+                      الإجابة الصحيحة
+                    </th>
                     <th className="text-right p-3 font-semibold">النتيجة</th>
                     <th className="text-right p-3 font-semibold">الوقت</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredAnswers.map((answer) => {
-                    const metadata = responseData.metadata.find(m => m.question_id === answer.question_id);
+                    const metadata = responseData.metadata.find(
+                      (m) => m.question_id === answer.question_id,
+                    );
                     const isExpanded = expandedRows.has(answer.question_id);
 
                     return (
                       <React.Fragment key={answer.question_id}>
                         <tr
-                          className={`border-b hover:bg-gray-50 cursor-pointer ${answer.is_correct ? 'bg-green-50' : 'bg-red-50'}`}
+                          className={`border-b hover:bg-gray-50 cursor-pointer ${answer.is_correct ? "bg-green-50" : "bg-red-50"}`}
                           onClick={() => toggleRowExpansion(answer.question_id)}
                         >
-                          <td className="p-3 font-medium">{answer.question_id}</td>
+                          <td className="p-3 font-medium">
+                            {answer.question_id}
+                          </td>
                           <td className="p-3">
-                            <Badge variant="outline" className="bg-blue-100 text-blue-800">
+                            <Badge
+                              variant="outline"
+                              className="bg-blue-100 text-blue-800"
+                            >
                               {answer.task}
                             </Badge>
                           </td>
-                          <td className="p-3 text-xs">{metadata?.skill_group}</td>
-                          <td className="p-3 max-w-xs truncate">{metadata?.label}</td>
+                          <td className="p-3 text-xs">
+                            {metadata?.skill_group}
+                          </td>
+                          <td className="p-3 max-w-xs truncate">
+                            {metadata?.label}
+                          </td>
                           <td className="p-3">{answer.chosen_answer}</td>
                           <td className="p-3">{answer.correct_answer}</td>
                           <td className="p-3">
-                            <Badge variant={answer.is_correct ? "default" : "destructive"}>
+                            <Badge
+                              variant={
+                                answer.is_correct ? "default" : "destructive"
+                              }
+                            >
                               {answer.is_correct ? "✅ صحيح" : "❌ خطأ"}
                             </Badge>
                           </td>
@@ -882,7 +1251,9 @@ export default function DiagnosticResponseSheet() {
                                     <Button
                                       size="sm"
                                       variant="outline"
-                                      onClick={() => speakArabic(metadata?.label || '')}
+                                      onClick={() =>
+                                        speakArabic(metadata?.label || "")
+                                      }
                                     >
                                       <Volume2 className="w-4 h-4 ml-1" />
                                       تشغيل الصوت
@@ -890,14 +1261,19 @@ export default function DiagnosticResponseSheet() {
                                     <Button
                                       size="sm"
                                       variant="outline"
-                                      onClick={() => navigate(`/theory-of-mind-games?review=true&question=${answer.question_id}`)}
+                                      onClick={() =>
+                                        navigate(
+                                          `/theory-of-mind-games?review=true&question=${answer.question_id}`,
+                                        )
+                                      }
                                     >
                                       <Eye className="w-4 h-4 ml-1" />
                                       مراجعة السؤال
                                     </Button>
                                   </div>
                                   <p className="text-sm text-gray-600">
-                                    الخيارات المتاحة: {metadata?.choices.join(" | ")}
+                                    الخيارات المتاحة:{" "}
+                                    {metadata?.choices.join(" | ")}
                                   </p>
                                 </div>
                               </div>
@@ -951,7 +1327,7 @@ export default function DiagnosticResponseSheet() {
             </CardHeader>
             <CardContent className="space-y-3">
               <Button
-                onClick={() => navigate('/theory-of-mind-games?mode=review')}
+                onClick={() => navigate("/theory-of-mind-games?mode=review")}
                 variant="outline"
                 className="w-full"
               >
@@ -959,7 +1335,7 @@ export default function DiagnosticResponseSheet() {
                 مراجعة الأسئلة
               </Button>
               <Button
-                onClick={() => navigate('/theory-of-mind-games')}
+                onClick={() => navigate("/theory-of-mind-games")}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white"
               >
                 <RotateCcw className="w-4 h-4 ml-2" />
@@ -977,8 +1353,11 @@ export default function DiagnosticResponseSheet() {
                 variant="outline"
                 className="w-full"
                 onClick={() => {
-                  localStorage.setItem(`test_result_${responseData.child.child_id}`, JSON.stringify(responseData));
-                  alert('تم حفظ النتائج بنجاح');
+                  localStorage.setItem(
+                    `test_result_${responseData.child.child_id}`,
+                    JSON.stringify(responseData),
+                  );
+                  alert("تم حفظ النتائج بنجاح");
                 }}
               >
                 <Save className="w-4 h-4 ml-2" />
@@ -987,7 +1366,7 @@ export default function DiagnosticResponseSheet() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => navigate('/specialist-dashboard')}
+                onClick={() => navigate("/specialist-dashboard")}
               >
                 <Home className="w-4 h-4 ml-2" />
                 العودة للوحة التحكم

@@ -99,12 +99,19 @@ export default function Index() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50"
+      dir="rtl"
+    >
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Logo Section */}
         <div className="text-center mb-12">
           <div className="bg-black text-white rounded-full w-32 h-32 mx-auto mb-6 shadow-xl flex items-center justify-center overflow-hidden">
-            <img src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97af8386d4f542668cf40857fea32999?format=webp&width=256" alt="Ortho Smart" className="w-full h-full object-contain" />
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97af8386d4f542668cf40857fea32999?format=webp&width=256"
+              alt="Ortho Smart"
+              className="w-full h-full object-contain"
+            />
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
             Ortho Smart
@@ -116,8 +123,6 @@ export default function Index() {
             منصة رقمية متخصصة في الأرطوفونيا
           </div>
         </div>
-
-
 
         {/* Action Buttons */}
         <div className="text-center space-y-6">
@@ -167,7 +172,9 @@ export default function Index() {
                     <div className="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 group-hover:scale-110 transition-transform">
                       <Stethoscope className="w-10 h-10" />
                     </div>
-                    <h4 className="text-xl font-semibold mb-2">أنا أخصائي أرطوفوني</h4>
+                    <h4 className="text-xl font-semibold mb-2">
+                      أنا أخصائي أرطوفوني
+                    </h4>
                     <p className="text-gray-600 text-sm mb-4">
                       وصول شامل لجميع أدوات التقييم والتشخيص
                     </p>
@@ -206,8 +213,6 @@ export default function Index() {
             </div>
           )}
         </div>
-
-
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ export default function DiagnosticTests() {
     // Check for completed games and responses in localStorage
     const gameProgress = localStorage.getItem("theoryOfMindProgress");
     const responses = localStorage.getItem("diagnosticResponses");
-    
+
     if (gameProgress) {
       try {
         const progress = JSON.parse(gameProgress);
@@ -52,7 +52,8 @@ export default function DiagnosticTests() {
     {
       id: "theory-of-mind-games",
       title: "ألعاب نظرية العقل",
-      description: "9 ألعاب تفاعلية لتقييم نظرية العقل والقدرات المعرفية العليا",
+      description:
+        "9 ألعاب تفاعلية لتقييم نظرية العقل والقدرات المعرفية العليا",
       icon: Gamepad2,
       color: "blue",
       route: "/theory-of-mind-games",
@@ -60,9 +61,9 @@ export default function DiagnosticTests() {
       progress: Math.round((completedGames / totalGames) * 100),
       features: [
         "تقييم فهم المشاعر",
-        "اختبار المعتقدات الخاطئة", 
+        "اختبار المعتقدات الخاطئة",
         "تقييم وجهات النظر",
-        "ألعاب الذاكرة المكانية"
+        "ألعاب الذاكرة المكانية",
       ],
       difficulty: "متدرج",
       duration: "45-60 دقيقة",
@@ -80,7 +81,7 @@ export default function DiagnosticTests() {
         "تحليل مفصل للإجابات",
         "تفسيرات مهنية",
         "توصيات علاجية",
-        "تصدير التقارير PDF/Excel"
+        "تصدير التقارير PDF/Excel",
       ],
       difficulty: "تلقائي",
       duration: "15-20 دقيقة",
@@ -111,7 +112,10 @@ export default function DiagnosticTests() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -137,11 +141,15 @@ export default function DiagnosticTests() {
             </div>
             <div className="flex items-center gap-3">
               <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">{completedGames}</p>
+                <p className="text-2xl font-bold text-blue-600">
+                  {completedGames}
+                </p>
                 <p className="text-xs text-gray-600">مكتملة</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-purple-600">{totalGames}</p>
+                <p className="text-2xl font-bold text-purple-600">
+                  {totalGames}
+                </p>
                 <p className="text-xs text-gray-600">إجمالي</p>
               </div>
             </div>
@@ -157,7 +165,9 @@ export default function DiagnosticTests() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-blue-100">الألعاب المكتملة</p>
-                  <p className="text-3xl font-bold">{completedGames}/{totalGames}</p>
+                  <p className="text-3xl font-bold">
+                    {completedGames}/{totalGames}
+                  </p>
                 </div>
                 <Brain className="w-10 h-10 text-blue-200" />
               </div>
@@ -169,7 +179,9 @@ export default function DiagnosticTests() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-green-100">نسبة الإنجاز</p>
-                  <p className="text-3xl font-bold">{Math.round((completedGames / totalGames) * 100)}%</p>
+                  <p className="text-3xl font-bold">
+                    {Math.round((completedGames / totalGames) * 100)}%
+                  </p>
                 </div>
                 <Target className="w-10 h-10 text-green-200" />
               </div>
@@ -181,7 +193,9 @@ export default function DiagnosticTests() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-purple-100">حالة التقرير</p>
-                  <p className="text-xl font-bold">{hasResponses ? "جاهز" : "قيد الإعداد"}</p>
+                  <p className="text-xl font-bold">
+                    {hasResponses ? "جاهز" : "قيد الإعداد"}
+                  </p>
                 </div>
                 <FileBarChart className="w-10 h-10 text-purple-200" />
               </div>
@@ -203,19 +217,27 @@ export default function DiagnosticTests() {
                 <h4 className="font-semibold mb-2">خطوات التقييم:</h4>
                 <ol className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
-                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">1</span>
+                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                      1
+                    </span>
                     ابدأ بألعاب نظرية العقل (9 مهام تفاعلية)
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">2</span>
+                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                      2
+                    </span>
                     أكمل جميع المهام حسب مستوى الصعوبة
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                      3
+                    </span>
                     راجع النتائج في ورقة الاستجابة التشخيصية
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">4</span>
+                    <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                      4
+                    </span>
                     صدّر التقرير النهائي بصيغة PDF أو Excel
                   </li>
                 </ol>
@@ -260,7 +282,7 @@ export default function DiagnosticTests() {
                     <div>
                       <CardTitle className="text-xl">{tool.title}</CardTitle>
                       <div className="flex items-center gap-2 mt-1">
-                        <Badge 
+                        <Badge
                           className={`${getStatusColor(tool.status)} text-white`}
                         >
                           {tool.status}
@@ -276,7 +298,7 @@ export default function DiagnosticTests() {
                   {tool.description}
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="space-y-4">
                 {/* Progress Bar */}
                 <div className="space-y-2">
@@ -286,7 +308,7 @@ export default function DiagnosticTests() {
                   </div>
                   <div className="bg-gray-200 rounded-full h-2">
                     <div
-                      className={`${tool.color === 'blue' ? 'bg-blue-500' : 'bg-green-500'} rounded-full h-2 transition-all duration-500`}
+                      className={`${tool.color === "blue" ? "bg-blue-500" : "bg-green-500"} rounded-full h-2 transition-all duration-500`}
                       style={{ width: `${tool.progress}%` }}
                     />
                   </div>
@@ -297,7 +319,10 @@ export default function DiagnosticTests() {
                   <h4 className="font-semibold text-sm mb-2">المميزات:</h4>
                   <div className="grid grid-cols-2 gap-2">
                     {tool.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm text-gray-600"
+                      >
                         <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
                         {feature}
                       </div>
@@ -306,12 +331,14 @@ export default function DiagnosticTests() {
                 </div>
 
                 {/* Action Button */}
-                <Button 
+                <Button
                   className="w-full mt-4 group-hover:bg-primary/90 transition-colors"
                   size="lg"
                 >
                   <Play className="w-4 h-4 ml-2" />
-                  {tool.id === "response-sheet" && !hasResponses ? "عرض المتطلبات" : "البدء"}
+                  {tool.id === "response-sheet" && !hasResponses
+                    ? "عرض المتطلبات"
+                    : "البدء"}
                 </Button>
               </CardContent>
             </Card>

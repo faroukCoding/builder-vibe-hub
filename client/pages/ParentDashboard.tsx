@@ -559,9 +559,7 @@ export default function ParentDashboard() {
             <Brain className="w-6 h-6 text-green-600" />
             المكتسبات الأساسية
           </CardTitle>
-          <CardDescription>
-            المكتسبات القبلية والمجموعة الضمنية
-          </CardDescription>
+          <CardDescription>المكتسبات القبلية والمجموعة الضمنية</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4 mb-6">
@@ -572,7 +570,9 @@ export default function ParentDashboard() {
               <div className="text-3xl">🎨</div>
               <div className="text-center">
                 <div className="font-semibold">المكتسبات القبلية</div>
-                <div className="text-xs opacity-80">الألوان، الأرقام، الجسم، الجانبية</div>
+                <div className="text-xs opacity-80">
+                  الألوان، الأرقام، الجسم، الجانبية
+                </div>
               </div>
             </Button>
             <Button
@@ -582,7 +582,9 @@ export default function ParentDashboard() {
               <div className="text-3xl">🗂️</div>
               <div className="text-center">
                 <div className="font-semibold">المجموعة الضمنية</div>
-                <div className="text-xs opacity-80">الفواكه، الخضر، المواصلات، الطيور</div>
+                <div className="text-xs opacity-80">
+                  الفواكه، الخضر، المواصلات، الطيور
+                </div>
               </div>
             </Button>
           </div>
@@ -1012,20 +1014,20 @@ export default function ParentDashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                localStorage.removeItem("isLoggedIn");
-                localStorage.removeItem("userType");
-                localStorage.removeItem("userEmail");
-                navigate("/");
-              }}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              تسجيل الخروج
-            </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  localStorage.removeItem("isLoggedIn");
+                  localStorage.removeItem("userType");
+                  localStorage.removeItem("userEmail");
+                  navigate("/");
+                }}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                تسجيل الخروج
+              </Button>
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-3 rounded-xl">
                   <Baby className="w-8 h-8" />

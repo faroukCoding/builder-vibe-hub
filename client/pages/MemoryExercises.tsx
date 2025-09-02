@@ -29,9 +29,9 @@ export default function MemoryExercises() {
   const [activeType, setActiveType] = useState<string | null>(null);
 
   const speakArabic = (text: string) => {
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
+      utterance.lang = "ar-SA";
       utterance.rate = 0.8;
       speechSynthesis.speak(utterance);
     }
@@ -39,20 +39,20 @@ export default function MemoryExercises() {
 
   const memoryTypes = [
     {
-      id: 'auditory',
-      title: 'الذاكرة السمعية',
-      subtitle: 'Auditory Memory',
+      id: "auditory",
+      title: "الذاكرة السمعية",
+      subtitle: "Auditory Memory",
       icon: <Ear className="w-8 h-8" />,
-      color: 'bg-green-500',
-      description: 'صندوق الأصوات المتسلسل - رتب بتسلسل حسب الصوت',
+      color: "bg-green-500",
+      description: "صندوق الأصوات المتسلسل - رتب بتسلسل حسب الصوت",
     },
     {
-      id: 'visual',
-      title: 'الذاكرة البصرية',
-      subtitle: 'Visual Memory',
+      id: "visual",
+      title: "الذاكرة البصرية",
+      subtitle: "Visual Memory",
       icon: <Eye className="w-8 h-8" />,
-      color: 'bg-blue-500',
-      description: 'مكان الصورة - تذكر مواضع الصور واسحبها لأماكنها',
+      color: "bg-blue-500",
+      description: "مكان الصورة - تذكر مواضع الصور واسحبها لأماكنها",
     },
   ];
 
@@ -68,33 +68,37 @@ export default function MemoryExercises() {
     const [showResult, setShowResult] = useState(false);
 
     const sounds = [
-      { id: 'bell', name: 'جرس', emoji: '🔔', sound: 'bell' },
-      { id: 'cat', name: 'مواء', emoji: '🐱', sound: 'meow' },
-      { id: 'whistle', name: 'صفارة', emoji: '🎵', sound: 'whistle' },
+      { id: "bell", name: "جرس", emoji: "🔔", sound: "bell" },
+      { id: "cat", name: "مواء", emoji: "🐱", sound: "meow" },
+      { id: "whistle", name: "صفارة", emoji: "🎵", sound: "whistle" },
     ];
 
-    const availableSounds = sounds.slice(0, Math.min(2 + Math.floor(currentLevel / 5), sounds.length));
+    const availableSounds = sounds.slice(
+      0,
+      Math.min(2 + Math.floor(currentLevel / 5), sounds.length),
+    );
 
     const playSequence = async () => {
       setIsPlaying(true);
       setIsPlayerTurn(false);
-      
+
       // Generate new sequence
       const newSequence = [];
       const sequenceLength = Math.min(2 + Math.floor(score / 5), 4);
-      
+
       for (let i = 0; i < sequenceLength; i++) {
-        const randomSound = availableSounds[Math.floor(Math.random() * availableSounds.length)];
+        const randomSound =
+          availableSounds[Math.floor(Math.random() * availableSounds.length)];
         newSequence.push(randomSound.id);
       }
-      
+
       setSequence(newSequence);
       setPlayerSequence([]);
 
       // Play sequence with delays
       for (let i = 0; i < newSequence.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        const sound = sounds.find(s => s.id === newSequence[i]);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const sound = sounds.find((s) => s.id === newSequence[i]);
         if (sound) {
           speakArabic(sound.name);
         }
@@ -103,7 +107,7 @@ export default function MemoryExercises() {
       setTimeout(() => {
         setIsPlaying(false);
         setIsPlayerTurn(true);
-        speakArabic('رتب بتسلسل حسب الصوت');
+        speakArabic("رتب بتسلسل حسب الصوت");
       }, 1000);
     };
 
@@ -114,13 +118,15 @@ export default function MemoryExercises() {
       setPlayerSequence(newPlayerSequence);
 
       // Check if the sequence is correct so far
-      const isCorrect = newPlayerSequence.every((sound, index) => sound === sequence[index]);
+      const isCorrect = newPlayerSequence.every(
+        (sound, index) => sound === sequence[index],
+      );
 
       if (!isCorrect) {
         // Wrong answer
         setLives(lives - 1);
-        speakArabic('أوووو حاول مرة أخرى');
-        
+        speakArabic("أوووو حاول مرة أخرى");
+
         if (lives - 1 <= 0) {
           setShowResult(true);
         } else {
@@ -135,8 +141,8 @@ export default function MemoryExercises() {
       // Check if sequence is complete
       if (newPlayerSequence.length === sequence.length) {
         setScore(score + 1);
-        speakArabic('ممتاز! إجابة صحيحة');
-        
+        speakArabic("ممتاز! إجابة صحيحة");
+
         setTimeout(() => {
           playSequence();
         }, 1500);
@@ -154,13 +160,15 @@ export default function MemoryExercises() {
           <h3 className="text-2xl font-bold">انتهت لعبة الذاكرة السمعية!</h3>
           <p className="text-lg">النتيجة: {score} تسلسلات صحيحة</p>
           <div className="flex gap-4 justify-center">
-            <Button onClick={() => {
-              setScore(0);
-              setLives(3);
-              setShowResult(false);
-              setCurrentLevel(1);
-              playSequence();
-            }}>
+            <Button
+              onClick={() => {
+                setScore(0);
+                setLives(3);
+                setShowResult(false);
+                setCurrentLevel(1);
+                playSequence();
+              }}
+            >
               <RotateCcw className="w-4 h-4 ml-2" />
               إعادة اللعب
             </Button>
@@ -179,19 +187,24 @@ export default function MemoryExercises() {
           <div className="flex items-center justify-center gap-6 mb-4">
             <div className="flex">
               {[...Array(3)].map((_, i) => (
-                <span key={i} className={`text-2xl ${i < lives ? 'text-red-500' : 'text-gray-300'}`}>❤️</span>
+                <span
+                  key={i}
+                  className={`text-2xl ${i < lives ? "text-red-500" : "text-gray-300"}`}
+                >
+                  ❤️
+                </span>
               ))}
             </div>
             <div className="text-lg font-bold">النتيجة: {score}</div>
           </div>
-          
+
           {isPlaying && (
             <div className="text-blue-600 font-semibold mb-4">
               <Timer className="w-5 h-5 inline ml-2" />
               استمع للتسلسل...
             </div>
           )}
-          
+
           {isPlayerTurn && (
             <div className="text-green-600 font-semibold mb-4">
               دورك الآن - اضغط على الأصوات بنفس الترتيب
@@ -201,12 +214,14 @@ export default function MemoryExercises() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-md mx-auto">
           {availableSounds.map((sound) => (
-            <Card 
+            <Card
               key={sound.id}
               className={`cursor-pointer hover:shadow-lg transition-all ${
-                !isPlayerTurn ? 'opacity-50 cursor-not-allowed' : ''
+                !isPlayerTurn ? "opacity-50 cursor-not-allowed" : ""
               } ${
-                playerSequence.includes(sound.id) ? 'bg-blue-100 border-blue-400' : ''
+                playerSequence.includes(sound.id)
+                  ? "bg-blue-100 border-blue-400"
+                  : ""
               }`}
               onClick={() => handleSoundClick(sound.id)}
             >
@@ -219,8 +234,8 @@ export default function MemoryExercises() {
         </div>
 
         <div className="text-center">
-          <Button 
-            onClick={() => speakArabic('يسمع المستخدم تسلسلاً صوتياً')}
+          <Button
+            onClick={() => speakArabic("يسمع المستخدم تسلسلاً صوتياً")}
             variant="outline"
           >
             <Volume2 className="w-4 h-4 ml-2" />
@@ -244,30 +259,34 @@ export default function MemoryExercises() {
     const [gridSize] = useState(4);
     const [images, setImages] = useState<string[]>([]);
     const [showImages, setShowImages] = useState(true);
-    const [gamePhase, setGamePhase] = useState<'memorize' | 'place'>('memorize');
-    const [placedImages, setPlacedImages] = useState<{[key: number]: string}>({});
+    const [gamePhase, setGamePhase] = useState<"memorize" | "place">(
+      "memorize",
+    );
+    const [placedImages, setPlacedImages] = useState<{ [key: number]: string }>(
+      {},
+    );
     const [availableImages, setAvailableImages] = useState<string[]>([]);
     const [score, setScore] = useState(0);
     const [lives, setLives] = useState(3);
     const [showResult, setShowResult] = useState(false);
     const [memorizeTime, setMemorizeTime] = useState(5);
 
-    const imageEmojis = ['🐱', '🐸', '🐰', '🦆'];
+    const imageEmojis = ["🐱", "🐸", "🐰", "🦆"];
 
     const initializeGame = () => {
       // Create a grid with some images
-      const newImages = Array(gridSize).fill('');
+      const newImages = Array(gridSize).fill("");
       const positions = [0, 1, 2, 3]; // First 4 positions
       const selectedImages = imageEmojis.slice(0, 4);
-      
+
       positions.forEach((pos, index) => {
         newImages[pos] = selectedImages[index];
       });
-      
+
       setImages(newImages);
       setAvailableImages([...selectedImages]);
       setPlacedImages({});
-      setGamePhase('memorize');
+      setGamePhase("memorize");
       setShowImages(true);
       setMemorizeTime(5);
     };
@@ -277,33 +296,33 @@ export default function MemoryExercises() {
     }, []);
 
     useEffect(() => {
-      if (gamePhase === 'memorize' && memorizeTime > 0) {
+      if (gamePhase === "memorize" && memorizeTime > 0) {
         const timer = setTimeout(() => {
           setMemorizeTime(memorizeTime - 1);
         }, 1000);
         return () => clearTimeout(timer);
-      } else if (gamePhase === 'memorize' && memorizeTime === 0) {
+      } else if (gamePhase === "memorize" && memorizeTime === 0) {
         setShowImages(false);
-        setGamePhase('place');
-        speakArabic('أين مكان الصور');
+        setGamePhase("place");
+        speakArabic("أين مكان الصور");
       }
     }, [memorizeTime, gamePhase]);
 
     const handleDrop = (position: number, imageEmoji: string) => {
-      if (gamePhase !== 'place') return;
-      
+      if (gamePhase !== "place") return;
+
       const correctImage = images[position];
       const isCorrect = correctImage === imageEmoji;
-      
+
       if (isCorrect) {
-        setPlacedImages({...placedImages, [position]: imageEmoji});
-        setAvailableImages(availableImages.filter(img => img !== imageEmoji));
-        speakArabic('ممتاز! مكان صحيح');
-        
+        setPlacedImages({ ...placedImages, [position]: imageEmoji });
+        setAvailableImages(availableImages.filter((img) => img !== imageEmoji));
+        speakArabic("ممتاز! مكان صحيح");
+
         // Check if all images are placed correctly
-        const newPlaced = {...placedImages, [position]: imageEmoji};
+        const newPlaced = { ...placedImages, [position]: imageEmoji };
         const allPlaced = Object.keys(newPlaced).length === imageEmojis.length;
-        
+
         if (allPlaced) {
           setScore(score + 1);
           setTimeout(() => {
@@ -312,8 +331,8 @@ export default function MemoryExercises() {
         }
       } else {
         setLives(lives - 1);
-        speakArabic('أوووو حاول مرة أخرى');
-        
+        speakArabic("أوووو حاول مرة أخرى");
+
         if (lives - 1 <= 0) {
           setShowResult(true);
         }
@@ -327,12 +346,14 @@ export default function MemoryExercises() {
           <h3 className="text-2xl font-bold">انتهت لعبة الذاكرة البصرية!</h3>
           <p className="text-lg">النتيجة: {score} جولات صحيحة</p>
           <div className="flex gap-4 justify-center">
-            <Button onClick={() => {
-              setScore(0);
-              setLives(3);
-              setShowResult(false);
-              initializeGame();
-            }}>
+            <Button
+              onClick={() => {
+                setScore(0);
+                setLives(3);
+                setShowResult(false);
+                initializeGame();
+              }}
+            >
               <RotateCcw className="w-4 h-4 ml-2" />
               إعادة اللعب
             </Button>
@@ -351,20 +372,25 @@ export default function MemoryExercises() {
           <div className="flex items-center justify-center gap-6 mb-4">
             <div className="flex">
               {[...Array(3)].map((_, i) => (
-                <span key={i} className={`text-2xl ${i < lives ? 'text-red-500' : 'text-gray-300'}`}>❤️</span>
+                <span
+                  key={i}
+                  className={`text-2xl ${i < lives ? "text-red-500" : "text-gray-300"}`}
+                >
+                  ❤️
+                </span>
               ))}
             </div>
             <div className="text-lg font-bold">النتيجة: {score}</div>
           </div>
-          
-          {gamePhase === 'memorize' && (
+
+          {gamePhase === "memorize" && (
             <div className="text-blue-600 font-semibold mb-4">
               <Timer className="w-5 h-5 inline ml-2" />
               احفظ مواضع الصور - يتبقى {memorizeTime} ثواني
             </div>
           )}
-          
-          {gamePhase === 'place' && (
+
+          {gamePhase === "place" && (
             <div className="text-green-600 font-semibold mb-4">
               اسحب كل صورة إلى مكانها الصحيح
             </div>
@@ -373,24 +399,26 @@ export default function MemoryExercises() {
 
         {/* Grid */}
         <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-6">
-          {Array(gridSize).fill(0).map((_, index) => (
-            <div
-              key={index}
-              className="w-24 h-24 border-4 border-black rounded-lg flex items-center justify-center text-4xl bg-white hover:bg-gray-50 transition-colors"
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault();
-                const imageEmoji = e.dataTransfer.getData('text/plain');
-                handleDrop(index, imageEmoji);
-              }}
-            >
-              {(showImages && images[index]) || placedImages[index] || ''}
-            </div>
-          ))}
+          {Array(gridSize)
+            .fill(0)
+            .map((_, index) => (
+              <div
+                key={index}
+                className="w-24 h-24 border-4 border-black rounded-lg flex items-center justify-center text-4xl bg-white hover:bg-gray-50 transition-colors"
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const imageEmoji = e.dataTransfer.getData("text/plain");
+                  handleDrop(index, imageEmoji);
+                }}
+              >
+                {(showImages && images[index]) || placedImages[index] || ""}
+              </div>
+            ))}
         </div>
 
         {/* Available images to drag */}
-        {gamePhase === 'place' && (
+        {gamePhase === "place" && (
           <div className="flex justify-center gap-4">
             {availableImages.map((imageEmoji, index) => (
               <div
@@ -398,7 +426,7 @@ export default function MemoryExercises() {
                 className="w-16 h-16 bg-blue-100 border-2 border-blue-300 rounded-lg flex items-center justify-center text-3xl cursor-move hover:scale-110 transition-transform"
                 draggable
                 onDragStart={(e) => {
-                  e.dataTransfer.setData('text/plain', imageEmoji);
+                  e.dataTransfer.setData("text/plain", imageEmoji);
                 }}
               >
                 {imageEmoji}
@@ -408,8 +436,8 @@ export default function MemoryExercises() {
         )}
 
         <div className="text-center">
-          <Button 
-            onClick={() => speakArabic('يسمع المستخدم أين مكان الصور')}
+          <Button
+            onClick={() => speakArabic("يسمع المستخدم أين مكان الصور")}
             variant="outline"
           >
             <Volume2 className="w-4 h-4 ml-2" />
@@ -422,9 +450,9 @@ export default function MemoryExercises() {
 
   const renderMemoryGame = () => {
     switch (activeType) {
-      case 'auditory':
+      case "auditory":
         return <AuditoryMemoryGame onComplete={() => setActiveType(null)} />;
-      case 'visual':
+      case "visual":
         return <VisualMemoryGame onComplete={() => setActiveType(null)} />;
       default:
         return null;
@@ -433,7 +461,10 @@ export default function MemoryExercises() {
 
   if (activeType) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+      <div
+        className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+        dir="rtl"
+      >
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-4 mb-8">
@@ -446,10 +477,10 @@ export default function MemoryExercises() {
                 العودة
               </Button>
               <h1 className="text-2xl font-bold">
-                {memoryTypes.find(t => t.id === activeType)?.title}
+                {memoryTypes.find((t) => t.id === activeType)?.title}
               </h1>
             </div>
-            
+
             {renderMemoryGame()}
           </div>
         </div>
@@ -458,7 +489,10 @@ export default function MemoryExercises() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -483,11 +517,7 @@ export default function MemoryExercises() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/')}
-              >
+              <Button variant="outline" size="sm" onClick={() => navigate("/")}>
                 <Home className="w-4 h-4 ml-2" />
                 الرئيسية
               </Button>
@@ -517,7 +547,9 @@ export default function MemoryExercises() {
               onClick={() => setActiveType(type.id)}
             >
               <CardHeader className="text-center">
-                <div className={`${type.color} text-white p-6 rounded-xl w-20 h-20 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <div
+                  className={`${type.color} text-white p-6 rounded-xl w-20 h-20 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform`}
+                >
                   {type.icon}
                 </div>
                 <CardTitle className="text-xl">{type.title}</CardTitle>
@@ -528,7 +560,7 @@ export default function MemoryExercises() {
                   {type.description}
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent>
                 <Button className="w-full" size="lg">
                   <Play className="w-4 h-4 ml-2" />

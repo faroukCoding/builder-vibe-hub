@@ -9,7 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeft, Calculator, Calendar, Home, Copy, CheckCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Calculator,
+  Calendar,
+  Home,
+  Copy,
+  CheckCircle,
+} from "lucide-react";
 
 export default function AgeCalculator() {
   const navigate = useNavigate();
@@ -89,14 +96,14 @@ export default function AgeCalculator() {
     const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     const totalMonths = years * 12 + months;
 
-    setResult({ 
-      years, 
-      months, 
-      days, 
-      totalDays, 
+    setResult({
+      years,
+      months,
+      days,
+      totalDays,
       totalMonths,
-      birthDate: birth.toLocaleDateString('ar-SA'),
-      currentDate: today.toLocaleDateString('ar-SA')
+      birthDate: birth.toLocaleDateString("ar-SA"),
+      currentDate: today.toLocaleDateString("ar-SA"),
     });
   };
 
@@ -114,14 +121,17 @@ export default function AgeCalculator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50"
+      dir="rtl"
+    >
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={() => navigate(-1)}
                 className="flex items-center gap-2"
@@ -141,9 +151,9 @@ export default function AgeCalculator() {
                 </div>
               </div>
             </div>
-            <Button 
+            <Button
               variant="outline"
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               className="flex items-center gap-2"
             >
               <Home className="w-4 h-4" />
@@ -164,10 +174,12 @@ export default function AgeCalculator() {
               أدخل تاريخ الميلاد لحساب العمر الحالي بدقة
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-center">تاريخ الميلاد</h3>
+              <h3 className="text-lg font-semibold text-center">
+                تاريخ الميلاد
+              </h3>
               <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700 block text-center">
@@ -212,18 +224,18 @@ export default function AgeCalculator() {
                   />
                 </div>
               </div>
-              
+
               <div className="flex gap-4 justify-center">
-                <Button 
-                  onClick={calculateAge} 
+                <Button
+                  onClick={calculateAge}
                   className="bg-green-600 hover:bg-green-700 text-lg py-6 px-8"
                   size="lg"
                 >
                   <Calculator className="w-5 h-5 ml-2" />
                   احسب العمر
                 </Button>
-                <Button 
-                  onClick={resetForm} 
+                <Button
+                  onClick={resetForm}
                   variant="outline"
                   className="text-lg py-6 px-8"
                   size="lg"
@@ -239,7 +251,7 @@ export default function AgeCalculator() {
                   <CheckCircle className="w-6 h-6 inline ml-2" />
                   نتيجة حساب العمر
                 </h3>
-                
+
                 <div className="space-y-6">
                   {/* العمر الأساسي */}
                   <div className="text-center">
@@ -250,15 +262,19 @@ export default function AgeCalculator() {
                       العمر الحالي بالتفصيل
                     </div>
                   </div>
-                  
+
                   {/* تفاصيل إضافية */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white rounded-lg p-4 text-center border">
-                      <div className="text-2xl font-bold text-blue-600">{result.totalMonths}</div>
+                      <div className="text-2xl font-bold text-blue-600">
+                        {result.totalMonths}
+                      </div>
                       <div className="text-sm text-gray-600">إجمالي الشهور</div>
                     </div>
                     <div className="bg-white rounded-lg p-4 text-center border">
-                      <div className="text-2xl font-bold text-purple-600">{result.totalDays}</div>
+                      <div className="text-2xl font-bold text-purple-600">
+                        {result.totalDays}
+                      </div>
                       <div className="text-sm text-gray-600">إجمالي الأيام</div>
                     </div>
                   </div>
@@ -266,19 +282,27 @@ export default function AgeCalculator() {
                   {/* معلومات التواريخ */}
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="bg-blue-50 p-3 rounded-lg text-center">
-                      <div className="font-semibold text-blue-800">تاريخ الميلاد</div>
+                      <div className="font-semibold text-blue-800">
+                        تاريخ الميلاد
+                      </div>
                       <div className="text-blue-600">{result.birthDate}</div>
                     </div>
                     <div className="bg-green-50 p-3 rounded-lg text-center">
-                      <div className="font-semibold text-green-800">تاريخ اليوم</div>
+                      <div className="font-semibold text-green-800">
+                        تاريخ اليوم
+                      </div>
                       <div className="text-green-600">{result.currentDate}</div>
                     </div>
                   </div>
 
                   {/* زر النسخ */}
                   <div className="text-center">
-                    <Button 
-                      onClick={() => copyToClipboard(`${result.years} سنة، ${result.months} شهر، ${result.days} يوم`)}
+                    <Button
+                      onClick={() =>
+                        copyToClipboard(
+                          `${result.years} سنة، ${result.months} شهر، ${result.days} يوم`,
+                        )
+                      }
                       variant="outline"
                       className="flex items-center gap-2"
                     >
@@ -286,7 +310,9 @@ export default function AgeCalculator() {
                       نسخ النتيجة
                     </Button>
                     {copied && (
-                      <p className="text-green-600 text-sm mt-2">تم نسخ النتيجة بنجاح!</p>
+                      <p className="text-green-600 text-sm mt-2">
+                        تم نسخ النتيجة بنجاح!
+                      </p>
                     )}
                   </div>
                 </div>
@@ -324,11 +350,13 @@ export default function AgeCalculator() {
                 </ul>
               </div>
             </div>
-            
+
             <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2">مثال على الاستخدام:</h4>
+              <h4 className="font-semibold text-blue-800 mb-2">
+                مثال على الاستخدام:
+              </h4>
               <p className="text-blue-700 text-sm">
-                إذا وُلد الطفل في 15 مارس 2020، وكان تاريخ اليوم 10 يناير 2024، 
+                إذا وُلد الطفل في 15 مارس 2020، وكان تاريخ اليوم 10 يناير 2024،
                 فسيكون عمره 3 سنوات، 9 أشهر، 26 يوم تقريباً.
               </p>
             </div>
