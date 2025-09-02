@@ -260,7 +260,7 @@ export default function ParentDashboard() {
             <div className="text-2xl font-bold text-purple-600 mb-1">
               {achievements.filter((a) => a.earned).length}
             </div>
-            <div className="text-sm text-purple-700">الإنجازات</div>
+            <div className="text-sm text-purple-700">الإنجازا��</div>
           </CardContent>
         </Card>
       </div>
@@ -339,7 +339,7 @@ export default function ParentDashboard() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>تار��خ الجلسات</CardTitle>
+          <CardTitle>تاريخ الجلسات</CardTitle>
           <CardDescription>سجل مفصل بجميع الجلسات والأنشطة</CardDescription>
         </CardHeader>
         <CardContent>
@@ -535,7 +535,7 @@ export default function ParentDashboard() {
               <div className="text-3xl">🧠</div>
               <div className="text-center">
                 <div className="font-semibold">ألعاب نظرية العقل</div>
-                <div className="text-xs opacity-80">9 ألعاب تشخيصية</div>
+                <div className="text-xs opacity-80">9 ألعاب ت��خيصية</div>
               </div>
             </Button>
             <Button
@@ -808,7 +808,7 @@ export default function ParentDashboard() {
             الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشعبية
           </CardTitle>
           <CardDescription>
-            توزيع المرضى ونسب النجاح حسب الولايات
+            توزيع المرضى ونسب النجاح ح��ب الولايات
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -902,7 +902,7 @@ export default function ParentDashboard() {
                     <tr className="border-b">
                       <th className="text-right p-3">الولاية</th>
                       <th className="text-right p-3">عدد المرضى</th>
-                      <th className="text-right p-3">إجمالي الحال��ت</th>
+                      <th className="text-right p-3">إجمالي الحالات</th>
                       <th className="text-right p-3">نسبة النجاح</th>
                       <th className="text-right p-3">الحالة</th>
                     </tr>
