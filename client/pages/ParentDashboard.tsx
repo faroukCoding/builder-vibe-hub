@@ -552,6 +552,90 @@ export default function ParentDashboard() {
         </CardContent>
       </Card>
 
+      {/* المكتسبات القبلي�� والمجموعة الضمنية */}
+      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Brain className="w-6 h-6 text-green-600" />
+            المكتسبات الأساسية
+          </CardTitle>
+          <CardDescription>
+            المكتسبات القبلية والمجموعة الضمنية
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <Button
+              onClick={() => navigate("/pre-basic-acquisitions")}
+              className="h-32 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🎨</div>
+              <div className="text-center">
+                <div className="font-semibold">المكتسبات القبلية</div>
+                <div className="text-xs opacity-80">الألوان، الأرقام، الجسم، الجانبية</div>
+              </div>
+            </Button>
+            <Button
+              onClick={() => navigate("/implicit-group")}
+              className="h-32 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🗂️</div>
+              <div className="text-center">
+                <div className="font-semibold">المجموعة الضمنية</div>
+                <div className="text-xs opacity-80">الفواكه، الخضر، المواصلات، الطيور</div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* تمارين الإدراك والانتباه والذاكرة */}
+      <Card className="bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Eye className="w-6 h-6 text-orange-600" />
+            التمارين المعرفية المتقدمة
+          </CardTitle>
+          <CardDescription>
+            تمارين الإدراك البصري والانتباه والذاكرة
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <Button
+              onClick={() => navigate("/perceptual-exercises")}
+              className="h-32 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">👁️</div>
+              <div className="text-center">
+                <div className="font-semibold">الإدراك البصري</div>
+                <div className="text-xs opacity-80">3 مراحل متدرجة</div>
+              </div>
+            </Button>
+            <Button
+              onClick={() => navigate("/attention-exercises")}
+              className="h-32 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🎯</div>
+              <div className="text-center">
+                <div className="font-semibold">تمارين الانتباه</div>
+                <div className="text-xs opacity-80">3 أنواع انتباه</div>
+              </div>
+            </Button>
+            <Button
+              onClick={() => navigate("/memory-exercises")}
+              className="h-32 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🧠</div>
+              <div className="text-center">
+                <div className="font-semibold">تمارين الذاكرة</div>
+                <div className="text-xs opacity-80">سمعية وبصرية</div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* تمارين الإدراك المعرفية */}
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
         <CardHeader>
