@@ -113,7 +113,7 @@ export default function ParentDashboard() {
   ];
 
   const achievements = [
-    { title: "أول جلسة", earned: true, date: "2024-01-01", icon: "🎯" },
+    { title: "أول جلسة", earned: true, date: "2024-01-01", icon: "���" },
     { title: "5 جلسات", earned: true, date: "2024-01-10", icon: "⭐" },
     { title: "تحسن 50%", earned: true, date: "2024-01-12", icon: "📈" },
     { title: "10 جلسات", earned: false, date: null, icon: "🏆" },
@@ -552,7 +552,7 @@ export default function ParentDashboard() {
         </CardContent>
       </Card>
 
-      {/* المكتسبات القبلي�� والمجموعة الضمنية */}
+      {/* المكتسبات القبلية والمجموعة الضمنية */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -902,7 +902,7 @@ export default function ParentDashboard() {
                     <tr className="border-b">
                       <th className="text-right p-3">الولاية</th>
                       <th className="text-right p-3">عدد المرضى</th>
-                      <th className="text-right p-3">إجمالي الحالات</th>
+                      <th className="text-right p-3">إجمالي الحال��ت</th>
                       <th className="text-right p-3">نسبة النجاح</th>
                       <th className="text-right p-3">الحالة</th>
                     </tr>
@@ -1012,15 +1012,20 @@ export default function ParentDashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/")}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                تسجيل الخروج
-              </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("userType");
+                localStorage.removeItem("userEmail");
+                navigate("/");
+              }}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              تسجيل الخروج
+            </Button>
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-3 rounded-xl">
                   <Baby className="w-8 h-8" />

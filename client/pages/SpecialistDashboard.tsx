@@ -56,7 +56,7 @@ export default function SpecialistDashboard() {
   const patients = [
     {
       id: 1,
-      name: "أحمد ��حمد السع��د",
+      name: "أحمد ��حمد السعيد",
       age: 6,
       lastVisit: "2024-01-15",
       status: "متابعة",
@@ -156,7 +156,7 @@ export default function SpecialistDashboard() {
     },
     {
       id: "age-calc",
-      title: "أداة حساب العمر الزمني",
+      title: "أداة حساب العمر ا��زمني",
       description: "حساب العمر الزمني بدقة",
       icon: Calculator,
       color: "purple",
@@ -197,7 +197,7 @@ export default function SpecialistDashboard() {
     {
       id: "memory",
       title: "تمارين الذاكرة",
-      description: "الذاكرة السمعية والبصرية",
+      description: "ا��ذاكرة السمعية والبصرية",
       icon: Brain,
       color: "cyan",
       route: "/memory-exercises",
@@ -456,7 +456,12 @@ export default function SpecialistDashboard() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  localStorage.removeItem("isLoggedIn");
+                  localStorage.removeItem("userType");
+                  localStorage.removeItem("userEmail");
+                  navigate("/");
+                }}
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -754,7 +759,7 @@ export default function SpecialistDashboard() {
                                       ? "ممتاز"
                                       : item.success >= 70
                                         ? "جيد"
-                                        : "��حتاج تحسين"}
+                                        : "يحتاج تحسين"}
                                   </Badge>
                                 </td>
                               </tr>
@@ -930,7 +935,7 @@ export default function SpecialistDashboard() {
                             تنسيق التاريخ
                           </label>
                           <select className="w-full p-2 border rounded-md">
-                            <option value="dd/mm/yyyy">ي���م/شهر/سنة</option>
+                            <option value="dd/mm/yyyy">ي����م/شهر/سنة</option>
                             <option value="mm/dd/yyyy">شهر/يوم/سنة</option>
                             <option value="yyyy-mm-dd">سنة-شهر-يوم</option>
                           </select>
@@ -1115,7 +1120,7 @@ export default function SpecialistDashboard() {
                         <h4 className="font-medium mb-2">معلومات النسخة</h4>
                         <div className="text-sm text-gray-600 space-y-1">
                           <p>Ortho Smart v2.1.0</p>
-                          <p>تاريخ آخر تحدي��: 15 يناير 2024</p>
+                          <p>تاريخ آخر تحديث: 15 يناير 2024</p>
                           <p>رقم البناء: 2024.01.15.001</p>
                         </div>
                       </div>
