@@ -296,7 +296,7 @@ export default function PerceptualExercises() {
       <div className="space-y-6">
         <div className="text-center">
           <h3 className="text-xl font-bold mb-4">اسحب الشكل إلى صورته المتطابقة</h3>
-          <Button onClick={() => speakArabic('إحسب الشكل الى صورته المتطابقة أو ربط بينهما')}>
+          <Button onClick={() => speakArabic('اسحب الشكل إلى صورته المتطابقة')}>
             <Volume2 className="w-4 h-4 ml-2" />
             استمع للتعليمة
           </Button>
@@ -384,7 +384,7 @@ export default function PerceptualExercises() {
           }
         }, 1500);
       } else {
-        speakArabic('حاول مرة أ��رى');
+        speakArabic('حاول مرة أخرى');
       }
     };
 
@@ -515,7 +515,7 @@ export default function PerceptualExercises() {
         <div className="text-center mb-12">
           <div className="text-8xl mb-6">🧠</div>
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            تمارين الإدراك البصري
+            تما��ين الإدراك البصري
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             جعل التعلم ممتعاً من خلال التدرج من السهل إلى الصعب
