@@ -89,7 +89,7 @@ export default function DiagnosticResponseSheet() {
 
   // مفتاح الإجابات الصحيحة
   const answerKey: QuestionMetadata[] = [
-    // المهمة A: الوجوه الانفع��لية (1-4)
+    // المهمة A: الوجوه الانفعالية (1-4)
     {
       question_id: 1,
       task: "A",
@@ -155,11 +155,11 @@ export default function DiagnosticResponseSheet() {
       correct_answer: "📱 على الطاولة",
       choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
     },
-    // المهمة D: ياسمينه وسعيد مع التمثال (8-9)
+    // المهمة D: ياسمينة وسعيد مع التمثال (8-9)
     {
       question_id: 8,
       task: "D",
-      label: "ماذا ترى ياسمينه؟",
+      label: "ماذا ترى ياسمينة؟",
       skill_group: "وجهات النظر",
       media: { image_url: "/assets/yasmina/statue1.png", audio_url: "/assets/audio/q8.mp3" },
       correct_answer: "😊 وجه التمثال",
@@ -201,7 +201,7 @@ export default function DiagnosticResponseSheet() {
       skill_group: "المعتقد الخاطئ",
       media: { image_url: "/assets/faisal/book2.png", audio_url: "/assets/audio/q12.mp3" },
       correct_answer: "📦 في الدرج",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
+      choices: ["📱 على الطاولة", "�� في الدرج", "🛏️ على السرير"]
     },
     {
       question_id: 13,
@@ -298,7 +298,7 @@ export default function DiagnosticResponseSheet() {
     }
   ];
 
-  // محاكاة البيانات (في التطبيق الحقيقي ستأتي م�� localStorage أو قاعدة البيانات)
+  // محاكاة البيانات (في التطبيق الحقيقي ستأتي من localStorage أو قاعدة البيانات)
   const mockResponseData: ResponseSheetData = {
     child: {
       child_id: "child_001",
@@ -340,7 +340,7 @@ export default function DiagnosticResponseSheet() {
       { question_id: 15, task: "G", chosen_answer: "🚂 قطار", correct_answer: "🚂 قطار", is_correct: true, score: 1, time_spent_ms: 4100 },
       { question_id: 16, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😢 حزين", is_correct: false, score: 0, time_spent_ms: 7200 },
       { question_id: 17, task: "G", chosen_answer: "😊 سعيد", correct_answer: "😊 سعيد", is_correct: true, score: 1, time_spent_ms: 5400 },
-      { question_id: 18, task: "H", chosen_answer: "🍝 المكرونة", correct_answer: "🍝 المكرونة", is_correct: true, score: 1, time_spent_ms: 4800 },
+      { question_id: 18, task: "H", chosen_answer: "🍝 ��لمكرونة", correct_answer: "🍝 المكرونة", is_correct: true, score: 1, time_spent_ms: 4800 },
       { question_id: 19, task: "H", chosen_answer: "🥗 السلطة", correct_answer: "🥗 السلطة", is_correct: true, score: 1, time_spent_ms: 4200 },
       { question_id: 20, task: "H", chosen_answer: "🔥 بجانب الموقد", correct_answer: "🔥 بجانب الموقد", is_correct: true, score: 1, time_spent_ms: 5100 },
       { question_id: 21, task: "I", chosen_answer: "🛼 سكيت", correct_answer: "🛼 سكيت", is_correct: true, score: 1, time_spent_ms: 6200 },
@@ -669,7 +669,7 @@ export default function DiagnosticResponseSheet() {
           </Card>
         </div>
 
-        {/* النتائج حسب ا��مجموعات */}
+        {/* النتائج حسب المجموعات */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -786,7 +786,7 @@ export default function DiagnosticResponseSheet() {
                   <SelectItem value="A">المهمة A - الانفعالات</SelectItem>
                   <SelectItem value="B">المهمة B - مها والبسكويت</SelectItem>
                   <SelectItem value="C">المهمة C - أمجاد والنظارة</SelectItem>
-                  <SelectItem value="D">المهمة D - ياسمينه وسعيد</SelectItem>
+                  <SelectItem value="D">المهمة D - ياسمينة وسعيد</SelectItem>
                   <SelectItem value="E">المهمة E - ناصر والمفاتيح</SelectItem>
                   <SelectItem value="F">المهمة F - فيصل والكتاب</SelectItem>
                   <SelectItem value="G">المهمة G - خالد والهدية</SelectItem>
@@ -829,7 +829,7 @@ export default function DiagnosticResponseSheet() {
                     <th className="text-right p-3 font-semibold">المهمة</th>
                     <th className="text-right p-3 font-semibold">المجموعة</th>
                     <th className="text-right p-3 font-semibold">السؤال</th>
-                    <th className="text-right p-3 font-semibold">إجابة الطفل</th>
+                    <th className="text-right p-3 font-semibold">إجابة ا��طفل</th>
                     <th className="text-right p-3 font-semibold">الإجابة الصحيحة</th>
                     <th className="text-right p-3 font-semibold">النتيجة</th>
                     <th className="text-right p-3 font-semibold">الوقت</th>
@@ -897,7 +897,7 @@ export default function DiagnosticResponseSheet() {
                                     </Button>
                                   </div>
                                   <p className="text-sm text-gray-600">
-                                    الخيارات المتاحة: {metadata?.choices.join(" | ")}
+                                    ال��يارات المتاحة: {metadata?.choices.join(" | ")}
                                   </p>
                                 </div>
                               </div>
@@ -970,7 +970,7 @@ export default function DiagnosticResponseSheet() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">حفظ وإدارة</CardTitle>
+              <CardTitle className="text-lg">حفظ وإدار��</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button
