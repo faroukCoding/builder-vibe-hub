@@ -140,7 +140,7 @@ export default function DiagnosticResponseSheet() {
       question_id: 6,
       task: "B",
       label: "كيف ستشعر مها؟",
-      skill_group: "��لرغبات والمشاعر",
+      skill_group: "الرغبات والمشاعر",
       media: { image_url: "/assets/maha/cookie2.png", audio_url: "/assets/audio/q6.mp3" },
       correct_answer: "😊 سعيدة",
       choices: ["😊 سعيدة", "😢 حزينة", "😠 غاضبة"]
@@ -168,7 +168,7 @@ export default function DiagnosticResponseSheet() {
     {
       question_id: 9,
       task: "D",
-      label: "ماذا ي��ى سعيد؟",
+      label: "ماذا يرى سعيد؟",
       skill_group: "وجهات النظر",
       media: { image_url: "/assets/yasmina/statue2.png", audio_url: "/assets/audio/q9.mp3" },
       correct_answer: "🔙 ظهر التمثال",
@@ -225,7 +225,7 @@ export default function DiagnosticResponseSheet() {
     {
       question_id: 15,
       task: "G",
-      label: "ماذا يعتقد الأب أن خالد يريد؟",
+      label: "ما��ا يعتقد الأب أن خالد يريد؟",
       skill_group: "المعتقد الخاطئ",
       media: { image_url: "/assets/khalid/gift2.png", audio_url: "/assets/audio/q15.mp3" },
       correct_answer: "🚂 قطار",
@@ -254,7 +254,7 @@ export default function DiagnosticResponseSheet() {
       question_id: 18,
       task: "H",
       label: "أي صحن وضعه رامي بجانب الموقد؟",
-      skill_group: "الأماكن وا��تتبع",
+      skill_group: "الأماكن والتتبع",
       media: { image_url: "/assets/rami/plates1.png", audio_url: "/assets/audio/q18.mp3" },
       correct_answer: "🍝 المكرونة",
       choices: ["🍝 المكرونة", "🥗 السلطة", "🍞 الخبز"]
@@ -282,7 +282,7 @@ export default function DiagnosticResponseSheet() {
       question_id: 21,
       task: "I",
       label: "ماذا يتوقع منصور أن يحصل عليه؟",
-      skill_group: "الم��تقد الخاطئ",
+      skill_group: "المعتقد الخاطئ",
       media: { image_url: "/assets/mansour/bike1.png", audio_url: "/assets/audio/q21.mp3" },
       correct_answer: "🛼 سكيت",
       choices: ["🚲 دراجة", "🛼 سكيت", "⚽ كرة"]
@@ -316,7 +316,7 @@ export default function DiagnosticResponseSheet() {
       duration_minutes: 8,
       by_group: {
         "الانفعالات": { correct: 4, total: 4, percentage: 100 },
-        "الرغ��ات والمشاعر": { correct: 2, total: 2, percentage: 100 },
+        "الرغبات والمشاعر": { correct: 2, total: 2, percentage: 100 },
         "وجهات النظر": { correct: 2, total: 2, percentage: 100 },
         "المعتقد الخاطئ": { correct: 8, total: 10, percentage: 80 },
         "الأماكن والتتبع": { correct: 4, total: 4, percentage: 100 }
@@ -365,7 +365,7 @@ export default function DiagnosticResponseSheet() {
   };
 
   const handleExportPDF = async () => {
-    // في التطبيق الحقيق��، استخدم مكتبة مثل jsPDF
+    // في التطبيق الحقيقي، استخدم مكتبة مثل jsPDF
     const printWindow = window.open('', '_blank');
     if (printWindow && responseData) {
       printWindow.document.write(`
@@ -797,7 +797,7 @@ export default function DiagnosticResponseSheet() {
 
               <Select value={filterResult} onValueChange={setFilterResult}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="تصفي�� حسب النتيجة" />
+                  <SelectValue placeholder="تصفية حسب النتيجة" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">جميع النتائج</SelectItem>
