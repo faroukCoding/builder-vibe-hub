@@ -217,7 +217,7 @@ export default function AttentionExercises() {
 
     const generateLevel = (level: number) => {
       const objectEmojis = ['🌟', '🌞', '🍌', '🔔', '⚡', '🏠', '🚗', '🌸', '🍎', '🌊', '🌳', '🎾'];
-      const yellowEmojis = ['🌟', '🌞', '🍌', '🔔'];
+      const yellowEmojis = ['🌟', '🌞', '��', '🔔'];
       const nonYellowEmojis = objectEmojis.filter(e => !yellowEmojis.includes(e));
       
       const yellowCount = Math.min(2 + level, 6);
@@ -578,7 +578,7 @@ export default function AttentionExercises() {
             طريقة اللعب
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            تطوير مهارات الانتباه من خلال ثلاثة أنواع من التمارين التفاعلية
+            تطوير مهارات الانتباه من خلال ثلاثة أنواع من ��لتمارين التفاعلية
           </p>
         </div>
 
@@ -630,11 +630,11 @@ export default function AttentionExercises() {
                   <li>• تظهر نجمة حمراء بين النجوم الزرقاء</li>
                   <li>• اضغط على النجمة الحمراء فقط</li>
                   <li>• عند الإجابة الصحيحة يظهر صوت تصفيق</li>
-                  <li>• عند الخطأ تظهر علامة X حمراء مع صوت "أعد المح��ولة"</li>
+                  <li>• عند الخطأ تظهر علامة X حمراء مع صوت "أعد المحاولة"</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">الانتباه الانتقائي:</h4>
+                <h4 className="font-semibold mb-2">الانتباه ال��نتقائي:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• ابحث عن كل الأشياء باللون الأصفر</li>
                   <li>• في البداية عدد قليل ثم يزداد</li>
@@ -655,7 +655,7 @@ export default function AttentionExercises() {
               </div>
             </div>
             <div className="mt-6 p-4 bg-white rounded-lg border border-blue-200">
-              <p className="text-blue-800 font-semibold mb-2">مالحظات:</p>
+              <p className="text-blue-800 font-semibold mb-2">ملاحظات:</p>
               <ul className="text-blue-700 text-sm space-y-1">
                 <li>• نهاية كل تمرين يظهر الإجابات الصحيحة والخاطئة</li>
                 <li>• الصوت في كل تمرين</li>
