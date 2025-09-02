@@ -217,7 +217,7 @@ export default function AttentionExercises() {
 
     const generateLevel = (level: number) => {
       const objectEmojis = ['🌟', '🌞', '🍌', '🔔', '⚡', '🏠', '🚗', '🌸', '🍎', '🌊', '🌳', '🎾'];
-      const yellowEmojis = ['🌟', '🌞', '��', '🔔'];
+      const yellowEmojis = ['🌟', '🌞', '🍌', '🔔'];
       const nonYellowEmojis = objectEmojis.filter(e => !yellowEmojis.includes(e));
       
       const yellowCount = Math.min(2 + level, 6);
@@ -658,7 +658,7 @@ export default function AttentionExercises() {
               <p className="text-blue-800 font-semibold mb-2">ملاحظات:</p>
               <ul className="text-blue-700 text-sm space-y-1">
                 <li>• نهاية كل تمرين يظهر الإجابات الصحيحة والخاطئة</li>
-                <li>• الصوت في كل تمرين</li>
+                <li>• الصوت ف�� كل تمرين</li>
                 <li>• تدرج في مستوى الصعوبة</li>
               </ul>
             </div>
