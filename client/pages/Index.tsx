@@ -55,7 +55,7 @@ export default function Index() {
       color: "bg-blue-500",
     },
     {
-      title: "المكتسبات القبلية", 
+      title: "المكتسبات القبلية",
       description: "الألوان، الأرقام، أعضاء الجسم، الجانبية",
       icon: <Brain className="w-6 h-6" />,
       color: "bg-green-500",
@@ -103,79 +103,27 @@ export default function Index() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Logo Section */}
         <div className="text-center mb-12">
-          <div className="relative bg-gradient-to-br from-orange-400 via-purple-500 to-blue-600 p-1 rounded-3xl w-32 h-32 mx-auto mb-6 shadow-2xl overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-tr from-pink-400 via-red-500 to-yellow-500 opacity-70 animate-pulse"></div>
-            <div className="absolute inset-0 bg-gradient-to-bl from-green-400 via-blue-500 to-purple-500 opacity-50 animate-ping"></div>
-            <div className="relative bg-white rounded-3xl w-full h-full flex items-center justify-center overflow-hidden">
-              <img 
-                src="https://cdn.builder.io/o/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2Fe476ffdd540848ed99d9b0198041a685?alt=media&token=3ae38d7d-28e1-45bc-9a2b-cc609458f12e&apiKey=7d0caf934e794ae2afa6a9944c5b8775" 
-                alt="Ortho Smart Logo" 
-                className="w-24 h-24 object-contain"
-              />
-            </div>
+          <div className="bg-blue-600 text-white p-8 rounded-full w-32 h-32 mx-auto mb-6 shadow-xl flex items-center justify-center">
+            <Stethoscope className="w-16 h-16" />
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
             Ortho Smart
           </h1>
-          <p className="text-2xl text-gray-600 font-semibold mb-2">
+          <p className="text-2xl text-gray-600 font-semibold mb-4">
             مرحباً بك في Ortho Smart
           </p>
-          <p className="text-lg text-gray-500 leading-relaxed mb-4">
-            منصّة رقمية متخصّصة في الأرطوفونيا لتقييم ومتابعة الأطفال
-          </p>
           <div className="text-sm text-blue-600 bg-blue-50 inline-block px-4 py-2 rounded-full">
-            ✨ تطبيق شامل ومنظم حسب المعايير المهنية
+            منصة رقمية متخصصة في الأرطوفونيا
           </div>
         </div>
 
-        {/* Features Section */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="pt-8">
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
 
-        {/* Tools Overview */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-            أدوات التقييم والتشخيص
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {toolCategories.map((tool, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow border-l-4 border-l-blue-500">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`${tool.color} text-white p-2 rounded-lg`}>
-                      {tool.icon}
-                    </div>
-                    <CardTitle className="text-base">{tool.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-sm">
-                    {tool.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
 
         {/* Action Buttons */}
         <div className="text-center space-y-6">
           {!showAccountTypes ? (
             <div className="space-y-4">
-              <Button 
+              <Button
                 onClick={() => setShowAccountTypes(true)}
                 className="bg-blue-600 hover:bg-blue-700 text-white text-lg py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all"
                 size="lg"
@@ -183,18 +131,18 @@ export default function Index() {
                 <UserPlus className="w-6 h-6 ml-3" />
                 اختر نوع الحساب
               </Button>
-              
+
               <div className="flex justify-center gap-4">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="border-blue-200 hover:bg-blue-50 text-lg py-4"
                   size="lg"
                 >
                   <LogIn className="w-5 h-5 ml-2" />
                   دخول
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="border-green-200 hover:bg-green-50 text-lg py-4"
                   size="lg"
                 >
@@ -209,7 +157,7 @@ export default function Index() {
                 اختر نوع الحساب
               </h3>
               <div className="grid md:grid-cols-2 gap-6">
-                <Card 
+                <Card
                   className="cursor-pointer hover:shadow-xl transition-all border-2 hover:border-blue-400 group"
                   onClick={() => navigate("/specialist-register")}
                 >
@@ -227,7 +175,7 @@ export default function Index() {
                   </CardContent>
                 </Card>
 
-                <Card 
+                <Card
                   className="cursor-pointer hover:shadow-xl transition-all border-2 hover:border-green-400 group"
                   onClick={() => navigate("/parent-register")}
                 >
@@ -246,8 +194,8 @@ export default function Index() {
                 </Card>
               </div>
 
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 onClick={() => setShowAccountTypes(false)}
                 className="mt-6 text-gray-500 hover:text-gray-700"
               >
@@ -257,43 +205,7 @@ export default function Index() {
           )}
         </div>
 
-        {/* Footer Information */}
-        <div className="mt-16 text-center">
-          <div className="bg-gray-50 rounded-xl p-6 max-w-4xl mx-auto">
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">
-              منصة Ortho Smart الشاملة
-            </h3>
-            <div className="grid md:grid-cols-3 gap-6 text-sm text-gray-600">
-              <div>
-                <h4 className="font-semibold mb-2">أدوات التقييم</h4>
-                <ul className="space-y-1">
-                  <li>• الميزانية الأرطوفونية</li>
-                  <li>• المكتسبات القبلية</li>
-                  <li>• المجموعة الضمنية</li>
-                  <li>• أداة حساب العمر</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">التمارين التفاعلية</h4>
-                <ul className="space-y-1">
-                  <li>• تمارين الإدراك البصري</li>
-                  <li>• تمارين الانتباه</li>
-                  <li>• تمارين الذاكرة</li>
-                  <li>• ألعاب نظرية العقل</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">التقارير والمتابعة</h4>
-                <ul className="space-y-1">
-                  <li>• تقرير بورتاج</li>
-                  <li>• ورقة الاستجابة التشخيصية</li>
-                  <li>• تصدير النتائج</li>
-                  <li>• متابعة التقدم</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   );

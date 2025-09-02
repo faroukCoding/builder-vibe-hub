@@ -1,64 +1,81 @@
-import { 
-  ArrowLeft, 
-  Calculator, 
-  Calendar, 
-  Clock, 
-  Baby,
-  User,
-  Target,
-  TrendingUp,
-  Home,
-  Copy,
-  Download,
-  RefreshCw,
-  Info,
-  CheckCircle,
-  AlertCircle
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ArrowLeft, Calculator, Calendar, Home, Copy, CheckCircle } from "lucide-react";
 
 export default function AgeCalculator() {
   const navigate = useNavigate();
-  const [birthDate, setBirthDate] = useState("");
-  const [assessmentDate, setAssessmentDate] = useState("");
-  const [childName, setChildName] = useState("");
-  const [ageResult, setAgeResult] = useState(null);
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [result, setResult] = useState<{
+    years: number;
+    months: number;
+    days: number;
+    totalDays: number;
+    totalMonths: number;
+    birthDate: string;
+    currentDate: string;
+  } | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // تعيين تاريخ اليوم كافتراضي لتاريخ التقييم
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setAssessmentDate(today);
-  }, []);
-
-  // حساب العمر بالتفصيل
-  const calculateDetailedAge = (birth: string, assessment: string) => {
-    if (!birth || !assessment) return null;
-
-    const birthDate = new Date(birth);
-    const assessmentDate = new Date(assessment);
-
-    if (assessmentDate < birthDate) {
-      return { error: "تاريخ التقييم لا يمكن أن يكون قبل تاريخ الميلاد" };
+  const calculateAge = () => {
+    if (!birthYear || !birthMonth || !birthDay) {
+      alert("يرجى إدخال تاريخ الميلاد كاملاً (السنة والشهر واليوم)");
+      return;
     }
 
-    // حساب الفرق بالتفصيل
-    let years = assessmentDate.getFullYear() - birthDate.getFullYear();
-    let months = assessmentDate.getMonth() - birthDate.getMonth();
-    let days = assessmentDate.getDate() - birthDate.getDate();
+    const year = parseInt(birthYear);
+    const month = parseInt(birthMonth);
+    const day = parseInt(birthDay);
 
-    // تعديل الحسابات
+    // التحقق من صحة التاريخ
+    if (year < 1900 || year > new Date().getFullYear()) {
+      alert("يرجى إدخال سنة صحي��ة");
+      return;
+    }
+
+    if (month < 1 || month > 12) {
+      alert("يرجى إدخال شهر صحيح (1-12)");
+      return;
+    }
+
+    if (day < 1 || day > 31) {
+      alert("يرجى إدخال يوم صحيح (1-31)");
+      return;
+    }
+
+    // التحقق من صحة اليوم في الشهر المحدد
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day > daysInMonth) {
+      alert(`الشهر ${month} في سنة ${year} يحتوي على ${daysInMonth} يوم فقط`);
+      return;
+    }
+
+    const birth = new Date(year, month - 1, day); // month is 0-indexed in JS
+    const today = new Date();
+
+    if (birth > today) {
+      alert("تاريخ الميلاد لا يمكن أن يكون في المستقبل");
+      return;
+    }
+
+    // حساب العمر بدقة
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+
     if (days < 0) {
       months--;
-      const lastMonth = new Date(assessmentDate.getFullYear(), assessmentDate.getMonth(), 0);
+      const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
       days += lastMonth.getDate();
     }
 
@@ -67,364 +84,34 @@ export default function AgeCalculator() {
       months += 12;
     }
 
-    // حساب إجمالي الأيام والأسابيع
-    const totalDays = Math.floor((assessmentDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
-    const totalWeeks = Math.floor(totalDays / 7);
+    // حساب العدد الإجمالي للأيام والشهور
+    const timeDiff = today.getTime() - birth.getTime();
+    const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     const totalMonths = years * 12 + months;
 
-    // تحديد المرحلة العمرية
-    const getAgeStage = (years: number, months: number) => {
-      const totalMonthsAge = years * 12 + months;
-      
-      if (totalMonthsAge < 3) return { stage: "وليد", color: "pink", description: "مرحلة الولادة المبكرة" };
-      if (totalMonthsAge < 12) return { stage: "رضيع", color: "blue", description: "مرحلة الرضاعة" };
-      if (totalMonthsAge < 24) return { stage: "طفل صغير", color: "green", description: "مرحلة الطفولة المبكرة" };
-      if (totalMonthsAge < 36) return { stage: "طفل دارج", color: "yellow", description: "مرحلة المشي والاستكشاف" };
-      if (totalMonthsAge < 60) return { stage: "طفل ما قبل المدرسة", color: "purple", description: "مرحلة ما قبل المدرسة" };
-      if (totalMonthsAge < 72) return { stage: "طفل مدرسة مبكرة", color: "orange", description: "بداية المرحلة المدرسية" };
-      return { stage: "طفل مدرسة", color: "red", description: "المرحلة المدرسية" };
-    };
-
-    const ageStage = getAgeStage(years, months);
-
-    // المعالم التطويرية المتوقعة
-    const getDevelopmentalMilestones = (totalMonthsAge: number) => {
-      const milestones = [];
-      
-      if (totalMonthsAge >= 2) milestones.push("الابتسام الاجتماعي");
-      if (totalMonthsAge >= 6) milestones.push("الجلوس بدون مساعدة");
-      if (totalMonthsAge >= 12) milestones.push("المشي الأولى");
-      if (totalMonthsAge >= 18) milestones.push("كلمات أولى واضحة");
-      if (totalMonthsAge >= 24) milestones.push("جملة من كلمتين");
-      if (totalMonthsAge >= 36) milestones.push("اللعب التخيلي");
-      if (totalMonthsAge >= 48) milestones.push("التفاعل الاجتماعي المعقد");
-      if (totalMonthsAge >= 60) milestones.push("الاستعداد للمدرسة");
-      
-      return milestones;
-    };
-
-    const milestones = getDevelopmentalMilestones(totalMonths);
-
-    return {
-      years,
-      months,
-      days,
-      totalDays,
-      totalWeeks,
+    setResult({ 
+      years, 
+      months, 
+      days, 
+      totalDays, 
       totalMonths,
-      ageStage,
-      milestones,
-      formatted: {
-        detailed: `${years} سنة و ${months} شهر و ${days} يوم`,
-        simple: `${years} سنة و ${months} شهر`,
-        months: `${totalMonths} شهر`,
-        clinical: `${years};${months}` // التنسيق المستخدم في التقارير الطبية
-      }
-    };
+      birthDate: birth.toLocaleDateString('ar-SA'),
+      currentDate: today.toLocaleDateString('ar-SA')
+    });
   };
 
-  // حساب العمر عند تغيير التواريخ
-  useEffect(() => {
-    if (birthDate && assessmentDate) {
-      const result = calculateDetailedAge(birthDate, assessmentDate);
-      setAgeResult(result);
-    } else {
-      setAgeResult(null);
-    }
-  }, [birthDate, assessmentDate]);
-
-  // نسخ النتيجة للحافظة
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // إعادة تعيين النموذج
   const resetForm = () => {
-    setBirthDate("");
-    setChildName("");
-    const today = new Date().toISOString().split('T')[0];
-    setAssessmentDate(today);
-    setAgeResult(null);
+    setBirthYear("");
+    setBirthMonth("");
+    setBirthDay("");
+    setResult(null);
   };
-
-  // تبويب الحاسبة الأساسية
-  const BasicCalculatorTab = () => (
-    <div className="space-y-6">
-      {/* نموذج الإدخال */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calculator className="w-5 h-5" />
-            حساب العمر الزمني
-          </CardTitle>
-          <CardDescription>
-            أدخل البيانات لحساب العمر الزمني بدقة
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="childName">اسم الطفل (اختياري)</Label>
-                <Input
-                  id="childName"
-                  value={childName}
-                  onChange={(e) => setChildName(e.target.value)}
-                  placeholder="أدخل اسم الطفل"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="birthDate">تاريخ الميلاد *</Label>
-                <Input
-                  id="birthDate"
-                  type="date"
-                  value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="assessmentDate">تاريخ التقييم *</Label>
-                <Input
-                  id="assessmentDate"
-                  type="date"
-                  value={assessmentDate}
-                  onChange={(e) => setAssessmentDate(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <Button 
-                  onClick={resetForm} 
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  إعادة تعيين
-                </Button>
-                <Button 
-                  onClick={() => {
-                    const today = new Date().toISOString().split('T')[0];
-                    setAssessmentDate(today);
-                  }}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <Calendar className="w-4 h-4" />
-                  اليوم
-                </Button>
-              </div>
-            </div>
-
-            {/* النتيجة */}
-            <div className="space-y-4">
-              {ageResult?.error ? (
-                <Alert>
-                  <AlertCircle className="w-4 h-4" />
-                  <AlertDescription>{ageResult.error}</AlertDescription>
-                </Alert>
-              ) : ageResult ? (
-                <div className="space-y-4">
-                  {/* العمر الأساسي */}
-                  <Card className="bg-blue-50 border-blue-200">
-                    <CardContent className="p-4">
-                      <div className="text-center">
-                        <Baby className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                        <h3 className="font-semibold text-blue-800 mb-2">
-                          {childName || "الطفل"}
-                        </h3>
-                        <div className="text-2xl font-bold text-blue-600 mb-2">
-                          {ageResult.formatted.detailed}
-                        </div>
-                        <Badge 
-                          className={`bg-${ageResult.ageStage.color}-500 text-white`}
-                        >
-                          {ageResult.ageStage.stage}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* تفاصيل ��ضافية */}
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="bg-gray-50 p-2 rounded text-center">
-                      <div className="font-semibold">{ageResult.totalMonths}</div>
-                      <div className="text-gray-600">شهر</div>
-                    </div>
-                    <div className="bg-gray-50 p-2 rounded text-center">
-                      <div className="font-semibold">{ageResult.totalDays}</div>
-                      <div className="text-gray-600">يوم</div>
-                    </div>
-                    <div className="bg-gray-50 p-2 rounded text-center">
-                      <div className="font-semibold">{ageResult.totalWeeks}</div>
-                      <div className="text-gray-600">أسبوع</div>
-                    </div>
-                    <div className="bg-gray-50 p-2 rounded text-center">
-                      <div className="font-semibold">{ageResult.formatted.clinical}</div>
-                      <div className="text-gray-600">تنسيق طبي</div>
-                    </div>
-                  </div>
-
-                  {/* أزرار النسخ */}
-                  <div className="space-y-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full"
-                      onClick={() => copyToClipboard(ageResult.formatted.detailed)}
-                    >
-                      <Copy className="w-4 h-4 ml-2" />
-                      نسخ العمر التفصيلي
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full"
-                      onClick={() => copyToClipboard(ageResult.formatted.clinical)}
-                    >
-                      <Copy className="w-4 h-4 ml-2" />
-                      نسخ التنسيق الطبي
-                    </Button>
-                  </div>
-
-                  {copied && (
-                    <Alert>
-                      <CheckCircle className="w-4 h-4" />
-                      <AlertDescription>تم نسخ النتيجة بنجاح!</AlertDescription>
-                    </Alert>
-                  )}
-                </div>
-              ) : (
-                <div className="text-center text-gray-500 p-8">
-                  <Calculator className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                  <p>أدخل تاريخ الميلاد وتاريخ التقييم لحساب العمر</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  // تبويب المعلومات التطويرية
-  const DevelopmentalInfoTab = () => (
-    <div className="space-y-6">
-      {ageResult && !ageResult.error ? (
-        <>
-          {/* معلومات المرحلة العمرية */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="w-5 h-5" />
-                معلومات المرحلة العمرية
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg">
-                  <div className={`p-3 rounded-full bg-${ageResult.ageStage.color}-100`}>
-                    <Baby className={`w-6 h-6 text-${ageResult.ageStage.color}-600`} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">{ageResult.ageStage.stage}</h3>
-                    <p className="text-gray-600">{ageResult.ageStage.description}</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* المعالم التطويرية */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                المعالم التطويرية المتوقعة
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {ageResult.milestones.length > 0 ? (
-                <div className="grid md:grid-cols-2 gap-3">
-                  {ageResult.milestones.map((milestone, index) => (
-                    <div key={index} className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                      <span className="text-green-800">{milestone}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-4">
-                  لا توجد معالم تطويرية محددة لهذا العمر
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* إرشادات التقييم */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Info className="w-5 h-5" />
-                إرشادات التقييم حسب العمر
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {ageResult.totalMonths < 12 && (
-                  <Alert>
-                    <Info className="w-4 h-4" />
-                    <AlertDescription>
-                      في هذا العمر، ركز على تقييم الاستجابات الحسية، التواصل البصري، والأصوات الأولى.
-                    </AlertDescription>
-                  </Alert>
-                )}
-                
-                {ageResult.totalMonths >= 12 && ageResult.totalMonths < 24 && (
-                  <Alert>
-                    <Info className="w-4 h-4" />
-                    <AlertDescription>
-                      تقييم الكلمات الأولى، فهم التعليمات البسيطة، والتفاعل الاجتماعي الأساسي.
-                    </AlertDescription>
-                  </Alert>
-                )}
-                
-                {ageResult.totalMonths >= 24 && ageResult.totalMonths < 48 && (
-                  <Alert>
-                    <Info className="w-4 h-4" />
-                    <AlertDescription>
-                      تقييم تكوين الجمل، المفردات، اللعب التخيلي، والتفاعل مع الأقران.
-                    </AlertDescription>
-                  </Alert>
-                )}
-                
-                {ageResult.totalMonths >= 48 && (
-                  <Alert>
-                    <Info className="w-4 h-4" />
-                    <AlertDescription>
-                      تقييم الحديث المعقد، القواعد النحوية، المهارات ما قبل الأكاديمية، والمهارات الاجتماعية المتقدمة.
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </>
-      ) : (
-        <Card>
-          <CardContent className="text-center py-12">
-            <Clock className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-500">احسب العمر أولاً لعرض المعلومات التطويرية</p>
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50" dir="rtl">
@@ -436,11 +123,11 @@ export default function AgeCalculator() {
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={() => navigate('/specialist-dashboard')}
+                onClick={() => navigate(-1)}
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                العودة للوحة التحكم
+                العودة
               </Button>
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-2 rounded-lg">
@@ -448,15 +135,15 @@ export default function AgeCalculator() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-800">
-                    حساب العمر الزمني
+                    أداة حساب العمر الزمني
                   </h1>
-                  <p className="text-gray-600">أداة دقيقة لحساب الأعمار</p>
+                  <p className="text-gray-600">احسب العمر بدقة حتى اليوم</p>
                 </div>
               </div>
             </div>
             <Button 
               variant="outline"
-              onClick={() => navigate('/specialist-dashboard')}
+              onClick={() => navigate('/')}
               className="flex items-center gap-2"
             >
               <Home className="w-4 h-4" />
@@ -466,37 +153,154 @@ export default function AgeCalculator() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <Tabs defaultValue="calculator" className="space-y-6">
-          {/* Tabs Navigation */}
-          <div className="bg-white rounded-lg p-2 shadow-sm">
-            <TabsList className="grid grid-cols-2 w-full">
-              <TabsTrigger value="calculator" className="flex items-center gap-2">
-                <Calculator className="w-4 h-4" />
-                حساب العمر
-              </TabsTrigger>
-              <TabsTrigger value="developmental" className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                المعلومات التطويرية
-              </TabsTrigger>
-            </TabsList>
-          </div>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <Card className="mb-8">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl flex items-center justify-center gap-2">
+              <Calculator className="w-6 h-6" />
+              حساب العمر الزمني
+            </CardTitle>
+            <CardDescription className="text-lg">
+              أدخل تاريخ الميلاد لحساب العمر الحالي بدقة
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-center">تاريخ الميلاد</h3>
+              <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 block text-center">
+                    السنة
+                  </label>
+                  <Input
+                    type="number"
+                    placeholder="2015"
+                    value={birthYear}
+                    onChange={(e) => setBirthYear(e.target.value)}
+                    className="text-lg text-center"
+                    min="1900"
+                    max={new Date().getFullYear()}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 block text-center">
+                    الشهر
+                  </label>
+                  <Input
+                    type="number"
+                    placeholder="3"
+                    value={birthMonth}
+                    onChange={(e) => setBirthMonth(e.target.value)}
+                    className="text-lg text-center"
+                    min="1"
+                    max="12"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 block text-center">
+                    اليوم
+                  </label>
+                  <Input
+                    type="number"
+                    placeholder="15"
+                    value={birthDay}
+                    onChange={(e) => setBirthDay(e.target.value)}
+                    className="text-lg text-center"
+                    min="1"
+                    max="31"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex gap-4 justify-center">
+                <Button 
+                  onClick={calculateAge} 
+                  className="bg-green-600 hover:bg-green-700 text-lg py-6 px-8"
+                  size="lg"
+                >
+                  <Calculator className="w-5 h-5 ml-2" />
+                  احسب العمر
+                </Button>
+                <Button 
+                  onClick={resetForm} 
+                  variant="outline"
+                  className="text-lg py-6 px-8"
+                  size="lg"
+                >
+                  إعادة تعيين
+                </Button>
+              </div>
+            </div>
 
-          <TabsContent value="calculator">
-            <BasicCalculatorTab />
-          </TabsContent>
+            {result && (
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6 mt-8">
+                <h3 className="text-xl font-semibold mb-4 text-green-800 text-center">
+                  <CheckCircle className="w-6 h-6 inline ml-2" />
+                  نتيجة حساب العمر
+                </h3>
+                
+                <div className="space-y-6">
+                  {/* العمر الأساسي */}
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-green-600 mb-2">
+                      {result.years} سنة، {result.months} شهر، {result.days} يوم
+                    </div>
+                    <div className="text-gray-600 text-lg">
+                      العمر الحالي بالتفصيل
+                    </div>
+                  </div>
+                  
+                  {/* تفاصيل إضافية */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-4 text-center border">
+                      <div className="text-2xl font-bold text-blue-600">{result.totalMonths}</div>
+                      <div className="text-sm text-gray-600">إجمالي الشهور</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 text-center border">
+                      <div className="text-2xl font-bold text-purple-600">{result.totalDays}</div>
+                      <div className="text-sm text-gray-600">إجمالي الأيام</div>
+                    </div>
+                  </div>
 
-          <TabsContent value="developmental">
-            <DevelopmentalInfoTab />
-          </TabsContent>
-        </Tabs>
+                  {/* معلومات التواريخ */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="bg-blue-50 p-3 rounded-lg text-center">
+                      <div className="font-semibold text-blue-800">تاريخ الميلاد</div>
+                      <div className="text-blue-600">{result.birthDate}</div>
+                    </div>
+                    <div className="bg-green-50 p-3 rounded-lg text-center">
+                      <div className="font-semibold text-green-800">تاريخ اليوم</div>
+                      <div className="text-green-600">{result.currentDate}</div>
+                    </div>
+                  </div>
+
+                  {/* زر النسخ */}
+                  <div className="text-center">
+                    <Button 
+                      onClick={() => copyToClipboard(`${result.years} سنة، ${result.months} شهر، ${result.days} يوم`)}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Copy className="w-4 h-4" />
+                      نسخ النتيجة
+                    </Button>
+                    {copied && (
+                      <p className="text-green-600 text-sm mt-2">تم نسخ النتيجة بنجاح!</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* معلومات إضافية */}
-        <Card className="mt-6">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Info className="w-5 h-5" />
-              معلومات مهمة
+              <Calendar className="w-5 h-5" />
+              معلومات حول حساب العمر
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -504,19 +308,29 @@ export default function AgeCalculator() {
               <div>
                 <h4 className="font-semibold mb-2">دقة الحساب:</h4>
                 <ul className="space-y-1 text-gray-600">
-                  <li>• يتم الحساب بدقة تصل إلى اليوم</li>
+                  <li>• يتم الحساب بناءً على التاريخ الحالي</li>
                   <li>• يراعي السنوات الكبيسة</li>
-                  <li>• يتعامل مع اختلاف أيام الشهور</li>
+                  <li>• يحسب الأيام بدقة حسب كل شهر</li>
+                  <li>• يعطي النتيجة بالسنوات والشهور والأيام</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">الاستخدامات:</h4>
                 <ul className="space-y-1 text-gray-600">
-                  <li>• التقييمات النمائية</li>
-                  <li>• اختيار الاختبارات المناسبة</li>
-                  <li>• كتابة التقارير الطبية</li>
+                  <li>• التقييمات النمائية للأطفال</li>
+                  <li>• اختيار الاختبارات المناسبة للعمر</li>
+                  <li>• كتابة التقارير الطبية والنفسية</li>
+                  <li>• متابعة النمو والتطور</li>
                 </ul>
               </div>
+            </div>
+            
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+              <h4 className="font-semibold text-blue-800 mb-2">مثال على الاستخدام:</h4>
+              <p className="text-blue-700 text-sm">
+                إذا وُلد الطفل في 15 مارس 2020، وكان تاريخ اليوم 10 يناير 2024، 
+                فسيكون عمره 3 سنوات، 9 أشهر، 26 يوم تقريباً.
+              </p>
             </div>
           </CardContent>
         </Card>
