@@ -194,7 +194,7 @@ export default function DiagnosticTests() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-800">
               <BookOpen className="w-5 h-5" />
-              تعلي��ات الاستخدام
+              تعليمات الاستخدام
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -233,7 +233,7 @@ export default function DiagnosticTests() {
                   </li>
                   <li className="flex items-center gap-2">
                     <PenTool className="w-4 h-4" />
-                    لا تتدخل في إجابات الطفل إلا عند الضرورة
+                    ��ا تتدخل في إجابات الطفل إلا عند الضرورة
                   </li>
                 </ul>
               </div>
