@@ -189,7 +189,7 @@ export default function SpecialistDashboard() {
     {
       id: "attention",
       title: "تمارين الانتباه",
-      description: "المتواصل، الانتقائي، المشترك",
+      description: "��لمتواصل، الانتقائي، المشترك",
       icon: Target,
       color: "red",
       route: "/attention-exercises",
@@ -553,7 +553,7 @@ export default function SpecialistDashboard() {
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                           <BarChart3 className="w-5 h-5 text-blue-600" />
-                          التوزيع الجغرافي للمرضى - الجزائر
+                          التوزيع الجغرافي للمرضى - ا��جزائر
                         </CardTitle>
                         <CardDescription>
                           عدد المرضى حسب الولايات الجزائرية
@@ -857,7 +857,7 @@ export default function SpecialistDashboard() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">تنبيهات ��لمرضى الجدد</p>
+                          <p className="font-medium">تنبيهات المرضى الجدد</p>
                           <p className="text-sm text-gray-600">
                             إشعار عند تسجيل مريض جديد
                           </p>
@@ -1009,7 +1009,7 @@ export default function SpecialistDashboard() {
                               مشاركة البيانات للتطوير
                             </p>
                             <p className="text-sm text-gray-600">
-                              المساعدة في تحسين النظام (بيانات مجهولة)
+                              المساعدة في تحسين النظا�� (بيانات مجهولة)
                             </p>
                           </div>
                           <div className="flex items-center space-x-2">
