@@ -504,7 +504,7 @@ export default function MemoryExercises() {
             MEMORY GAME
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            تطوير الذاكرة السمعية والبصرية من خل��ل ألعاب تفاعلية ممتعة
+            تطوير الذاكرة السمعية والبصرية من خلال ألعاب تفاعلية ممتعة
           </p>
         </div>
 
@@ -561,7 +561,7 @@ export default function MemoryExercises() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">الذاكرة البصري��:</h4>
+                <h4 className="font-semibold mb-2">الذاكرة البصرية:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• يعطي للطفل وقتاً محدداً لمشاهدة الصور ثم تختفي</li>
                   <li>• تظهر الصور أسفل الجدول ويطلب منه سحبها إلى مكانها</li>
