@@ -39,7 +39,7 @@ export default function AgeCalculator() {
 
     // التحقق من صحة التاريخ
     if (year < 1900 || year > new Date().getFullYear()) {
-      alert("يرجى إدخال سنة صحي��ة");
+      alert("يرجى إدخال سنة صحيحة");
       return;
     }
 
