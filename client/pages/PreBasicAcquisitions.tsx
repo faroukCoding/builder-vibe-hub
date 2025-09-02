@@ -471,7 +471,7 @@ export default function PreBasicAcquisitions() {
 
     const instructions = [
       { text: 'ضع الكرة داخل الصندوق', target: 'inside' },
-      { text: 'ضع الكرة فوق الصندوق', target: 'above' },
+      { text: 'ضع الكرة فوق الصن��وق', target: 'above' },
       { text: 'ضع الكرة تحت الصندوق', target: 'below' },
       { text: 'ضع الكرة يمين الصندوق', target: 'right' },
       { text: 'ضع الكرة يسار الصندوق', target: 'left' },
@@ -712,7 +712,7 @@ export default function PreBasicAcquisitions() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6 text-blue-700">
               <div>
-                <h4 className="font-semibold mb-2">م��حلة التعلم:</h4>
+                <h4 className="font-semibold mb-2">مرحلة التعلم:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• اضغط على أي عنصر لسماع اسمه</li>
                   <li>• تعلم جميع العناصر قبل الانتقال للاختبار</li>
