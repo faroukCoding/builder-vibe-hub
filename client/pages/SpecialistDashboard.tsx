@@ -227,7 +227,7 @@ export default function SpecialistDashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100">إجمالي ا��مرضى</p>
+                <p className="text-blue-100">إجمالي المرضى</p>
                 <p className="text-3xl font-bold">127</p>
               </div>
               <Users className="w-10 h-10 text-blue-200" />
@@ -556,7 +556,7 @@ export default function SpecialistDashboard() {
                           التوزيع الجغرافي للمرضى - الجزائر
                         </CardTitle>
                         <CardDescription>
-                          عدد المرضى حسب الولايات الجزائرية
+                          عدد المرضى حسب الول��يات الجزائرية
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -716,7 +716,7 @@ export default function SpecialistDashboard() {
                                 إجمالي الحالات
                               </th>
                               <th className="text-right p-3 font-semibold">
-                                معدل النجاح
+                                معدل الن��اح
                               </th>
                               <th className="text-right p-3 font-semibold">
                                 الحالة
