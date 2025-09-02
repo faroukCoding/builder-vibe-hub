@@ -134,6 +134,7 @@ export default function Index() {
 
               <div className="flex justify-center gap-4">
                 <Button
+                  onClick={() => navigate("/login")}
                   variant="outline"
                   className="border-blue-200 hover:bg-blue-50 text-lg py-4"
                   size="lg"
@@ -142,6 +143,7 @@ export default function Index() {
                   دخول
                 </Button>
                 <Button
+                  onClick={() => setShowAccountTypes(true)}
                   variant="outline"
                   className="border-green-200 hover:bg-green-50 text-lg py-4"
                   size="lg"

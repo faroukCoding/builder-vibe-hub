@@ -25,6 +25,7 @@ import PreBasicAcquisitions from "./pages/PreBasicAcquisitions";
 import ImplicitGroup from "./pages/ImplicitGroup";
 import PerceptualExercises from "./pages/PerceptualExercises";
 import MemoryExercises from "./pages/MemoryExercises";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/parent-register" element={<ParentRegister />} />
           <Route path="/specialist-register" element={<SpecialistRegister />} />
           <Route path="/parent-dashboard" element={<ParentDashboard />} />
