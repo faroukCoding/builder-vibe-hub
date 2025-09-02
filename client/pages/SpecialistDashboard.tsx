@@ -196,7 +196,7 @@ export default function SpecialistDashboard() {
     },
     {
       id: "memory",
-      title: "��مارين الذاكرة",
+      title: "تمارين الذاكرة",
       description: "الذاكرة السمعية والبصرية",
       icon: Brain,
       color: "cyan",
