@@ -56,7 +56,7 @@ export default function DiagnosticTests() {
       icon: Gamepad2,
       color: "blue",
       route: "/theory-of-mind-games",
-      status: completedGames > 0 ? "في التقدم" : "لم يبدأ",
+      status: completedGames > 0 ? "في الت��دم" : "لم يبدأ",
       progress: Math.round((completedGames / totalGames) * 100),
       features: [
         "تقييم فهم المشاعر",
@@ -233,7 +233,7 @@ export default function DiagnosticTests() {
                   </li>
                   <li className="flex items-center gap-2">
                     <PenTool className="w-4 h-4" />
-                    ��ا تتدخل في إجابات الطفل إلا عند الضرورة
+                    لا تتدخل في إجابات الطفل إلا عند الضرورة
                   </li>
                 </ul>
               </div>
