@@ -50,11 +50,11 @@ export default function AttentionExercises() {
     },
     {
       id: 'selective',
-      title: 'الانتباه ال��نتقائي',
+      title: 'الانتباه الانتقائي',
       subtitle: 'الأشياء المفقودة',
       icon: <Search className="w-8 h-8" />,
       color: 'bg-green-500',
-      description: 'ابحث عن كل الأشياء باللون الأصفر واضغط عليها',
+      description: 'ابحث عن كل الأشياء باللون ا��أصفر واضغط عليها',
     },
     {
       id: 'joint',
@@ -121,7 +121,7 @@ export default function AttentionExercises() {
         setStars(prev => prev.filter(s => s.id !== star.id));
       } else {
         setLives(lives - 1);
-        speakArabic('أوووو حاول مر�� أخرى');
+        speakArabic('أوووو حاول مرة أخرى');
         if (lives - 1 <= 0) {
           setGameRunning(false);
           setShowResult(true);
@@ -415,7 +415,7 @@ export default function AttentionExercises() {
       return (
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">📮</div>
-          <h3 className="text-2xl font-bold">انتهت لعبة حام�� الرسالة!</h3>
+          <h3 className="text-2xl font-bold">انتهت لعبة حامل ال��سالة!</h3>
           <p className="text-lg">النتيجة: {score} من 5</p>
           <div className="flex gap-4 justify-center">
             <Button onClick={() => {
@@ -618,7 +618,7 @@ export default function AttentionExercises() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-800">
               <Target className="w-5 h-5" />
-              كيفية أ��اء التمارين
+              كيفية أداء التمارين
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -634,12 +634,12 @@ export default function AttentionExercises() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">الانتباه ال��نتقائي:</h4>
+                <h4 className="font-semibold mb-2">الانتباه الانتقائي:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• ابحث عن كل الأشياء باللون الأصفر</li>
                   <li>• في البداية عدد قليل ثم يزداد</li>
                   <li>• اضغط على الأشياء الصفراء فقط</li>
-                  <li>• مع ظهو�� صوت ناطق: "اختر الأشياء باللون الأصفر"</li>
+                  <li>• مع ظهور صوت ناطق: "اختر الأشياء باللون الأصفر"</li>
                   <li>• تشجيع عند الإجابة الصحيحة</li>
                 </ul>
               </div>
