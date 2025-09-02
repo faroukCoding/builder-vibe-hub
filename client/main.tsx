@@ -21,6 +21,10 @@ import DiagnosticTests from "./pages/DiagnosticTests";
 import PortageReport from "./pages/PortageReport";
 import AgeCalculator from "./pages/AgeCalculator";
 import PatientForm from "./pages/PatientForm";
+import PreBasicAcquisitions from "./pages/PreBasicAcquisitions";
+import ImplicitGroup from "./pages/ImplicitGroup";
+import PerceptualExercises from "./pages/PerceptualExercises";
+import MemoryExercises from "./pages/MemoryExercises";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +51,10 @@ const App = () => (
           <Route path="/age-calculator" element={<AgeCalculator />} />
           <Route path="/patient-form" element={<PatientForm />} />
           <Route path="/orthophonic-balance" element={<PatientForm />} />
+          <Route path="/pre-basic-acquisitions" element={<PreBasicAcquisitions />} />
+          <Route path="/implicit-group" element={<ImplicitGroup />} />
+          <Route path="/perceptual-exercises" element={<PerceptualExercises />} />
+          <Route path="/memory-exercises" element={<MemoryExercises />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
