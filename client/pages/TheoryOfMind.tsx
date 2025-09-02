@@ -47,7 +47,7 @@ export default function TheoryOfMind() {
       options: ["الصندوق الأزرق", "الصندوق الأحمر", "لن تبحث عنه", "ستسأل أحمد"],
       correctAnswer: "الصندوق الأزرق",
       explanation: "سارة لا تعلم أن أحمد نقل القل��، لذا ستبحث حيث تركته.",
-      ageGroup: "4-6 سنوات",
+      ageGroup: "4-6 سنو��ت",
       scenario: "🧒👧📦📝"
     },
     {
@@ -109,7 +109,7 @@ export default function TheoryOfMind() {
       id: 7,
       title: "اختبار التواصل غير اللفظي",
       story: "أبو يوسف يشير بإصبعه نحو الباب، وينظر إلى يوس�� نظرة جدية.",
-      question: "ماذا يريد أبو يوسف من يوسف؟",
+      question: "ماذا يريد أب�� يوسف من يوسف؟",
       options: ["أن يفتح الباب", "أن يغادر الغرفة", "أن ينظر للباب", "أن يقف هناك"],
       correctAnswer: "أن يغادر الغرفة",
       explanation: "فهم الإشارات غير اللفظية جزء مهم من التواصل.",
@@ -252,14 +252,14 @@ export default function TheoryOfMind() {
               </div>
             </div>
             
-            {/* تقييم النتائج */}
+            {/* تقييم النتا��ج */}
             <div className="bg-blue-50 p-4 rounded-lg mb-6">
               <h4 className="font-semibold text-blue-800 mb-2">تقييم الأداء:</h4>
               <div className="text-blue-700">
                 {testSession.totalQuestions > 0 && (
                   <div>
                     {Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) >= 75 && (
-                      <p>✅ أداء ممتاز! الطفل يظهر فهما�� جيداً لنظرية العقل</p>
+                      <p>✅ أداء ممتاز! الطفل يظهر فهماً جيداً لنظرية العقل</p>
                     )}
                     {Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) >= 50 && 
                      Math.round((testSession.correctAnswers / testSession.totalQuestions) * 100) < 75 && (
