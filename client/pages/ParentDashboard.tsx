@@ -117,7 +117,7 @@ export default function ParentDashboard() {
     { title: "5 جلسات", earned: true, date: "2024-01-10", icon: "⭐" },
     { title: "تحسن 50%", earned: true, date: "2024-01-12", icon: "📈" },
     { title: "10 جلسات", earned: false, date: null, icon: "🏆" },
-    { title: "ت��سن 75%", earned: false, date: null, icon: "🎉" },
+    { title: "تحسن 75%", earned: false, date: null, icon: "🎉" },
   ];
 
   const reports = [
@@ -340,7 +340,7 @@ export default function ParentDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>تاريخ الجلسات</CardTitle>
-          <CardDescription>سجل مفصل بجميع الجلسات والأنشطة</CardDescription>
+          <CardDescription>سجل مفصل ��جميع الجلسات والأنشطة</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -805,7 +805,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-6 h-6 text-blue-600" />
-            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشع��ية
+            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقرا��ية الشعبية
           </CardTitle>
           <CardDescription>
             توزيع المرضى ونسب النجاح حسب الولايات
