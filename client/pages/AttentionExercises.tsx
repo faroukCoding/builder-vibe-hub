@@ -50,7 +50,7 @@ export default function AttentionExercises() {
     },
     {
       id: 'selective',
-      title: 'الانتباه الانتقائي',
+      title: 'الانتباه ال��نتقائي',
       subtitle: 'الأشياء المفقودة',
       icon: <Search className="w-8 h-8" />,
       color: 'bg-green-500',
@@ -121,7 +121,7 @@ export default function AttentionExercises() {
         setStars(prev => prev.filter(s => s.id !== star.id));
       } else {
         setLives(lives - 1);
-        speakArabic('أوووو حاول مرة أخرى');
+        speakArabic('أوووو حاول مر�� أخرى');
         if (lives - 1 <= 0) {
           setGameRunning(false);
           setShowResult(true);
@@ -415,7 +415,7 @@ export default function AttentionExercises() {
       return (
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">📮</div>
-          <h3 className="text-2xl font-bold">انتهت لعبة حامل الرسالة!</h3>
+          <h3 className="text-2xl font-bold">انتهت لعبة حام�� الرسالة!</h3>
           <p className="text-lg">النتيجة: {score} من 5</p>
           <div className="flex gap-4 justify-center">
             <Button onClick={() => {
@@ -578,7 +578,7 @@ export default function AttentionExercises() {
             طريقة اللعب
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            تطوير مهارات الانتباه من خلال ثلاثة أنواع من ��لتمارين التفاعلية
+            تطوير مهارات الانتباه من خلال ثلاثة أنواع من التمارين التفاعلية
           </p>
         </div>
 
@@ -618,7 +618,7 @@ export default function AttentionExercises() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-800">
               <Target className="w-5 h-5" />
-              كيفية أداء التمارين
+              كيفية أ��اء التمارين
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -639,7 +639,7 @@ export default function AttentionExercises() {
                   <li>• ابحث عن كل الأشياء باللون الأصفر</li>
                   <li>• في البداية عدد قليل ثم يزداد</li>
                   <li>• اضغط على الأشياء الصفراء فقط</li>
-                  <li>• مع ظهور صوت ناطق: "اختر الأشياء باللون الأصفر"</li>
+                  <li>• مع ظهو�� صوت ناطق: "اختر الأشياء باللون الأصفر"</li>
                   <li>• تشجيع عند الإجابة الصحيحة</li>
                 </ul>
               </div>
@@ -658,7 +658,7 @@ export default function AttentionExercises() {
               <p className="text-blue-800 font-semibold mb-2">ملاحظات:</p>
               <ul className="text-blue-700 text-sm space-y-1">
                 <li>• نهاية كل تمرين يظهر الإجابات الصحيحة والخاطئة</li>
-                <li>• الصوت ف�� كل تمرين</li>
+                <li>• الصوت في كل تمرين</li>
                 <li>• تدرج في مستوى الصعوبة</li>
               </ul>
             </div>
