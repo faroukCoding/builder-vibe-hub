@@ -556,7 +556,7 @@ export default function SpecialistDashboard() {
                           التوزيع الجغرافي للمرضى - الجزائر
                         </CardTitle>
                         <CardDescription>
-                          عدد المرضى حسب الول��يات الجزائرية
+                          عدد المرضى حسب الولايات الجزائرية
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
