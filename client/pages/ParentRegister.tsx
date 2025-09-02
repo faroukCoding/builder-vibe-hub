@@ -18,7 +18,7 @@ import { useState } from "react";
 
 const algerianStates = [
   "أدرار", "الشلف", "الأغواط", "أم البواقي", "باتنة", "بجاية", "بسكرة", "بشار",
-  "البليد��", "البويرة", "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر",
+  "البليدة", "البويرة", "تمنراست", "تبسة", "تلمسان", "تيارت", "تيزي وزو", "الجزائر",
   "الجلفة", "جيجل", "سطيف", "سعيدة", "سكيكدة", "سيدي بلعباس", "عنابة", "قالمة",
   "قسنطينة", "المدية", "مستغانم", "المسيلة", "معسكر", "ورقلة", "وهران", "البيض",
   "إليزي", "برج بوعريريج", "بومرداس", "الطارف", "تندوف", "تيسمسيلت", "الوادي",
@@ -135,7 +135,7 @@ export default function ParentRegister() {
                   type="password"
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="��•••••••"
                   required
                   className="text-right"
                 />
@@ -166,7 +166,7 @@ export default function ParentRegister() {
               </Label>
               <Select value={formData.state} onValueChange={(value) => handleInputChange('state', value)} required>
                 <SelectTrigger className="text-right">
-                  <SelectValue placeholder="اختر الولاية" />
+                  <SelectValue placeholder="اخ��ر الولاية" />
                 </SelectTrigger>
                 <SelectContent>
                   {algerianStates.map((state) => (
@@ -211,7 +211,7 @@ export default function ParentRegister() {
               ) : (
                 <div className="flex items-center gap-2">
                   <UserPlus className="w-5 h-5" />
-                  إ��شاء الحساب
+                  إنشاء الحساب
                 </div>
               )}
             </Button>
