@@ -117,7 +117,7 @@ export default function SpecialistDashboard() {
     { region: "باتنة", patients: 69, success: 73, cases: 89 },
     { region: "بجاية", patients: 58, success: 80, cases: 74 },
     { region: "تلمسان", patients: 52, success: 77, cases: 68 },
-    { region: "��لبليدة", patients: 64, success: 85, cases: 78 },
+    { region: "البليدة", patients: 64, success: 85, cases: 78 },
     { region: "مستغانم", patients: 45, success: 74, cases: 61 },
   ];
 
@@ -556,7 +556,7 @@ export default function SpecialistDashboard() {
                           التوزيع الجغرافي للمرضى - الجزائر
                         </CardTitle>
                         <CardDescription>
-                          عدد ا��مرضى حسب الولايات الجزائرية
+                          عدد المرضى حسب الولايات الجزائرية
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -842,7 +842,7 @@ export default function SpecialistDashboard() {
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium">��نبيهات ��لمواعيد</p>
+                          <p className="font-medium">تنبيهات المواعيد</p>
                           <p className="text-sm text-gray-600">
                             إرسال تذكير قبل المواعيد
                           </p>
@@ -956,7 +956,7 @@ export default function SpecialistDashboard() {
                         <div>
                           <p className="font-medium">الوضع المظلم</p>
                           <p className="text-sm text-gray-600">
-                            تفعيل المظهر ا��مظلم للتطبيق
+                            تفعيل المظهر المظلم للتطبيق
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -1040,7 +1040,7 @@ export default function SpecialistDashboard() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Download className="w-5 h-5" />
-                        إدارة ال��يانات
+                        إدارة البيانات
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
