@@ -515,7 +515,7 @@ export default function PerceptualExercises() {
         <div className="text-center mb-12">
           <div className="text-8xl mb-6">🧠</div>
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            تما��ين الإدراك البصري
+            تمارين الإدراك البصري
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             جعل التعلم ممتعاً من خلال التدرج من السهل إلى الصعب
