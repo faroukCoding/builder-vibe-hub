@@ -339,8 +339,8 @@ export default function ParentDashboard() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>تاريخ الجلسات</CardTitle>
-          <CardDescription>سجل مفصل ��جميع الجلسات والأنشطة</CardDescription>
+          <CardTitle>تار��خ الجلسات</CardTitle>
+          <CardDescription>سجل مفصل بجميع الجلسات والأنشطة</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -405,7 +405,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5" />
-            التقارير ال��بية
+            التقارير الطبية
           </CardTitle>
           <CardDescription>
             التقارير والتقييمات من الأخصائي المعالج
@@ -805,7 +805,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-6 h-6 text-blue-600" />
-            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقرا��ية الشعبية
+            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشعبية
           </CardTitle>
           <CardDescription>
             توزيع المرضى ونسب النجاح حسب الولايات
