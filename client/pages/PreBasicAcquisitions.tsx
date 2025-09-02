@@ -98,7 +98,7 @@ export default function PreBasicAcquisitions() {
       title: 'الجانبية',
       icon: <ArrowUpDown className="w-8 h-8" />,
       color: 'bg-purple-500',
-      description: 'فهم الاتجاهات وا��مواضع',
+      description: 'فهم الاتجاهات والمواضع',
       items: [
         { name: 'يمين', direction: 'right' },
         { name: 'يسار', direction: 'left' },
@@ -239,27 +239,60 @@ export default function PreBasicAcquisitions() {
     );
   };
 
-  // Numbers Game Component  
+  // Numbers Game Component
   const NumbersGame = ({ category, onComplete }: { category: any, onComplete: () => void }) => {
     const [gameMode, setGameMode] = useState<'learn' | 'test'>('learn');
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
 
+    const questions = category.items.map((item: any) => {
+      const options = new Set<number>();
+      options.add(item.number);
+      while (options.size < 4) {
+        const rand = Math.floor(Math.random() * 11);
+        options.add(rand);
+      }
+      const optionsArr = Array.from(options).sort(() => Math.random() - 0.5);
+      return {
+        text: `اختر الرقم ${item.name}`,
+        correct: item.number,
+        options: optionsArr
+      };
+    });
+
+    const handleAnswer = (selected: number) => {
+      const current = questions[currentQuestion];
+      const isCorrect = selected === current.correct;
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+        speakArabic('ممتاز! إجابة صحيحة');
+      } else {
+        speakArabic('حاول مرة أخرى');
+      }
+      setTimeout(() => {
+        if (currentQuestion < questions.length - 1) {
+          setCurrentQuestion(prev => prev + 1);
+        } else {
+          setShowResult(true);
+        }
+      }, 1200);
+    };
+
     if (gameMode === 'learn') {
       return (
         <div className="space-y-6">
           <div className="text-center">
             <h3 className="text-xl font-bold mb-4">تعلم الأرقام</h3>
-            <Button onClick={() => speakArabic('لون الرقم')}>
+            <Button onClick={() => speakArabic('تعلم أسماء الأرقام') }>
               <Volume2 className="w-4 h-4 ml-2" />
-              لون الرقم
+              الاستماع
             </Button>
           </div>
-          
+
           <div className="grid grid-cols-3 gap-4">
             {category.items.map((item: any, index: number) => (
-              <Card 
+              <Card
                 key={index}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
                 onClick={() => speakArabic(item.name)}
@@ -284,31 +317,87 @@ export default function PreBasicAcquisitions() {
       );
     }
 
-    // Add test mode similar to colors...
-    return <div>Test mode for numbers...</div>;
+    if (showResult) {
+      return (
+        <div className="text-center space-y-6">
+          <div className="text-6xl mb-4">🎉</div>
+          <h3 className="text-2xl font-bold">انتهيت من الاختبار!</h3>
+          <p className="text-lg">النتيجة: {score} من {questions.length}</p>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => { setCurrentQuestion(0); setScore(0); setShowResult(false); setGameMode('learn'); }}>
+              <RotateCcw className="w-4 h-4 ml-2" />
+              إعادة اللعب
+            </Button>
+            <Button onClick={onComplete} variant="outline">العودة</Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-xl font-bold mb-2">السؤال {currentQuestion + 1} من {questions.length}</h3>
+          <p className="text-lg mb-4">{questions[currentQuestion].text}</p>
+          <Button onClick={() => speakArabic(questions[currentQuestion].text)}>
+            <Volume2 className="w-4 h-4 ml-2" />
+            استمع للسؤال
+          </Button>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {questions[currentQuestion].options.map((opt: number, idx: number) => (
+            <Card key={idx} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleAnswer(opt)}>
+              <CardContent className="p-6 text-center">
+                <div className="text-4xl font-bold text-blue-600">{opt}</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Progress value={(currentQuestion / questions.length) * 100} className="w-full" />
+      </div>
+    );
   };
 
   // Body Parts Game Component
   const BodyPartsGame = ({ category, onComplete }: { category: any, onComplete: () => void }) => {
     const [gameMode, setGameMode] = useState<'learn' | 'test'>('learn');
+    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [score, setScore] = useState(0);
+    const [showResult, setShowResult] = useState(false);
+
+    const questions = category.items.map((item: any) => {
+      const shuffled = [...category.items].sort(() => Math.random() - 0.5).slice(0, 4);
+      if (!shuffled.find((it) => it.name === item.name)) {
+        shuffled[0] = item;
+      }
+      const options = shuffled.sort(() => Math.random() - 0.5);
+      return { text: `اختر صورة ${item.name}`, correct: item.name, options };
+    });
+
+    const handleAnswer = (selectedName: string) => {
+      const isCorrect = selectedName === questions[currentQuestion].correct;
+      if (isCorrect) {
+        setScore((s) => s + 1);
+        speakArabic('ممتاز! إجابة صحيحة');
+      } else {
+        speakArabic('حاول مرة أخرى');
+      }
+      setTimeout(() => {
+        if (currentQuestion < questions.length - 1) setCurrentQuestion((q) => q + 1);
+        else setShowResult(true);
+      }, 1200);
+    };
 
     if (gameMode === 'learn') {
       return (
         <div className="space-y-6">
           <div className="text-center">
             <h3 className="text-xl font-bold mb-4">أعضاء الجسم</h3>
-            <div className="mb-6">
-              <img 
-                src="/api/placeholder/300/400" 
-                alt="جسم الإنسان" 
-                className="mx-auto rounded-lg"
-              />
-            </div>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             {category.items.map((item: any, index: number) => (
-              <Card 
+              <Card
                 key={index}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
                 onClick={() => speakArabic(item.name)}
@@ -331,15 +420,54 @@ export default function PreBasicAcquisitions() {
       );
     }
 
-    return <div>Test mode for body parts...</div>;
+    if (showResult) {
+      return (
+        <div className="text-center space-y-6">
+          <div className="text-6xl mb-4">🎉</div>
+          <h3 className="text-2xl font-bold">انتهيت من الاختبار!</h3>
+          <p className="text-lg">النتيجة: {score} من {questions.length}</p>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => { setCurrentQuestion(0); setScore(0); setShowResult(false); setGameMode('learn'); }}>
+              <RotateCcw className="w-4 h-4 ml-2" />
+              إعادة اللعب
+            </Button>
+            <Button onClick={onComplete} variant="outline">العودة</Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-xl font-bold mb-2">السؤال {currentQuestion + 1} من {questions.length}</h3>
+          <p className="text-lg mb-4">{questions[currentQuestion].text}</p>
+          <Button onClick={() => speakArabic(questions[currentQuestion].text)}>
+            <Volume2 className="w-4 h-4 ml-2" />
+            استمع للسؤال
+          </Button>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {questions[currentQuestion].options.map((opt: any, idx: number) => (
+            <Card key={idx} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleAnswer(opt.name)}>
+              <CardContent className="p-6 text-center">
+                <div className="text-4xl mb-2">{opt.emoji}</div>
+                <p className="font-semibold">{opt.name}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Progress value={(currentQuestion / questions.length) * 100} className="w-full" />
+      </div>
+    );
   };
 
   // Laterality Game Component
   const LateralityGame = ({ category, onComplete }: { category: any, onComplete: () => void }) => {
     const [currentInstruction, setCurrentInstruction] = useState(0);
-    const [ballPosition, setBallPosition] = useState({ x: 50, y: 50 });
-    const [boxPosition] = useState({ x: 50, y: 50 });
+    const [ballPosition, setBallPosition] = useState({ x: 20, y: 20 });
     const [score, setScore] = useState(0);
+    const [showResult, setShowResult] = useState(false);
 
     const instructions = [
       { text: 'ضع الكرة داخل الصندوق', target: 'inside' },
@@ -347,35 +475,84 @@ export default function PreBasicAcquisitions() {
       { text: 'ضع الكرة تحت الصندوق', target: 'below' },
       { text: 'ضع الكرة يمين الصندوق', target: 'right' },
       { text: 'ضع الكرة يسار الصندوق', target: 'left' },
+      { text: 'ضع الكرة خارج الصندوق', target: 'outside' },
     ];
+
+    const checkRelation = () => {
+      // Box bounds in percent: center at 50,50 size ~= 20% x 20%
+      const left = 40, right = 60, top = 40, bottom = 60;
+      const x = ballPosition.x, y = ballPosition.y;
+      let relation: 'inside' | 'above' | 'below' | 'left' | 'right' | 'outside' = 'outside';
+
+      if (x >= left && x <= right && y >= top && y <= bottom) relation = 'inside';
+      else if (x >= left && x <= right && y < top) relation = 'above';
+      else if (x >= left && x <= right && y > bottom) relation = 'below';
+      else if (y >= top && y <= bottom && x < left) relation = 'left';
+      else if (y >= top && y <= bottom && x > right) relation = 'right';
+      else relation = 'outside';
+
+      const target = instructions[currentInstruction].target;
+      if (relation === target) {
+        setScore((s) => s + 1);
+        speakArabic('أحسنت!');
+      } else {
+        speakArabic('حاول مرة أخرى');
+        return;
+      }
+
+      setTimeout(() => {
+        if (currentInstruction < instructions.length - 1) {
+          setCurrentInstruction((i) => i + 1);
+          setBallPosition({ x: 20, y: 20 });
+        } else {
+          setShowResult(true);
+        }
+      }, 800);
+    };
+
+    if (showResult) {
+      return (
+        <div className="text-center space-y-6">
+          <div className="text-6xl mb-4">⚽</div>
+          <h3 className="text-2xl font-bold">أكملت تمارين الجانبية</h3>
+          <p className="text-lg">النتيجة: {score} من {instructions.length}</p>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => { setScore(0); setCurrentInstruction(0); setBallPosition({x:20,y:20}); setShowResult(false); }}>
+              <RotateCcw className="w-4 h-4 ml-2" />
+              إعادة اللعب
+            </Button>
+            <Button onClick={onComplete} variant="outline">العودة</Button>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="space-y-6">
         <div className="text-center">
           <h3 className="text-xl font-bold mb-4">الجانبية</h3>
-          <p className="text-lg mb-4">{instructions[currentInstruction]?.text}</p>
-          <Button onClick={() => speakArabic(instructions[currentInstruction]?.text)}>
-            <Volume2 className="w-4 h-4 ml-2" />
-            استمع للتعليمة
-          </Button>
+          <p className="text-lg mb-2">{instructions[currentInstruction]?.text}</p>
+          <div className="flex gap-2 justify-center">
+            <Button onClick={() => speakArabic(instructions[currentInstruction]?.text)}>
+              <Volume2 className="w-4 h-4 ml-2" />
+              استمع للتعليمة
+            </Button>
+            <Button variant="outline" onClick={checkRelation}>تحقق</Button>
+          </div>
         </div>
 
         <div className="relative bg-blue-100 h-96 rounded-lg overflow-hidden">
-          {/* Box */}
-          <div 
-            className="absolute w-20 h-20 bg-yellow-500 rounded-lg border-4 border-yellow-600"
-            style={{ 
-              left: `${boxPosition.x - 10}%`, 
-              top: `${boxPosition.y - 10}%`,
-              transform: 'translate(-50%, -50%)'
-            }}
+          {/* Box area (40%-60%) */}
+          <div
+            className="absolute bg-yellow-500 bg-opacity-70 rounded-lg border-4 border-yellow-600"
+            style={{ left: '40%', top: '40%', width: '20%', height: '20%' }}
           />
-          
+
           {/* Ball */}
-          <div 
+          <div
             className="absolute w-8 h-8 bg-red-500 rounded-full cursor-pointer"
-            style={{ 
-              left: `${ballPosition.x}%`, 
+            style={{
+              left: `${ballPosition.x}%`,
               top: `${ballPosition.y}%`,
               transform: 'translate(-50%, -50%)'
             }}
@@ -535,7 +712,7 @@ export default function PreBasicAcquisitions() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6 text-blue-700">
               <div>
-                <h4 className="font-semibold mb-2">مرحلة التعلم:</h4>
+                <h4 className="font-semibold mb-2">م��حلة التعلم:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• اضغط على أي عنصر لسماع اسمه</li>
                   <li>• تعلم جميع العناصر قبل الانتقال للاختبار</li>
