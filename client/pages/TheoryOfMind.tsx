@@ -108,7 +108,7 @@ export default function TheoryOfMind() {
     {
       id: 7,
       title: "اختبار التواصل غير اللفظي",
-      story: "أبو يوسف يشير بإصبعه نحو الباب، وينظر إلى يوس�� نظرة جدية.",
+      story: "أبو يوسف يشير بإصبعه نحو الباب، وينظر إلى يوس�� نظرة ��دية.",
       question: "ماذا يريد أب�� يوسف من يوسف؟",
       options: ["أن يفتح الباب", "أن يغادر الغرفة", "أن ينظر للباب", "أن يقف هناك"],
       correctAnswer: "أن يغادر الغرفة",
@@ -512,7 +512,7 @@ export default function TheoryOfMind() {
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                {currentTest === "menu" ? "العودة للوحة التحكم" : "ال��ائمة الرئيسية"}
+                {currentTest === "menu" ? "العودة للوحة التحكم" : "القائمة الرئيسية"}
               </Button>
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-2 rounded-lg">
