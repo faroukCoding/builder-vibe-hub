@@ -76,7 +76,7 @@ export default function SpecialistDashboard() {
     },
     {
       id: 3,
-      name: "يوسف ��بدالله",
+      name: "يوسف عبدالله",
       age: 7,
       lastVisit: "2024-01-08",
       status: "علاج متقدم",
@@ -117,7 +117,7 @@ export default function SpecialistDashboard() {
     { region: "باتنة", patients: 69, success: 73, cases: 89 },
     { region: "بجاية", patients: 58, success: 80, cases: 74 },
     { region: "تلمسان", patients: 52, success: 77, cases: 68 },
-    { region: "البليدة", patients: 64, success: 85, cases: 78 },
+    { region: "��لبليدة", patients: 64, success: 85, cases: 78 },
     { region: "مستغانم", patients: 45, success: 74, cases: 61 },
   ];
 
@@ -322,7 +322,7 @@ export default function SpecialistDashboard() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input placeholder="البحث عن مر��ض..." className="pr-10 w-64" />
+              <Input placeholder="البحث عن مريض..." className="pr-10 w-64" />
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 ml-2" />
@@ -556,7 +556,7 @@ export default function SpecialistDashboard() {
                           التوزيع الجغرافي للمرضى - الجزائر
                         </CardTitle>
                         <CardDescription>
-                          عدد المرضى حسب الولايات الجزائرية
+                          عدد ا��مرضى حسب الولايات الجزائرية
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -716,7 +716,7 @@ export default function SpecialistDashboard() {
                                 إجمالي الحالات
                               </th>
                               <th className="text-right p-3 font-semibold">
-                                معدل الن��اح
+                                معدل النجاح
                               </th>
                               <th className="text-right p-3 font-semibold">
                                 الحالة
@@ -956,7 +956,7 @@ export default function SpecialistDashboard() {
                         <div>
                           <p className="font-medium">الوضع المظلم</p>
                           <p className="text-sm text-gray-600">
-                            تفعيل المظهر المظلم للتطبيق
+                            تفعيل المظهر ا��مظلم للتطبيق
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -1040,7 +1040,7 @@ export default function SpecialistDashboard() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Download className="w-5 h-5" />
-                        إدارة البيانات
+                        إدارة ال��يانات
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
