@@ -76,7 +76,7 @@ export default function SpecialistDashboard() {
     },
     {
       id: 3,
-      name: "يوسف عبدالله",
+      name: "يوسف ��بدالله",
       age: 7,
       lastVisit: "2024-01-08",
       status: "علاج متقدم",
@@ -322,7 +322,7 @@ export default function SpecialistDashboard() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input placeholder="البحث عن مريض..." className="pr-10 w-64" />
+              <Input placeholder="البحث عن مر��ض..." className="pr-10 w-64" />
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 ml-2" />
@@ -399,7 +399,7 @@ export default function SpecialistDashboard() {
   const ReportsTab = () => (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">ال��قارير والإحصائيات</CardTitle>
+        <CardTitle className="text-xl">التقارير والإحصائيات</CardTitle>
         <CardDescription>
           تقارير مفصلة حول أداء المرضى والتقدم العلاجي
         </CardDescription>
