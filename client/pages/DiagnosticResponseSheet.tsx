@@ -201,7 +201,7 @@ export default function DiagnosticResponseSheet() {
       skill_group: "المعتقد الخاطئ",
       media: { image_url: "/assets/faisal/book2.png", audio_url: "/assets/audio/q12.mp3" },
       correct_answer: "📦 في الدرج",
-      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏�� على السرير"]
+      choices: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"]
     },
     {
       question_id: 13,
@@ -225,7 +225,7 @@ export default function DiagnosticResponseSheet() {
     {
       question_id: 15,
       task: "G",
-      label: "ماذا يعتقد الأب أن خالد يريد؟",
+      label: "ماذا ��عتقد الأب أن خالد يريد؟",
       skill_group: "المعتقد الخاطئ",
       media: { image_url: "/assets/khalid/gift2.png", audio_url: "/assets/audio/q15.mp3" },
       correct_answer: "🚂 قطار",
@@ -254,7 +254,7 @@ export default function DiagnosticResponseSheet() {
       question_id: 18,
       task: "H",
       label: "أي صحن وضعه رامي بجانب الموقد؟",
-      skill_group: "الأماكن والتتبع",
+      skill_group: "��لأماكن والتتبع",
       media: { image_url: "/assets/rami/plates1.png", audio_url: "/assets/audio/q18.mp3" },
       correct_answer: "🍝 المكرونة",
       choices: ["🍝 المكرونة", "🥗 السلطة", "🍞 الخبز"]
