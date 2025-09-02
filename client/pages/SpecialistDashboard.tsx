@@ -79,7 +79,7 @@ export default function SpecialistDashboard() {
       name: "يوسف عبدالله",
       age: 7,
       lastVisit: "2024-01-08",
-      status: "علاج م��قدم",
+      status: "علاج متقدم",
       diagnosis: "تلعثم في الكلام",
       progress: 90,
       parent: "خديجة عبدالله",
@@ -149,7 +149,7 @@ export default function SpecialistDashboard() {
     {
       id: "pre-basic",
       title: "المكتسبات القبلية",
-      description: "الألوان، الأرقام، أعضاء الجسم، الجانبية",
+      description: "الألوان، ال��رقام، أعضاء الجسم، الجانبية",
       icon: Brain,
       color: "orange",
       route: "/pre-basic-acquisitions",
@@ -322,7 +322,7 @@ export default function SpecialistDashboard() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="w-4 h-4 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input placeholder="البحث عن مريض..." className="pr-10 w-64" />
+              <Input placeholder="ا��بحث عن مريض..." className="pr-10 w-64" />
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 ml-2" />
@@ -383,10 +383,10 @@ export default function SpecialistDashboard() {
                   عرض الملف
                 </Button>
                 <Button size="sm" variant="outline">
-                  بدء جلسة
+                  بدء ��لسة
                 </Button>
                 <Button size="sm" variant="outline">
-                  ��لتقارير
+                  التقارير
                 </Button>
               </div>
             </div>
@@ -485,7 +485,7 @@ export default function SpecialistDashboard() {
                 <p className="text-sm text-gray-600">أخصائي أرطوفوني</p>
               </div>
               <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-semibold">
-                ��
+                أ
               </div>
             </div>
           </div>
@@ -556,7 +556,7 @@ export default function SpecialistDashboard() {
                           التوزيع الجغرافي للمرضى - الجزائر
                         </CardTitle>
                         <CardDescription>
-                          عدد المرضى حسب الولايات الجزا��رية
+                          عدد المرضى حسب الولايات الجزائرية
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -1163,7 +1163,7 @@ export default function SpecialistDashboard() {
                   ))}
                 </div>
                 <Button variant="outline" className="w-full mt-4">
-                  عرض ��ميع المواعيد
+                  عرض جميع المواعيد
                 </Button>
               </CardContent>
             </Card>
@@ -1196,7 +1196,7 @@ export default function SpecialistDashboard() {
                   onClick={() => navigate("/diagnostic-response-sheet")}
                 >
                   <FileText className="w-4 h-4 ml-2" />
-                  ورقة ال��ستجابة
+                  ورقة الاستجابة
                 </Button>
                 <Button
                   variant="outline"
