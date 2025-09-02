@@ -113,7 +113,7 @@ export default function ParentDashboard() {
   ];
 
   const achievements = [
-    { title: "أول جلسة", earned: true, date: "2024-01-01", icon: "���" },
+    { title: "أول جلسة", earned: true, date: "2024-01-01", icon: "🎯" },
     { title: "5 جلسات", earned: true, date: "2024-01-10", icon: "⭐" },
     { title: "تحسن 50%", earned: true, date: "2024-01-12", icon: "📈" },
     { title: "10 جلسات", earned: false, date: null, icon: "🏆" },
@@ -805,7 +805,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-6 h-6 text-blue-600" />
-            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشعبية
+            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشع��ية
           </CardTitle>
           <CardDescription>
             توزيع المرضى ونسب النجاح حسب الولايات
