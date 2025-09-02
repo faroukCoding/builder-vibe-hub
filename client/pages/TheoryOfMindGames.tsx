@@ -105,7 +105,7 @@ export default function TheoryOfMindGames() {
     {
       id: "maha-cookie",
       title: "مها والبسكويت",
-      description: "فهم الرغبات والم��اعر",
+      description: "فهم الرغبات والمشاعر",
       icon: "🍪",
       difficulty: 1,
       color: "bg-yellow-500",
@@ -120,8 +120,8 @@ export default function TheoryOfMindGames() {
     },
     {
       id: "yasmina-saeed",
-      title: "ياسمي��ه وسعيد مع التمثال",
-      description: "وجهات النظر المختلفة",
+      title: "ياسمينة وسعيد مع التمثال",
+      description: "وجها�� النظر المختلفة",
       icon: "🗿",
       difficulty: 2,
       color: "bg-purple-500",
@@ -153,7 +153,7 @@ export default function TheoryOfMindGames() {
     {
       id: "rami-mariam",
       title: "رامي ومريم مع الصحون",
-      description: "تبديل الأماكن والذ��كرة",
+      description: "تبديل الأماكن والذاكرة",
       icon: "🍝",
       difficulty: 4,
       color: "bg-teal-500",
@@ -219,7 +219,7 @@ export default function TheoryOfMindGames() {
       JSON.stringify(finalSession),
     );
 
-    // الانتقال لورقة ال��ستجابة
+    // الانتقال لورقة الاستجابة
     navigate("/diagnostic-response-sheet", {
       state: { sessionData: finalSession },
     });
@@ -249,7 +249,7 @@ export default function TheoryOfMindGames() {
     ];
 
     const questions = [
-      { text: "ضع إصبعك على الوجه السعيد", answer: "😊" },
+      { text: "ضع إصبعك ع��ى الوجه السعيد", answer: "😊" },
       { text: "أين الوجه الحزين؟", answer: "😢" },
       { text: "اختر الوجه الغاضب", answer: "😠" },
       { text: "أين الوجه الخائف؟", answer: "😨" },
@@ -399,7 +399,7 @@ export default function TheoryOfMindGames() {
         text: "مها حصلت على البسكويت!",
         image: "👧🍪",
         question: {
-          text: "كيف ستشعر مها؟",
+          text: "كيف س��شعر مها؟",
           options: ["😊 سعيدة", "😢 حزينة", "😠 غاضبة"],
           correct: 0,
         },
@@ -754,7 +754,7 @@ export default function TheoryOfMindGames() {
         }, 2000);
       } else {
         setFeedback("❌ فكر في الموقع الذي يقف فيه كل شخص");
-        speakArabic("فك�� في الموقع الذي يقف فيه كل شخص");
+        speakArabic("فكر في الموقع الذي يقف فيه كل شخص");
         setTimeout(() => setFeedback(null), 2000);
       }
     };
@@ -770,7 +770,7 @@ export default function TheoryOfMindGames() {
         <div className="flex items-center justify-between">
           <Button onClick={onBack} variant="outline">
             <ArrowLeft className="w-4 h-4 ml-2" />
-            العودة
+            ال��ودة
           </Button>
           <h2 className="text-2xl font-bold text-center">
             ياسمينه وسعيد مع التمثال
@@ -1103,7 +1103,7 @@ export default function TheoryOfMindGames() {
         text: "فيصل وضع كتابه على الطاولة",
         image: "👦📚📱",
         question: {
-          text: "أين ��ضع فيصل الكتاب؟",
+          text: "أين يضع فيصل الكتاب؟",
           options: ["📱 على الطاولة", "📦 في الدرج", "🛏️ على السرير"],
           correct: 0,
         },
@@ -1259,7 +1259,7 @@ export default function TheoryOfMindGames() {
         },
       },
       {
-        text: "ماذا يظن ال��ب؟",
+        text: "ماذا يظن الأب؟",
         image: "👨❓😊",
         question: {
           text: "ماذا يظن الأب أن خالد سيشعر؟",
@@ -1515,7 +1515,7 @@ export default function TheoryOfMindGames() {
         text: "الأم قالت لمنصور أنها اشترت له سكيت",
         image: "👩💬🛼",
         question: {
-          text: "ماذا يتوقع منصور أن يحصل عليه؟",
+          text: "ماذا يتوقع من��ور أن يحصل عليه؟",
           options: ["🚲 دراجة", "🛼 سكيت", "⚽ كرة"],
           correct: 1,
         },
