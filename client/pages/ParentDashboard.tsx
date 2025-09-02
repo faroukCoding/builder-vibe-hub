@@ -260,7 +260,7 @@ export default function ParentDashboard() {
             <div className="text-2xl font-bold text-purple-600 mb-1">
               {achievements.filter((a) => a.earned).length}
             </div>
-            <div className="text-sm text-purple-700">الإنجازا��</div>
+            <div className="text-sm text-purple-700">الإنجازات</div>
           </CardContent>
         </Card>
       </div>
@@ -589,7 +589,7 @@ export default function ParentDashboard() {
         </CardContent>
       </Card>
 
-      {/* تمارين الإدراك والانتباه والذاكرة */}
+      {/* تمارين الإدراك والانتباه ��الذاكرة */}
       <Card className="bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -805,7 +805,7 @@ export default function ParentDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="w-6 h-6 text-blue-600" />
-            الإحصائيات الجغرافية للجمهورية الجزائرية الديمقراطية الشعبية
+            الإحصائيات الجغرا��ية للجمهورية الجزائرية الديمقراطية الشعبية
           </CardTitle>
           <CardDescription>
             توزيع المرضى ونسب النجاح ح��ب الولايات
