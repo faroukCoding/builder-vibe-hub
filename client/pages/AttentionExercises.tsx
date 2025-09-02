@@ -415,7 +415,7 @@ export default function AttentionExercises() {
       return (
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">📮</div>
-          <h3 className="text-2xl font-bold">انتهت لعبة حامل ال��سالة!</h3>
+          <h3 className="text-2xl font-bold">انتهت لعبة حامل الرسالة!</h3>
           <p className="text-lg">النتيجة: {score} من 5</p>
           <div className="flex gap-4 justify-center">
             <Button onClick={() => {
@@ -455,7 +455,7 @@ export default function AttentionExercises() {
               <p className="text-purple-600 font-semibold">انتبه لتسليم الرسالة...</p>
             )}
             {gamePhase === 'answer' && (
-              <p className="text-orange-600 font-semibold">من استلم الرسالة؟</p>
+              <p className="text-orange-600 font-semibold">من اس��لم الرسالة؟</p>
             )}
           </div>
         </div>
