@@ -61,9 +61,28 @@ export default function AttentionExercises() {
       title: "الانتباه المشترك",
       subtitle: "حامل الرسالة",
       icon: (
-        <svg className="w-8 h-8" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg" aria-label="رسالة">
-          <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="currentColor" strokeWidth="2"/>
-          <path d="M2 8 L21 20 L40 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+        <svg
+          className="w-8 h-8"
+          viewBox="0 0 42 32"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="رسالة"
+        >
+          <rect
+            x="1"
+            y="6"
+            width="40"
+            height="24"
+            rx="4"
+            fill="#ffffff"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <path
+            d="M2 8 L21 20 L40 8"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
         </svg>
       ),
       color: "bg-purple-500",
@@ -214,7 +233,7 @@ export default function AttentionExercises() {
                   transform: "translate(-50%, -50%)",
                 }}
                 onClick={() => handleStarClick(star)}
->
+              >
                 <span className="select-none">★</span>
               </div>
             ))}
@@ -412,7 +431,10 @@ export default function AttentionExercises() {
     // Envelope animation state
     const containerRef = useRef<HTMLDivElement | null>(null);
     const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-    const [messagePos, setMessagePos] = useState<{ x: number; y: number } | null>(null);
+    const [messagePos, setMessagePos] = useState<{
+      x: number;
+      y: number;
+    } | null>(null);
     const [showEnvelope, setShowEnvelope] = useState(false);
 
     const characters = [
@@ -560,9 +582,7 @@ export default function AttentionExercises() {
               </p>
             )}
             {gamePhase === "answer" && (
-              <p className="text-orange-600 font-semibold">
-                من استلم الرسالة؟
-              </p>
+              <p className="text-orange-600 font-semibold">من استلم الرسالة؟</p>
             )}
           </div>
         </div>
@@ -571,25 +591,73 @@ export default function AttentionExercises() {
           {showEnvelope && messagePos && (
             <div
               className="absolute z-20 text-4xl select-none"
-              style={{ left: messagePos.x, top: messagePos.y, transform: 'translate(-50%, -50%)' }}
+              style={{
+                left: messagePos.x,
+                top: messagePos.y,
+                transform: "translate(-50%, -50%)",
+              }}
             >
-              <svg width="42" height="32" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="#4b5563" strokeWidth="2"/>
-                <path d="M2 8 L21 20 L40 8" fill="none" stroke="#4b5563" strokeWidth="2"/>
+              <svg
+                width="42"
+                height="32"
+                viewBox="0 0 42 32"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="1"
+                  y="6"
+                  width="40"
+                  height="24"
+                  rx="4"
+                  fill="#ffffff"
+                  stroke="#4b5563"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M2 8 L21 20 L40 8"
+                  fill="none"
+                  stroke="#4b5563"
+                  strokeWidth="2"
+                />
               </svg>
             </div>
           )}
           {gamePhase === "watch" && !showEnvelope && (
             <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-              <svg width="64" height="48" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg" className="animate-pulse">
-                <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="#4b5563" strokeWidth="2"/>
-                <path d="M2 8 L21 20 L40 8" fill="none" stroke="#4b5563" strokeWidth="2"/>
+              <svg
+                width="64"
+                height="48"
+                viewBox="0 0 42 32"
+                xmlns="http://www.w3.org/2000/svg"
+                className="animate-pulse"
+              >
+                <rect
+                  x="1"
+                  y="6"
+                  width="40"
+                  height="24"
+                  rx="4"
+                  fill="#ffffff"
+                  stroke="#4b5563"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M2 8 L21 20 L40 8"
+                  fill="none"
+                  stroke="#4b5563"
+                  strokeWidth="2"
+                />
               </svg>
             </div>
           )}
           <div className="grid grid-cols-2 gap-6">
             {characters.map((character) => (
-              <div key={character.id} ref={(el) => { (cardRefs.current as any)[character.id] = el; }}>
+              <div
+                key={character.id}
+                ref={(el) => {
+                  (cardRefs.current as any)[character.id] = el;
+                }}
+              >
                 <Card
                   className={`cursor-pointer hover:shadow-lg transition-all text-center ${
                     gamePhase === "watch" && character.id === currentCharacter
@@ -603,15 +671,39 @@ export default function AttentionExercises() {
                   onClick={() => handleCharacterClick(character.id)}
                 >
                   <CardContent className="p-6 relative">
-                    {(character.id === currentCharacter) && (gamePhase === "identify" || gamePhase === "watch") && !showEnvelope && (
-                      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                        <svg width="48" height="36" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg" className="drop-shadow animate-pulse">
-                          <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="#4b5563" strokeWidth="2"/>
-                          <path d="M2 8 L21 20 L40 8" fill="none" stroke="#4b5563" strokeWidth="2"/>
-                        </svg>
-                      </div>
-                    )}
-                    <div className="text-6xl mb-2 relative z-0">{character.emoji}</div>
+                    {character.id === currentCharacter &&
+                      (gamePhase === "identify" || gamePhase === "watch") &&
+                      !showEnvelope && (
+                        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                          <svg
+                            width="48"
+                            height="36"
+                            viewBox="0 0 42 32"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="drop-shadow animate-pulse"
+                          >
+                            <rect
+                              x="1"
+                              y="6"
+                              width="40"
+                              height="24"
+                              rx="4"
+                              fill="#ffffff"
+                              stroke="#4b5563"
+                              strokeWidth="2"
+                            />
+                            <path
+                              d="M2 8 L21 20 L40 8"
+                              fill="none"
+                              stroke="#4b5563"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    <div className="text-6xl mb-2 relative z-0">
+                      {character.emoji}
+                    </div>
                     <p className="font-semibold text-lg">{character.name}</p>
                   </CardContent>
                 </Card>

@@ -51,7 +51,8 @@ export default function PerceptualExercises() {
       title: "المرحلة الثانية: المتوسطة",
       subtitle: "تطابق الأشكال",
       color: "bg-yellow-500",
-      description: "عرض اشكال اساسية دائرة مربع مثلث و يطابقها مع نظائرها من الأشكال",
+      description:
+        "عرض اشكال اساسية دائرة مربع مثلث و يطابقها مع نظائرها من الأشكال",
       difficulty: 2,
     },
     {
@@ -258,7 +259,9 @@ export default function PerceptualExercises() {
     const [showResult, setShowResult] = useState(false);
 
     useEffect(() => {
-      speakArabic("اسحب الشكل إلى صورته المتطابقة أو ربط بينهما و تصفيق اذا كانت إجابة صحيحة");
+      speakArabic(
+        "اسحب الشكل إلى صورته المتطابقة أو ربط بينهما و تصفيق اذا كانت إجابة صحيحة",
+      );
     }, []);
 
     const shapePairs = [
@@ -276,9 +279,15 @@ export default function PerceptualExercises() {
       },
     ];
 
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetId: string) => {
+    const handleDrop = (
+      e: React.DragEvent<HTMLDivElement>,
+      targetId: string,
+    ) => {
       e.preventDefault();
-      const dataId = draggedItem || (e.dataTransfer && e.dataTransfer.getData('text/plain')) || null;
+      const dataId =
+        draggedItem ||
+        (e.dataTransfer && e.dataTransfer.getData("text/plain")) ||
+        null;
       if (dataId) {
         const sourceItem = shapePairs[0].left.find(
           (item) => item.id === dataId,
@@ -287,7 +296,8 @@ export default function PerceptualExercises() {
           (item) => item.id === targetId,
         );
 
-        const alreadyMatched = matched.includes(dataId) || matched.includes(targetId);
+        const alreadyMatched =
+          matched.includes(dataId) || matched.includes(targetId);
         if (alreadyMatched) {
           speakArabic("تمت مطابقة هذا الشكل مسبقاً");
         } else if (
@@ -297,7 +307,9 @@ export default function PerceptualExercises() {
         ) {
           setMatched((prev) => {
             const next = [...prev, dataId, targetId];
-            const matchedTargets = next.filter((id) => id.endsWith('-match')).length;
+            const matchedTargets = next.filter((id) =>
+              id.endsWith("-match"),
+            ).length;
             if (matchedTargets >= shapePairs[0].right.length) {
               setTimeout(() => setShowResult(true), 600);
             }
@@ -309,7 +321,11 @@ export default function PerceptualExercises() {
             const ctx = new (window as any).AudioContext();
             const duration = 0.5;
             const sampleRate = ctx.sampleRate;
-            const buffer = ctx.createBuffer(1, sampleRate * duration, sampleRate);
+            const buffer = ctx.createBuffer(
+              1,
+              sampleRate * duration,
+              sampleRate,
+            );
             const data = buffer.getChannelData(0);
             for (let i = 0; i < data.length; i++) {
               const t = i / sampleRate;
@@ -357,7 +373,13 @@ export default function PerceptualExercises() {
           <h3 className="text-xl font-bold mb-4">
             اسحب الشكل إلى صورته المتطابقة
           </h3>
-          <Button onClick={() => speakArabic("اسحب الشكل إلى صورته المتطابقة أو ربط بينهما و تصفيق اذا كانت إجابة صحيحة")}>
+          <Button
+            onClick={() =>
+              speakArabic(
+                "اسحب الشكل إلى صورته المتطابقة أو ربط بينهما و تصفيق اذا كانت إجابة صحيحة",
+              )
+            }
+          >
             <Volume2 className="w-4 h-4 ml-2" />
             استمع للتعليمة
           </Button>
@@ -372,15 +394,42 @@ export default function PerceptualExercises() {
                 key={item.id}
                 className={`p-4 border-2 border-gray-300 rounded-lg text-center cursor-move hover:shadow-lg transition-shadow ${matched.includes(item.id) ? "opacity-50" : ""}`}
                 draggable={!matched.includes(item.id)}
-                onDragStart={(ev) => { try { ev.dataTransfer.setData('text/plain', item.id); ev.dataTransfer.effectAllowed = 'move'; } catch {} setDraggedItem(item.id); }}
+                onDragStart={(ev) => {
+                  try {
+                    ev.dataTransfer.setData("text/plain", item.id);
+                    ev.dataTransfer.effectAllowed = "move";
+                  } catch {}
+                  setDraggedItem(item.id);
+                }}
               >
                 <div className="flex items-center justify-center h-16">
                   {item.shape === "circle" ? (
-                    <div style={{ width: 48, height: 48, backgroundColor: item.color, borderRadius: "9999px" }} />
+                    <div
+                      style={{
+                        width: 48,
+                        height: 48,
+                        backgroundColor: item.color,
+                        borderRadius: "9999px",
+                      }}
+                    />
                   ) : item.shape === "square" ? (
-                    <div style={{ width: 48, height: 48, backgroundColor: item.color }} />
+                    <div
+                      style={{
+                        width: 48,
+                        height: 48,
+                        backgroundColor: item.color,
+                      }}
+                    />
                   ) : (
-                    <div style={{ width: 0, height: 0, borderLeft: `24px solid transparent`, borderRight: `24px solid transparent`, borderBottom: `48px solid ${item.color}` }} />
+                    <div
+                      style={{
+                        width: 0,
+                        height: 0,
+                        borderLeft: `24px solid transparent`,
+                        borderRight: `24px solid transparent`,
+                        borderBottom: `48px solid ${item.color}`,
+                      }}
+                    />
                   )}
                 </div>
               </div>
@@ -397,27 +446,74 @@ export default function PerceptualExercises() {
                     ? "bg-green-100 border-green-400"
                     : ""
                 }`}
-                onDragOver={(e) => { e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch {} }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  try {
+                    e.dataTransfer.dropEffect = "move";
+                  } catch {}
+                }}
                 onDrop={(ev) => handleDrop(ev, item.id)}
               >
                 {matched.includes(item.id) ? (
                   <div className="flex items-center justify-center h-16">
                     {item.shape === "circle" ? (
-                      <div style={{ width: 48, height: 48, backgroundColor: item.color, borderRadius: "9999px" }} />
+                      <div
+                        style={{
+                          width: 48,
+                          height: 48,
+                          backgroundColor: item.color,
+                          borderRadius: "9999px",
+                        }}
+                      />
                     ) : item.shape === "square" ? (
-                      <div style={{ width: 48, height: 48, backgroundColor: item.color }} />
+                      <div
+                        style={{
+                          width: 48,
+                          height: 48,
+                          backgroundColor: item.color,
+                        }}
+                      />
                     ) : (
-                      <div style={{ width: 0, height: 0, borderLeft: `24px solid transparent`, borderRight: `24px solid transparent`, borderBottom: `48px solid ${item.color}` }} />
+                      <div
+                        style={{
+                          width: 0,
+                          height: 0,
+                          borderLeft: `24px solid transparent`,
+                          borderRight: `24px solid transparent`,
+                          borderBottom: `48px solid ${item.color}`,
+                        }}
+                      />
                     )}
                   </div>
                 ) : (
                   <div className="flex items-center justify-center h-16 opacity-40">
                     {item.shape === "circle" ? (
-                      <div style={{ width: 48, height: 48, backgroundColor: item.color, borderRadius: "9999px" }} />
+                      <div
+                        style={{
+                          width: 48,
+                          height: 48,
+                          backgroundColor: item.color,
+                          borderRadius: "9999px",
+                        }}
+                      />
                     ) : item.shape === "square" ? (
-                      <div style={{ width: 48, height: 48, backgroundColor: item.color }} />
+                      <div
+                        style={{
+                          width: 48,
+                          height: 48,
+                          backgroundColor: item.color,
+                        }}
+                      />
                     ) : (
-                      <div style={{ width: 0, height: 0, borderLeft: `24px solid transparent`, borderRight: `24px solid transparent`, borderBottom: `48px solid ${item.color}` }} />
+                      <div
+                        style={{
+                          width: 0,
+                          height: 0,
+                          borderLeft: `24px solid transparent`,
+                          borderRight: `24px solid transparent`,
+                          borderBottom: `48px solid ${item.color}`,
+                        }}
+                      />
                     )}
                   </div>
                 )}
