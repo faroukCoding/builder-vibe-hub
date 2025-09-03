@@ -24,7 +24,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function AttentionExercises() {
   const navigate = useNavigate();
@@ -629,7 +629,7 @@ export default function AttentionExercises() {
                   تمارين الانتباه
                 </h1>
                 <p className="text-gray-600 text-sm">
-                  تمارين تفاعلية لتطوير مهارات الانتباه والتركيز
+                  تمارين تفاعلية لتطوير مها��ات الانتباه والتركيز
                 </p>
               </div>
             </div>
