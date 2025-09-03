@@ -348,7 +348,7 @@ export default function AttentionExercises() {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h3 className="text-xl font-bold mb-4">الأشياء المفقودة</h3>
+          <h3 className="text-xl font-bold mb-4">��لأشياء المفقودة</h3>
           <div className="flex items-center justify-center gap-6 mb-4">
             <div className="text-lg font-bold">ا��مستوى: {currentLevel}</div>
             <div className="text-lg font-bold">النتيجة: {score}</div>
@@ -557,33 +557,47 @@ export default function AttentionExercises() {
             )}
             {gamePhase === "answer" && (
               <p className="text-orange-600 font-semibold">
-                من اس��لم الرسالة؟
+                من استلم الرسالة؟
               </p>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 max-w-lg mx-auto">
-          {characters.map((character) => (
-            <Card
-              key={character.id}
-              className={`cursor-pointer hover:shadow-lg transition-all text-center ${
-                gamePhase === "watch" && character.id === currentCharacter
-                  ? "animate-pulse border-blue-500"
-                  : ""
-              } ${
-                gamePhase === "watch" && character.id === targetCharacter
-                  ? "animate-bounce border-green-500"
-                  : ""
-              }`}
-              onClick={() => handleCharacterClick(character.id)}
+        <div className="relative max-w-lg mx-auto" ref={containerRef}>
+          {showEnvelope && messagePos && (
+            <div
+              className="absolute z-20 text-4xl select-none"
+              style={{ left: messagePos.x, top: messagePos.y, transform: 'translate(-50%, -50%)' }}
             >
-              <CardContent className="p-6">
-                <div className="text-6xl mb-2">{character.emoji}</div>
-                <p className="font-semibold text-lg">{character.name}</p>
-              </CardContent>
-            </Card>
-          ))}
+              <svg width="42" height="32" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="#4b5563" strokeWidth="2"/>
+                <path d="M2 8 L21 20 L40 8" fill="none" stroke="#4b5563" strokeWidth="2"/>
+              </svg>
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-6">
+            {characters.map((character) => (
+              <div key={character.id} ref={(el) => { (cardRefs.current as any)[character.id] = el; }}>
+                <Card
+                  className={`cursor-pointer hover:shadow-lg transition-all text-center ${
+                    gamePhase === "watch" && character.id === currentCharacter
+                      ? "animate-pulse border-blue-500"
+                      : ""
+                  } ${
+                    gamePhase === "watch" && character.id === targetCharacter
+                      ? "border-green-500"
+                      : ""
+                  }`}
+                  onClick={() => handleCharacterClick(character.id)}
+                >
+                  <CardContent className="p-6">
+                    <div className="text-6xl mb-2">{character.emoji}</div>
+                    <p className="font-semibold text-lg">{character.name}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="text-center">
