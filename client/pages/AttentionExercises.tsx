@@ -9,7 +9,6 @@ import {
   Star,
   Target,
   Eye,
-  Users,
   Timer,
   Search,
 } from "lucide-react";
@@ -61,7 +60,12 @@ export default function AttentionExercises() {
       id: "joint",
       title: "الانتباه المشترك",
       subtitle: "حامل الرسالة",
-      icon: <Users className="w-8 h-8" />,
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg" aria-label="رسالة">
+          <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="currentColor" strokeWidth="2"/>
+          <path d="M2 8 L21 20 L40 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+        </svg>
+      ),
       color: "bg-purple-500",
       description:
         "4 شخصيات حاملة للرسالة تتحرك وتتحدث - انتبه للصوت وحدد مصدره",
