@@ -277,6 +277,7 @@ export default function PerceptualExercises() {
     ];
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetId: string) => {
+      e.preventDefault();
       const dataId = draggedItem || (e.dataTransfer && e.dataTransfer.getData('text/plain')) || null;
       if (dataId) {
         const sourceItem = shapePairs[0].left.find(
@@ -292,8 +293,7 @@ export default function PerceptualExercises() {
         } else if (
           sourceItem &&
           targetItem &&
-          sourceItem.shape === targetItem.shape &&
-          sourceItem.color === targetItem.color
+          sourceItem.shape === targetItem.shape
         ) {
           setMatched((prev) => {
             const next = [...prev, dataId, targetId];
@@ -372,7 +372,7 @@ export default function PerceptualExercises() {
                 key={item.id}
                 className={`p-4 border-2 border-gray-300 rounded-lg text-center cursor-move hover:shadow-lg transition-shadow ${matched.includes(item.id) ? "opacity-50" : ""}`}
                 draggable={!matched.includes(item.id)}
-                onDragStart={(ev) => { try { ev.dataTransfer.setData('text/plain', item.id); } catch {} setDraggedItem(item.id); }}
+                onDragStart={(ev) => { try { ev.dataTransfer.setData('text/plain', item.id); ev.dataTransfer.effectAllowed = 'move'; } catch {} setDraggedItem(item.id); }}
               >
                 <div className="flex items-center justify-center h-16">
                   {item.shape === "circle" ? (
@@ -397,7 +397,7 @@ export default function PerceptualExercises() {
                     ? "bg-green-100 border-green-400"
                     : ""
                 }`}
-                onDragOver={(e) => e.preventDefault()}
+                onDragOver={(e) => { e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch {} }}
                 onDrop={(ev) => handleDrop(ev, item.id)}
               >
                 {matched.includes(item.id) ? (
@@ -699,7 +699,7 @@ export default function PerceptualExercises() {
                   المرحلة الثالثة - الصعبة:
                 </h4>
                 <ul className="space-y-1 text-sm">
-                  <li>• اختيار ا��ظل المناسب</li>
+                  <li>• اختيار الظل المناسب</li>
                   <li>• ربط الشكل بظله الصحيح</li>
                   <li>• تطوير الإدراك البصري</li>
                   <li>• مهارات التمييز المتقدمة</li>
