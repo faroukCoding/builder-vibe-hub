@@ -350,7 +350,7 @@ export default function AttentionExercises() {
         <div className="text-center">
           <h3 className="text-xl font-bold mb-4">الأشياء المفقودة</h3>
           <div className="flex items-center justify-center gap-6 mb-4">
-            <div className="text-lg font-bold">المستوى: {currentLevel}</div>
+            <div className="text-lg font-bold">ا��مستوى: {currentLevel}</div>
             <div className="text-lg font-bold">النتيجة: {score}</div>
             <div className="text-lg font-bold">
               الأهداف: {foundObjects.length}/
@@ -360,7 +360,7 @@ export default function AttentionExercises() {
 
           <Button
             onClick={() =>
-              speakArabic("اختر الأشياء باللون الأصفر واض��ط عليها")
+              speakArabic("اختر الأشياء باللون الأصفر واضغط عليها")
             }
           >
             <Volume2 className="w-4 h-4 ml-2" />
@@ -446,12 +446,46 @@ export default function AttentionExercises() {
           setGamePhase("watch");
           speakArabic("ممتاز! انتبه الآن لتسليم الرسالة");
 
+          // Animate envelope moving from the speaker to the receiver
+          setTimeout(() => {
+            const container = containerRef.current;
+            const fromEl = cardRefs.current[currentCharacter!];
+            const toEl = cardRefs.current[targetCharacter!];
+            if (container && fromEl && toEl) {
+              const contRect = container.getBoundingClientRect();
+              const fromRect = fromEl.getBoundingClientRect();
+              const toRect = toEl.getBoundingClientRect();
+              const from = {
+                x: fromRect.left + fromRect.width / 2 - contRect.left,
+                y: fromRect.top + fromRect.height / 2 - contRect.top,
+              };
+              const to = {
+                x: toRect.left + toRect.width / 2 - contRect.left,
+                y: toRect.top + toRect.height / 2 - contRect.top,
+              };
+              let start: number | null = null;
+              const duration = 1200;
+              setShowEnvelope(true);
+              const step = (ts: number) => {
+                if (start === null) start = ts;
+                const t = Math.min((ts - start) / duration, 1);
+                const x = from.x + (to.x - from.x) * t;
+                const y = from.y + (to.y - from.y) * t;
+                setMessagePos({ x, y });
+                if (t < 1) requestAnimationFrame(step);
+                else setTimeout(() => setShowEnvelope(false), 200);
+              };
+              setMessagePos(from);
+              requestAnimationFrame(step);
+            }
+          }, 300);
+
           setTimeout(() => {
             setGamePhase("answer");
             speakArabic(
               `لمن ${characters.find((c) => c.id === currentCharacter)?.name} الرسالة؟`,
             );
-          }, 3000);
+          }, 2000);
         } else {
           speakArabic("هذا ليس الصحيح، استمع جيداً");
         }
@@ -476,7 +510,7 @@ export default function AttentionExercises() {
       return (
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">📮</div>
-          <h3 className="text-2xl font-bold">انتهت لعبة حامل الر��الة!</h3>
+          <h3 className="text-2xl font-bold">انتهت لعبة حامل الرسالة!</h3>
           <p className="text-lg">النتيجة: {score} من 5</p>
           <div className="flex gap-4 justify-center">
             <Button
