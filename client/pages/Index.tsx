@@ -24,7 +24,6 @@ import {
   BarChart3,
   Gamepad2,
 } from "lucide-react";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -46,16 +45,6 @@ export default function Index() {
       title: "متابعة مستمرة",
       description: "تتبع التقدم وإعداد التقارير المفصلة",
     },
-  ];
-
-  const activityData = [
-    { day: "Lun", sessions: 3, exercises: 8 },
-    { day: "Mar", sessions: 4, exercises: 10 },
-    { day: "Mer", sessions: 2, exercises: 6 },
-    { day: "Jeu", sessions: 5, exercises: 12 },
-    { day: "Ven", sessions: 3, exercises: 7 },
-    { day: "Sam", sessions: 6, exercises: 14 },
-    { day: "Dim", sessions: 4, exercises: 9 },
   ];
 
   const toolCategories = [
@@ -225,30 +214,6 @@ export default function Index() {
           )}
         </div>
 
-        {/* Stats Chart */}
-        <div className="mt-12">
-          <Card className="border-2">
-            <CardHeader className="text-center">
-              <CardTitle>إحصائيات الاستخدام</CardTitle>
-              <CardDescription>آخر 7 أيام</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={activityData} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="sessions" name="جلسات" stroke="#2563eb" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="exercises" name="تمارين" stroke="#16a34a" strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
