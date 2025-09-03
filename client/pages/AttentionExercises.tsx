@@ -360,7 +360,7 @@ export default function AttentionExercises() {
 
           <Button
             onClick={() =>
-              speakArabic("اختر الأشياء باللون الأصفر واضغط عليها")
+              speakArabic("اختر الأشياء باللون الأصفر واض��ط عليها")
             }
           >
             <Volume2 className="w-4 h-4 ml-2" />
@@ -404,6 +404,12 @@ export default function AttentionExercises() {
     const [score, setScore] = useState(0);
     const [round, setRound] = useState(1);
     const [showResult, setShowResult] = useState(false);
+
+    // Envelope animation state
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+    const [messagePos, setMessagePos] = useState<{ x: number; y: number } | null>(null);
+    const [showEnvelope, setShowEnvelope] = useState(false);
 
     const characters = [
       { id: "rabbit", name: "الأرنب", emoji: "🐰" },
@@ -470,7 +476,7 @@ export default function AttentionExercises() {
       return (
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">📮</div>
-          <h3 className="text-2xl font-bold">انتهت لعبة حامل الرسالة!</h3>
+          <h3 className="text-2xl font-bold">انتهت لعبة حامل الر��الة!</h3>
           <p className="text-lg">النتيجة: {score} من 5</p>
           <div className="flex gap-4 justify-center">
             <Button
@@ -629,7 +635,7 @@ export default function AttentionExercises() {
                   تمارين الانتباه
                 </h1>
                 <p className="text-gray-600 text-sm">
-                  تمارين تفاعلية لتطوير مها��ات الانتباه والتركيز
+                  تمارين تفاعلية لتطوير مهارات الانتباه والتركيز
                 </p>
               </div>
             </div>
