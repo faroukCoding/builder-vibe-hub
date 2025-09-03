@@ -276,23 +276,34 @@ export default function PerceptualExercises() {
       },
     ];
 
-    const handleDrop = (targetId: string) => {
-      if (draggedItem) {
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetId: string) => {
+      const dataId = draggedItem || (e.dataTransfer && e.dataTransfer.getData('text/plain')) || null;
+      if (dataId) {
         const sourceItem = shapePairs[0].left.find(
-          (item) => item.id === draggedItem,
+          (item) => item.id === dataId,
         );
         const targetItem = shapePairs[0].right.find(
           (item) => item.id === targetId,
         );
 
-        if (
+        const alreadyMatched = matched.includes(dataId) || matched.includes(targetId);
+        if (alreadyMatched) {
+          speakArabic("تمت مطابقة هذا الشكل مسبقاً");
+        } else if (
           sourceItem &&
           targetItem &&
           sourceItem.shape === targetItem.shape &&
           sourceItem.color === targetItem.color
         ) {
-          setMatched([...matched, draggedItem, targetId]);
-          setScore(score + 1);
+          setMatched((prev) => {
+            const next = [...prev, dataId, targetId];
+            const matchedTargets = next.filter((id) => id.endsWith('-match')).length;
+            if (matchedTargets >= shapePairs[0].right.length) {
+              setTimeout(() => setShowResult(true), 600);
+            }
+            return next;
+          });
+          setScore((s) => s + 1);
           speakArabic("ممتاز! مطابقة صحيحة");
           try {
             const ctx = new (window as any).AudioContext();
@@ -320,6 +331,7 @@ export default function PerceptualExercises() {
           speakArabic("حاول مرة أخرى");
         }
         setDraggedItem(null);
+        if (e.dataTransfer) e.dataTransfer.clearData();
       }
     };
 
@@ -360,7 +372,7 @@ export default function PerceptualExercises() {
                 key={item.id}
                 className={`p-4 border-2 border-gray-300 rounded-lg text-center cursor-move hover:shadow-lg transition-shadow ${matched.includes(item.id) ? "opacity-50" : ""}`}
                 draggable={!matched.includes(item.id)}
-                onDragStart={() => setDraggedItem(item.id)}
+                onDragStart={(ev) => { try { ev.dataTransfer.setData('text/plain', item.id); } catch {} setDraggedItem(item.id); }}
               >
                 <div className="flex items-center justify-center h-16">
                   {item.shape === "circle" ? (
@@ -386,7 +398,7 @@ export default function PerceptualExercises() {
                     : ""
                 }`}
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={() => handleDrop(item.id)}
+                onDrop={(ev) => handleDrop(ev, item.id)}
               >
                 {matched.includes(item.id) ? (
                   <div className="flex items-center justify-center h-16">
@@ -687,7 +699,7 @@ export default function PerceptualExercises() {
                   المرحلة الثالثة - الصعبة:
                 </h4>
                 <ul className="space-y-1 text-sm">
-                  <li>• اختيار الظل المناسب</li>
+                  <li>• اختيار ا��ظل المناسب</li>
                   <li>• ربط الشكل بظله الصحيح</li>
                   <li>• تطوير الإدراك البصري</li>
                   <li>• مهارات التمييز المتقدمة</li>
