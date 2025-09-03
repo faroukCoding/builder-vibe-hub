@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fiche technique – Ortho Smart</title>
+  <style>
+    :root { --fg:#111827; --muted:#374151; --accent:#2563eb; }
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--fg);}
+    .page{max-width:800px;margin:40px auto;padding:40px;border:1px solid #e5e7eb;border-radius:12px}
+    h1{font-size:28px;margin:0 0 8px;color:var(--accent)}
+    .sub{color:var(--muted);margin:0 0 24px}
+    h2{font-size:18px;margin:24px 0 8px}
+    ul{margin:8px 0 16px 20px}
+    li{margin:6px 0}
+    code{background:#f3f4f6;padding:0 6px;border-radius:6px}
+    @media print{body{background:white}.page{border:none;margin:0;padding:0}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>Fiche technique – Ortho Smart</h1>
+    <p class="sub">Plateforme d’exercices et d’évaluations orthophoniques (arabe), ludique et progressive.</p>
+
+    <h2>Objectif & Public</h2>
+    <ul>
+      <li>Objectif : exercices interactifs et évaluations orthophoniques.</li>
+      <li>Public : orthophonistes, parents / enfants.</li>
+    </ul>
+
+    <h2>Pile technique</h2>
+    <ul>
+      <li>Frontend : React 18, TypeScript, Vite, React Router v6.</li>
+      <li>Data/UI : @tanstack/react-query, Tailwind CSS, shadcn/ui, Lucide Icons.</li>
+      <li>Audio : Web Speech API (speechSynthesis ar-SA), Web Audio (applaudissements).</li>
+      <li>I18n/RTL : interface arabe, mise en page RTL.</li>
+    </ul>
+
+    <h2>Routes clés</h2>
+    <ul>
+      <li><code>/attention-exercises</code>, <code>/perceptual-exercises</code>, <code>/memory-exercises</code></li>
+      <li><code>/diagnostic-tests</code>, <code>/diagnostic-response-sheet</code></li>
+      <li><code>/theory-of-mind</code>, <code>/theory-of-mind-games</code></li>
+      <li><code>/portage-report</code>, <code>/age-calculator</code></li>
+      <li>Inscription / tableaux de bord : <code>/parent-*</code>, <code>/specialist-*</code></li>
+    </ul>
+
+    <h2>Authentification & Accès</h2>
+    <ul>
+      <li>Protection des pages via <code>ProtectedRoute</code> (filtrage par type d’utilisateur).</li>
+    </ul>
+
+    <h2>Exercices</h2>
+    <ul>
+      <li>Attention :
+        <ul>
+          <li>Attention soutenue (attraper l’étoile rouge).</li>
+          <li>Attention sélective (trouver les objets jaunes).</li>
+          <li>Attention conjointe (identifier le locuteur et animation de l’enveloppe vers le destinataire).</li>
+        </ul>
+      </li>
+      <li>Perception visuelle :
+        <ul>
+          <li>Facile : trouver l’intrus.</li>
+          <li>Moyen : correspondance de formes (cercle, carré, triangle) par glisser‑déposer.</li>
+          <li>Difficile : choisir l’ombre correcte.</li>
+        </ul>
+      </li>
+      <li>Autres modules : groupe implicite, acquisitions pré‑basiques, formulaire patient, outil âge, théorie de l’esprit, rapport Portage.</li>
+    </ul>
+
+    <h2>UI & Performance</h2>
+    <ul>
+      <li>Composants shadcn/ui (Button, Card, Badge, Progress, etc.), styles utilitaires Tailwind.</li>
+      <li>Build Vite, animations légères, pages découpées.</li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+      <li>TTS dépendant du navigateur ; DnD HTML5 ; pas de backend persistant par défaut.</li>
+      <li>Déploiement : configurations Netlify et serveur Node disponibles si besoin.</li>
+    </ul>
+  </main>
+</body>
+</html>
