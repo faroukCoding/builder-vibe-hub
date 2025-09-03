@@ -55,7 +55,7 @@ export default function AttentionExercises() {
       subtitle: "الأشياء المفقودة",
       icon: <Search className="w-8 h-8" />,
       color: "bg-green-500",
-      description: "ابحث عن جميع الأشياء باللون الأصفر و��ضغط عليها",
+      description: "ابحث عن جميع الأشياء باللون الأصفر و��ض��ط عليها",
     },
     {
       id: "joint",
@@ -210,8 +210,8 @@ export default function AttentionExercises() {
                   transform: "translate(-50%, -50%)",
                 }}
                 onClick={() => handleStarClick(star)}
-              >
-                ⭐
+>
+                <span className="select-none">★</span>
               </div>
             ))}
 
@@ -646,7 +646,7 @@ export default function AttentionExercises() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="text-8xl mb-6">🎯</div>
+          <div className="text-8xl mb-6">���</div>
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             طريقة اللعب
           </h2>
@@ -703,7 +703,7 @@ export default function AttentionExercises() {
                 <ul className="space-y-2 text-sm">
                   <li>• ظهور نجوم متساقطة بسرعة ثابتة</li>
                   <li>• تظهر نجمة حمراء بين النجوم الزرقاء</li>
-                  <li>• اضغط على النجمة الحمراء فقط</li>
+                  <li>• اضغط على النجمة الحمر��ء فقط</li>
                   <li>• عند الإجابة الصحيحة يظهر صوت تصفيق</li>
                   <li>• عند الخطأ تظهر علامة X حمراء مع صوت "أعد المحاولة"</li>
                 </ul>
@@ -723,7 +723,7 @@ export default function AttentionExercises() {
                 <ul className="space-y-2 text-sm">
                   <li>• 4 شخصيات حاملة للرسالة تتحرك وتتحدث</li>
                   <li>• انتبه للصوت وحدد مصدره</li>
-                  <li>• اضغط على الشخصية الصحيحة</li>
+                  <li>• اضغط على الشخص��ة الصحيحة</li>
                   <li>• شاهد تسليم الرسالة</li>
                   <li>• اجب على "لمن الأرنب الرسالة؟"</li>
                 </ul>
