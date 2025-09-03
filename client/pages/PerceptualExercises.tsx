@@ -48,15 +48,15 @@ export default function PerceptualExercises() {
     },
     {
       id: "medium",
-      title: "المرحلة الثانية: الصعبة",
-      subtitle: "مطابقة الأشكال",
+      title: "المرحلة الثانية: المتوسطة",
+      subtitle: "تطابق الأشكال",
       color: "bg-yellow-500",
-      description: "اسحب الشكل إلى صورته المتطابقة",
+      description: "عرض اشكال اساسية دائرة مربع مثلث و يطابقها مع نظائرها من الأشكال",
       difficulty: 2,
     },
     {
       id: "hard",
-      title: "المرحلة الثالثة: المتوسطة",
+      title: "المرحلة الثالثة: الصعبة",
       subtitle: "اختر الظل المناسب",
       color: "bg-red-500",
       description: "يعرض على الطفل شكل مع ظله ومجموعة من الظلال",
@@ -257,66 +257,21 @@ export default function PerceptualExercises() {
     const [matched, setMatched] = useState<string[]>([]);
     const [showResult, setShowResult] = useState(false);
 
+    useEffect(() => {
+      speakArabic("اسحب الشكل إلى صورته المتطابقة أو ربط بينهما و تصفيق اذا كانت إجابة صحيحة");
+    }, []);
+
     const shapePairs = [
       {
         left: [
-          { id: "diamond-blue", shape: "diamond", color: "blue", symbol: "🔷" },
-          {
-            id: "diamond-yellow",
-            shape: "diamond",
-            color: "yellow",
-            symbol: "🔶",
-          },
-          {
-            id: "diamond-blue2",
-            shape: "diamond",
-            color: "blue",
-            symbol: "🔷",
-          },
-          {
-            id: "diamond-green",
-            shape: "diamond",
-            color: "green",
-            symbol: "💚",
-          },
-          {
-            id: "diamond-blue3",
-            shape: "diamond",
-            color: "blue",
-            symbol: "🔷",
-          },
+          { id: "circle", shape: "circle", color: "#ef4444" },
+          { id: "square", shape: "square", color: "#3b82f6" },
+          { id: "triangle", shape: "triangle", color: "#10b981" },
         ],
         right: [
-          {
-            id: "diamond-blue-match",
-            shape: "diamond",
-            color: "blue",
-            symbol: "🔷",
-          },
-          {
-            id: "diamond-green-match",
-            shape: "diamond",
-            color: "green",
-            symbol: "💚",
-          },
-          {
-            id: "diamond-blue2-match",
-            shape: "diamond",
-            color: "blue",
-            symbol: "🔷",
-          },
-          {
-            id: "diamond-yellow-match",
-            shape: "diamond",
-            color: "yellow",
-            symbol: "🔶",
-          },
-          {
-            id: "diamond-blue3-match",
-            shape: "diamond",
-            color: "blue",
-            symbol: "🔷",
-          },
+          { id: "circle-match", shape: "circle", color: "#ef4444" },
+          { id: "square-match", shape: "square", color: "#3b82f6" },
+          { id: "triangle-match", shape: "triangle", color: "#10b981" },
         ],
       },
     ];
@@ -339,6 +294,24 @@ export default function PerceptualExercises() {
           setMatched([...matched, draggedItem, targetId]);
           setScore(score + 1);
           speakArabic("ممتاز! مطابقة صحيحة");
+          try {
+            const ctx = new (window as any).AudioContext();
+            const duration = 0.5;
+            const sampleRate = ctx.sampleRate;
+            const buffer = ctx.createBuffer(1, sampleRate * duration, sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < data.length; i++) {
+              const t = i / sampleRate;
+              const envelope = Math.exp(-4 * t);
+              data[i] = (Math.random() * 2 - 1) * envelope;
+            }
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            const gain = ctx.createGain();
+            gain.gain.value = 0.25;
+            source.connect(gain).connect(ctx.destination);
+            source.start();
+          } catch {}
 
           if (matched.length + 2 >= shapePairs[0].left.length * 2) {
             setTimeout(() => setShowResult(true), 1000);
@@ -372,7 +345,7 @@ export default function PerceptualExercises() {
           <h3 className="text-xl font-bold mb-4">
             اسحب الشكل إلى صورته المتطابقة
           </h3>
-          <Button onClick={() => speakArabic("اسحب الشكل إلى صورته المتطابقة")}>
+          <Button onClick={() => speakArabic("اسحب الشكل إلى صورته المتطابقة أو ربط بينهما و تصفيق اذا كانت إجابة صحيحة")}>
             <Volume2 className="w-4 h-4 ml-2" />
             استمع للتعليمة
           </Button>
@@ -381,23 +354,23 @@ export default function PerceptualExercises() {
         <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Left side - draggable items */}
           <div className="space-y-4">
-            <h4 className="text-center font-bold">
-              وصل الشكل بالأجزاء التي يتكون منها
-            </h4>
-            {shapePairs[0].left.map((item, index) => (
+            <h4 className="text-center font-bold">طابق الشكل مع نظيره</h4>
+            {shapePairs[0].left.map((item) => (
               <div
                 key={item.id}
-                className={`p-4 border-2 border-gray-300 rounded-lg text-center cursor-move hover:shadow-lg transition-shadow ${
-                  matched.includes(item.id) ? "opacity-50" : ""
-                }`}
+                className={`p-4 border-2 border-gray-300 rounded-lg text-center cursor-move hover:shadow-lg transition-shadow ${matched.includes(item.id) ? "opacity-50" : ""}`}
                 draggable={!matched.includes(item.id)}
                 onDragStart={() => setDraggedItem(item.id)}
               >
-                <div className="text-3xl mb-2">{item.symbol}</div>
-                <div
-                  className="w-6 h-6 rounded-full mx-auto"
-                  style={{ backgroundColor: item.color }}
-                />
+                <div className="flex items-center justify-center h-16">
+                  {item.shape === "circle" ? (
+                    <div style={{ width: 48, height: 48, backgroundColor: item.color, borderRadius: "9999px" }} />
+                  ) : item.shape === "square" ? (
+                    <div style={{ width: 48, height: 48, backgroundColor: item.color }} />
+                  ) : (
+                    <div style={{ width: 0, height: 0, borderLeft: `24px solid transparent`, borderRight: `24px solid transparent`, borderBottom: `48px solid ${item.color}` }} />
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -416,15 +389,25 @@ export default function PerceptualExercises() {
                 onDrop={() => handleDrop(item.id)}
               >
                 {matched.includes(item.id) ? (
-                  <>
-                    <div className="text-3xl mb-2">{item.symbol}</div>
-                    <div
-                      className="w-6 h-6 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    />
-                  </>
+                  <div className="flex items-center justify-center h-16">
+                    {item.shape === "circle" ? (
+                      <div style={{ width: 48, height: 48, backgroundColor: item.color, borderRadius: "9999px" }} />
+                    ) : item.shape === "square" ? (
+                      <div style={{ width: 48, height: 48, backgroundColor: item.color }} />
+                    ) : (
+                      <div style={{ width: 0, height: 0, borderLeft: `24px solid transparent`, borderRight: `24px solid transparent`, borderBottom: `48px solid ${item.color}` }} />
+                    )}
+                  </div>
                 ) : (
-                  <div className="text-gray-400">اسحب هنا</div>
+                  <div className="flex items-center justify-center h-16 opacity-40">
+                    {item.shape === "circle" ? (
+                      <div style={{ width: 48, height: 48, backgroundColor: item.color, borderRadius: "9999px" }} />
+                    ) : item.shape === "square" ? (
+                      <div style={{ width: 48, height: 48, backgroundColor: item.color }} />
+                    ) : (
+                      <div style={{ width: 0, height: 0, borderLeft: `24px solid transparent`, borderRight: `24px solid transparent`, borderBottom: `48px solid ${item.color}` }} />
+                    )}
+                  </div>
                 )}
               </div>
             ))}
@@ -450,7 +433,7 @@ export default function PerceptualExercises() {
       {
         object: "🚗",
         name: "سيارة",
-        shadows: ["🚲", "🚗", "🚌", "✈️"],
+        shadows: ["🚲", "🚗", "��", "✈️"],
         correct: 1,
       },
     ];
@@ -501,7 +484,7 @@ export default function PerceptualExercises() {
             {shadowQuestions[currentQuestion].object}
           </div>
           <p className="text-lg mb-4">
-            اختر ظل {shadowQuestions[currentQuestion].name}
+            اخ��ر ظل {shadowQuestions[currentQuestion].name}
           </p>
           <Button onClick={() => speakArabic("إختر الظل المناسب")}>
             <Volume2 className="w-4 h-4 ml-2" />
@@ -690,18 +673,18 @@ export default function PerceptualExercises() {
               </div>
               <div>
                 <h4 className="font-semibold mb-2">
-                  المرحلة الثانية - الصعبة:
+                  المرحلة الثانية - المتوسطة:
                 </h4>
                 <ul className="space-y-1 text-sm">
-                  <li>• مطابقة الأشكال</li>
+                  <li>• تطابق الأشكال</li>
                   <li>• اسحب الشكل لصورته المتطابقة</li>
-                  <li>• أشكال أساسية معقدة</li>
+                  <li>• أشكال أساسية: دائرة، مربع، مثلث</li>
                   <li>• تفاعل بالسحب والإفلات</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">
-                  المرحلة الثالثة - المتوسطة:
+                  المرحلة الثالثة - الصعبة:
                 </h4>
                 <ul className="space-y-1 text-sm">
                   <li>• اختيار الظل المناسب</li>
