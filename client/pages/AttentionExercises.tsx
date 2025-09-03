@@ -160,7 +160,7 @@ export default function AttentionExercises() {
           <div className="flex gap-4 justify-center">
             <Button onClick={startGame}>
               <RotateCcw className="w-4 h-4 ml-2" />
-              إعادة اللعب
+              ��عادة اللعب
             </Button>
             <Button onClick={onComplete} variant="outline">
               العودة
@@ -327,7 +327,7 @@ export default function AttentionExercises() {
       return (
         <div className="text-center space-y-6">
           <div className="text-6xl mb-4">🟡</div>
-          <h3 className="text-2xl font-bold">انتهت لعبة الأشياء المفقودة!</h3>
+          <h3 className="text-2xl font-bold">انتهت لعبة الأشيا�� المفقودة!</h3>
           <p className="text-lg">النتيجة: {score} شيء أصفر</p>
           <div className="flex gap-4 justify-center">
             <Button
@@ -542,7 +542,7 @@ export default function AttentionExercises() {
           <h3 className="text-xl font-bold mb-4">حامل الرسالة</h3>
           <div className="flex items-center justify-center gap-6 mb-4">
             <div className="text-lg font-bold">الجولة: {round}/5</div>
-            <div className="text-lg font-bold">النتيجة: {score}</div>
+            <div className="text-lg font-bold">النت��جة: {score}</div>
           </div>
 
           <div className="mb-4">
@@ -602,8 +602,16 @@ export default function AttentionExercises() {
                   }`}
                   onClick={() => handleCharacterClick(character.id)}
                 >
-                  <CardContent className="p-6">
-                    <div className="text-6xl mb-2">{character.emoji}</div>
+                  <CardContent className="p-6 relative">
+                    {(character.id === currentCharacter) && (gamePhase === "identify" || gamePhase === "watch") && !showEnvelope && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <svg width="48" height="36" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg" className="drop-shadow animate-pulse">
+                          <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="#4b5563" strokeWidth="2"/>
+                          <path d="M2 8 L21 20 L40 8" fill="none" stroke="#4b5563" strokeWidth="2"/>
+                        </svg>
+                      </div>
+                    )}
+                    <div className="text-6xl mb-2 relative z-0">{character.emoji}</div>
                     <p className="font-semibold text-lg">{character.name}</p>
                   </CardContent>
                 </Card>
