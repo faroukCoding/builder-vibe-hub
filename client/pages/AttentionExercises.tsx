@@ -575,6 +575,14 @@ export default function AttentionExercises() {
               </svg>
             </div>
           )}
+          {gamePhase === "watch" && !showEnvelope && (
+            <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <svg width="64" height="48" viewBox="0 0 42 32" xmlns="http://www.w3.org/2000/svg" className="animate-pulse">
+                <rect x="1" y="6" width="40" height="24" rx="4" fill="#ffffff" stroke="#4b5563" strokeWidth="2"/>
+                <path d="M2 8 L21 20 L40 8" fill="none" stroke="#4b5563" strokeWidth="2"/>
+              </svg>
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-6">
             {characters.map((character) => (
               <div key={character.id} ref={(el) => { (cardRefs.current as any)[character.id] = el; }}>
