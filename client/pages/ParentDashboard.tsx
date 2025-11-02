@@ -613,6 +613,12 @@ export default function ParentDashboard() {
     words: null,
     discrimination: null,
   });
+  const rapidRecorderRef = useRef<MediaRecorder | null>(null);
+  const rapidStreamRef = useRef<MediaStream | null>(null);
+  const rapidChunksRef = useRef<Blob[]>([]);
+  const [isRecordingRapid, setIsRecordingRapid] = useState(false);
+  const [rapidAudioUrl, setRapidAudioUrl] = useState<string | null>(null);
+  const [rapidUploadLoading, setRapidUploadLoading] = useState(false);
 
   const logAttempt = useCallback(
     (record: Omit<AttemptRecord, "id" | "timestamp">) => {
@@ -654,6 +660,23 @@ export default function ParentDashboard() {
 
     return () => window.clearTimeout(timer);
   }, [rapidState.isActive, rapidState.remainingSeconds, logAttempt]);
+
+  useEffect(() => {
+    return () => {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+        mediaRecorderRef.current.stop();
+      }
+      if (trainingRecorderRef.current && trainingRecorderRef.current.state === "recording") {
+        trainingRecorderRef.current.stop();
+      }
+      if (rapidRecorderRef.current && rapidRecorderRef.current.state === "recording") {
+        rapidRecorderRef.current.stop();
+      }
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      trainingStreamRef.current?.getTracks().forEach((track) => track.stop());
+      rapidStreamRef.current?.getTracks().forEach((track) => track.stop());
+    };
+  }, []);
 
   const totalAttempts = attemptHistory.length;
   const successfulAttempts = attemptHistory.filter((record) => record.result === "success").length;
@@ -821,6 +844,213 @@ export default function ParentDashboard() {
       return;
     }
     stopAssistantRecording();
+  };
+
+  const saveTrainingAudio = (module: TrainingModuleKey, audioUrl: string, label: string) => {
+    setTrainingAudioSources((prev) => {
+      const previous = prev[module];
+      if (previous?.url && previous.url.startsWith("blob:") && previous.url !== audioUrl) {
+        URL.revokeObjectURL(previous.url);
+      }
+      return {
+        ...prev,
+        [module]: { url: audioUrl, label },
+      };
+    });
+    logAttempt({
+      type: "training",
+      activity: `${moduleLabels[module]} - تسجيل صوتي`,
+      result: "info",
+      notes: label,
+      mediaLink: audioUrl,
+    });
+  };
+
+  const handleTrainingAudioUpload = (module: TrainingModuleKey, event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    saveTrainingAudio(module, url, `ملف مرفوع - ${file.name}`);
+    event.target.value = "";
+  };
+
+  const handleStopTrainingRecording = () => {
+    if (!trainingRecorderRef.current) {
+      return;
+    }
+    trainingRecorderRef.current.stop();
+  };
+
+  const handleStartTrainingRecording = async (module: TrainingModuleKey) => {
+    if (recordingModule && recordingModule !== module) {
+      handleStopTrainingRecording();
+    }
+    if (recordingModule === module && trainingRecorderRef.current) {
+      handleStopTrainingRecording();
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setTrainingFeedback((prev) => ({
+        ...prev,
+        [module]: "المتصفح لا يدعم التسجيل المباشر، يمكنك رفع ملف صوتي بدلاً من ذلك.",
+      } as typeof prev));
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      trainingStreamRef.current = stream;
+      const recorder = new MediaRecorder(stream);
+      trainingRecorderRef.current = recorder;
+      trainingChunksRef.current = [];
+      const moduleKey = module;
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          trainingChunksRef.current.push(event.data);
+        }
+      };
+      recorder.onstop = () => {
+        const blob = new Blob(trainingChunksRef.current, { type: "audio/webm" });
+        if (blob.size > 0) {
+          const url = URL.createObjectURL(blob);
+          saveTrainingAudio(moduleKey, url, "تسجيل مباشر");
+        }
+        trainingStreamRef.current?.getTracks().forEach((track) => track.stop());
+        trainingStreamRef.current = null;
+        trainingRecorderRef.current = null;
+        trainingChunksRef.current = [];
+        setRecordingModule(null);
+      };
+      recorder.start();
+      setRecordingModule(module);
+    } catch (error) {
+      trainingStreamRef.current?.getTracks().forEach((track) => track.stop());
+      trainingStreamRef.current = null;
+      trainingRecorderRef.current = null;
+      trainingChunksRef.current = [];
+      setRecordingModule(null);
+      setTrainingFeedback((prev) => ({
+        ...prev,
+        [module]: "تعذّر تشغيل الميكروفون. تأكد من منح الإذن أو استخدم رفع ملف صوتي.",
+      } as typeof prev));
+    }
+  };
+
+  const handleClearTrainingAudio = (module: TrainingModuleKey) => {
+    setTrainingAudioSources((prev) => {
+      const source = prev[module];
+      if (source?.url && source.url.startsWith("blob:")) {
+        URL.revokeObjectURL(source.url);
+      }
+      return {
+        ...prev,
+        [module]: null,
+      };
+    });
+    logAttempt({
+      type: "training",
+      activity: `${moduleLabels[module]} - حذف التسجيل الصوتي`,
+      result: "info",
+      notes: "تم حذف التسجيل الصوتي لإعادة المحاولة.",
+    });
+  };
+
+  const saveRapidAudio = (audioUrl: string, label: string) => {
+    setRapidAudioUrl((prev) => {
+      if (prev && prev.startsWith("blob:")) {
+        URL.revokeObjectURL(prev);
+      }
+      return audioUrl;
+    });
+    logAttempt({
+      type: "game",
+      activity: "تحدي النطق السريع - تسجيل صوتي",
+      result: "info",
+      notes: label,
+      mediaLink: audioUrl,
+    });
+  };
+
+  const handleRapidAudioUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    setRapidUploadLoading(true);
+    const url = URL.createObjectURL(file);
+    saveRapidAudio(url, `ملف مرفوع - ${file.name}`);
+    setRapidUploadLoading(false);
+    event.target.value = "";
+  };
+
+  const stopRapidRecording = () => {
+    rapidRecorderRef.current?.stop();
+  };
+
+  const handleRapidRecordingToggle = async () => {
+    if (isRecordingRapid) {
+      stopRapidRecording();
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setRapidState((prev) => ({
+        ...prev,
+        feedback: "المتصفح لا يدعم التسجيل المباشر، يمكنك رفع ملف صوتي بدلاً من ذلك.",
+      }));
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      rapidStreamRef.current = stream;
+      const recorder = new MediaRecorder(stream);
+      rapidRecorderRef.current = recorder;
+      rapidChunksRef.current = [];
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          rapidChunksRef.current.push(event.data);
+        }
+      };
+      recorder.onstop = () => {
+        const blob = new Blob(rapidChunksRef.current, { type: "audio/webm" });
+        if (blob.size > 0) {
+          const url = URL.createObjectURL(blob);
+          saveRapidAudio(url, "تسجيل مباشر");
+        }
+        rapidStreamRef.current?.getTracks().forEach((track) => track.stop());
+        rapidStreamRef.current = null;
+        rapidRecorderRef.current = null;
+        rapidChunksRef.current = [];
+        setIsRecordingRapid(false);
+      };
+      recorder.start();
+      setIsRecordingRapid(true);
+    } catch (error) {
+      rapidStreamRef.current?.getTracks().forEach((track) => track.stop());
+      rapidStreamRef.current = null;
+      rapidRecorderRef.current = null;
+      rapidChunksRef.current = [];
+      setIsRecordingRapid(false);
+      setRapidState((prev) => ({
+        ...prev,
+        feedback: "تعذّر تشغيل الميكروفون. تأكد من منح الإذن أو استخدم رفع ملف صوتي.",
+      }));
+    }
+  };
+
+  const handleClearRapidAudio = () => {
+    setRapidAudioUrl((prev) => {
+      if (prev && prev.startsWith("blob:")) {
+        URL.revokeObjectURL(prev);
+      }
+      return null;
+    });
+    logAttempt({
+      type: "game",
+      activity: "تحدي النطق السريع - حذف التسجيل",
+      result: "info",
+      notes: "تم حذف التسجيل الصوتي للتحدي.",
+    });
   };
 
   const createAssistantReply = (message: string): AssistantMessage => {
@@ -1267,6 +1497,81 @@ export default function ParentDashboard() {
     setReportText(lines.join("\n"));
   };
 
+  const renderTrainingAudioControls = (module: TrainingModuleKey) => {
+    const source = trainingAudioSources[module];
+    const isRecording = recordingModule === module;
+    const inputId = `training-audio-upload-${module}`;
+    return (
+      <div className="space-y-2 rounded-xl border border-slate-200 bg-white/80 p-3">
+        <p className="text-xs font-semibold text-slate-600">أرسل أو سجل محاولة صوتية للتدريب.</p>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            onClick={() => handleStartTrainingRecording(module)}
+            className={isRecording ? "bg-rose-500 hover:bg-rose-600" : "bg-sky-500 hover:bg-sky-600"}
+          >
+            {isRecording ? "إيقاف التسجيل المباشر" : "تسجيل صوتي مباشر"}
+          </Button>
+          <label className="cursor-pointer rounded-md border border-dashed border-sky-300 px-3 py-2 text-sm text-sky-700 hover:bg-sky-50">
+            رفع ملف صوتي
+            <input
+              id={inputId}
+              type="file"
+              accept="audio/*"
+              className="hidden"
+              onChange={(event) => handleTrainingAudioUpload(module, event)}
+            />
+          </label>
+          {source && (
+            <Button type="button" variant="ghost" onClick={() => handleClearTrainingAudio(module)}>
+              إزالة التسجيل
+            </Button>
+          )}
+        </div>
+        {isRecording && <p className="text-xs text-rose-600">🔴 جاري التسجيل... اضغط لإيقافه عند الانتهاء.</p>}
+        {source && (
+          <div className="space-y-1">
+            <p className="text-xs text-slate-500">{source.label}</p>
+            <audio controls src={source.url} className="w-full" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderRapidAudioControls = () => (
+    <div className="space-y-2 rounded-xl border border-indigo-200 bg-white/80 p-3">
+      <p className="text-xs font-semibold text-indigo-700">
+        أرسل تسجيلك الخاص لتحدي النطق السريع واستمع إليه مع وليّ الأمر.
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          onClick={handleRapidRecordingToggle}
+          className={isRecordingRapid ? "bg-rose-500 hover:bg-rose-600" : "bg-indigo-500 hover:bg-indigo-600"}
+        >
+          {isRecordingRapid ? "إيقاف التسجيل المباشر" : "تسجيل صوتي مباشر"}
+        </Button>
+        <label className="cursor-pointer rounded-md border border-dashed border-indigo-300 px-3 py-2 text-sm text-indigo-700 hover:bg-indigo-50">
+          رفع ملف صوتي
+          <input type="file" accept="audio/*" className="hidden" onChange={handleRapidAudioUpload} />
+        </label>
+        {rapidAudioUrl && (
+          <Button type="button" variant="ghost" onClick={handleClearRapidAudio}>
+            إزالة التسجيل
+          </Button>
+        )}
+      </div>
+      {isRecordingRapid && <p className="text-xs text-rose-600">🔴 التسجيل قيد العمل... اضغط لإيقافه عند الانتهاء.</p>}
+      {rapidUploadLoading && <p className="text-xs text-indigo-600">⏳ جاري تحميل الملف الصوتي...</p>}
+      {rapidAudioUrl && (
+        <div className="space-y-1">
+          <audio controls src={rapidAudioUrl} className="w-full" />
+        </div>
+      )}
+    </div>
+  );
+
   const OverviewTab = () => (
     <div className="space-y-6">
       {/* Child Progress Overview */}
@@ -1708,6 +2013,36 @@ export default function ParentDashboard() {
                 ))}
               </div>
 
+              <div className="space-y-2 rounded-xl border border-sky-200 bg-white/80 p-3">
+                <p className="text-xs font-semibold text-sky-700">
+                  سجّل رسالة صوتية حقيقية أو ارفع ملفاً ليقوم المساعد بتحليل النطق.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    onClick={handleAssistantRecordingToggle}
+                    className={isRecordingAssistant ? "bg-rose-500 hover:bg-rose-600" : "bg-sky-500 hover:bg-sky-600"}
+                  >
+                    {isRecordingAssistant ? "إيقاف التسجيل المباشر" : "تسجيل صوتي مباشر"}
+                  </Button>
+                  <label className="cursor-pointer rounded-md border border-dashed border-sky-300 px-3 py-2 text-sm text-sky-700 hover:bg-sky-50">
+                    رفع ملف صوتي
+                    <input type="file" accept="audio/*" className="hidden" onChange={handleAssistantAudioSelect} />
+                  </label>
+                  {isRecordingAssistant && (
+                    <Button type="button" variant="ghost" onClick={handleStopAssistantRecordingEarly}>
+                      حفظ التسجيل الحالي
+                    </Button>
+                  )}
+                </div>
+                {isRecordingAssistant && (
+                  <p className="text-xs text-rose-600">🔴 جاري التسجيل... عند الانتهاء اضغط إيقاف للحفظ.</p>
+                )}
+                {assistantUploading && (
+                  <p className="text-xs text-sky-600">⏳ يتم معالجة الملف الصوتي المرفوع...</p>
+                )}
+              </div>
+
               <form onSubmit={handleAssistantSubmit} className="space-y-3">
                 <Textarea
                   placeholder="اكتب سؤالك أو اطلب نصيحة للنطق هنا..."
@@ -1832,6 +2167,7 @@ export default function ParentDashboard() {
                 <p className="text-xs text-gray-500">
                   لن ينتقل الطفل للمستوى التالي إلا بعد إجابة صحيحة واحدة على الأقل.
                 </p>
+                {renderTrainingAudioControls("letters")}
               </div>
 
               <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-white to-purple-50 p-4 space-y-3">
@@ -1866,6 +2202,7 @@ export default function ParentDashboard() {
                 )}
                 <p className="text-sm text-purple-700 min-h-[20px]">{trainingFeedback.words}</p>
                 <p className="text-xs text-gray-500">التشجيع اللطيف يساعد الطفل على التقدم بثقة.</p>
+                {renderTrainingAudioControls("words")}
               </div>
 
               <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-white to-emerald-50 p-4 space-y-3">
@@ -1911,6 +2248,7 @@ export default function ParentDashboard() {
                 )}
                 <p className="text-sm text-emerald-700 min-h-[20px]">{trainingFeedback.discrimination}</p>
                 <p className="text-xs text-gray-500">الاستماع الدقيق يساعد على بناء قراءة سليمة.</p>
+                {renderTrainingAudioControls("discrimination")}
               </div>
             </div>
           </CardContent>
@@ -2079,6 +2417,7 @@ export default function ParentDashboard() {
               {!rapidState.isActive && rapidState.finishedRound ? (
                 <p className="text-sm text-purple-600">{rapidState.feedback}</p>
               ) : null}
+              {renderRapidAudioControls()}
             </CardContent>
           </Card>
         </div>
