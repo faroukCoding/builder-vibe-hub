@@ -25,6 +25,10 @@ import PreBasicAcquisitions from "./pages/PreBasicAcquisitions";
 import ImplicitGroup from "./pages/ImplicitGroup";
 import PerceptualExercises from "./pages/PerceptualExercises";
 import MemoryExercises from "./pages/MemoryExercises";
+import DailyTraining from "./pages/DailyTraining";
+import DailyTrainingDetail from "./pages/DailyTrainingDetail";
+import EducationalGames from "./pages/EducationalGames";
+import AIAssistant from "./pages/AIAssistant";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -174,6 +178,38 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <MemoryExercises />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/daily-training"
+            element={
+              <ProtectedRoute>
+                <DailyTraining />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/daily-training/:exerciseId"
+            element={
+              <ProtectedRoute>
+                <DailyTrainingDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/educational-games"
+            element={
+              <ProtectedRoute>
+                <EducationalGames />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai-assistant"
+            element={
+              <ProtectedRoute>
+                <AIAssistant />
               </ProtectedRoute>
             }
           />
