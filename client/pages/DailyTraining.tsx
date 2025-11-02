@@ -1,35 +1,42 @@
 import { ArrowLeft, Play, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+interface Exercise {
+  id: number;
+  title: string;
+  description: string;
+  progress: number;
+  completed: boolean;
+}
 
 export default function DailyTraining() {
   const navigate = useNavigate();
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const dailyExercises = [
-    {
-      id: 1,
-      title: 'تمرين نطق حرف الراء',
-      description: 'تكرار كلمات تحتوي على حرف الراء لتحسين النطق.',
-      progress: 75,
-      completed: false,
-    },
-    {
-      id: 2,
-      title: 'لعبة تقليد أصوات الحيوانات',
-      description: 'لعبة ممتعة لتقوية عضلات النطق.',
-      progress: 100,
-      completed: true,
-    },
-    {
-      id: 3,
-      title: 'تمرين التنفس العميق',
-      description: 'تمارين بسيطة لتعليم الطفل كيفية التحكم في التنفس أثناء الكلام.',
-      progress: 25,
-      completed: false,
-    },
-  ];
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const response = await fetch('/api/daily-training');
+        const data = await response.json();
+        setExercises(data);
+      } catch (error) {
+        console.error("Failed to fetch exercises:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExercises();
+  }, []);
+
+  const totalProgress = exercises.length > 0
+    ? exercises.reduce((acc, ex) => acc + ex.progress, 0) / exercises.length
+    : 0;
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
@@ -51,35 +58,39 @@ export default function DailyTraining() {
           </div>
           <div className="text-left">
             <p className="font-semibold">التقدم الإجمالي</p>
-            <Progress value={60} className="w-32 mt-1" />
+            <Progress value={totalProgress} className="w-32 mt-1" />
           </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="space-y-6">
-          {dailyExercises.map((exercise) => (
-            <Card key={exercise.id} className={exercise.completed ? 'bg-green-50 border-green-200' : ''}>
-              <CardContent className="p-6 flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    {exercise.completed && <CheckCircle className="w-6 h-6 text-green-500" />}
-                    <h3 className="text-xl font-semibold">{exercise.title}</h3>
+        {loading ? (
+          <p>جاري تحميل التمارين...</p>
+        ) : (
+          <div className="space-y-6">
+            {exercises.map((exercise) => (
+              <Card key={exercise.id} className={exercise.completed ? 'bg-green-50 border-green-200' : ''}>
+                <CardContent className="p-6 flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      {exercise.completed && <CheckCircle className="w-6 h-6 text-green-500" />}
+                      <h3 className="text-xl font-semibold">{exercise.title}</h3>
+                    </div>
+                    <p className="text-gray-600 mb-4">{exercise.description}</p>
+                    <div className="flex items-center gap-4">
+                      <Progress value={exercise.progress} className="w-1/2" />
+                      <span className="text-sm font-medium">{exercise.progress}%</span>
+                    </div>
                   </div>
-                  <p className="text-gray-600 mb-4">{exercise.description}</p>
-                  <div className="flex items-center gap-4">
-                    <Progress value={exercise.progress} className="w-1/2" />
-                    <span className="text-sm font-medium">{exercise.progress}%</span>
-                  </div>
-                </div>
-                <Button disabled={exercise.completed}>
-                  <Play className="w-4 h-4 ml-2" />
-                  {exercise.completed ? 'تم إكماله' : 'ابدأ التمرين'}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  <Button disabled={exercise.completed}>
+                    <Play className="w-4 h-4 ml-2" />
+                    {exercise.completed ? 'تم إكماله' : 'ابدأ التمرين'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

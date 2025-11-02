@@ -5,25 +5,43 @@ import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+interface Message {
+  from: 'user' | 'ai';
+  text: string;
+}
+
 export default function AIAssistant() {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     { from: 'ai', text: 'مرحباً! كيف يمكنني مساعدتك اليوم في رحلة علاج طفلك؟' },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = () => {
-    if (input.trim() === '') return;
-    const newMessages = [...messages, { from: 'user', text: input }];
+  const handleSend = async () => {
+    if (input.trim() === '' || isLoading) return;
+
+    const newMessages: Message[] = [...messages, { from: 'user', text: input }];
     setMessages(newMessages);
     setInput('');
-    // Simulate AI response
-    setTimeout(() => {
-      setMessages([
-        ...newMessages,
-        { from: 'ai', text: 'هذا سؤال جيد! يمكنك تجربة تمرين المرآة لتقوية عضلات الوجه.' },
-      ]);
-    }, 1000);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/ai-assistant', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input }),
+      });
+      const data = await response.json();
+      setMessages([...newMessages, { from: 'ai', text: data.reply }]);
+    } catch (error) {
+      console.error("Failed to get AI response:", error);
+      setMessages([...newMessages, { from: 'ai', text: 'عذراً، حدث خطأ ما. يرجى المحاولة مرة أخرى.' }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,23 +67,31 @@ export default function AIAssistant() {
       <div className="flex-1 max-w-4xl w-full mx-auto px-4 py-8 flex flex-col">
         <Card className="flex-1">
           <CardContent className="p-6 h-full flex flex-col">
-            <div className="flex-1 space-y-4 overflow-y-auto">
+            <div className="flex-1 space-y-4 overflow-y-auto mb-4">
               {messages.map((msg, index) => (
                 <div key={index} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`px-4 py-2 rounded-lg max-w-xs ${msg.from === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+                  <div className={`px-4 py-2 rounded-lg max-w-xs lg:max-w-md ${msg.from === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
                     {msg.text}
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="px-4 py-2 rounded-lg bg-gray-200">
+                    <span className="animate-pulse">...</span>
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-auto flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="اكتب سؤالك هنا..."
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                disabled={isLoading}
               />
-              <Button onClick={handleSend}>
+              <Button onClick={handleSend} disabled={isLoading}>
                 <Send className="w-4 h-4" />
               </Button>
             </div>
