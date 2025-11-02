@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import OpenAI from "openai";
 import {
   HomeLearningOverviewResponse,
   HomeLearningAssistantMessageRequest,
@@ -10,6 +11,53 @@ import {
   HomeLearningGameResultRequest,
   HomeLearningGameResultResponse,
 } from "@shared/api";
+
+const AI_SYSTEM_PROMPT = `أنت "نور" مساعد نطق عربي للأطفال من عمر 5 إلى 10 سنوات.
+- استخدم اللغة العربية الفصحى المبسطة مع الحفاظ على نبرة مشجعة وودية.
+- قدّم نصائح دقيقة حول مخارج الحروف والتنفس وتحريك اللسان عند الحاجة.
+- شجّع الطفل على إعادة المحاولة واذكر خطوات صغيرة واضحة.
+- لا تتحدث عن السياسات أو الموضوعات غير المناسبة للأطفال.
+- دائمًا أعد الرد بصيغة JSON بالهيكل التالي دون أي نص آخر:
+  {
+    "reply": "النص الأساسي المفصل",
+    "simplified": "نسخة مبسطة وجملة قصيرة",
+    "cues": ["تلميحات قصيرة"],
+    "nextActions": ["أنشطة مقترحة" ]
+  }
+- اجعل جميع القيم عربية مشجعة ومحفزة على التعلم.`;
+
+let cachedOpenAI: OpenAI | null = null;
+
+const getOpenAIClient = () => {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return null;
+  }
+  if (!cachedOpenAI) {
+    cachedOpenAI = new OpenAI({ apiKey });
+  }
+  return cachedOpenAI;
+};
+
+const buildAssistantFallback = (
+  body: HomeLearningAssistantMessageRequest,
+  overrides: Partial<HomeLearningAssistantMessageResponse> = {},
+): HomeLearningAssistantMessageResponse => {
+  const storedAt = new Date().toISOString();
+  return {
+    conversationId: body.childId ? `conv-${body.childId}` : "conv-temp",
+    reply: "رائع! حاول أن تبتسم قليلاً أثناء النطق لتحسين الوضوح.",
+    simplifiedReply: "أحسنت! قل ررر مع ابتسامة 😀",
+    voiceEnabled: body.modality !== "text",
+    storedAt,
+    cues: ["خفض السرعة أثناء النطق", "ركز على اهتزاز اللسان بلطف"],
+    nextActions: [
+      "أعد الكلمة ببطء ثم بسرعة معتدلة",
+      "سجل صوتك واستمع له مع وليّ أمرك",
+    ],
+    ...overrides,
+  };
+};
 
 export const handleGetHomeLearningOverview: RequestHandler = (_req, res) => {
   const response: HomeLearningOverviewResponse = {
@@ -99,23 +147,93 @@ export const handleGetHomeLearningOverview: RequestHandler = (_req, res) => {
   res.json(response);
 };
 
-export const handlePostHomeLearningAssistantMessage: RequestHandler = (req, res) => {
+export const handlePostHomeLearningAssistantMessage: RequestHandler = async (req, res) => {
   const body = req.body as HomeLearningAssistantMessageRequest;
+  const sanitizedMessage = body.message?.trim();
+  const storedAt = new Date().toISOString();
 
-  const response: HomeLearningAssistantMessageResponse = {
-    conversationId: body.childId ? `conv-${body.childId}` : "conv-temp",
-    reply: "رائع! حاول أن تبتسم قليلاً أثناء النطق لتحسين الوضوح.",
-    simplifiedReply: "أحسنت! قل ررر مع ابتسامة 😀",
-    voiceEnabled: body.modality !== "text",
-    storedAt: new Date().toISOString(),
-    cues: ["خفض السرعة", "ركز على اهتزاز اللسان"],
-    nextActions: [
-      "جرب تمرين تمييز س/ش",
-      "سجّل نطق كلمة \"قطار\" وأعد المحاولة إذا لزم الأمر",
-    ],
-  };
+  if (!sanitizedMessage) {
+    const fallback = buildAssistantFallback(body, {
+      reply: "أخبرني ما الحرف أو الكلمة التي تريد أن نتدرّب عليها اليوم كي أساعدك فورًا!",
+      simplifiedReply: "اخبرني بالكلمة أو الحرف لنبدأ التدريب معًا.",
+      storedAt,
+      cues: ["اختر حرفًا تحبه", "فكر بكلمة صعبة عليك"],
+      nextActions: ["اطلب تدريبًا لحرف محدد", "اسأل عن لعبة تساعدك على النطق"],
+    });
+    return res.status(200).json(fallback);
+  }
 
-  res.status(201).json(response);
+  const client = getOpenAIClient();
+  if (!client) {
+    const fallback = buildAssistantFallback(body, {
+      reply: "سأشاركك تدريبًا بسيطًا الآن! (لتفعيل الذكاء الاصطناعي الكامل تأكد من إعداد المفتاح السري)، كرر الكلمة ببطء ثلاث مرات ثم بسرعة معتدلة.",
+      simplifiedReply: "كرّر الكلمة ببطء ثم بسرعة، ويمكنك تسجيل صوتك أيضاً.",
+      storedAt,
+    });
+    return res.status(200).json(fallback);
+  }
+
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      temperature: 0.6,
+      response_format: { type: "json_object" },
+      max_tokens: 600,
+      messages: [
+        { role: "system", content: AI_SYSTEM_PROMPT },
+        { role: "user", content: sanitizedMessage },
+      ],
+    });
+
+    const rawContent = completion.choices[0]?.message?.content ?? "{}";
+    let parsed: {
+      reply?: string;
+      simplified?: string;
+      cues?: string[];
+      nextActions?: string[];
+    } = {};
+
+    try {
+      parsed = JSON.parse(rawContent);
+    } catch {
+      parsed = { reply: rawContent };
+    }
+
+    const reply = (parsed.reply ?? rawContent ?? sanitizedMessage).trim();
+    const simplified = (parsed.simplified ?? reply).trim();
+    const cues = Array.isArray(parsed.cues)
+      ? parsed.cues
+          .map((cue) => (typeof cue === "string" ? cue.trim() : ""))
+          .filter((cue) => cue.length > 0)
+          .slice(0, 4)
+      : [];
+    const nextActions = Array.isArray(parsed.nextActions)
+      ? parsed.nextActions
+          .map((action) => (typeof action === "string" ? action.trim() : ""))
+          .filter((action) => action.length > 0)
+          .slice(0, 4)
+      : [];
+
+    const response: HomeLearningAssistantMessageResponse = {
+      conversationId: body.childId ? `conv-${body.childId}` : "conv-temp",
+      reply,
+      simplifiedReply: simplified.length > 0 ? simplified : reply,
+      voiceEnabled: body.modality !== "text",
+      storedAt,
+      cues,
+      nextActions,
+    };
+
+    return res.status(201).json(response);
+  } catch (error) {
+    console.error("OpenAI assistant error", error);
+    const fallback = buildAssistantFallback(body, {
+      reply: "واجهنا مشكلة بسيطة في الاتصال بالذكاء الاصطناعي. لنواصل التدريب يدويًا: كرر الحرف ببطء مع ابتسامة لطيفة.",
+      simplifiedReply: "كرر الحرف بهدوء ثم أسرع قليلاً.",
+      storedAt,
+    });
+    return res.status(200).json(fallback);
+  }
 };
 
 export const handlePostHomeLearningPronunciation: RequestHandler = (req, res) => {

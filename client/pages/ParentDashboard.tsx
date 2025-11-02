@@ -57,6 +57,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import type { FormEvent, ChangeEvent } from "react";
+import type { HomeLearningAssistantMessageResponse } from "@shared/api";
 
 export default function ParentDashboard() {
   const navigate = useNavigate();
@@ -1089,34 +1090,135 @@ export default function ParentDashboard() {
     };
   };
 
-  const handleAssistantSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleAssistantSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const trimmed = assistantInput.trim();
     if (!trimmed) {
       return;
     }
+    const createdAt = new Date().toISOString();
     const childMessage: AssistantMessage = {
       id: `child-${Date.now()}`,
       role: "child",
       tone: "prompt",
       content: trimmed,
-      createdAt: new Date().toISOString(),
+      createdAt,
     };
-    const reply = createAssistantReply(trimmed);
-    setAssistantMessages((prev) => [...prev, childMessage, reply]);
+    const placeholderId = `assistant-pending-${Date.now()}`;
+    const placeholderMessage: AssistantMessage = {
+      id: placeholderId,
+      role: "assistant",
+      tone: "encouragement",
+      content: "🤖 المساعد يفكر الآن...",
+      createdAt,
+    };
+
+    setAssistantMessages((prev) => [...prev, childMessage, placeholderMessage]);
+    setAssistantInput("");
+
     logAttempt({
       type: "assistant",
       activity: "رسالة الطفل",
       result: "info",
       notes: trimmed,
     });
-    logAttempt({
-      type: "assistant",
-      activity: reply.tone === "feedback" ? "تقييم المساعد" : "تشجيع المساعد",
-      result: reply.tone === "feedback" ? "success" : "info",
-      notes: reply.content,
-    });
-    setAssistantInput("");
+
+    try {
+      const response = await fetch("/api/home-learning/assistant/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          childId: childData.name,
+          sender: "child",
+          modality: "text",
+          message: trimmed,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI service responded with status ${response.status}`);
+      }
+
+      const data = (await response.json()) as HomeLearningAssistantMessageResponse;
+      const storedAt = data.storedAt || new Date().toISOString();
+
+      setAssistantMessages((prev) => {
+        const updated = prev.map((message) =>
+          message.id === placeholderId
+            ? {
+                ...message,
+                content: data.reply,
+                tone: "feedback",
+                createdAt: storedAt,
+              }
+            : message,
+        );
+
+        if (data.simplifiedReply && data.simplifiedReply.trim() && data.simplifiedReply.trim() !== data.reply.trim()) {
+          updated.push({
+            id: `${placeholderId}-simplified`,
+            role: "assistant",
+            tone: "encouragement",
+            content: data.simplifiedReply.trim(),
+            createdAt: storedAt,
+          });
+        }
+
+        return updated;
+      });
+
+      if (data.cues?.length) {
+        data.cues.forEach((cue) =>
+          logAttempt({
+            type: "assistant",
+            activity: "إرشاد النطق",
+            result: "info",
+            notes: cue,
+          }),
+        );
+      }
+
+      if (data.nextActions?.length) {
+        data.nextActions.forEach((action) =>
+          logAttempt({
+            type: "assistant",
+            activity: "اقتراح متابعة",
+            result: "info",
+            notes: action,
+          }),
+        );
+      }
+
+      logAttempt({
+        type: "assistant",
+        activity: "رد المساعد",
+        result: "success",
+        notes: data.reply,
+      });
+    } catch (error) {
+      console.error("Failed to contact AI assistant:", error);
+      const fallback = createAssistantReply(trimmed);
+      setAssistantMessages((prev) =>
+        prev.map((message) =>
+          message.id === placeholderId
+            ? {
+                ...message,
+                content: fallback.content,
+                tone: fallback.tone,
+                createdAt: fallback.createdAt,
+              }
+            : message,
+        ),
+      );
+      logAttempt({
+        type: "assistant",
+        activity: "رد المساعد (بديل)",
+        result: "info",
+        notes: fallback.content,
+      });
+    }
   };
 
   const handleMockVoiceSave = () => {
