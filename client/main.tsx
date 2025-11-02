@@ -27,6 +27,9 @@ import PerceptualExercises from "./pages/PerceptualExercises";
 import MemoryExercises from "./pages/MemoryExercises";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DailyTraining from "./pages/DailyTraining";
+import AIAssistant from "./pages/AIAssistant";
+import EducationalGames from "./pages/EducationalGames";
 
 const queryClient = new QueryClient();
 
@@ -174,6 +177,30 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <MemoryExercises />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/daily-training"
+            element={
+              <ProtectedRoute>
+                <DailyTraining />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai-assistant"
+            element={
+              <ProtectedRoute>
+                <AIAssistant />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/educational-games"
+            element={
+              <ProtectedRoute>
+                <EducationalGames />
               </ProtectedRoute>
             }
           />

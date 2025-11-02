@@ -23,6 +23,9 @@ import {
   Play,
   Award,
   Gamepad2,
+  Home,
+  ClipboardList,
+  Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -264,6 +267,47 @@ export default function ParentDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Home Follow-up Tools */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Home className="w-5 h-5" />
+            أدوات المتابعة المنزلية
+          </CardTitle>
+          <CardDescription>
+            أنشطة وتمارين يمكنك القيام بها مع طفلك في المنزل.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Button
+              variant="outline"
+              className="h-24 flex-col gap-2"
+              onClick={() => navigate("/daily-training")}
+            >
+              <ClipboardList className="w-6 h-6 text-blue-500" />
+              <span>التدريب اليومي</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="h-24 flex-col gap-2"
+              onClick={() => navigate("/ai-assistant")}
+            >
+              <Bot className="w-6 h-6 text-purple-500" />
+              <span>مساعد AI</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="h-24 flex-col gap-2"
+              onClick={() => navigate("/educational-games")}
+            >
+              <Gamepad2 className="w-6 h-6 text-green-500" />
+              <span>الألعاب التعليمية</span>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Next Appointment */}
       <Card className="border-l-4 border-l-orange-500">
