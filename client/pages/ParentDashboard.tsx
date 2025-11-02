@@ -25,7 +25,6 @@ import {
   Gamepad2,
   Sparkles,
   Mic,
-  Volume2,
   MessageCircle,
   Headphones,
   BellRing,
@@ -37,6 +36,10 @@ import {
   Moon,
   BookOpen,
   Database,
+  ThumbsUp,
+  Repeat,
+  Trophy,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
