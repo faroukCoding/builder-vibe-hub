@@ -23,6 +23,20 @@ import {
   Play,
   Award,
   Gamepad2,
+  Sparkles,
+  Mic,
+  Volume2,
+  MessageCircle,
+  Headphones,
+  BellRing,
+  Timer,
+  ShieldCheck,
+  Cloud,
+  Cpu,
+  Sun,
+  Moon,
+  BookOpen,
+  Database,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +64,11 @@ import {
   Cell,
   LineChart,
   Line,
+  AreaChart,
+  Area,
+  RadialBarChart,
+  RadialBar,
+  Legend,
 } from "recharts";
 
 export default function ParentDashboard() {
@@ -192,6 +211,186 @@ export default function ParentDashboard() {
     { name: "الملابس", value: 90, color: "#45b7d1" },
     { name: "الحيوانات", value: 96, color: "#96ceb4" },
     { name: "المركبات", value: 86, color: "#ffeaa7" },
+  ];
+
+  const homeFollowSummary = {
+    streak: 7,
+    totalSessions: 18,
+    weeklyImprovement: 12,
+    aiFeedbackCount: 34,
+  };
+
+  const aiChatHistory = [
+    {
+      id: 1,
+      sender: "assistant" as const,
+      content: "مرحباً أحمد! جاهز لنتمرن على حرف الراء اليوم؟",
+      timestamp: "10:02"
+    },
+    {
+      id: 2,
+      sender: "child" as const,
+      content: "نعم! كيف أقول ررر؟",
+      timestamp: "10:03"
+    },
+    {
+      id: 3,
+      sender: "assistant" as const,
+      content: "حاول أن تضع لسانك خلف أسنانك قليلاً وقل: ررر. ممتاز! 😄",
+      timestamp: "10:03"
+    },
+  ];
+
+  const voiceInsights = [
+    {
+      label: "الدقة الصوتية",
+      value: 88,
+      color: "#34d399",
+      trend: "+6%",
+    },
+    {
+      label: "وضوح النطق",
+      value: 76,
+      color: "#60a5fa",
+      trend: "+3%",
+    },
+    {
+      label: "سرعة الاستجابة",
+      value: 92,
+      color: "#facc15",
+      trend: "متزن",
+    },
+  ];
+
+  const realtimePronunciationMetrics = [
+    { name: "الدقة", value: 88, fill: "#60a5fa" },
+    { name: "الإيقاع", value: 72, fill: "#f97316" },
+    { name: "الطلاقة", value: 81, fill: "#22c55e" },
+  ];
+
+  const dailyTrainingPlan = [
+    {
+      id: "letters",
+      title: "تمارين نطق الحروف",
+      icon: "🔤",
+      level: "سهل",
+      progress: 65,
+      nextReview: "اليوم - 5:00 م",
+      notes: "تركيز على حرفي ر و ل"
+    },
+    {
+      id: "words",
+      title: "نطق الكلمات والجمل",
+      icon: "🗣️",
+      level: "متوسط",
+      progress: 48,
+      nextReview: "غداً - 4:30 م",
+      notes: "جمل من 3 كلمات مع تقييم فوري"
+    },
+    {
+      id: "discrimination",
+      title: "تمييز الحروف المتقاربة",
+      icon: "🎧",
+      level: "متقدم",
+      progress: 35,
+      nextReview: "الخميس - 6:00 م",
+      notes: "تمارين سمعية بين (س) و (ش)"
+    },
+  ];
+
+  const levelProgression = [
+    {
+      level: "المستوى 1",
+      focus: "تعرف على الحروف",
+      status: "completed" as const,
+    },
+    {
+      level: "المستوى 2",
+      focus: "نطق مقاطع بسيطة",
+      status: "current" as const,
+    },
+    {
+      level: "المستوى 3",
+      focus: "جمل قصيرة بنبرة صحيحة",
+      status: "locked" as const,
+    },
+  ];
+
+  const learningGamesStats = [
+    {
+      title: "مطابقة الصوت بالصورة",
+      score: 420,
+      maxScore: 500,
+      accuracy: 92,
+      streak: 4,
+    },
+    {
+      title: "تركيب الحروف",
+      score: 360,
+      maxScore: 480,
+      accuracy: 84,
+      streak: 2,
+    },
+    {
+      title: "تحدي النطق السريع",
+      score: 295,
+      maxScore: 450,
+      accuracy: 78,
+      streak: 1,
+    },
+  ];
+
+  const gamePerformanceTimeline = [
+    { day: "السبت", matching: 82, assembly: 74, speed: 68 },
+    { day: "الأحد", matching: 88, assembly: 76, speed: 72 },
+    { day: "الإثنين", matching: 91, assembly: 80, speed: 75 },
+    { day: "الثلاثاء", matching: 95, assembly: 83, speed: 79 },
+    { day: "الأربعاء", matching: 93, assembly: 85, speed: 81 },
+  ];
+
+  const parentNotifications = [
+    {
+      id: 1,
+      type: "success" as const,
+      message: "🎉 أحمد أكمل 10 تمارين نطق متتالية بدون أخطاء!",
+      time: "قبل 10 دقائق",
+    },
+    {
+      id: 2,
+      type: "info" as const,
+      message: "📈 تحسن في الدقة الصوتية بنسبة 12% هذا الأسبوع.",
+      time: "اليوم 09:15",
+    },
+    {
+      id: 3,
+      type: "warning" as const,
+      message: "⏰ لم يتم إنهاء تمرين التفرقة السمعية أمس. يفضل إعادة المحاولة اليوم.",
+      time: "أمس 19:40",
+    },
+  ];
+
+  const audioSessionArchive = [
+    {
+      id: 1,
+      title: "تدريب حرف الراء",
+      duration: "02:15 دقيقة",
+      score: 86,
+      createdAt: "اليوم 10:00",
+    },
+    {
+      id: 2,
+      title: "تكرار الجمل - صباح الخير",
+      duration: "01:40 دقيقة",
+      score: 79,
+      createdAt: "أمس 17:20",
+    },
+    {
+      id: 3,
+      title: "تمييز الصوت س/ش",
+      duration: "03:05 دقيقة",
+      score: 91,
+      createdAt: "أمس 16:05",
+    },
   ];
 
   const OverviewTab = () => (
@@ -510,6 +709,479 @@ export default function ParentDashboard() {
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+
+  const HomeFollowUpTab = () => (
+    <div className="space-y-6">
+      <section className="grid gap-4 md:grid-cols-4">
+        <Card className="bg-gradient-to-br from-sky-400 to-indigo-500 text-white">
+          <CardContent className="p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm uppercase tracking-wide opacity-80">
+                سلسلة التدريب
+              </span>
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="text-3xl font-bold">{homeFollowSummary.streak} أيام</div>
+            <p className="text-sm opacity-80">
+              أيام متتالية من التمارين الناجحة في المنزل
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="bg-white border-sky-100">
+          <CardContent className="p-5 space-y-3">
+            <div className="flex items-center gap-2 text-sky-600">
+              <MessageCircle className="w-5 h-5" />
+              <span className="font-medium">محادثات الذكاء الاصطناعي</span>
+            </div>
+            <div className="text-3xl font-bold text-sky-700">
+              {homeFollowSummary.aiFeedbackCount}
+            </div>
+            <p className="text-sm text-sky-600/80">ردود صوتية ونصية تم تحليلها</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-white border-emerald-100">
+          <CardContent className="p-5 space-y-3">
+            <div className="flex items-center gap-2 text-emerald-600">
+              <Timer className="w-5 h-5" />
+              <span className="font-medium">جلسات هذا الأسبوع</span>
+            </div>
+            <div className="text-3xl font-bold text-emerald-700">
+              {homeFollowSummary.totalSessions}
+            </div>
+            <p className="text-sm text-emerald-600/80">جلسات تدريب منزلي مكتملة</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-white border-amber-100">
+          <CardContent className="p-5 space-y-3">
+            <div className="flex items-center gap-2 text-amber-600">
+              <TrendingUp className="w-5 h-5" />
+              <span className="font-medium">تحسن أسبوعي</span>
+            </div>
+            <div className="text-3xl font-bold text-amber-700">
+              +{homeFollowSummary.weeklyImprovement}%
+            </div>
+            <p className="text-sm text-amber-600/80">
+              مقارنةً بالأسبوع السابق في تقييم النطق
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-0 overflow-hidden shadow-md bg-gradient-to-br from-sky-50 to-indigo-50">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-sky-700">
+                <Mic className="w-5 h-5" />
+                المساعد الذكي (نص + صوت)
+              </CardTitle>
+              <CardDescription>
+                محادثة ودودة مع تصحيح نطق فوري وسجل رسائل محفوظ
+              </CardDescription>
+            </div>
+            <Badge className="bg-sky-600 hover:bg-sky-700">نشط الآن</Badge>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-white rounded-xl shadow-sm p-4 space-y-3 max-h-72 overflow-y-auto border border-sky-100">
+              {aiChatHistory.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.sender === "assistant" ? "justify-start" : "justify-end"}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${message.sender === "assistant" ? "bg-sky-100 text-sky-900" : "bg-indigo-500 text-white"}`}
+                  >
+                    <p>{message.content}</p>
+                    <span className="block text-xs mt-2 opacity-70 text-right">
+                      {message.timestamp}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white rounded-xl border border-sky-100 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 text-sky-700">
+                  <Headphones className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    وضع الاستماع وتصحيح النطق اللحظي
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-sky-600 text-xs">
+                  <Sun className="w-4 h-4" />
+                  <span>الوضع الملون</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button className="bg-sky-500 hover:bg-sky-600 text-white flex-1">
+                  <Mic className="w-4 h-4 ml-2" /> ابدأ التسجيل
+                </Button>
+                <Button variant="outline" className="flex-1 border-indigo-200 text-indigo-600">
+                  <MessageCircle className="w-4 h-4 ml-2" /> رد نصي مبسط
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-md">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-emerald-600">
+                <Volume2 className="w-5 h-5" />
+                تحليلات النطق الفورية
+              </CardTitle>
+              <CardDescription>
+                قياس الدقة، الإيقاع، والطلاقة لحظياً مع تتبع التحسن
+              </CardDescription>
+            </div>
+            <Badge variant="outline" className="border-emerald-300 text-emerald-700">
+              محدث كل 3 ثوانٍ
+            </Badge>
+          </CardHeader>
+          <CardContent className="grid gap-4 lg:grid-cols-2">
+            <div className="h-full">
+              <ResponsiveContainer width="100%" height={260}>
+                <RadialBarChart
+                  innerRadius="20%"
+                  outerRadius="95%"
+                  barCategoryGap={8}
+                  data={realtimePronunciationMetrics}
+                >
+                  <RadialBar
+                    dataKey="value"
+                    background
+                    clockWise
+                    cornerRadius={10}
+                    minAngle={15}
+                  />
+                  <Legend
+                    iconSize={12}
+                    layout="vertical"
+                    verticalAlign="middle"
+                    align="right"
+                    formatter={(value) => <span className="text-sm text-gray-600">{value}</span>}
+                  />
+                </RadialBarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="space-y-3">
+              {voiceInsights.map((metric) => (
+                <div
+                  key={metric.label}
+                  className="rounded-xl border border-gray-100 bg-gray-50 p-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-700">
+                      {metric.label}
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className="border-transparent bg-white text-gray-500"
+                    >
+                      {metric.trend}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-4 mt-3">
+                    <div
+                      className="h-2 flex-1 rounded-full"
+                      style={{ background: `${metric.color}33` }}
+                    >
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${metric.value}%`, background: metric.color }}
+                      />
+                    </div>
+                    <span className="text-lg font-semibold text-gray-800">
+                      {metric.value}%
+                    </span>
+                  </div>
+                </div>
+              ))}
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-700 space-y-2">
+                <p className="font-medium flex items-center gap-2">
+                  <Cpu className="w-4 h-4" /> نموذج تقييم النطق
+                </p>
+                <p>
+                  يجمع بين تحليل الطيف الصوتي ودرجة النطق لتقديم ملاحظات مخصصة في الزمن الحقيقي.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="border-0 shadow-md">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-indigo-600">
+            <BookOpen className="w-5 h-5" /> خطة التدريب اليومي المتكاملة
+          </CardTitle>
+          <CardDescription>
+            تنقل ديناميكي بين المستويات مع إلزام الإجابة الصحيحة للانتقال للمرحلة التالية
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div className="grid md:grid-cols-3 gap-4">
+            {dailyTrainingPlan.map((module) => (
+              <div
+                key={module.id}
+                className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-white to-indigo-50 p-4 shadow-sm"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-3xl">{module.icon}</span>
+                  <Badge className="bg-indigo-500/10 text-indigo-600 border-indigo-200">
+                    {module.level}
+                  </Badge>
+                </div>
+                <h3 className="font-semibold text-gray-800">{module.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{module.notes}</p>
+                <div className="mt-4 space-y-2 text-sm text-gray-500">
+                  <div className="flex items-center justify-between">
+                    <span>نسبة الإنجاز</span>
+                    <span className="font-medium text-indigo-600">{module.progress}%</span>
+                  </div>
+                  <Progress value={module.progress} className="h-2" />
+                  <div className="flex items-center gap-2 text-xs">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                    <span>يجب الإجابة الصحيحة للانتقال للمستوى التالي</span>
+                  </div>
+                  <div className="text-xs text-gray-500">المراجعة القادمة: {module.nextReview}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-4 items-center justify-between bg-indigo-50/60 rounded-2xl p-4">
+            {levelProgression.map((step, index) => (
+              <div key={step.level} className="flex items-center gap-3">
+                <div
+                  className={`h-10 w-10 rounded-full flex items-center justify-center text-white ${
+                    step.status === "completed"
+                      ? "bg-emerald-500"
+                      : step.status === "current"
+                        ? "bg-indigo-500"
+                        : "bg-gray-300"
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700">{step.level}</p>
+                  <p className="text-xs text-gray-500">{step.focus}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-0 shadow-md bg-gradient-to-br from-orange-50 to-rose-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-orange-600">
+              <Gamepad2 className="w-5 h-5" /> الألعاب التعليمية التفاعلية
+            </CardTitle>
+            <CardDescription>
+              تعزيز الفهم السمعي والقراءة من خلال ألعاب ممرحلة بناءً على أداء الطفل
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <div className="space-y-3">
+              {learningGamesStats.map((game) => (
+                <div
+                  key={game.title}
+                  className="rounded-xl border border-orange-100 bg-white/80 p-4 shadow-sm"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800">
+                        {game.title}
+                      </h3>
+                      <p className="text-xs text-gray-500">
+                        دقة {game.accuracy}% · سلسلة نجاح {game.streak} أيام
+                      </p>
+                    </div>
+                    <Badge className="bg-orange-500/10 text-orange-600 border-orange-200">
+                      {game.score}/{game.maxScore}
+                    </Badge>
+                  </div>
+                  <div className="mt-3">
+                    <Progress
+                      value={(game.score / game.maxScore) * 100}
+                      className="h-2 bg-orange-100"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="rounded-xl border border-orange-200 bg-white/80 p-4">
+              <h4 className="text-sm font-semibold text-orange-700 mb-3">
+                آلية التقدم:
+              </h4>
+              <ul className="space-y-2 text-sm text-gray-600 list-disc pr-5">
+                <li>الإجابة الصحيحة ✅ تنقل الطفل مباشرة للمستوى الأعلى.</li>
+                <li>الإجابة الخاطئة ❌ تعيد نفس التمرين مع تلميحات مرئية وصوتية.</li>
+                <li>لا يسمح بالانتقال دون تحقيق 90% دقة في المستوى الحالي.</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-purple-600">
+              <Play className="w-5 h-5" /> أداء الألعاب خلال الأسبوع
+            </CardTitle>
+            <CardDescription>
+              مقارنة بين دقة المطابقة، تركيب الحروف، وتحدي النطق السريع
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={280}>
+              <AreaChart data={gamePerformanceTimeline}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} domain={[60, 100]} />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="matching"
+                  stackId="1"
+                  stroke="#fb923c"
+                  fill="#fb923c33"
+                  name="مطابقة الصوت بالصورة"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="assembly"
+                  stackId="1"
+                  stroke="#6366f1"
+                  fill="#6366f133"
+                  name="تركيب الحروف"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="speed"
+                  stackId="1"
+                  stroke="#22c55e"
+                  fill="#22c55e33"
+                  name="تحدي النطق السريع"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-emerald-600">
+              <BellRing className="w-5 h-5" /> متابعة ولي الأمر - إشعارات وتحليلات
+            </CardTitle>
+            <CardDescription>
+              عرض فوري للإنجازات اليومية، التنبيهات، وسجل التسجيلات الصوتية
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <div className="space-y-3">
+              {parentNotifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`rounded-xl border p-4 text-sm shadow-sm ${
+                    notification.type === "success"
+                      ? "border-emerald-200 bg-emerald-50"
+                      : notification.type === "info"
+                        ? "border-sky-200 bg-sky-50"
+                        : "border-amber-200 bg-amber-50"
+                  }`}
+                >
+                  <p className="font-medium text-gray-800">{notification.message}</p>
+                  <p className="text-xs text-gray-500 mt-2">{notification.time}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-xl border border-gray-100 bg-gray-50 p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <Cloud className="w-5 h-5 text-sky-500" />
+                <div>
+                  <p className="text-sm font-semibold text-gray-700">
+                    النسخ السحابي للتسجيلات الصوتية
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    يتم حفظ كل جلسة صوتية مع تحليل الأداء للوصول السريع من لوحة ولي الأمر
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {audioSessionArchive.map((session) => (
+                  <div
+                    key={session.id}
+                    className="rounded-lg border border-gray-200 bg-white p-3 flex items-center justify-between text-sm"
+                  >
+                    <div>
+                      <p className="font-medium text-gray-700">{session.title}</p>
+                      <p className="text-xs text-gray-500">
+                        {session.createdAt} · المدة {session.duration}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="border-emerald-300 text-emerald-600">
+                      {session.score}%
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-indigo-600">
+              <Database className="w-5 h-5" /> هيكل واجهات برمجة التطبيقات (APIs)
+            </CardTitle>
+            <CardDescription>
+              مخطط الربط بين الواجهة الأمامية، الخدمات الصوتية، وقاعدة البيانات
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-gray-600">
+            <div className="rounded-xl border border-indigo-100 bg-indigo-50 p-4">
+              <p className="font-semibold text-indigo-700 mb-2">نقاط التكامل الأساسية:</p>
+              <ul className="space-y-2 list-disc pr-5">
+                <li>
+                  `/api/home-learning/assistant` للتفاعل مع نموذج الذكاء الاصطناعي، تخزين سجل الدردشة، وتحليل النطق.
+                </li>
+                <li>
+                  `/api/home-learning/daily-training` لإدارة المستويات، تسجيل الإجابات، وتقديم التغذية الراجعة الفورية.
+                </li>
+                <li>
+                  `/api/home-learning/games` لتسجيل نتائج الألعاب التعليمية، تحديث النقاط، وإرسال الإشعارات.
+                </li>
+              </ul>
+            </div>
+            <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 space-y-2">
+              <p className="font-semibold text-gray-700">التقنيات المقترحة:</p>
+              <p>
+                التكامل مع خدمات Speech-to-Text وPronunciation evaluation (مثل Azure Cognitive Services أو Google Cloud Speech)
+                عبر خادم Express يقوم بإعادة توجيه الطلبات مع ضبط مفاتيح السرية.
+              </p>
+              <p>
+                نماذج البيانات تحفظ في MongoDB (محادثات، تحليلات صوت، نتائج ألعاب)، مع فهارس على `childId` و`sessionId` لتسريع الاسترجاع.
+              </p>
+            </div>
+            <div className="rounded-xl border border-gray-100 bg-white p-4 space-y-2">
+              <p className="font-semibold text-gray-700">تجربة ولي الأمر:</p>
+              <p>
+                يتم تحديث التقدم والرسوم البيانية في الزمن الحقيقي عبر WebSocket أو polling سريع، مع إرسال إشعارات فورية داخل اللوحة وعبر البريد الإلكتروني عند تحقيق إنجازات كبيرة.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 
@@ -1065,10 +1737,17 @@ export default function ParentDashboard() {
         >
           {/* Tabs Navigation */}
           <div className="bg-white rounded-lg p-2 shadow-sm">
-            <TabsList className="grid grid-cols-6 w-full">
+            <TabsList className="grid grid-cols-7 w-full">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Activity className="w-4 h-4" />
                 نظرة عامة
+              </TabsTrigger>
+              <TabsTrigger
+                value="home-follow-up"
+                className="flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                المتابعة المنزلية
               </TabsTrigger>
               <TabsTrigger
                 value="cognitive"
@@ -1104,6 +1783,10 @@ export default function ParentDashboard() {
 
           <TabsContent value="overview">
             <OverviewTab />
+          </TabsContent>
+
+          <TabsContent value="home-follow-up">
+            <HomeFollowUpTab />
           </TabsContent>
 
           <TabsContent value="cognitive">
