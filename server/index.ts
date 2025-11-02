@@ -1,9 +1,6 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { getDailyTraining } from "./routes/dailyTraining";
-import { getEducationalGames } from "./routes/educationalGames";
-import { handleAIAssistant } from "./routes/aiAssistant";
 
 export function createServer() {
   const app = express();
@@ -19,11 +16,6 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
-
-  // New routes
-  app.get("/api/daily-training", getDailyTraining);
-  app.get("/api/educational-games", getEducationalGames);
-  app.post("/api/ai-assistant", handleAIAssistant);
 
   return app;
 }

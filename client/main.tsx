@@ -28,8 +28,10 @@ import MemoryExercises from "./pages/MemoryExercises";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DailyTraining from "./pages/DailyTraining";
-import AIAssistant from "./pages/AIAssistant";
 import EducationalGames from "./pages/EducationalGames";
+import SmartAssistant from "./pages/SmartAssistant";
+import ExerciseDetailsPage from "./pages/ExerciseDetails";
+import GamePage from "./pages/GamePage";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +51,22 @@ const App = () => (
             element={
               <ProtectedRoute requiredUserType="parent">
                 <ParentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/educational-games/:id"
+            element={
+              <ProtectedRoute>
+                <GamePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/daily-training/:id"
+            element={
+              <ProtectedRoute>
+                <ExerciseDetailsPage />
               </ProtectedRoute>
             }
           />
@@ -189,18 +207,18 @@ const App = () => (
             }
           />
           <Route
-            path="/ai-assistant"
-            element={
-              <ProtectedRoute>
-                <AIAssistant />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/educational-games"
             element={
               <ProtectedRoute>
                 <EducationalGames />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/smart-assistant"
+            element={
+              <ProtectedRoute>
+                <SmartAssistant />
               </ProtectedRoute>
             }
           />

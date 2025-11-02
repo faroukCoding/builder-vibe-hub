@@ -1,31 +1,30 @@
-import { ArrowLeft, Play, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { DailyExercise } from "@shared/api";
+import { AlertCircle, Loader2, Target } from "lucide-react";
 
-interface Exercise {
-  id: number;
-  title: string;
-  description: string;
-  progress: number;
-  completed: boolean;
-}
-
-export default function DailyTraining() {
+const DailyTraining = () => {
+  const [exercises, setExercises] = useState<DailyExercise[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchExercises = async () => {
       try {
+        setLoading(true);
         const response = await fetch('/api/daily-training');
-        const data = await response.json();
+        if (!response.ok) {
+          throw new Error('فشل في جلب بيانات التمارين.');
+        }
+        const data: DailyExercise[] = await response.json();
         setExercises(data);
-      } catch (error) {
-        console.error("Failed to fetch exercises:", error);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -34,64 +33,76 @@ export default function DailyTraining() {
     fetchExercises();
   }, []);
 
-  const totalProgress = exercises.length > 0
-    ? exercises.reduce((acc, ex) => acc + ex.progress, 0) / exercises.length
-    : 0;
+  const getDifficultyBadgeVariant = (difficulty: 'سهل' | 'متوسط' | 'صعب') => {
+    switch (difficulty) {
+      case 'سهل':
+        return 'bg-green-100 text-green-800';
+      case 'متوسط':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'صعب':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <p className="ml-2">جاري تحميل التمارين...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500">
+        <AlertCircle className="h-8 w-8" />
+        <p className="ml-2">خطأ: {error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/parent-dashboard')}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              العودة إلى لوحة التحكم
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">التدريب اليومي</h1>
-              <p className="text-gray-500">تمارين اليوم لطفلك</p>
-            </div>
-          </div>
-          <div className="text-left">
-            <p className="font-semibold">التقدم الإجمالي</p>
-            <Progress value={totalProgress} className="w-32 mt-1" />
-          </div>
+    <div className="p-6 bg-gray-50 min-h-screen" dir="rtl">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent">التدريب اليومي</h1>
+            <p className="text-gray-600 mt-2">تابع تمارين النطق اليومية لطفلك وراقب تقدمه بمرور الوقت.</p>
         </div>
-      </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {loading ? (
-          <p>جاري تحميل التمارين...</p>
-        ) : (
-          <div className="space-y-6">
-            {exercises.map((exercise) => (
-              <Card key={exercise.id} className={exercise.completed ? 'bg-green-50 border-green-200' : ''}>
-                <CardContent className="p-6 flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      {exercise.completed && <CheckCircle className="w-6 h-6 text-green-500" />}
-                      <h3 className="text-xl font-semibold">{exercise.title}</h3>
-                    </div>
-                    <p className="text-gray-600 mb-4">{exercise.description}</p>
-                    <div className="flex items-center gap-4">
-                      <Progress value={exercise.progress} className="w-1/2" />
-                      <span className="text-sm font-medium">{exercise.progress}%</span>
-                    </div>
-                  </div>
-                  <Button disabled={exercise.completed}>
-                    <Play className="w-4 h-4 ml-2" />
-                    {exercise.completed ? 'تم إكماله' : 'ابدأ التمرين'}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {exercises.map((exercise) => (
+            <Card key={exercise.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                    <CardTitle className="text-xl font-semibold text-gray-800">{exercise.name}</CardTitle>
+                    <Badge className={getDifficultyBadgeVariant(exercise.difficulty)}>{exercise.difficulty}</Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-4">
+                  <p className="text-sm font-medium text-gray-600">التقدم:</p>
+                  <Progress value={exercise.progress} className="w-full h-2" />
+                  <span className="font-bold text-teal-600">{exercise.progress}%</span>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  className="w-full bg-teal-500 hover:bg-teal-600 text-white"
+                  onClick={() => navigate(`/daily-training/${exercise.id}`)}
+                >
+                    <Target className="w-4 h-4 ml-2" />
+                    عرض التفاصيل
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default DailyTraining;

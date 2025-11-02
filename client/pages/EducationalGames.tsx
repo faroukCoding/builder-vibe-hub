@@ -1,31 +1,29 @@
-import { ArrowLeft, Gamepad2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { EducationalGame } from "@shared/api";
+import { AlertCircle, Gamepad2, Loader2, Play } from "lucide-react";
 
-interface Game {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: string;
-  icon: string;
-}
-
-export default function EducationalGames() {
+const EducationalGames = () => {
+  const [games, setGames] = useState<EducationalGame[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
+        setLoading(true);
         const response = await fetch('/api/educational-games');
-        const data = await response.json();
+        if (!response.ok) {
+          throw new Error('فشل في جلب بيانات الألعاب.');
+        }
+        const data: EducationalGame[] = await response.json();
         setGames(data);
-      } catch (error) {
-        console.error("Failed to fetch games:", error);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -34,52 +32,64 @@ export default function EducationalGames() {
     fetchGames();
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/parent-dashboard')}
-            className="ml-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            العودة
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">الألعاب التعليمية</h1>
-            <p className="text-gray-500">مجموعة من الألعاب الممتعة والهادفة</p>
-          </div>
-        </div>
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <p className="ml-2">جاري تحميل الألعاب...</p>
       </div>
+    );
+  }
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {loading ? (
-          <p>جاري تحميل الألعاب...</p>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {games.map((game) => (
-              <Card key={game.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="flex-row items-center justify-between">
-                  <CardTitle>{game.title}</CardTitle>
-                  <div className="text-3xl">{game.icon}</div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">{game.description}</p>
-                  <div className="flex items-center justify-between">
-                    <Badge>{game.difficulty}</Badge>
-                    <Button size="sm">
-                      <Gamepad2 className="w-4 h-4 ml-2" />
-                      ابدأ اللعبة
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500">
+        <AlertCircle className="h-8 w-8" />
+        <p className="ml-2">خطأ: {error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 bg-gray-50 min-h-screen" dir="rtl">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-lime-500 to-green-500 bg-clip-text text-transparent">الألعاب التعليمية</h1>
+            <p className="text-gray-600 mt-2">مجموعة من الألعاب التفاعلية لتقوية النطق والتركيز بطريقة ممتعة.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {games.map((game) => (
+            <Card key={game.id} className="shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                    <div className="bg-lime-100 p-3 rounded-full">
+                        <Gamepad2 className="w-6 h-6 text-lime-600" />
+                    </div>
+                    <div>
+                        <CardTitle className="text-xl font-semibold text-gray-800">{game.name}</CardTitle>
+                        <Badge className="mt-1 bg-lime-100 text-lime-800">{game.ageGroup}</Badge>
+                    </div>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <CardDescription>{game.description}</CardDescription>
+              </CardContent>
+              <CardFooter>
+                <Button
+                  className="w-full bg-lime-500 hover:bg-lime-600 text-white"
+                  onClick={() => navigate(`/educational-games/${game.id}`)}
+                >
+                    <Play className="w-4 h-4 ml-2" />
+                    ابدأ اللعبة
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default EducationalGames;

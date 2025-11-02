@@ -23,9 +23,8 @@ import {
   Play,
   Award,
   Gamepad2,
-  Home,
   ClipboardList,
-  Bot,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -267,47 +266,6 @@ export default function ParentDashboard() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Home Follow-up Tools */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Home className="w-5 h-5" />
-            أدوات المتابعة المنزلية
-          </CardTitle>
-          <CardDescription>
-            أنشطة وتمارين يمكنك القيام بها مع طفلك في المنزل.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button
-              variant="outline"
-              className="h-24 flex-col gap-2"
-              onClick={() => navigate("/daily-training")}
-            >
-              <ClipboardList className="w-6 h-6 text-blue-500" />
-              <span>التدريب اليومي</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-24 flex-col gap-2"
-              onClick={() => navigate("/ai-assistant")}
-            >
-              <Bot className="w-6 h-6 text-purple-500" />
-              <span>مساعد AI</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-24 flex-col gap-2"
-              onClick={() => navigate("/educational-games")}
-            >
-              <Gamepad2 className="w-6 h-6 text-green-500" />
-              <span>الألعاب التعليمية</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Next Appointment */}
       <Card className="border-l-4 border-l-orange-500">
@@ -676,6 +634,53 @@ export default function ParentDashboard() {
               <div className="text-center">
                 <div className="font-semibold">تمارين الذاكرة</div>
                 <div className="text-xs opacity-80">سمعية وبصرية</div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* أدوات المتابعة المنزلية الذكية */}
+      <Card className="bg-gradient-to-r from-teal-50 to-cyan-50 border-teal-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ClipboardList className="w-6 h-6 text-teal-600" />
+            أدوات المتابعة المنزلية الذكية
+          </CardTitle>
+          <CardDescription>
+            تمارين يومية، ألعاب تعليمية، ومساعد ذكي لدعم تطور طفلك.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <Button
+              onClick={() => navigate("/daily-training")}
+              className="h-32 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">📋</div>
+              <div className="text-center">
+                <div className="font-semibold">التدريب اليومي</div>
+                <div className="text-xs opacity-80">تمارين نطق ومتابعة</div>
+              </div>
+            </Button>
+            <Button
+              onClick={() => navigate("/educational-games")}
+              className="h-32 bg-gradient-to-r from-lime-500 to-green-500 hover:from-lime-600 hover:to-green-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🎮</div>
+              <div className="text-center">
+                <div className="font-semibold">الألعاب التعليمية</div>
+                <div className="text-xs opacity-80">تفاعل ومرح هادف</div>
+              </div>
+            </Button>
+            <Button
+              onClick={() => navigate("/smart-assistant")}
+              className="h-32 bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-3"
+            >
+              <div className="text-3xl">🤖</div>
+              <div className="text-center">
+                <div className="font-semibold">المساعد الذكي</div>
+                <div className="text-xs opacity-80">نصائح وإجابات فورية</div>
               </div>
             </Button>
           </div>
