@@ -55,8 +55,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useMemo, useCallback } from "react";
-import type { FormEvent } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 
 export default function ParentDashboard() {
   const navigate = useNavigate();
@@ -223,6 +223,12 @@ export default function ParentDashboard() {
   }
 
   type TrainingModuleKey = "letters" | "words" | "discrimination";
+
+  const moduleLabels: Record<TrainingModuleKey, string> = {
+    letters: "تمارين الحروف",
+    words: "الكلمات والجمل",
+    discrimination: "تمييز الحروف",
+  };
 
   interface LetterExercise {
     id: string;
@@ -522,6 +528,11 @@ export default function ParentDashboard() {
     },
   ]);
   const [assistantInput, setAssistantInput] = useState("");
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const [isRecordingAssistant, setIsRecordingAssistant] = useState(false);
+  const [assistantUploading, setAssistantUploading] = useState(false);
   const [savedVoiceNotes, setSavedVoiceNotes] = useState(
     () =>
       [
@@ -589,6 +600,18 @@ export default function ParentDashboard() {
     score: 0,
     feedback: "",
     finishedRound: false,
+  });
+
+  const trainingRecorderRef = useRef<MediaRecorder | null>(null);
+  const trainingStreamRef = useRef<MediaStream | null>(null);
+  const trainingChunksRef = useRef<Blob[]>([]);
+  const [recordingModule, setRecordingModule] = useState<TrainingModuleKey | null>(null);
+  const [trainingAudioSources, setTrainingAudioSources] = useState<
+    Record<TrainingModuleKey, { url: string; label: string } | null>
+  >({
+    letters: null,
+    words: null,
+    discrimination: null,
   });
 
   const logAttempt = useCallback(
@@ -686,6 +709,119 @@ export default function ParentDashboard() {
     "حاول مجدداً: ركز على الصوت الأول واستمع لهدوء البداية.",
     "لا بأس! كرر الكلمة ببطء، وسأخبرك حين تصبح ممتازاً.",
   ];
+
+  const saveAssistantAudioMessage = (audioUrl: string, label: string) => {
+    const timestamp = new Date().toISOString();
+    const message: AssistantMessage = {
+      id: `child-audio-${Date.now()}`,
+      role: "child",
+      tone: "prompt",
+      content: label ? `تسجيل صوتي: ${label}` : "تسجيل صوتي جديد",
+      createdAt: timestamp,
+      mediaLink: audioUrl,
+    };
+    setAssistantMessages((prev) => [...prev, message]);
+    setSavedVoiceNotes((prev) => [
+      {
+        id: `voice-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
+        title: label || "تسجيل صوتي جديد",
+        url: audioUrl,
+        note: label || "تسجيل صوتي من الطفل",
+        createdAt: timestamp,
+      },
+      ...prev,
+    ]);
+    logAttempt({
+      type: "assistant",
+      activity: "رسالة صوتية",
+      result: "info",
+      notes: `تم إرسال تسجيل صوتي (${label || "دون اسم"})`,
+      mediaLink: audioUrl,
+    });
+  };
+
+  const handleAssistantAudioSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    setAssistantUploading(true);
+    const audioUrl = URL.createObjectURL(file);
+    saveAssistantAudioMessage(audioUrl, file.name);
+    setAssistantUploading(false);
+    event.target.value = "";
+  };
+
+  const stopAssistantRecording = () => {
+    mediaRecorderRef.current?.stop();
+  };
+
+  const handleAssistantRecordingToggle = async () => {
+    if (isRecordingAssistant) {
+      stopAssistantRecording();
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setAssistantMessages((prev) => [
+        ...prev,
+        {
+          id: `assistant-error-${Date.now()}`,
+          role: "assistant",
+          tone: "feedback",
+          content: "يبدو أن المتصفح لا يدعم التسجيل المباشر. يمكنك رفع ملف صوتي بدلاً من ذلك.",
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+      const recorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = recorder;
+      audioChunksRef.current = [];
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+      recorder.onstop = () => {
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        if (blob.size > 0) {
+          const url = URL.createObjectURL(blob);
+          saveAssistantAudioMessage(url, "تسجيل مباشر");
+        }
+        streamRef.current?.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
+        mediaRecorderRef.current = null;
+        audioChunksRef.current = [];
+        setIsRecordingAssistant(false);
+      };
+      recorder.start();
+      setIsRecordingAssistant(true);
+    } catch (error) {
+      setIsRecordingAssistant(false);
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+      setAssistantMessages((prev) => [
+        ...prev,
+        {
+          id: `assistant-record-error-${Date.now()}`,
+          role: "assistant",
+          tone: "feedback",
+          content: "تعذّر بدء التسجيل. تأكد من منح الإذن للميكروفون أو استخدم رفع ملف صوتي.",
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+    }
+  };
+
+  const handleStopAssistantRecordingEarly = () => {
+    if (!isRecordingAssistant) {
+      return;
+    }
+    stopAssistantRecording();
+  };
 
   const createAssistantReply = (message: string): AssistantMessage => {
     const normalized = message.replace(/[!?؟.]/g, "").toLowerCase();
