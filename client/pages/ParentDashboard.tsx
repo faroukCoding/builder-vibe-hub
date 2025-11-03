@@ -54,14 +54,11 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SpeechTherapyAssistant from "@/components/SpeechTherapyAssistant";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import type { FormEvent, ChangeEvent } from "react";
-import type {
-  HomeLearningAssistantHistoryMessage,
-  HomeLearningAssistantMessageResponse,
-  HomeLearningPronunciationEvaluationResponse,
-} from "@shared/api";
+import type { ChangeEvent } from "react";
+import type { HomeLearningPronunciationEvaluationResponse } from "@shared/api";
 import {
   ResponsiveContainer,
   LineChart,
@@ -218,18 +215,6 @@ export default function ParentDashboard() {
     { name: "الحيوانات", value: 96, color: "#96ceb4" },
     { name: "المركبات", value: 86, color: "#ffeaa7" },
   ];
-
-  type AssistantRole = "assistant" | "child" | "parent";
-  type AssistantTone = "prompt" | "feedback" | "encouragement";
-
-  interface AssistantMessage {
-    id: string;
-    role: AssistantRole;
-    content: string;
-    createdAt: string;
-    tone: AssistantTone;
-    mediaLink?: string | null;
-  }
 
   interface AttemptRecord {
     id: string;
@@ -537,33 +522,8 @@ export default function ParentDashboard() {
     },
   ];
 
-  const [assistantMessages, setAssistantMessages] = useState<AssistantMessage[]>(() => [
-    {
-      id: "assistant-welcome",
-      role: "assistant",
-      tone: "encouragement",
-      content: "مرحباً! أنا نور، مساعدك الذكي. لنتمرن معاً على النطق بطريقة ممتعة!",
-      createdAt: new Date().toISOString(),
-    },
-  ]);
-  const [assistantInput, setAssistantInput] = useState("");
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const [isRecordingAssistant, setIsRecordingAssistant] = useState(false);
-  const [assistantUploading, setAssistantUploading] = useState(false);
-  const [savedVoiceNotes, setSavedVoiceNotes] = useState(
-    () =>
-      [
-        {
-          id: "voice-1",
-          title: "تسجيل حرف الراء",
-          url: "/uploads/voice-r-success.mp3",
-          note: "نطق ثابت للحرف ر",
-          createdAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-        },
-      ] as Array<{ id: string; title: string; url: string; note: string; createdAt: string }>,
-  );
+  const [assistantReplyCount, setAssistantReplyCount] = useState(0);
+  const [assistantHighlights, setAssistantHighlights] = useState<string[]>([]);
   const [attemptHistory, setAttemptHistory] = useState<AttemptRecord[]>([]);
   const [learningStreak, setLearningStreak] = useState(3);
   const [reportText, setReportText] = useState<string | null>(null);
@@ -736,16 +696,12 @@ export default function ParentDashboard() {
 
   useEffect(() => {
     return () => {
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-        mediaRecorderRef.current.stop();
-      }
       if (trainingRecorderRef.current && trainingRecorderRef.current.state === "recording") {
         trainingRecorderRef.current.stop();
       }
       if (rapidRecorderRef.current && rapidRecorderRef.current.state === "recording") {
         rapidRecorderRef.current.stop();
       }
-      streamRef.current?.getTracks().forEach((track) => track.stop());
       trainingStreamRef.current?.getTracks().forEach((track) => track.stop());
       rapidStreamRef.current?.getTracks().forEach((track) => track.stop());
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -757,7 +713,7 @@ export default function ParentDashboard() {
   const totalAttempts = attemptHistory.length;
   const successfulAttempts = attemptHistory.filter((record) => record.result === "success").length;
   const successRate = totalAttempts === 0 ? 0 : Math.round((successfulAttempts / totalAttempts) * 100);
-  const aiFeedbackCount = assistantMessages.filter((message) => message.role === "assistant").length;
+  const aiFeedbackCount = assistantReplyCount;
   const uniqueActiveDays = new Set(
     attemptHistory.map((record) => record.timestamp.slice(0, 10)),
   ).size;
@@ -774,13 +730,20 @@ export default function ParentDashboard() {
           : `لنواصل التدريب! نسبة النجاح الحالية ${successRate}% ويمكننا تحسينها بخطوة جديدة.`,
     });
     notes.push({
-      id: "notif-voice",
-      type: savedVoiceNotes.length > 0 ? "success" : "info",
+      id: "notif-assistant",
+      type: aiFeedbackCount > 0 ? "success" : "info",
       message:
-        savedVoiceNotes.length > 0
-          ? `🎧 يوجد ${savedVoiceNotes.length} تسجيل صوتي جاهز للمراجعة.`
-          : "سجّل محاولة صوتية جديدة لمتابعة التحسّن.",
+        aiFeedbackCount > 0
+          ? `🤖 هناك ${aiFeedbackCount} إجابة حديثة من المساعد الذكي لدعم تدريب طفلك.`
+          : "ابدأ حواراً مع المساعد الذكي لتحصل على خطة نطق مخصّصة.",
     });
+    if (assistantHighlights.length > 0) {
+      notes.push({
+        id: "notif-highlight",
+        type: "success",
+        message: `✨ ركّز هذا الأسبوع على: ${assistantHighlights[0]}`,
+      });
+    }
     const needsRetry = attemptHistory.filter((record) => record.result === "retry").length;
     if (needsRetry > 0) {
       notes.push({
@@ -790,137 +753,7 @@ export default function ParentDashboard() {
       });
     }
     return notes;
-  }, [attemptHistory, savedVoiceNotes.length, successRate]);
-
-  const quickPrompts = [
-    "أريد تمريناً جديداً لحرف الراء.",
-    "هل نطقي لكلمة قطار صحيح؟",
-    "أعطني نصيحة سريعة قبل اللعب.",
-  ];
-
-  const encouragementFallbacks = [
-    "أحسنت! حاول الآن حرفاً أصعب ببطء وابتسامة.",
-    "رائع! صوتك يزداد صفاءً في كل مرة.",
-    "عمل جميل! تنفس بلطف قبل الكلمة التالية.",
-  ];
-
-  const correctionFallbacks = [
-    "حاول مجدداً: ركز على الصوت الأول واستمع لهدوء البداية.",
-    "لا بأس! كرر الكلمة ببطء، وسأخبرك حين تصبح ممتازاً.",
-  ];
-
-  const saveAssistantAudioMessage = (audioUrl: string, label: string) => {
-    const timestamp = new Date().toISOString();
-    const message: AssistantMessage = {
-      id: `child-audio-${Date.now()}`,
-      role: "child",
-      tone: "prompt",
-      content: label ? `تسجيل صوتي: ${label}` : "تسجيل صوتي جديد",
-      createdAt: timestamp,
-      mediaLink: audioUrl,
-    };
-    setAssistantMessages((prev) => [...prev, message]);
-    setSavedVoiceNotes((prev) => [
-      {
-        id: `voice-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
-        title: label || "تسجيل صوتي جديد",
-        url: audioUrl,
-        note: label || "تسجيل صوتي من الطفل",
-        createdAt: timestamp,
-      },
-      ...prev,
-    ]);
-    logAttempt({
-      type: "assistant",
-      activity: "رسالة صوتية",
-      result: "info",
-      notes: `تم إرسال تسجيل صوتي (${label || "دون اسم"})`,
-      mediaLink: audioUrl,
-    });
-  };
-
-  const handleAssistantAudioSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-    setAssistantUploading(true);
-    const audioUrl = URL.createObjectURL(file);
-    saveAssistantAudioMessage(audioUrl, file.name);
-    setAssistantUploading(false);
-    event.target.value = "";
-  };
-
-  const stopAssistantRecording = () => {
-    mediaRecorderRef.current?.stop();
-  };
-
-  const handleAssistantRecordingToggle = async () => {
-    if (isRecordingAssistant) {
-      stopAssistantRecording();
-      return;
-    }
-    if (!navigator.mediaDevices?.getUserMedia) {
-      setAssistantMessages((prev) => [
-        ...prev,
-        {
-          id: `assistant-error-${Date.now()}`,
-          role: "assistant",
-          tone: "feedback",
-          content: "يبدو أن المتصفح لا يدعم التسجيل المباشر. يمكنك رفع ملف صوتي بدلاً من ذلك.",
-          createdAt: new Date().toISOString(),
-        },
-      ]);
-      return;
-    }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-      const recorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = recorder;
-      audioChunksRef.current = [];
-      recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-      recorder.onstop = () => {
-        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        if (blob.size > 0) {
-          const url = URL.createObjectURL(blob);
-          saveAssistantAudioMessage(url, "تسجيل مباشر");
-        }
-        streamRef.current?.getTracks().forEach((track) => track.stop());
-        streamRef.current = null;
-        mediaRecorderRef.current = null;
-        audioChunksRef.current = [];
-        setIsRecordingAssistant(false);
-      };
-      recorder.start();
-      setIsRecordingAssistant(true);
-    } catch (error) {
-      setIsRecordingAssistant(false);
-      streamRef.current?.getTracks().forEach((track) => track.stop());
-      streamRef.current = null;
-      setAssistantMessages((prev) => [
-        ...prev,
-        {
-          id: `assistant-record-error-${Date.now()}`,
-          role: "assistant",
-          tone: "feedback",
-          content: "تعذّر بدء التسجيل. تأكد من منح الإذن للميكروفون أو استخدم رفع ملف صوتي.",
-          createdAt: new Date().toISOString(),
-        },
-      ]);
-    }
-  };
-
-  const handleStopAssistantRecordingEarly = () => {
-    if (!isRecordingAssistant) {
-      return;
-    }
-    stopAssistantRecording();
-  };
+  }, [aiFeedbackCount, assistantHighlights, attemptHistory, successRate]);
 
   const triggerTrainingEvaluation = async (
     module: Exclude<TrainingModuleKey, "discrimination">,
@@ -1371,211 +1204,6 @@ export default function ParentDashboard() {
     setIsEvaluatingRapid(false);
     rapidTargetRef.current = null;
     setRapidUploadLoading(false);
-  };
-
-  const createAssistantReply = (message: string): AssistantMessage => {
-    const normalized = message.replace(/[!?؟.]/g, "").toLowerCase();
-    let content: string;
-    let tone: AssistantTone = "encouragement";
-
-    const nextLetterExercise = letterExercises[trainingProgress.letters.currentIndex];
-    const nextWordExercise = wordExercises[trainingProgress.words.currentIndex];
-
-    if (normalized.includes("حرف") && nextLetterExercise) {
-      content = `لنتمرن على الحرف ${nextLetterExercise.target}. ${nextLetterExercise.hint}`;
-      tone = "feedback";
-    } else if (normalized.includes("كلمة") && nextWordExercise) {
-      content = `كلمة اليوم هي "${nextWordExercise.target}". ${nextWordExercise.hint}`;
-      tone = "feedback";
-    } else if (normalized.includes("لعبة") || normalized.includes("مرح")) {
-      content = "لننطلق إلى لعبة مطابقة الصوت بالصورة، تذكّر أن تختار الصورة التي سمعت اسمها!";
-      tone = "encouragement";
-    } else if (normalized.includes("صح") || normalized.includes("صحيح")) {
-      content = "أحسنت! نطقك يبدو واضحاً. إذا شئت يمكننا إعادة الاستماع للتأكد أكثر.";
-      tone = "feedback";
-    } else if (normalized.includes("خطأ") || normalized.includes("مجدداً")) {
-      content = correctionFallbacks[Math.floor(Math.random() * correctionFallbacks.length)];
-      tone = "feedback";
-    } else {
-      content = encouragementFallbacks[Math.floor(Math.random() * encouragementFallbacks.length)];
-    }
-
-    return {
-      id: `assistant-${Date.now()}`,
-      role: "assistant",
-      tone,
-      content,
-      createdAt: new Date().toISOString(),
-    };
-  };
-
-  const handleAssistantSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const trimmed = assistantInput.trim();
-    if (!trimmed) {
-      return;
-    }
-    const historyPayload: HomeLearningAssistantHistoryMessage[] = assistantMessages
-      .slice(-10)
-      .map((message) => ({
-        role: message.role,
-        content: message.content,
-        createdAt: message.createdAt,
-        tone: message.tone,
-      }));
-    const contextTags = [
-      `letters_index:${trainingProgress.letters.currentIndex}`,
-      `words_index:${trainingProgress.words.currentIndex}`,
-      `discrimination_index:${trainingProgress.discrimination.currentIndex}`,
-      trainingProgress.letters.completed ? "letters_completed" : "letters_in_progress",
-      trainingProgress.words.completed ? "words_completed" : "words_in_progress",
-      trainingProgress.discrimination.completed ? "discrimination_completed" : "discrimination_in_progress",
-    ];
-    const createdAt = new Date().toISOString();
-    const childMessage: AssistantMessage = {
-      id: `child-${Date.now()}`,
-      role: "child",
-      tone: "prompt",
-      content: trimmed,
-      createdAt,
-    };
-    const placeholderId = `assistant-pending-${Date.now()}`;
-    const placeholderMessage: AssistantMessage = {
-      id: placeholderId,
-      role: "assistant",
-      tone: "encouragement",
-      content: "🤖 المساعد يفكر الآن...",
-      createdAt,
-    };
-
-    setAssistantMessages((prev) => [...prev, childMessage, placeholderMessage]);
-    setAssistantInput("");
-
-    logAttempt({
-      type: "assistant",
-      activity: "رسالة الطفل",
-      result: "info",
-      notes: trimmed,
-    });
-
-    try {
-      const response = await fetch("/api/home-learning/assistant/message", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          childId: childData.name,
-          sender: "child",
-          modality: "text",
-          message: trimmed,
-          history: historyPayload,
-          contextTags,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`AI service responded with status ${response.status}`);
-      }
-
-      const data = (await response.json()) as HomeLearningAssistantMessageResponse;
-      const storedAt = data.storedAt || new Date().toISOString();
-
-      setAssistantMessages((prev) => {
-        const updated = prev.map((message) =>
-          message.id === placeholderId
-            ? {
-                ...message,
-                content: data.reply,
-                tone: "feedback" as AssistantTone,
-                createdAt: storedAt,
-              }
-            : message,
-        );
-
-        if (data.simplifiedReply && data.simplifiedReply.trim() && data.simplifiedReply.trim() !== data.reply.trim()) {
-          updated.push({
-            id: `${placeholderId}-simplified`,
-            role: "assistant",
-            tone: "encouragement" as AssistantTone,
-            content: data.simplifiedReply.trim(),
-            createdAt: storedAt,
-          });
-        }
-
-        return updated;
-      });
-
-      if (data.cues?.length) {
-        data.cues.forEach((cue) =>
-          logAttempt({
-            type: "assistant",
-            activity: "إرشاد النطق",
-            result: "info",
-            notes: cue,
-          }),
-        );
-      }
-
-      if (data.nextActions?.length) {
-        data.nextActions.forEach((action) =>
-          logAttempt({
-            type: "assistant",
-            activity: "اقتراح متابعة",
-            result: "info",
-            notes: action,
-          }),
-        );
-      }
-
-      logAttempt({
-        type: "assistant",
-        activity: "رد المساعد",
-        result: "success",
-        notes: data.reply,
-      });
-    } catch (error) {
-      console.error("Failed to contact AI assistant:", error);
-      const fallback = createAssistantReply(trimmed);
-      setAssistantMessages((prev) =>
-        prev.map((message) =>
-          message.id === placeholderId
-            ? {
-                ...message,
-                content: fallback.content,
-                tone: fallback.tone,
-                createdAt: fallback.createdAt,
-              }
-            : message,
-        ),
-      );
-      logAttempt({
-        type: "assistant",
-        activity: "رد المساعد (بديل)",
-        result: "info",
-        notes: fallback.content,
-      });
-    }
-  };
-
-  const handleMockVoiceSave = () => {
-    const timestamp = Date.now();
-    const voiceUrl = `/uploads/home-learning-voice-${timestamp}.mp3`;
-    const newNote = {
-      id: `voice-${timestamp}`,
-      title: `تسجيل متابعة ${savedVoiceNotes.length + 1}`,
-      url: voiceUrl,
-      note: "تسجيل محاكاة لتقييم النطق.",
-      createdAt: new Date().toISOString(),
-    };
-    setSavedVoiceNotes((prev) => [newNote, ...prev]);
-    logAttempt({
-      type: "assistant",
-      activity: "تسجيل صوتي",
-      result: "info",
-      notes: newNote.note,
-      mediaLink: voiceUrl,
-    });
   };
 
   const normalizeAnswer = (value: string) => value.replace(/[\sـ]/g, "").trim();
@@ -2497,153 +2125,35 @@ export default function ParentDashboard() {
         </section>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <Card className="border-0 shadow-md bg-gradient-to-br from-sky-50 to-white">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2 text-sky-700">
-                  <Mic className="w-5 h-5" />
-                  المساعد الذكي (نص + صوت)
-                </CardTitle>
-                <CardDescription>رسائل مشجعة وتحليل مبسط للنطق في كل لحظة.</CardDescription>
-              </div>
-              <Badge className="bg-sky-500 text-white">جاهز للمساعدة</Badge>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-white rounded-xl border border-sky-100 p-4 space-y-3 max-h-72 overflow-y-auto">
-                {assistantMessages.map((message) => {
-                  const timeLabel = new Date(message.createdAt).toLocaleTimeString("ar-DZ", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  });
-                  const isAssistant = message.role === "assistant";
-                  return (
-                    <div
-                      key={message.id}
-                      className={`flex ${isAssistant ? "justify-start" : "justify-end"}`}
-                    >
-                      <div
-                        className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
-                          isAssistant
-                            ? "bg-sky-100 text-sky-900"
-                            : "bg-indigo-500 text-white"
-                        }`}
-                      >
-                        <p>{message.content}</p>
-                        <span className="block text-xs mt-2 opacity-70 text-right">{timeLabel}</span>
-                        {message.mediaLink && (
-                          <a
-                            href={message.mediaLink}
-                            className="mt-1 block text-xs underline"
-                          >
-                            الاستماع للتسجيل
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {quickPrompts.map((prompt) => (
-                  <Button
-                    key={prompt}
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setAssistantInput(prompt)}
-                    className="bg-sky-100 text-sky-700 hover:bg-sky-200"
-                  >
-                    {prompt}
-                  </Button>
-                ))}
-              </div>
-
-              <div className="space-y-2 rounded-xl border border-sky-200 bg-white/80 p-3">
-                <p className="text-xs font-semibold text-sky-700">
-                  سجّل رسالة صوتية حقيقية أو ارفع ملفاً ليقوم المساعد بتحليل النطق.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    type="button"
-                    onClick={handleAssistantRecordingToggle}
-                    className={isRecordingAssistant ? "bg-rose-500 hover:bg-rose-600" : "bg-sky-500 hover:bg-sky-600"}
-                  >
-                    {isRecordingAssistant ? "إيقاف التسجيل المباشر" : "تسجيل صوتي مباشر"}
-                  </Button>
-                  <label className="cursor-pointer rounded-md border border-dashed border-sky-300 px-3 py-2 text-sm text-sky-700 hover:bg-sky-50">
-                    رفع ملف صوتي
-                    <input type="file" accept="audio/*" className="hidden" onChange={handleAssistantAudioSelect} />
-                  </label>
-                  {isRecordingAssistant && (
-                    <Button type="button" variant="ghost" onClick={handleStopAssistantRecordingEarly}>
-                      حفظ التسجيل الحالي
-                    </Button>
-                  )}
-                </div>
-                {isRecordingAssistant && (
-                  <p className="text-xs text-rose-600">🔴 جاري التسجيل... عند الانتهاء اضغط إيقاف للحفظ.</p>
-                )}
-                {assistantUploading && (
-                  <p className="text-xs text-sky-600">⏳ يتم معالجة الملف الصوتي المرفوع...</p>
-                )}
-              </div>
-
-              <form onSubmit={handleAssistantSubmit} className="space-y-3">
-                <Textarea
-                  placeholder="اكتب سؤالك أو اطلب نصيحة للنطق هنا..."
-                  value={assistantInput}
-                  onChange={(event) => setAssistantInput(event.target.value)}
-                  className="min-h-[90px] border-sky-200 focus-visible:ring-sky-400"
-                />
-                <div className="flex flex-wrap gap-3">
-                  <Button type="submit" className="bg-sky-500 hover:bg-sky-600 text-white">
-                    أرسل الرسالة
-                  </Button>
-                  <Button type="button" variant="outline" onClick={handleMockVoiceSave}>
-                    حفظ تسجيل صوتي (محاكاة)
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+          <SpeechTherapyAssistant
+            childName={childData.name}
+            trainingProgress={trainingProgress}
+            onReplyCountChange={setAssistantReplyCount}
+            onHighlightsChange={setAssistantHighlights}
+            onLogInteraction={logAttempt}
+          />
 
           <Card className="border-0 shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-emerald-600">
                 <BellRing className="w-5 h-5" />
-                التسجيلات والإشعارات
+                ملخص توصيات المساعد
               </CardTitle>
-              <CardDescription>سجل سريع للتسجيلات الصوتية والتنبيهات اليومية.</CardDescription>
+              <CardDescription>أهم الإرشادات والمتابعات التي أوصى بها المساعد خلال الأيام الأخيرة.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-4 space-y-3">
-                <h3 className="text-sm font-semibold text-emerald-700">
-                  التسجيلات الصوتية المحفوظة
-                </h3>
-                {savedVoiceNotes.length === 0 ? (
-                  <p className="text-sm text-emerald-600">لم يتم حفظ تسجيلات بعد.</p>
+                <h3 className="text-sm font-semibold text-emerald-700">أبرز النقاط التي يجب متابعتها</h3>
+                {assistantHighlights.length === 0 ? (
+                  <p className="text-sm text-emerald-600">
+                    لم تُسجَّل توصيات بعد. اطرح سؤالك على المساعد الذكي لتحصل على خطة مخصّصة.
+                  </p>
                 ) : (
-                  <div className="space-y-2">
-                    {savedVoiceNotes.map((note) => (
-                      <div
-                        key={note.id}
-                        className="flex items-center justify-between rounded-lg border border-emerald-100 bg-white px-3 py-2 text-sm"
-                      >
-                        <div>
-                          <p className="font-medium text-gray-700">{note.title}</p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(note.createdAt).toLocaleString("ar-DZ")}
-                          </p>
-                        </div>
-                        <a
-                          href={note.url}
-                          className="text-xs text-emerald-700 underline"
-                        >
-                          الاستماع
-                        </a>
-                      </div>
+                  <ul className="list-disc space-y-2 pr-5 text-sm text-emerald-800">
+                    {assistantHighlights.map((highlight, index) => (
+                      <li key={`highlight-${index}`}>{highlight}</li>
                     ))}
-                  </div>
+                  </ul>
                 )}
               </div>
 
