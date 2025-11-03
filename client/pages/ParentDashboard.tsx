@@ -16,7 +16,6 @@ import {
   AlertCircle,
   Download,
   Eye,
-  MessageSquare,
   Brain,
   BarChart3,
   Globe,
@@ -333,52 +332,6 @@ export default function ParentDashboard() {
         </CardContent>
       </Card>
 
-      {/* Quick Access */}
-      <Card className="border-dashed border-2 border-green-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="w-5 h-5 text-green-600" />
-            الأدوات الذكية لطفلك
-          </CardTitle>
-          <CardDescription>
-            الوصول السريع للمساعد الذكي والتدريب اليومي والألعاب التعليمية
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <Button
-              onClick={() => navigate("/ai-assistant")}
-              className="h-28 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white flex flex-col items-center justify-center gap-3 rounded-xl shadow-sm"
-            >
-              <div className="text-3xl">🤖</div>
-              <div className="text-center">
-                <div className="font-semibold">المساعد الذكي</div>
-                <div className="text-xs opacity-80">إجابات فورية مخصصة</div>
-              </div>
-            </Button>
-            <Button
-              onClick={() => navigate("/daily-training")}
-              className="h-28 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-3 rounded-xl shadow-sm"
-            >
-              <div className="text-3xl">📅</div>
-              <div className="text-center">
-                <div className="font-semibold">التدريب اليومي</div>
-                <div className="text-xs opacity-80">خطة تمارين موجهة يومياً</div>
-              </div>
-            </Button>
-            <Button
-              onClick={() => navigate("/educational-games")}
-              className="h-28 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white flex flex-col items-center justify-center gap-3 rounded-xl shadow-sm"
-            >
-              <div className="text-3xl">🎮</div>
-              <div className="text-center">
-                <div className="font-semibold">الألعاب التعليمية</div>
-                <div className="text-xs opacity-80">أنشطة تفاعلية ممتعة</div>
-              </div>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 
@@ -554,122 +507,6 @@ export default function ParentDashboard() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const SmartToolsTab = () => (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-t-4 border-t-indigo-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-indigo-600" />
-              المساعد الذكي Ortho AI
-            </CardTitle>
-            <CardDescription>
-              رفيقك المتخصص للإجابة عن الأسئلة ومتابعة تطوّر الطفل.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>• تحليل التقدّم واقتراح أنشطة داعمة.</p>
-              <p>• توفير إرشادات لحظية حول الجلسات القادمة.</p>
-              <p>• مشاركة ملخصات يمكن طباعتها أو حفظها.</p>
-            </div>
-            <Button
-              variant="outline"
-              className="border-indigo-500 text-indigo-600"
-              onClick={() => navigate("/ai-assistant")}
-            >
-              بدء المحادثة الآن
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="border-t-4 border-t-emerald-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-emerald-600" />
-              برنامج التدريب اليومي
-            </CardTitle>
-            <CardDescription>
-              خطة تفاعلية تتكيف مع تحسّن الطفل وتتابع إنجازاته اليومية.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>• تمارين متدرجة في الانتباه والإدراك واللغة.</p>
-              <p>• تذكيرات ذكية بالجلسات القادمة والمهام المنزلية.</p>
-              <p>• تقارير فورية يمكن مشاركتها مع الأخصائي.</p>
-            </div>
-            <Button
-              variant="outline"
-              className="border-emerald-500 text-emerald-600"
-              onClick={() => navigate("/daily-training")}
-            >
-              استعراض مسار التدريب
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="border-t-4 border-t-orange-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Gamepad2 className="w-5 h-5 text-orange-500" />
-              الألعاب التعليمية التفاعلية
-            </CardTitle>
-            <CardDescription>
-              مجموعة ألعاب ممتعة تدعم الإدراك واللغة والمهارات الحركية.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>• تخصيص الأنشطة حسب المرحلة العمرية.</p>
-              <p>• تتبع الوقت المقضي ومستوى الانغماس.</p>
-              <p>• اقتراحات ألعاب بديلة عند اكتمال الأهداف.</p>
-            </div>
-            <Button
-              variant="outline"
-              className="border-orange-500 text-orange-600"
-              onClick={() => navigate("/educational-games")}
-            >
-              فتح مكتبة الألعاب
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="bg-gradient-to-r from-blue-50 via-white to-emerald-50 border-blue-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-blue-600" />
-            كيف تعمل هذه الأدوات معاً؟
-          </CardTitle>
-          <CardDescription>
-            نظرة موحّدة على التكامل بين الذكاء الاصطناعي والتدريب اليومي والألعاب التعليمية.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-3">
-          <div className="p-4 bg-white rounded-xl shadow-sm border border-blue-100">
-            <h4 className="font-semibold text-blue-700 mb-2">تشخيص دقيق</h4>
-            <p className="text-sm text-gray-600">
-              يستخدم المساعد الذكي ملخصات الجلسات ليقترح تمارين يومية مخصصة.
-            </p>
-          </div>
-          <div className="p-4 bg-white rounded-xl shadow-sm border border-emerald-100">
-            <h4 className="font-semibold text-emerald-700 mb-2">تنفيذ ممتع</h4>
-            <p className="text-sm text-gray-600">
-              يربط التدريب اليومي المهام بالألعاب التعليمية لجعل التعلم ممتعاً ومتجدداً.
-            </p>
-          </div>
-          <div className="p-4 bg-white rounded-xl shadow-sm border border-orange-100">
-            <h4 className="font-semibold text-orange-700 mb-2">تقييم مستمر</h4>
-            <p className="text-sm text-gray-600">
-              تُحدَّث مؤشرات الأداء تلقائياً وتتوفر تقارير يمكن مشاركتها مع الفريق العلاجي.
-            </p>
           </div>
         </CardContent>
       </Card>
@@ -1228,14 +1065,10 @@ export default function ParentDashboard() {
         >
           {/* Tabs Navigation */}
           <div className="bg-white rounded-lg p-2 shadow-sm">
-            <TabsList className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
+            <TabsList className="grid grid-cols-6 w-full">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Activity className="w-4 h-4" />
                 نظرة عامة
-              </TabsTrigger>
-              <TabsTrigger value="smart-tools" className="flex items-center gap-2">
-                <MessageSquare className="w-4 h-4" />
-                الأدوات الذكية
               </TabsTrigger>
               <TabsTrigger
                 value="cognitive"
@@ -1271,10 +1104,6 @@ export default function ParentDashboard() {
 
           <TabsContent value="overview">
             <OverviewTab />
-          </TabsContent>
-
-          <TabsContent value="smart-tools">
-            <SmartToolsTab />
           </TabsContent>
 
           <TabsContent value="cognitive">
