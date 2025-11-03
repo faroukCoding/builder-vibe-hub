@@ -4,6 +4,7 @@ import {
   HomeLearningOverviewResponse,
   HomeLearningAssistantMessageRequest,
   HomeLearningAssistantMessageResponse,
+  HomeLearningAssistantHistoryMessage,
   HomeLearningPronunciationEvaluationRequest,
   HomeLearningPronunciationEvaluationResponse,
   HomeLearningTrainingAnswerRequest,
@@ -37,6 +38,33 @@ const getOpenAIClient = () => {
     cachedOpenAI = new OpenAI({ apiKey });
   }
   return cachedOpenAI;
+};
+
+const CONVERSATION_HISTORY_LIMIT = 10;
+
+const sanitizeHistory = (history?: HomeLearningAssistantHistoryMessage[]) => {
+  if (!history?.length) {
+    return [] as Array<{ role: "assistant" | "user"; content: string }>;
+  }
+  const items: Array<{ role: "assistant" | "user"; content: string }> = history
+    .slice(-CONVERSATION_HISTORY_LIMIT)
+    .map((entry) => ({
+      role: entry.role === "assistant" ? "assistant" : "user",
+      content: entry.content,
+    }));
+  return items;
+};
+
+const buildUserContent = (message: string, contextTags?: string[]) => {
+  if (!contextTags?.length) {
+    return message;
+  }
+  const contextSection = contextTags
+    .filter((tag) => Boolean(tag))
+    .slice(0, 12)
+    .map((tag) => (tag.includes(":") ? tag : `علامة:${tag}`))
+    .join("، ");
+  return `${message}\n\n# سياق إضافي\n${contextSection}`;
 };
 
 const buildAssistantFallback = (
@@ -174,15 +202,19 @@ export const handlePostHomeLearningAssistantMessage: RequestHandler = async (req
   }
 
   try {
+    const historyMessages = sanitizeHistory(body.history);
+    const userContent = buildUserContent(sanitizedMessage, body.contextTags);
+    const messages = [
+      { role: "system" as const, content: AI_SYSTEM_PROMPT },
+      ...historyMessages.map((entry) => ({ role: entry.role, content: entry.content })),
+      { role: "user" as const, content: userContent },
+    ];
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       temperature: 0.6,
       response_format: { type: "json_object" },
-      max_tokens: 600,
-      messages: [
-        { role: "system", content: AI_SYSTEM_PROMPT },
-        { role: "user", content: sanitizedMessage },
-      ],
+      max_tokens: 700,
+      messages: messages as any,
     });
 
     const rawContent = completion.choices[0]?.message?.content ?? "{}";

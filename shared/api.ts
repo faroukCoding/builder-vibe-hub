@@ -292,6 +292,13 @@ export interface HomeLearningOverviewResponse {
   };
 }
 
+export interface HomeLearningAssistantHistoryMessage {
+  role: "assistant" | "child" | "parent";
+  content: string;
+  createdAt?: string;
+  tone?: string;
+}
+
 export interface HomeLearningAssistantMessageRequest {
   childId: string;
   sender: "child" | "parent";
@@ -300,6 +307,7 @@ export interface HomeLearningAssistantMessageRequest {
   audioSampleUrl?: string;
   targetSound?: string;
   contextTags?: string[];
+  history?: HomeLearningAssistantHistoryMessage[];
 }
 
 export interface HomeLearningAssistantMessageResponse {

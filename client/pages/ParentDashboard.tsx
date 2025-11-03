@@ -58,6 +58,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 import type {
+  HomeLearningAssistantHistoryMessage,
   HomeLearningAssistantMessageResponse,
   HomeLearningPronunciationEvaluationResponse,
 } from "@shared/api";
@@ -1414,6 +1415,22 @@ export default function ParentDashboard() {
     if (!trimmed) {
       return;
     }
+    const historyPayload: HomeLearningAssistantHistoryMessage[] = assistantMessages
+      .slice(-10)
+      .map((message) => ({
+        role: message.role,
+        content: message.content,
+        createdAt: message.createdAt,
+        tone: message.tone,
+      }));
+    const contextTags = [
+      `letters_index:${trainingProgress.letters.currentIndex}`,
+      `words_index:${trainingProgress.words.currentIndex}`,
+      `discrimination_index:${trainingProgress.discrimination.currentIndex}`,
+      trainingProgress.letters.completed ? "letters_completed" : "letters_in_progress",
+      trainingProgress.words.completed ? "words_completed" : "words_in_progress",
+      trainingProgress.discrimination.completed ? "discrimination_completed" : "discrimination_in_progress",
+    ];
     const createdAt = new Date().toISOString();
     const childMessage: AssistantMessage = {
       id: `child-${Date.now()}`,
@@ -1452,6 +1469,8 @@ export default function ParentDashboard() {
           sender: "child",
           modality: "text",
           message: trimmed,
+          history: historyPayload,
+          contextTags,
         }),
       });
 
