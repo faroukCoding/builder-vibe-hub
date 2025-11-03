@@ -1,358 +1,250 @@
-import { useEffect, useRef, useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  AssistantChatRequest,
-  AssistantChatResponse,
-  AssistantHistoryResponse,
-  AssistantTipResponse,
-} from "@shared/api";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  Bot,
-  Send,
-  Loader2,
-  Lightbulb,
-  Target,
-  Sparkles,
-  Info,
-  Zap,
-} from "lucide-react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
-type TimeFilter = "all" | "today" | "7d";
+type Role = "user" | "assistant";
 
-const fetchAssistantHistory = async (filter: TimeFilter): Promise<AssistantHistoryResponse> => {
-  const params = new URLSearchParams();
-  params.set("limit", "100");
+interface ChatMessage {
+  id: string;
+  role: Role;
+  content: string;
+  createdAt: number;
+}
 
-  if (filter !== "all") {
-    const now = new Date();
-    if (filter === "today") {
-      now.setHours(0, 0, 0, 0);
-    } else {
-      now.setDate(now.getDate() - 7);
-    }
-    params.set("from", now.toISOString());
+const SYSTEM_PROMPT = `أنت مساعد ذكاء اصطناعي متخصص في الأورطوفونية موجه لوليّ أمر الطفل.
+وظيفتك هي تقديم نصائح وتمارين تربوية لمتابعة العلاج المنزلي، وتشجيع الأهل على التواصل الإيجابي مع الطفل.
+لا تقدم تشخيصًا طبيًا، بل معلومات تربوية تعليمية واضحة.
+استخدم لغة مشجعة، مبسطة، ومفهومة.
+أجب بنفس لغة السؤال (العربية أو الفرنسية).`;
+
+function detectLanguage(text: string) {
+  return /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(text) ? "fr" : "ar";
+}
+
+function generateId(prefix: Role) {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return `${prefix}-${crypto.randomUUID()}`;
   }
 
-  const response = await fetch(`/api/ai-assistant/history?${params.toString()}`);
-  if (!response.ok) {
-    throw new Error("تعذر تحميل محادثات المساعد");
-  }
-  return response.json();
-};
-
-const sendAssistantMessage = async (payload: AssistantChatRequest): Promise<AssistantChatResponse> => {
-  const response = await fetch("/api/ai-assistant/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    throw new Error("تعذر الحصول على رد من المساعد");
-  }
-
-  return response.json();
-};
-
-const fetchAssistantTip = async (): Promise<AssistantTipResponse> => {
-  const response = await fetch("/api/ai-assistant/tip", { method: "POST" });
-  if (!response.ok) {
-    throw new Error("تعذر جلب نصيحة اليوم");
-  }
-  return response.json();
-};
-
-type Message = AssistantHistoryResponse["messages"][number];
+  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+}
 
 export default function AIAssistant() {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [filter, setFilter] = useState<TimeFilter>("all");
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [contextInfo, setContextInfo] = useState<AssistantChatResponse["context"] | null>(null);
-  const [latestTip, setLatestTip] = useState<AssistantTipResponse["tip"] | null>(null);
+  const [isThinking, setIsThinking] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const {
-    data,
-    isLoading,
-    error,
-  } = useQuery({ queryKey: ["assistant-history", filter], queryFn: () => fetchAssistantHistory(filter) });
-
-  useEffect(() => {
-    if (data?.messages) {
-      setMessages(data.messages);
-    }
-  }, [data?.messages]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isThinking]);
 
-  const sendMessageMutation = useMutation({
-    mutationFn: sendAssistantMessage,
-    onSuccess: (response, variables) => {
-      const parentMessage: Message = {
-        id: `parent-local-${Date.now()}`,
-        role: "parent",
-        timestamp: new Date().toISOString(),
-        content: variables.message,
-      };
-      const assistantMessage: Message = {
-        id: `assistant-local-${Date.now()}`,
-        role: "assistant",
-        timestamp: new Date().toISOString(),
-        content: response.reply,
-        suggestedActions: response.suggestedActions,
-      };
+  const speak = useCallback((text: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      setErrorMessage("ميزة النطق غير مدعومة في هذا المتصفح.");
+      return;
+    }
 
-      setMessages((prev) => [...prev, parentMessage, assistantMessage]);
-      setContextInfo(response.context);
-      setInputValue("");
-      queryClient.invalidateQueries({ queryKey: ["assistant-history"] });
-    },
-    onError: (mutationError) => {
-      toast({
-        variant: "destructive",
-        title: "خطأ",
-        description: (mutationError as Error).message,
-      });
-    },
-  });
+    window.speechSynthesis.cancel();
+    const language = detectLanguage(text);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = language === "fr" ? "fr-FR" : "ar-SA";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  }, []);
 
-  const tipMutation = useMutation({
-    mutationFn: fetchAssistantTip,
-    onSuccess: (payload) => {
-      setLatestTip(payload.tip);
-      toast({ title: payload.tip.title, description: payload.tip.content });
-      queryClient.invalidateQueries({ queryKey: ["assistant-history"] });
-    },
-    onError: (mutationError) => {
-      toast({
-        variant: "destructive",
-        title: "خطأ",
-        description: (mutationError as Error).message,
-      });
-    },
-  });
-
-  const handleSendMessage = () => {
+  const sendMessage = useCallback(async () => {
     const trimmed = inputValue.trim();
-    if (!trimmed) return;
-    sendMessageMutation.mutate({ message: trimmed });
-  };
+    if (!trimmed || isThinking) {
+      return;
+    }
 
-  const savedTips = data?.savedTips ?? [];
+    const userMessage: ChatMessage = {
+      id: generateId("user"),
+      role: "user",
+      content: trimmed,
+      createdAt: Date.now(),
+    };
+
+    const updatedMessages = [...messages, userMessage];
+    const truncatedMessages = updatedMessages.slice(-12);
+    setMessages(updatedMessages);
+    setInputValue("");
+    setIsThinking(true);
+    setErrorMessage(null);
+
+    try {
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      if (!apiKey) {
+        throw new Error("يرجى إعداد VITE_OPENAI_API_KEY في ملف البيئة لتفعيل المساعد.");
+      }
+
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          temperature: 0.7,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            ...truncatedMessages.map((message) => ({
+              role: message.role === "assistant" ? "assistant" : "user",
+              content: message.content,
+            })),
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errorPayload = await response.json().catch(() => ({}));
+        throw new Error(errorPayload.error?.message ?? "تعذر الحصول على رد من المساعد.");
+      }
+
+      const data = await response.json();
+      const reply = data?.choices?.[0]?.message?.content?.trim();
+
+      if (!reply) {
+        throw new Error("لم يصل رد من المساعد، حاول مرة أخرى.");
+      }
+
+      const assistantMessage: ChatMessage = {
+        id: generateId("assistant"),
+        role: "assistant",
+        content: reply,
+        createdAt: Date.now(),
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      const message = (error as Error).message || "حدث خطأ غير متوقع";
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: generateId("assistant"),
+          role: "assistant",
+          content: message,
+          createdAt: Date.now(),
+        },
+      ]);
+      setErrorMessage(message);
+    } finally {
+      setIsThinking(false);
+    }
+  }, [inputValue, isThinking, messages]);
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    sendMessage();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50" dir="rtl">
-      <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">المساعد الذكي</h1>
-            <p className="text-slate-600 mt-1">
-              دردش مع مساعد مدعوم بـ OpenAI للحصول على توصيات مخصصة وتمارين جديدة لطفلك
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => tipMutation.mutate()}
-            disabled={tipMutation.isLoading}
+      <div className="max-w-3xl mx-auto flex h-screen flex-col px-4 py-8">
+        <header className="text-center space-y-2">
+          <h1 className="text-3xl font-bold text-slate-900">🤖 المساعد الذكي للمتابعة المنزلية</h1>
+          <p className="text-slate-600 text-sm">
+            اسأل عن التمارين المنزلية، الدعم اليومي، وكيفية مواصلة التدريب بعد الجلسات الأورطوفونية.
+          </p>
+        </header>
+
+        <div className="mt-6 flex-1">
+          <div
+            ref={scrollRef}
+            className="h-full overflow-y-auto rounded-3xl border border-slate-100 bg-white p-6 shadow-inner space-y-4"
           >
-            {tipMutation.isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lightbulb className="w-4 h-4" />}
-            نصيحة اليوم
-          </Button>
+            {messages.length === 0 && (
+              <div className="text-center text-sm text-slate-500 space-y-2">
+                <p>ابدأ المحادثة بسؤال مثل:</p>
+                <p className="font-medium">"ما أفضل تمرين منزلي لتحسين نطق حرف الراء؟"</p>
+              </div>
+            )}
+
+            {messages.map((message) => (
+              <ChatBubble key={message.id} message={message} onSpeak={speak} />
+            ))}
+
+            {isThinking && (
+              <div className="flex items-center gap-3 text-sm text-slate-500">
+                <span className="flex h-4 w-4 items-center justify-center">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-400 border-t-transparent" />
+                </span>
+                <span>⏳ جاري التفكير...</span>
+              </div>
+            )}
+          </div>
         </div>
 
-        <Tabs value={filter} onValueChange={(value) => setFilter(value as TimeFilter)}>
-          <TabsList className="grid grid-cols-3 w-full md:w-72">
-            <TabsTrigger value="all">كافة المحادثات</TabsTrigger>
-            <TabsTrigger value="today">اليوم</TabsTrigger>
-            <TabsTrigger value="7d">آخر 7 أيام</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        {errorMessage && (
+          <p className="mt-4 text-center text-xs text-rose-500">{errorMessage}</p>
+        )}
 
-        {isLoading && (
-          <div className="grid gap-4">
-            <Skeleton className="h-40" />
-            <Skeleton className="h-40" />
+        <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+          <div className="flex gap-3">
+            <textarea
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  sendMessage();
+                }
+              }}
+              placeholder="اكتب سؤالك هنا..."
+              rows={2}
+              className="flex-1 resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+            />
+            <button
+              type="submit"
+              disabled={!inputValue.trim() || isThinking}
+              className="shrink-0 rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-300"
+            >
+              إرسال
+            </button>
           </div>
-        )}
-
-        {error && (
-          <Alert variant="destructive">
-            <AlertTitle>حدث خطأ</AlertTitle>
-            <AlertDescription>{(error as Error).message}</AlertDescription>
-          </Alert>
-        )}
-
-        {data && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2 border-slate-100 shadow-sm flex flex-col">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Bot className="w-5 h-5 text-indigo-500" /> قناة المحادثة
-                </CardTitle>
-                <CardDescription>اسأل المساعد عن التمارين، التحليل أو النصائح التربوية</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col gap-4">
-                <div ref={scrollRef} className="flex-1 overflow-y-auto pr-2 space-y-4">
-                  {messages.map((message) => (
-                    <ChatBubble key={message.id} message={message} />
-                  ))}
-                </div>
-
-                <div className="space-y-3">
-                  {sendMessageMutation.isLoading && (
-                    <p className="text-xs text-slate-500 flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin" /> يقوم المساعد بالتحليل...
-                    </p>
-                  )}
-                  <Textarea
-                    placeholder="اكتب سؤالك... مثال: اقترح تمرينًا لحرف الصاد أو أعطني خطة أسبوعية"
-                    value={inputValue}
-                    onChange={(event) => setInputValue(event.target.value)}
-                    rows={3}
-                  />
-                  <div className="flex items-center justify-between gap-2">
-                    <Button
-                      onClick={handleSendMessage}
-                      disabled={!inputValue.trim() || sendMessageMutation.isLoading}
-                      className="flex items-center gap-2"
-                    >
-                      <Send className="w-4 h-4" /> إرسال
-                    </Button>
-                    {contextInfo && (
-                      <Badge variant="secondary" className="text-xs text-slate-600">
-                        تم الاعتماد على آخر التحديثات لعدد جلسات: {contextInfo.conversationLength}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="space-y-4">
-              {contextInfo && (
-                <Card className="border-emerald-100 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Target className="w-5 h-5 text-emerald-500" /> ملخص الذكاء الاصطناعي
-                    </CardTitle>
-                    <CardDescription>تحديث سريع حول التدريب والألعاب</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-slate-600">
-                    <p>{contextInfo.trainingHighlights}</p>
-                    <p>{contextInfo.gamesHighlights}</p>
-                  </CardContent>
-                </Card>
-              )}
-
-              {latestTip && (
-                <Card className="border-amber-100 shadow-sm bg-amber-50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Lightbulb className="w-5 h-5 text-amber-500" /> {latestTip.title}
-                    </CardTitle>
-                    <CardDescription>{new Date(latestTip.deliveredAt).toLocaleTimeString("ar-DZ")}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-amber-800 space-y-2">
-                    <p>{latestTip.content}</p>
-                    <Badge variant="outline" className="text-xs text-amber-700">
-                      {latestTip.category}
-                    </Badge>
-                  </CardContent>
-                </Card>
-              )}
-
-              <Card className="border-slate-100 shadow-sm">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-indigo-500" /> نصائح محفوظة
-                  </CardTitle>
-                  <CardDescription>يمكنك الرجوع لهذه النصائح في أي وقت</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {savedTips.map((tip) => (
-                    <div key={tip.id} className="border border-slate-100 rounded-lg p-3 bg-slate-50 space-y-1">
-                      <p className="text-sm font-medium text-slate-800">{tip.title}</p>
-                      <p className="text-xs text-slate-500">{tip.content}</p>
-                      <Badge variant="outline" className="text-xs text-slate-500">
-                        {tip.category}
-                      </Badge>
-                    </div>
-                  ))}
-                  {savedTips.length === 0 && (
-                    <p className="text-xs text-slate-500">لا توجد نصائح محفوظة بعد، اطلب من المساعد اقتراحات جديدة.</p>
-                  )}
-                </CardContent>
-              </Card>
-
-              {data.lastTipTimestamp && (
-                <Card className="border-slate-100 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Info className="w-5 h-5 text-slate-500" /> آخر تذكير
-                    </CardTitle>
-                    <CardDescription>
-                      {new Date(data.lastTipTimestamp).toLocaleString("ar-DZ")}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              )}
-            </div>
-          </div>
-        )}
+          <footer className="text-center text-xs text-slate-500">
+            ⚠️ هذا المساعد يقدم توجيهات تربوية فقط ولا يغني عن استشارة الأخصائي.
+          </footer>
+        </form>
       </div>
     </div>
   );
 }
 
-function ChatBubble({ message }: { message: Message }) {
+function ChatBubble({
+  message,
+  onSpeak,
+}: {
+  message: ChatMessage;
+  onSpeak: (text: string) => void;
+}) {
   const isAssistant = message.role === "assistant";
+
   return (
     <div className={`flex ${isAssistant ? "justify-start" : "justify-end"}`}>
       <div
-        className={`max-w-xl rounded-2xl px-4 py-3 shadow-sm ${
+        className={`max-w-[80%] rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-sm transition ${
           isAssistant
-            ? "bg-white border border-slate-100 text-slate-700"
-            : "bg-indigo-500 text-white"
+            ? "bg-indigo-50 text-slate-800"
+            : "bg-indigo-600 text-white"
         }`}
       >
-        <div className="flex items-center gap-2 mb-2 text-xs opacity-70">
-          {isAssistant ? <Bot className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
-          <span>{new Date(message.timestamp).toLocaleString("ar-DZ")}</span>
-        </div>
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-        {message.suggestedActions && message.suggestedActions.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-3">
-            {message.suggestedActions.map((action) => (
-              <Badge key={action} variant={isAssistant ? "secondary" : "outline"} className="text-xs">
-                {action}
-              </Badge>
-            ))}
-          </div>
+        <p className="whitespace-pre-wrap">{message.content}</p>
+        {isAssistant && (
+          <button
+            type="button"
+            onClick={() => onSpeak(message.content)}
+            className="mt-2 flex items-center gap-2 text-xs font-medium text-indigo-600 hover:text-indigo-500"
+          >
+            <span aria-hidden>🔊</span>
+            <span>استمع للإجابة</span>
+          </button>
         )}
       </div>
     </div>
   );
 }
-
