@@ -84,6 +84,36 @@ const SECTION_AWARENESS = "🔊 الوعي الصوتي والسمعي";
 const SECTION_EXERCISES = "🧩 تمارين منزلية";
 const SECTION_TIPS = "💡 نصائح تربوية";
 
+// Clé pour localStorage
+const STORAGE_KEY = "speech_therapy_chat_history";
+
+// Helper localStorage avec gestion d'erreurs
+const storage = {
+  get<T>(key: string, fallback: T): T {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : fallback;
+    } catch (error) {
+      console.error("Erreur lecture localStorage:", error);
+      return fallback;
+    }
+  },
+  set(key: string, value: unknown): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error("Erreur écriture localStorage:", error);
+    }
+  },
+  clear(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error("Erreur suppression localStorage:", error);
+    }
+  },
+};
+
 const assistantData: AssistantItem[] = [
   {
     id: "speech_letter_r",
@@ -223,7 +253,7 @@ const assistantData: AssistantItem[] = [
     type: "faq",
     question: "🔊 كيف أساعده على تمييز الأصوات؟",
     answer:
-      'العبوا لعبة “صوت من هذا؟” 🐱🐶🚗. اسألوا عن مصدر الصوت ثم اطلبوا تقليده. هذه الألعاب تنمّي الوعي السمعي وتفتح الحوار حول الأصوات القريبة.',
+      'العبوا لعبة "صوت من هذا؟" 🐱🐶🚗. اسألوا عن مصدر الصوت ثم اطلبوا تقليده. هذه الألعاب تنمّي الوعي السمعي وتفتح الحوار حول الأصوات القريبة.',
     keywords: ["تمييز", "وعي صوتي", "صوت من هذا", "تحفيز السمع", "ألعاب صوت"],
     extra: {
       suggestions: ["استخدموا أصوات الحياة اليومية (جَرَس، ماء، سيارة).", "غطي عيني الطفل ليعتمد على السمع فقط.", "سجلوا الأصوات المفضلة لتكرار اللعبة لاحقًا."],
@@ -351,7 +381,7 @@ const assistantDataMap: Record<string, AssistantItem> = assistantData.reduce((ac
 }, {} as Record<string, AssistantItem>);
 
 const QUICK_REPLIES: AssistantQuickReply[] = [
-  { id: "quick_s_pronunciation", label: "🎯 تمرين نطق حرف “س”", itemId: "exercise_s_sound" },
+  { id: "quick_s_pronunciation", label: "🎯 تمرين نطق حرف "س"", itemId: "exercise_s_sound" },
   { id: "quick_tongue_flex", label: "👅 تمرين مرونة اللسان", itemId: "exercise_tongue_flexibility" },
   { id: "quick_language_vs_speech", label: "🧠 الفرق بين التأخر اللغوي واضطراب النطق", itemId: "language_difference" },
   { id: "quick_stutter", label: "💬 كيف أتعامل مع تلعثم طفلي؟", itemId: "speech_stutter" },
@@ -477,11 +507,17 @@ export default function SpeechTherapyAssistant({
   onHighlightsChange,
   onLogInteraction,
 }: SpeechTherapyAssistantProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  // États avec initialisation depuis localStorage
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    const saved = storage.get<ChatMessage[]>(STORAGE_KEY, []);
+    // Si pas de messages sauvegardés, retourner tableau vide (le welcome sera ajouté dans useEffect)
+    return saved.length > 0 ? saved : [];
+  });
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
   const initializedRef = useRef(false);
+  const isSubmittingRef = useRef(false);
 
   const welcomeMessage = useMemo(
     () =>
@@ -489,20 +525,33 @@ export default function SpeechTherapyAssistant({
     [childName],
   );
 
+  // Sauvegarder dans localStorage à chaque changement de messages
+  useEffect(() => {
+    if (messages.length > 0) {
+      storage.set(STORAGE_KEY, messages);
+    }
+  }, [messages]);
+
+  // Message de bienvenue initial
   useEffect(() => {
     if (initializedRef.current) {
       return;
     }
     initializedRef.current = true;
-    setMessages([
-      {
-        id: "assistant-welcome",
-        role: "assistant",
-        content: welcomeMessage,
-      },
-    ]);
-  }, [welcomeMessage]);
+    
+    // Si pas de messages sauvegardés, ajouter le message de bienvenue
+    if (messages.length === 0) {
+      setMessages([
+        {
+          id: "assistant-welcome",
+          role: "assistant",
+          content: welcomeMessage,
+        },
+      ]);
+    }
+  }, [welcomeMessage, messages.length]);
 
+  // Auto-scroll
   useEffect(() => {
     if (!conversationRef.current) {
       return;
@@ -510,6 +559,7 @@ export default function SpeechTherapyAssistant({
     conversationRef.current.scrollTo({ top: conversationRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isTyping]);
 
+  // Mise à jour des highlights et compteurs
   useEffect(() => {
     const assistantMessages = messages.filter((message) => message.role === "assistant");
     onReplyCountChange?.(assistantMessages.length);
@@ -556,10 +606,16 @@ export default function SpeechTherapyAssistant({
   const handleSend = useCallback(
     async (rawText: string, displayText?: string, forcedItem?: AssistantItem) => {
       const trimmed = rawText.trim();
-      if (!trimmed || isTyping) {
+      
+      // Validation avec protection contre les doubles soumissions
+      if (!trimmed || isTyping || isSubmittingRef.current) {
         return;
       }
 
+      // Bloquer les nouvelles soumissions
+      isSubmittingRef.current = true;
+
+      // Ajouter le message utilisateur
       setMessages((prev) => [
         ...prev,
         {
@@ -580,10 +636,12 @@ export default function SpeechTherapyAssistant({
       setIsTyping(true);
       await wait(650);
 
+      // Chercher dans la base de données locale
       const matchedItem = forcedItem ?? findAssistantItem(trimmed);
       if (matchedItem) {
         addAssistantMessage(matchedItem.answer, matchedItem, true);
         setIsTyping(false);
+        isSubmittingRef.current = false;
         onLogInteraction?.({
           type: "assistant",
           activity: "إجابة من قاعدة البيانات",
@@ -593,12 +651,14 @@ export default function SpeechTherapyAssistant({
         return;
       }
 
+      // Sinon, appeler OpenAI
       const aiReply = await requestOpenAIResponse(trimmed, childName);
       const fallbackReply =
         aiReply ??
         "أحتاج إلى مزيد من التفاصيل لأقدّم لك خطة دقيقة 🌈. أخبرني ما الحرف أو المهارة التي ترغب في تطويرها لنقترح تمرينًا عمليًا.";
       addAssistantMessage(fallbackReply, undefined, Boolean(aiReply));
       setIsTyping(false);
+      isSubmittingRef.current = false;
       onLogInteraction?.({
         type: "assistant",
         activity: aiReply ? "إجابة الذكاء الاصطناعي" : "تعذّر استدعاء الذكاء الاصطناعي",
@@ -610,44 +670,70 @@ export default function SpeechTherapyAssistant({
   );
 
   const handleSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      await handleSend(inputValue);
+      handleSend(inputValue);
     },
     [handleSend, inputValue],
   );
 
   const handleQuickReply = useCallback(
-    async (reply: AssistantQuickReply) => {
+    (reply: AssistantQuickReply) => {
       const item = assistantDataMap[reply.itemId];
       if (!item) {
         return;
       }
-      await handleSend(item.question ?? reply.label, reply.label, item);
+      handleSend(item.question ?? reply.label, reply.label, item);
     },
     [handleSend],
   );
 
   const handleFollowUp = useCallback(
-    async (option: FollowUpOption) => {
+    (option: FollowUpOption) => {
       const item = assistantDataMap[option.itemId];
       if (!item) {
         return;
       }
-      await handleSend(item.question ?? item.title ?? option.label, option.label, item);
+      handleSend(item.question ?? item.title ?? option.label, option.label, item);
     },
     [handleSend],
   );
+
+  const clearHistory = useCallback(() => {
+    if (confirm("هل تريد حذف جميع المحادثات؟")) {
+      setMessages([
+        {
+          id: "assistant-welcome",
+          role: "assistant",
+          content: welcomeMessage,
+        },
+      ]);
+      storage.clear(STORAGE_KEY);
+    }
+  }, [welcomeMessage]);
 
   return (
     <Card className="border-0 shadow-xl bg-gradient-to-br from-sky-50 via-white to-pink-50">
       <CardHeader className="pb-2">
         <div className="flex flex-col gap-2" dir="rtl">
-          <CardTitle className="flex items-center gap-2 text-sky-700">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-xl">🧠</span>
-            <span className="text-lg font-semibold">المساعد الذكي للنطق والكلام</span>
-            <Sparkles className="h-5 w-5 text-pink-400" />
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-sky-700">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-xl">🧠</span>
+              <span className="text-lg font-semibold">المساعد الذكي للنطق والكلام</span>
+              <Sparkles className="h-5 w-5 text-pink-400" />
+            </CardTitle>
+            {messages.length > 1 && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={clearHistory}
+                className="text-xs text-rose-600 hover:text-rose-700"
+              >
+                مسح الكل
+              </Button>
+            )}
+          </div>
           <p className="text-sm text-slate-600">
             يجيب على أسئلتك حول النطق، التأخر اللغوي، التمارين المنزلية، ونصائح الأولياء مع لمسة من الألوان الباستيلية 🌈.
           </p>
@@ -717,7 +803,7 @@ export default function SpeechTherapyAssistant({
                                 type="button"
                                 size="sm"
                                 variant="secondary"
-                                onClick={() => void handleFollowUp(option)}
+                                onClick={() => handleFollowUp(option)}
                                 disabled={isTyping}
                                 className="rounded-full border-pink-200 bg-white/80 text-pink-600 hover:bg-pink-100"
                               >
@@ -753,9 +839,9 @@ export default function SpeechTherapyAssistant({
               key={reply.id}
               type="button"
               variant="outline"
-              onClick={() => void handleQuickReply(reply)}
+              onClick={() => handleQuickReply(reply)}
               disabled={isTyping}
-              className="rounded-full border-sky-200 bg-white/90 text-sky-700 transition hover:-translate-y-0.5 hover:bg-sky-100"
+              className="rounded-full border-sky-200 bg-white/90 text-sky-700 transition hover:-translate-y-0.5 hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {reply.label}
             </Button>
@@ -767,26 +853,27 @@ export default function SpeechTherapyAssistant({
             placeholder="اكتب سؤالك بالتفصيل..."
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
-            onKeyDown={async (event) => {
+            onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
-                await handleSend(inputValue);
+                handleSend(inputValue);
               }
             }}
-            className="min-h-[120px] rounded-2xl border-sky-200 bg-white/90 shadow-sm focus-visible:ring-sky-500"
+            disabled={isTyping}
+            className="min-h-[120px] rounded-2xl border-sky-200 bg-white/90 shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50"
           />
           <div className="flex flex-wrap items-center gap-3">
             <Button
               type="submit"
-              className="rounded-full bg-sky-500 px-6 text-white shadow hover:bg-sky-600"
+              className="rounded-full bg-sky-500 px-6 text-white shadow hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!inputValue.trim() || isTyping}
             >
-              أرسل سؤالي الآن
+              {isTyping ? "جاري الإرسال..." : "أرسل سؤالي الآن"}
             </Button>
             <Button
               type="button"
               variant="ghost"
-              onClick={() => setMessages((prev) => prev.slice(0, 1))}
+              onClick={clearHistory}
               disabled={messages.length <= 1 || isTyping}
             >
               إعادة تعيين المحادثة
@@ -797,3 +884,4 @@ export default function SpeechTherapyAssistant({
     </Card>
   );
 }
+         
