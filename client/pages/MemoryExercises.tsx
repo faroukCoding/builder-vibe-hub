@@ -22,19 +22,74 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+type SpeakOptions = {
+  onEnd?: () => void;
+  onError?: () => void;
+  rate?: number;
+  interrupt?: boolean;
+};
 
 export default function MemoryExercises() {
   const navigate = useNavigate();
   const [activeType, setActiveType] = useState<string | null>(null);
+  const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
 
-  const speakArabic = (text: string) => {
-    if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "ar-SA";
-      utterance.rate = 0.8;
-      speechSynthesis.speak(utterance);
+  useEffect(() => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      return;
     }
+
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const arabicVoice = voices.find((voice) => voice.lang.startsWith("ar"));
+      if (arabicVoice) {
+        voiceRef.current = arabicVoice;
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+
+    return () => {
+      window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
+    };
+  }, []);
+
+  const speakArabic = (
+    text: string,
+    { onEnd, onError, rate = 0.8, interrupt = true }: SpeakOptions = {},
+  ): SpeechSynthesisUtterance | null => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      if (onEnd) onEnd();
+      return null;
+    }
+
+    if (interrupt) {
+      window.speechSynthesis.cancel();
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ar-SA";
+    utterance.rate = rate;
+    utterance.volume = 1;
+    utterance.pitch = 1;
+
+    if (voiceRef.current) {
+      utterance.voice = voiceRef.current;
+    }
+
+    if (onEnd) {
+      utterance.onend = onEnd;
+    }
+
+    if (onError) {
+      utterance.onerror = onError;
+    }
+
+    window.speechSynthesis.speak(utterance);
+    return utterance;
   };
 
   const memoryTypes = [
@@ -66,6 +121,34 @@ export default function MemoryExercises() {
     const [score, setScore] = useState(0);
     const [lives, setLives] = useState(3);
     const [showResult, setShowResult] = useState(false);
+    const [playingSoundId, setPlayingSoundId] = useState<string | null>(null);
+
+    const clearPlayingSound = (soundId: string) => {
+      setPlayingSoundId((current) => (current === soundId ? null : current));
+    };
+
+    const playSoundSample = async (sound: { id: string; name: string }) => {
+      await new Promise<void>((resolve) => {
+        setPlayingSoundId(sound.id);
+        const fallback = setTimeout(() => {
+          clearPlayingSound(sound.id);
+          resolve();
+        }, 2000);
+
+        speakArabic(sound.name, {
+          onEnd: () => {
+            clearTimeout(fallback);
+            clearPlayingSound(sound.id);
+            resolve();
+          },
+          onError: () => {
+            clearTimeout(fallback);
+            clearPlayingSound(sound.id);
+            resolve();
+          },
+        });
+      });
+    };
 
     const sounds = [
       { id: "bell", name: "جرس", emoji: "🔔", sound: "bell" },
@@ -96,11 +179,11 @@ export default function MemoryExercises() {
       setPlayerSequence([]);
 
       // Play sequence with delays
-      for (let i = 0; i < newSequence.length; i++) {
+      for (const soundId of newSequence) {
         await new Promise((resolve) => setTimeout(resolve, 500));
-        const sound = sounds.find((s) => s.id === newSequence[i]);
+        const sound = sounds.find((s) => s.id === soundId);
         if (sound) {
-          speakArabic(sound.name);
+          await playSoundSample(sound);
         }
       }
 
@@ -113,6 +196,11 @@ export default function MemoryExercises() {
 
     const handleSoundClick = (soundId: string) => {
       if (!isPlayerTurn) return;
+
+      const sound = sounds.find((s) => s.id === soundId);
+      if (sound) {
+        void playSoundSample(sound);
+      }
 
       const newPlayerSequence = [...playerSequence, soundId];
       setPlayerSequence(newPlayerSequence);
@@ -222,16 +310,38 @@ export default function MemoryExercises() {
                 playerSequence.includes(sound.id)
                   ? "bg-blue-100 border-blue-400"
                   : ""
+              } ${
+                playingSoundId === sound.id ? "ring-2 ring-blue-500" : ""
               }`}
               onClick={() => handleSoundClick(sound.id)}
             >
-              <CardContent className="p-6 text-center">
+              <CardContent className="p-6 text-center relative">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-3 left-3 text-blue-600 hover:text-blue-700"
+                  aria-label={`استمع إلى كلمة ${sound.name}`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    void playSoundSample(sound);
+                  }}
+                  disabled={!isPlayerTurn}
+                >
+                  <Volume2
+                    className={`w-4 h-4 ${playingSoundId === sound.id ? "animate-pulse" : ""}`}
+                  />
+                </Button>
                 <div className="text-4xl mb-2">{sound.emoji}</div>
                 <p className="font-semibold">{sound.name}</p>
               </CardContent>
             </Card>
           ))}
         </div>
+
+        <p className="text-center text-sm text-gray-600">
+          اضغط على زر مكبر الصوت للاستماع إلى الكلمة قبل اختيارها.
+        </p>
 
         <div className="text-center">
           <Button
