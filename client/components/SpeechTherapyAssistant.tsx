@@ -1,10 +1,14 @@
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles, MessageCircle, Repeat, ListChecks } from "lucide-react";
+import { Sparkles, MessageCircle, Repeat, ListChecks, Lightbulb, Gamepad2, Clock3 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import type { HomeLearningAssistantHistoryMessage, HomeLearningAssistantMessageResponse } from "@shared/api";
+import type {
+  HomeLearningAssistantHistoryMessage,
+  HomeLearningAssistantMessageResponse,
+  HomeLearningAssistantRecommendedGame,
+} from "@shared/api";
 
 type TrainingModuleSnapshot = {
   currentIndex: number;
@@ -34,10 +38,106 @@ interface AssistantTurn {
     simplified: string;
     cues: string[];
     nextActions: string[];
+    personalizedTips: string[];
+    recommendedGames: HomeLearningAssistantRecommendedGame[];
     createdAt: string;
   };
   error?: string | null;
 }
+
+const sanitizeStringArray = (value: unknown, limit: number): string[] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+    .filter((entry) => entry.length > 0)
+    .slice(0, limit);
+};
+
+const sanitizeRecommendedGames = (value: unknown): HomeLearningAssistantRecommendedGame[] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .map((raw) => {
+      if (!raw || typeof raw !== "object") {
+        return null;
+      }
+      const candidate = raw as Partial<HomeLearningAssistantRecommendedGame>;
+      const title = typeof candidate.title === "string" ? candidate.title.trim() : "";
+      const objective = typeof candidate.objective === "string" ? candidate.objective.trim() : "";
+      const overview = typeof candidate.overview === "string" ? candidate.overview.trim() : "";
+      const steps = sanitizeStringArray(candidate.steps, 8);
+      const materials = sanitizeStringArray(candidate.materials, 6);
+      const durationMinutes =
+        typeof candidate.durationMinutes === "number" && Number.isFinite(candidate.durationMinutes) && candidate.durationMinutes > 0
+          ? Math.round(candidate.durationMinutes)
+          : undefined;
+
+      if (!title && !overview) {
+        return null;
+      }
+
+      return {
+        title: title || (overview.length > 0 ? overview : "نشاط علاجي"),
+        objective: objective || "تعزيز النطق في المنزل",
+        overview: overview || title,
+        steps: steps.length > 0 ? steps : [(overview || title || "غياب الخلاصة").trim()],
+        materials: materials.length > 0 ? materials : undefined,
+        durationMinutes,
+      } satisfies HomeLearningAssistantRecommendedGame;
+    })
+    .filter((entry): entry is HomeLearningAssistantRecommendedGame => Boolean(entry));
+};
+
+const normalizeStoredTurn = (value: unknown): AssistantTurn | null => {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+  const raw = value as Partial<AssistantTurn> & { answer?: Partial<AssistantTurn["answer"]> };
+  const question = typeof raw.question === "string" ? raw.question : "";
+  if (!question.trim()) {
+    return null;
+  }
+  const id = typeof raw.id === "string" ? raw.id : `turn-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+  const askedAt = typeof raw.askedAt === "string" ? raw.askedAt : new Date().toISOString();
+
+  const normalized: AssistantTurn = {
+    id,
+    question,
+    askedAt,
+  };
+
+  if (raw.answer && typeof raw.answer === "object") {
+    const answerRaw = raw.answer as Partial<AssistantTurn["answer"]>;
+    const reply = typeof answerRaw?.reply === "string" ? answerRaw.reply : "";
+    const simplified = typeof answerRaw?.simplified === "string" ? answerRaw.simplified : reply;
+    const cues = sanitizeStringArray(answerRaw?.cues, 6);
+    const nextActions = sanitizeStringArray(answerRaw?.nextActions, 6);
+    const personalizedTips = sanitizeStringArray(answerRaw?.personalizedTips, 6);
+    const recommendedGames = sanitizeRecommendedGames(answerRaw?.recommendedGames);
+    const createdAt = typeof answerRaw?.createdAt === "string" ? answerRaw.createdAt : new Date().toISOString();
+
+    if (reply || simplified || cues.length > 0 || nextActions.length > 0 || personalizedTips.length > 0 || recommendedGames.length > 0) {
+      normalized.answer = {
+        reply,
+        simplified,
+        cues,
+        nextActions,
+        personalizedTips,
+        recommendedGames,
+        createdAt,
+      };
+    }
+  }
+
+  if (typeof raw.error === "string" && raw.error.trim().length > 0) {
+    normalized.error = raw.error;
+  }
+
+  return normalized;
+};
 
 interface SpeechTherapyAssistantProps {
   childName: string;
@@ -52,6 +152,8 @@ const QUICK_PROMPTS = [
   "كيف أساعد طفلي على التمييز بين صوتي السين والشين؟",
   "ابني يتلعثم عندما يكون متوتراً، ماذا أفعل في المنزل؟",
 ];
+
+const STORAGE_NAMESPACE = "speech-therapy-assistant";
 
 const arraysEqual = (first: string[], second: string[]) => {
   if (first.length !== second.length) {
@@ -74,8 +176,53 @@ export default function SpeechTherapyAssistant({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const summarySnapshotRef = useRef<{ count: number; highlights: string[] }>({ count: 0, highlights: [] });
+  const storageKey = useMemo(() => {
+    const normalized = childName?.trim() || "default";
+    return `${STORAGE_NAMESPACE}:${encodeURIComponent(normalized)}`;
+  }, [childName]);
 
   const answeredTurns = useMemo(() => conversation.filter((turn) => Boolean(turn.answer)), [conversation]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      if (!raw) {
+        setConversation([]);
+        return;
+      }
+      const parsed = JSON.parse(raw) as unknown;
+      if (!Array.isArray(parsed)) {
+        setConversation([]);
+        return;
+      }
+      const restored = parsed
+        .slice(-20)
+        .map((entry) => normalizeStoredTurn(entry))
+        .filter((entry): entry is AssistantTurn => Boolean(entry));
+      setConversation(restored);
+    } catch (error) {
+      console.warn("تعذّر استرجاع محادثة المساعد", error);
+    }
+  }, [storageKey]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      if (conversation.length === 0) {
+        window.localStorage.removeItem(storageKey);
+        return;
+      }
+      const payload = JSON.stringify(conversation.slice(-20));
+      window.localStorage.setItem(storageKey, payload);
+    } catch (error) {
+      console.warn("تعذّر حفظ محادثة المساعد", error);
+    }
+  }, [conversation, storageKey]);
 
   useEffect(() => {
     if (!scrollRef.current) {
@@ -96,6 +243,12 @@ export default function SpeechTherapyAssistant({
       answeredTurns.forEach((turn) => {
         turn.answer?.cues.forEach((cue) => cue && highlightsSet.add(cue));
         turn.answer?.nextActions.forEach((action) => action && highlightsSet.add(action));
+        turn.answer?.personalizedTips.forEach((tip) => tip && highlightsSet.add(tip));
+        turn.answer?.recommendedGames.forEach((game) => {
+          if (game?.title) {
+            highlightsSet.add(game.title);
+          }
+        });
       });
       const nextHighlights = Array.from(highlightsSet).slice(0, 6);
       if (!arraysEqual(summarySnapshotRef.current.highlights, nextHighlights)) {
@@ -184,13 +337,17 @@ export default function SpeechTherapyAssistant({
       }
 
       const data = (await response.json()) as HomeLearningAssistantMessageResponse;
+      const reply = data.reply.trim();
+      const simplifiedReply = data.simplifiedReply.trim();
       const answer = {
-        reply: data.reply.trim(),
-        simplified: data.simplifiedReply.trim(),
-        cues: data.cues ?? [],
-        nextActions: data.nextActions ?? [],
+        reply,
+        simplified: simplifiedReply.length > 0 ? simplifiedReply : reply,
+        cues: sanitizeStringArray(data.cues, 6),
+        nextActions: sanitizeStringArray(data.nextActions, 6),
+        personalizedTips: sanitizeStringArray(data.personalizedTips, 6),
+        recommendedGames: sanitizeRecommendedGames(data.recommendedGames),
         createdAt: data.storedAt ?? new Date().toISOString(),
-      };
+      } satisfies AssistantTurn["answer"];
 
       setConversation((prev) =>
         prev.map((turn) => (turn.id === pendingTurn.id ? { ...turn, answer, error: null } : turn)),
@@ -248,6 +405,13 @@ export default function SpeechTherapyAssistant({
     if (summarySnapshotRef.current.highlights.length > 0) {
       summarySnapshotRef.current.highlights = [];
       onHighlightsChange?.([]);
+    }
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem(storageKey);
+      } catch (error) {
+        console.warn("تعذّر حذف محادثة المساعد", error);
+      }
     }
     textareaRef.current?.focus();
   };
@@ -337,6 +501,19 @@ export default function SpeechTherapyAssistant({
                             )}
                           </ul>
                         </div>
+                        {turn.answer.personalizedTips.length > 0 && (
+                          <div className="rounded-xl bg-amber-50 p-3 md:col-span-2">
+                            <span className="flex items-center gap-2 text-xs font-semibold text-amber-700">
+                              <Lightbulb className="h-4 w-4" />
+                              نصائح مخصّصة
+                            </span>
+                            <ul className="mt-2 space-y-1 text-sm text-amber-900 leading-6">
+                              {turn.answer.personalizedTips.map((tip, index) => (
+                                <li key={`${turn.id}-tip-${index}`}>• {tip}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
 
                       {turn.answer.cues.length > 0 && (
@@ -350,6 +527,51 @@ export default function SpeechTherapyAssistant({
                               {cue}
                             </Badge>
                           ))}
+                        </div>
+                      )}
+
+                      {turn.answer.recommendedGames.length > 0 && (
+                        <div className="mt-4 space-y-3 rounded-2xl border border-emerald-200 bg-emerald-50/40 p-3">
+                          <span className="flex items-center gap-2 text-xs font-semibold text-emerald-700">
+                            <Gamepad2 className="h-4 w-4" />
+                            ألعاب علاجية مقترحة
+                          </span>
+                          <div className="space-y-3">
+                            {turn.answer.recommendedGames.map((game, gameIndex) => (
+                              <div
+                                key={`${turn.id}-game-${gameIndex}`}
+                                className="rounded-xl bg-white/70 p-3 shadow-sm shadow-emerald-100"
+                              >
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <p className="text-sm font-semibold text-emerald-800">{game.title}</p>
+                                  {typeof game.durationMinutes === "number" && (
+                                    <span className="flex items-center gap-1 text-xs text-emerald-600">
+                                      <Clock3 className="h-3.5 w-3.5" />
+                                      مدة تقريبية: {game.durationMinutes} دقيقة
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="mt-2 text-sm leading-6 text-emerald-800">{game.overview}</p>
+                                {game.objective && (
+                                  <p className="mt-2 text-xs text-emerald-700">الهدف العلاجي: {game.objective}</p>
+                                )}
+                                {game.steps.length > 0 && (
+                                  <ol className="mt-2 space-y-1 text-xs leading-5 text-emerald-800">
+                                    {game.steps.map((step, stepIndex) => (
+                                      <li key={`${turn.id}-game-${gameIndex}-step-${stepIndex}`}>
+                                        {stepIndex + 1}. {step}
+                                      </li>
+                                    ))}
+                                  </ol>
+                                )}
+                                {Array.isArray(game.materials) && game.materials.length > 0 && (
+                                  <p className="mt-2 text-xs text-emerald-700">
+                                    الأدوات: {game.materials.join("، ")}
+                                  </p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
