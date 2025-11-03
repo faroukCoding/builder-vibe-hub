@@ -53,6 +53,13 @@ const QUICK_PROMPTS = [
   "ابني يتلعثم عندما يكون متوتراً، ماذا أفعل في المنزل؟",
 ];
 
+const arraysEqual = (first: string[], second: string[]) => {
+  if (first.length !== second.length) {
+    return false;
+  }
+  return first.every((value, index) => value === second[index]);
+};
+
 export default function SpeechTherapyAssistant({
   childName,
   trainingProgress,
@@ -65,6 +72,8 @@ export default function SpeechTherapyAssistant({
   const [isThinking, setIsThinking] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const summarySnapshotRef = useRef<{ count: number; highlights: string[] }>({ count: 0, highlights: [] });
 
   const answeredTurns = useMemo(() => conversation.filter((turn) => Boolean(turn.answer)), [conversation]);
 
@@ -76,16 +85,23 @@ export default function SpeechTherapyAssistant({
   }, [conversation, isThinking]);
 
   useEffect(() => {
-    if (onReplyCountChange) {
-      onReplyCountChange(answeredTurns.length);
+    const currentCount = answeredTurns.length;
+    if (onReplyCountChange && summarySnapshotRef.current.count !== currentCount) {
+      summarySnapshotRef.current.count = currentCount;
+      onReplyCountChange(currentCount);
     }
+
     if (onHighlightsChange) {
-      const highlights = new Set<string>();
+      const highlightsSet = new Set<string>();
       answeredTurns.forEach((turn) => {
-        turn.answer?.cues.forEach((cue) => cue && highlights.add(cue));
-        turn.answer?.nextActions.forEach((action) => action && highlights.add(action));
+        turn.answer?.cues.forEach((cue) => cue && highlightsSet.add(cue));
+        turn.answer?.nextActions.forEach((action) => action && highlightsSet.add(action));
       });
-      onHighlightsChange(Array.from(highlights).slice(0, 6));
+      const nextHighlights = Array.from(highlightsSet).slice(0, 6);
+      if (!arraysEqual(summarySnapshotRef.current.highlights, nextHighlights)) {
+        summarySnapshotRef.current.highlights = nextHighlights;
+        onHighlightsChange(nextHighlights);
+      }
     }
   }, [answeredTurns, onReplyCountChange, onHighlightsChange]);
 
@@ -225,8 +241,15 @@ export default function SpeechTherapyAssistant({
   const handleClearConversation = () => {
     setConversation([]);
     setErrorMessage(null);
-    onReplyCountChange?.(0);
-    onHighlightsChange?.([]);
+    if (summarySnapshotRef.current.count !== 0) {
+      summarySnapshotRef.current.count = 0;
+      onReplyCountChange?.(0);
+    }
+    if (summarySnapshotRef.current.highlights.length > 0) {
+      summarySnapshotRef.current.highlights = [];
+      onHighlightsChange?.([]);
+    }
+    textareaRef.current?.focus();
   };
 
   return (
@@ -362,7 +385,10 @@ export default function SpeechTherapyAssistant({
               key={prompt}
               type="button"
               variant="outline"
-              onClick={() => setInputValue(prompt)}
+              onClick={() => {
+                setInputValue(prompt);
+                textareaRef.current?.focus();
+              }}
               className="border-sky-200 bg-white text-sky-700 hover:bg-sky-100"
             >
               {prompt}
@@ -372,6 +398,7 @@ export default function SpeechTherapyAssistant({
 
         <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
           <Textarea
+            ref={textareaRef}
             placeholder="اكتب سؤالك بالتفصيل..."
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
