@@ -310,24 +310,6 @@ export interface HomeLearningAssistantMessageRequest {
   history?: HomeLearningAssistantHistoryMessage[];
 }
 
-export interface HomeLearningAssistantRecommendedGame {
-  title: string;
-  objective: string;
-  overview: string;
-  steps: string[];
-  materials?: string[];
-  durationMinutes?: number;
-}
-
-export interface HomeLearningAssistantRecommendedExercise {
-  title: string;
-  goal: string;
-  instructions: string[];
-  durationMinutes?: number;
-  materials?: string[];
-  difficulty: "???" | "?????" | "?????";
-}
-
 export interface HomeLearningAssistantMessageResponse {
   conversationId: string;
   reply: string;
@@ -336,9 +318,6 @@ export interface HomeLearningAssistantMessageResponse {
   storedAt: string;
   cues: string[];
   nextActions: string[];
-  personalizedTips: string[];
-  recommendedGames: HomeLearningAssistantRecommendedGame[];
-  recommendedExercises: HomeLearningAssistantRecommendedExercise[];
 }
 
 export interface HomeLearningPronunciationEvaluationRequest {
