@@ -1,5 +1,5 @@
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles, MessageCircle, Repeat, ListChecks, Lightbulb, Gamepad2, Clock3 } from "lucide-react";
+import { Sparkles, MessageCircle, Repeat, ListChecks, Lightbulb, Gamepad2, Clock3, Dumbbell } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import type {
   HomeLearningAssistantHistoryMessage,
   HomeLearningAssistantMessageResponse,
   HomeLearningAssistantRecommendedGame,
+  HomeLearningAssistantRecommendedExercise,
 } from "@shared/api";
 
 type TrainingModuleSnapshot = {
@@ -40,6 +41,7 @@ interface AssistantTurn {
     nextActions: string[];
     personalizedTips: string[];
     recommendedGames: HomeLearningAssistantRecommendedGame[];
+    recommendedExercises: HomeLearningAssistantRecommendedExercise[];
     createdAt: string;
   };
   error?: string | null;
@@ -91,52 +93,43 @@ const sanitizeRecommendedGames = (value: unknown): HomeLearningAssistantRecommen
     .filter((entry): entry is HomeLearningAssistantRecommendedGame => Boolean(entry));
 };
 
-const normalizeStoredTurn = (value: unknown): AssistantTurn | null => {
-  if (!value || typeof value !== "object") {
-    return null;
+const sanitizeRecommendedExercises = (value: unknown): HomeLearningAssistantRecommendedExercise[] => {
+  if (!Array.isArray(value)) {
+    return [];
   }
-  const raw = value as Partial<AssistantTurn> & { answer?: Partial<AssistantTurn["answer"]> };
-  const question = typeof raw.question === "string" ? raw.question : "";
-  if (!question.trim()) {
-    return null;
-  }
-  const id = typeof raw.id === "string" ? raw.id : `turn-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
-  const askedAt = typeof raw.askedAt === "string" ? raw.askedAt : new Date().toISOString();
+  return value
+    .map((raw) => {
+      if (!raw || typeof raw !== "object") {
+        return null;
+      }
+      const candidate = raw as Partial<HomeLearningAssistantRecommendedExercise>;
+      const title = typeof candidate.title === "string" ? candidate.title.trim() : "";
+      const goal = typeof candidate.goal === "string" ? candidate.goal.trim() : "";
+      const instructions = sanitizeStringArray(candidate.instructions, 6);
+      const durationMinutes =
+        typeof candidate.durationMinutes === "number" && Number.isFinite(candidate.durationMinutes) && candidate.durationMinutes > 0
+          ? Math.round(candidate.durationMinutes)
+          : undefined;
+      const materials = sanitizeStringArray(candidate.materials, 6);
+      const difficulty =
+        candidate.difficulty === "سهل" || candidate.difficulty === "متوسط" || candidate.difficulty === "متقدم"
+          ? candidate.difficulty
+          : "متوسط";
 
-  const normalized: AssistantTurn = {
-    id,
-    question,
-    askedAt,
-  };
+      if (!title && !goal && instructions.length === 0) {
+        return null;
+      }
 
-  if (raw.answer && typeof raw.answer === "object") {
-    const answerRaw = raw.answer as Partial<AssistantTurn["answer"]>;
-    const reply = typeof answerRaw?.reply === "string" ? answerRaw.reply : "";
-    const simplified = typeof answerRaw?.simplified === "string" ? answerRaw.simplified : reply;
-    const cues = sanitizeStringArray(answerRaw?.cues, 6);
-    const nextActions = sanitizeStringArray(answerRaw?.nextActions, 6);
-    const personalizedTips = sanitizeStringArray(answerRaw?.personalizedTips, 6);
-    const recommendedGames = sanitizeRecommendedGames(answerRaw?.recommendedGames);
-    const createdAt = typeof answerRaw?.createdAt === "string" ? answerRaw.createdAt : new Date().toISOString();
-
-    if (reply || simplified || cues.length > 0 || nextActions.length > 0 || personalizedTips.length > 0 || recommendedGames.length > 0) {
-      normalized.answer = {
-        reply,
-        simplified,
-        cues,
-        nextActions,
-        personalizedTips,
-        recommendedGames,
-        createdAt,
-      };
-    }
-  }
-
-  if (typeof raw.error === "string" && raw.error.trim().length > 0) {
-    normalized.error = raw.error;
-  }
-
-  return normalized;
+      return {
+        title: title || goal || "تمرين علاجي",
+        goal: goal || title || "تعزيز النطق",
+        instructions: instructions.length > 0 ? instructions : [(goal || title || "نفّذ الخطوات بثقة").trim()],
+        durationMinutes,
+        materials: materials.length > 0 ? materials : undefined,
+        difficulty,
+      } satisfies HomeLearningAssistantRecommendedExercise;
+    })
+    .filter((entry): entry is HomeLearningAssistantRecommendedExercise => Boolean(entry));
 };
 
 interface SpeechTherapyAssistantProps {
@@ -148,12 +141,12 @@ interface SpeechTherapyAssistantProps {
 }
 
 const QUICK_PROMPTS = [
-  "ما التمارين المنزلية المناسبة لتحسين نطق حرف الراء لابني؟",
-  "كيف أساعد طفلي على التمييز بين صوتي السين والشين؟",
-  "ابني يتلعثم عندما يكون متوتراً، ماذا أفعل في المنزل؟",
+  "كيف أدعم طفلي في نطق حرف الراء مع تمارين واضحة؟",
+  "أريد خطة لمساعدة طفلي على التمييز بين س و ش في المنزل.",
+  "ما أفضل الأساليب المنزلية لتقليل التلعثم عند شعوره بالتوتر؟",
+  "اقترح عليّ تمارين يومية لطفلة تعاني من لدغة حرف السين.",
+  "ما الألعاب المناسبة لطفل يتأخر في الكلام بعمر ثلاث سنوات؟",
 ];
-
-const STORAGE_NAMESPACE = "speech-therapy-assistant";
 
 const arraysEqual = (first: string[], second: string[]) => {
   if (first.length !== second.length) {
@@ -176,53 +169,8 @@ export default function SpeechTherapyAssistant({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const summarySnapshotRef = useRef<{ count: number; highlights: string[] }>({ count: 0, highlights: [] });
-  const storageKey = useMemo(() => {
-    const normalized = childName?.trim() || "default";
-    return `${STORAGE_NAMESPACE}:${encodeURIComponent(normalized)}`;
-  }, [childName]);
 
   const answeredTurns = useMemo(() => conversation.filter((turn) => Boolean(turn.answer)), [conversation]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    try {
-      const raw = window.localStorage.getItem(storageKey);
-      if (!raw) {
-        setConversation([]);
-        return;
-      }
-      const parsed = JSON.parse(raw) as unknown;
-      if (!Array.isArray(parsed)) {
-        setConversation([]);
-        return;
-      }
-      const restored = parsed
-        .slice(-20)
-        .map((entry) => normalizeStoredTurn(entry))
-        .filter((entry): entry is AssistantTurn => Boolean(entry));
-      setConversation(restored);
-    } catch (error) {
-      console.warn("تعذّر استرجاع محادثة المساعد", error);
-    }
-  }, [storageKey]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    try {
-      if (conversation.length === 0) {
-        window.localStorage.removeItem(storageKey);
-        return;
-      }
-      const payload = JSON.stringify(conversation.slice(-20));
-      window.localStorage.setItem(storageKey, payload);
-    } catch (error) {
-      console.warn("تعذّر حفظ محادثة المساعد", error);
-    }
-  }, [conversation, storageKey]);
 
   useEffect(() => {
     if (!scrollRef.current) {
@@ -247,6 +195,11 @@ export default function SpeechTherapyAssistant({
         turn.answer?.recommendedGames.forEach((game) => {
           if (game?.title) {
             highlightsSet.add(game.title);
+          }
+        });
+        turn.answer?.recommendedExercises.forEach((exercise) => {
+          if (exercise?.title) {
+            highlightsSet.add(exercise.title);
           }
         });
       });
@@ -346,6 +299,7 @@ export default function SpeechTherapyAssistant({
         nextActions: sanitizeStringArray(data.nextActions, 6),
         personalizedTips: sanitizeStringArray(data.personalizedTips, 6),
         recommendedGames: sanitizeRecommendedGames(data.recommendedGames),
+        recommendedExercises: sanitizeRecommendedExercises(data.recommendedExercises),
         createdAt: data.storedAt ?? new Date().toISOString(),
       } satisfies AssistantTurn["answer"];
 
@@ -406,38 +360,29 @@ export default function SpeechTherapyAssistant({
       summarySnapshotRef.current.highlights = [];
       onHighlightsChange?.([]);
     }
-    if (typeof window !== "undefined") {
-      try {
-        window.localStorage.removeItem(storageKey);
-      } catch (error) {
-        console.warn("تعذّر حذف محادثة المساعد", error);
-      }
-    }
     textareaRef.current?.focus();
   };
 
   return (
-    <Card className="border-0 shadow-md bg-gradient-to-br from-sky-50 via-white to-indigo-50">
+    <Card className="border-0 shadow-lg bg-gradient-to-br from-sky-100 via-white to-indigo-50">
       <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div className="space-y-1">
-          <CardTitle className="flex items-center gap-2 text-sky-800">
-            <Sparkles className="h-5 w-5" />
-            المساعد الذكي لصعوبات النطق
+          <CardTitle className="flex items-center gap-2 text-sky-900">
+            <Sparkles className="h-5 w-5 text-sky-500" />
+            أورثو الذكي – مدرّب النطق المنزلي
           </CardTitle>
-          <CardDescription>
-            طرح أسئلتك حول صعوبات النطق لتحصل على خطة منزلية فورية مخصّصة لطفلك.
+          <CardDescription className="text-slate-600">
+            استعن بمستشارك الذكي للحصول على إجابات دقيقة، تمارين علاجية، وألعاب داعمة مصممة خصيصاً لطفلك.
           </CardDescription>
         </div>
-        <Badge className="bg-sky-600 text-white">مدعوم بـ OpenAI</Badge>
+        <Badge className="bg-slate-900 text-white">ذكاء اصطناعي + خبرة علاجية</Badge>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="rounded-3xl border border-sky-100 bg-white/90 p-4 shadow-inner">
-          <div className="mb-4 rounded-2xl bg-sky-100/60 p-4 text-sm text-sky-800">
-            <p className="font-medium">👋 أهلاً بك! أنا هنا لأدعمك في متابعة تمارين النطق لطفلك.</p>
-            <p className="mt-1 text-sky-700">
-              شاركني الصوت أو الموقف الذي يسبّب الصعوبة، وسأقترح خطوات عملية يمكنك تنفيذها في المنزل مع
-              {" "}
-              <span className="font-semibold">{childName || "طفلك"}</span>.
+          <div className="mb-4 rounded-2xl bg-gradient-to-l from-sky-100 via-white to-emerald-50 p-4 text-sm text-sky-900">
+            <p className="font-semibold text-sky-800">👋 أهلاً بك مع أورثو الذكي!</p>
+            <p className="mt-1 leading-7 text-sky-700">
+              أخبرني عن الصوت أو الموقف الذي يشكّل تحدياً لدى {childName || "طفلك"}، وسأصوغ لك خطة شاملة تجمع بين الإرشاد، النصائح الفردية، والألعاب والتمارين العلاجية الجاهزة للتنفيذ فوراً في المنزل.
             </p>
           </div>
 
@@ -567,6 +512,53 @@ export default function SpeechTherapyAssistant({
                                 {Array.isArray(game.materials) && game.materials.length > 0 && (
                                   <p className="mt-2 text-xs text-emerald-700">
                                     الأدوات: {game.materials.join("، ")}
+                                  </p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {turn.answer.recommendedExercises.length > 0 && (
+                        <div className="mt-4 space-y-3 rounded-2xl border border-sky-200 bg-sky-50/60 p-3">
+                          <span className="flex items-center gap-2 text-xs font-semibold text-sky-700">
+                            <Dumbbell className="h-4 w-4" />
+                            تمارين منزلية جاهزة
+                          </span>
+                          <div className="space-y-3">
+                            {turn.answer.recommendedExercises.map((exercise, exerciseIndex) => (
+                              <div
+                                key={`${turn.id}-exercise-${exerciseIndex}`}
+                                className="rounded-xl border border-sky-100 bg-white/80 p-3 shadow-sm shadow-sky-100"
+                              >
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                  <p className="text-sm font-semibold text-sky-900">{exercise.title}</p>
+                                  <div className="flex flex-wrap items-center gap-2 text-xs text-sky-700">
+                                    <span className="rounded-full bg-sky-100 px-2 py-0.5 font-medium">
+                                      الصعوبة: {exercise.difficulty}
+                                    </span>
+                                    {typeof exercise.durationMinutes === "number" && (
+                                      <span className="flex items-center gap-1">
+                                        <Clock3 className="h-3.5 w-3.5" />
+                                        {exercise.durationMinutes} د
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <p className="mt-2 text-sm leading-6 text-sky-800">{exercise.goal}</p>
+                                {exercise.instructions.length > 0 && (
+                                  <ul className="mt-2 space-y-1 text-xs leading-5 text-slate-700">
+                                    {exercise.instructions.map((step, stepIndex) => (
+                                      <li key={`${turn.id}-exercise-${exerciseIndex}-step-${stepIndex}`}>
+                                        • {step}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                                {Array.isArray(exercise.materials) && exercise.materials.length > 0 && (
+                                  <p className="mt-2 text-xs text-slate-600">
+                                    الأدوات المقترحة: {exercise.materials.join("، ")}
                                   </p>
                                 )}
                               </div>

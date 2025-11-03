@@ -7,6 +7,7 @@ import {
   HomeLearningAssistantMessageResponse,
   HomeLearningAssistantHistoryMessage,
   HomeLearningAssistantRecommendedGame,
+  HomeLearningAssistantRecommendedExercise,
   HomeLearningPronunciationEvaluationRequest,
   HomeLearningPronunciationEvaluationResponse,
   HomeLearningTrainingAnswerRequest,
@@ -14,8 +15,9 @@ import {
   HomeLearningGameResultRequest,
   HomeLearningGameResultResponse,
 } from "@shared/api";
+import { getDefaultExercises, matchKnowledgeBase } from "../services/orthoKnowledgeBase";
 
-const AI_SYSTEM_PROMPT = `أنت "لغتي" مستشار نطق افتراضي يساعد وليّ أمر الطفل على التعامل مع صعوبات النطق في المنزل.
+const AI_SYSTEM_PROMPT = `أنت "أورثو الذكي" مستشار نطق افتراضي يساعد وليّ أمر الطفل على التعامل مع صعوبات النطق في المنزل.
 - استخدم العربية الفصحى المبسطة بنبرة مطمئنة ومحفّزة، وركّز على تقديم حلول عملية يمكن تنفيذها داخل البيت.
 - عالج جوانب النطق المختلفة مثل مخارج الحروف، التمييز السمعي، الوعي الفونولوجي، والطلاقة، وقدّم تفسيرات واضحة تساعد وليّ الأمر على فهم السبب.
 - ذكّر بضرورة الرجوع إلى أخصائي نطق عند ظهور علامات مقلقة، ولا تقدّم تشخيصاً طبياً أو وعوداً علاجية مؤكدة.
@@ -34,6 +36,16 @@ const AI_SYSTEM_PROMPT = `أنت "لغتي" مستشار نطق افتراضي �
         "steps": ["خطوة تفصيلية"],
         "materials": ["أدوات بسيطة متاحة في المنزل"],
         "durationMinutes": 5
+      }
+    ],
+    "recommendedExercises": [
+      {
+        "title": "اسم التمرين",
+        "goal": "الهدف العلاجي الأساسي",
+        "instructions": ["ثلاث خطوات عملية"],
+        "durationMinutes": 7,
+        "materials": ["أدوات سهلة"],
+        "difficulty": "سهل" | "متوسط" | "متقدم"
       }
     ]
   }
@@ -115,6 +127,7 @@ const buildAssistantFallback = (
         durationMinutes: 8,
       },
     ],
+    recommendedExercises: getDefaultExercises(),
   };
   const merged: HomeLearningAssistantMessageResponse = {
     ...baseResponse,
@@ -123,6 +136,7 @@ const buildAssistantFallback = (
     nextActions: overrides.nextActions ?? baseResponse.nextActions,
     personalizedTips: overrides.personalizedTips ?? baseResponse.personalizedTips,
     recommendedGames: overrides.recommendedGames ?? baseResponse.recommendedGames,
+    recommendedExercises: overrides.recommendedExercises ?? baseResponse.recommendedExercises,
   };
   return merged;
 };
@@ -245,34 +259,44 @@ export const handlePostHomeLearningAssistantMessage: RequestHandler = async (req
           durationMinutes: 6,
         },
       ],
+      recommendedExercises: getDefaultExercises(),
     });
     return res.status(200).json(fallback);
   }
 
+  const knowledgeMatch = matchKnowledgeBase(sanitizedMessage);
+
   const client = getOpenAIClient();
   if (!client) {
     const fallback = buildAssistantFallback(body, {
-      reply: "سأقترح خطة أساسية إلى حين تفعيل التكامل الكامل مع OpenAI: خصّص دقيقتين لتدريب الصوت الصعب ببطء مع استخدام مرآة، ثم انتقل إلى تكرار الكلمة في جملة قصيرة. دوّن الملاحظات حول الأصوات التي تحسّن أداؤها طفلك.",
-      simplifiedReply: "تدريب بطيء أمام مرآة + استعمال الكلمة في جملة قصيرة وتدوين الملاحظات.",
+      ...(knowledgeMatch ?? {}),
+      reply:
+        knowledgeMatch?.reply ??
+        "سأقترح خطة أساسية إلى حين تفعيل التكامل الكامل مع OpenAI: خصّص دقيقتين لتدريب الصوت الصعب ببطء مع استخدام مرآة، ثم انتقل إلى تكرار الكلمة في جملة قصيرة. دوّن الملاحظات حول الأصوات التي تحسّن أداؤها طفلك.",
+      simplifiedReply:
+        knowledgeMatch?.simplifiedReply ?? "تدريب بطيء أمام مرآة + استعمال الكلمة في جملة قصيرة وتدوين الملاحظات.",
       storedAt,
-      personalizedTips: [
-        "قسّم التمرين إلى محاولات قصيرة متعددة خلال اليوم بدلاً من جلسة واحدة طويلة.",
-        "استخدم مكافأة لفظية ثابتة بعد كل نطق صحيح لتعزيز الثقة.",
-      ],
-      recommendedGames: [
-        {
-          title: "رحلة الحروف المخفية",
-          objective: "دمج الصوت الصعب داخل جمل بسيطة مع تعزيز الطلاقة",
-          overview: "اصنعوا خريطة كنز منزلية حيث يتوجب على الطفل نطق جملة تحتوي الصوت المستهدف قبل الانتقال إلى المحطة التالية.",
-          steps: [
-            "حددوا 4 محطات داخل المنزل (غرفة، مطبخ، صالون...).",
-            "في كل محطة، قدّم جملة قصيرة تحتوي الصوت الصعب واطلب من الطفل تقليدها.",
-            "إذا نطق الجملة بسلاسة، انتقلوا إلى المحطة التالية مع تشويق.",
-          ],
-          materials: ["بطاقات محطات", "ملصقات تشجيعية"],
-          durationMinutes: 12,
-        },
-      ],
+      personalizedTips:
+        knowledgeMatch?.personalizedTips ?? [
+          "قسّم التمرين إلى محاولات قصيرة متعددة خلال اليوم بدلاً من جلسة واحدة طويلة.",
+          "استخدم مكافأة لفظية ثابتة بعد كل نطق صحيح لتعزيز الثقة.",
+        ],
+      recommendedGames:
+        knowledgeMatch?.recommendedGames ?? [
+          {
+            title: "رحلة الحروف المخفية",
+            objective: "دمج الصوت الصعب داخل جمل بسيطة مع تعزيز الطلاقة",
+            overview: "اصنعوا خريطة كنز منزلية حيث يتوجب على الطفل نطق جملة تحتوي الصوت المستهدف قبل الانتقال إلى المحطة التالية.",
+            steps: [
+              "حددوا 4 محطات داخل المنزل (غرفة، مطبخ، صالون...).",
+              "في كل محطة، قدّم جملة قصيرة تحتوي الصوت الصعب واطلب من الطفل تقليدها.",
+              "إذا نطق الجملة بسلاسة، انتقلوا إلى المحطة التالية مع تشويق.",
+            ],
+            materials: ["بطاقات محطات", "ملصقات تشجيعية"],
+            durationMinutes: 12,
+          },
+        ],
+      recommendedExercises: knowledgeMatch?.recommendedExercises ?? getDefaultExercises(),
     });
     return res.status(200).json(fallback);
   }
@@ -301,6 +325,7 @@ export const handlePostHomeLearningAssistantMessage: RequestHandler = async (req
       nextActions?: string[];
       personalizedTips?: string[];
       recommendedGames?: Array<Partial<HomeLearningAssistantRecommendedGame> | string>;
+      recommendedExercises?: Array<Partial<HomeLearningAssistantRecommendedExercise> | string>;
     } = {};
 
     try {
@@ -380,6 +405,58 @@ export const handlePostHomeLearningAssistantMessage: RequestHandler = async (req
           .slice(0, 3)
       : [];
 
+    const recommendedExercises = Array.isArray(parsed.recommendedExercises)
+      ? parsed.recommendedExercises
+          .map((raw) => {
+            if (!raw) {
+              return null;
+            }
+            if (typeof raw === "string") {
+              const trimmed = raw.trim();
+              if (!trimmed) {
+                return null;
+              }
+              return {
+                title: trimmed,
+                goal: trimmed,
+                instructions: [trimmed],
+                difficulty: "سهل" as const,
+              } satisfies HomeLearningAssistantRecommendedExercise;
+            }
+            const title = typeof raw.title === "string" ? raw.title.trim() : "تمرين نطقي";
+            const goal = typeof raw.goal === "string" ? raw.goal.trim() : "تعزيز مهارة النطق";
+            const instructions = Array.isArray(raw.instructions)
+              ? raw.instructions
+                  .map((step) => (typeof step === "string" ? step.trim() : ""))
+                  .filter((step) => step.length > 0)
+              : [];
+            const durationMinutes =
+              typeof raw.durationMinutes === "number" && Number.isFinite(raw.durationMinutes) && raw.durationMinutes > 0
+                ? Math.round(raw.durationMinutes)
+                : undefined;
+            const materials = Array.isArray(raw.materials)
+              ? raw.materials
+                  .map((material) => (typeof material === "string" ? material.trim() : ""))
+                  .filter((material) => material.length > 0)
+              : undefined;
+            const difficulty =
+              raw.difficulty === "سهل" || raw.difficulty === "متوسط" || raw.difficulty === "متقدم"
+                ? raw.difficulty
+                : "متوسط";
+
+            return {
+              title: title || "تمرين نطقي",
+              goal,
+              instructions: instructions.length > 0 ? instructions.slice(0, 6) : [goal],
+              durationMinutes,
+              materials,
+              difficulty,
+            } satisfies HomeLearningAssistantRecommendedExercise;
+          })
+          .filter((exercise): exercise is HomeLearningAssistantRecommendedExercise => Boolean(exercise))
+          .slice(0, 7)
+      : [];
+
     const response: HomeLearningAssistantMessageResponse = {
       conversationId: body.childId ? `conv-${body.childId}` : "conv-temp",
       reply,
@@ -388,35 +465,46 @@ export const handlePostHomeLearningAssistantMessage: RequestHandler = async (req
       storedAt,
       cues,
       nextActions,
-      personalizedTips,
-      recommendedGames,
+      personalizedTips: personalizedTips.length > 0 ? personalizedTips : knowledgeMatch?.personalizedTips ?? [],
+      recommendedGames: recommendedGames.length > 0 ? recommendedGames : knowledgeMatch?.recommendedGames ?? [],
+      recommendedExercises:
+        recommendedExercises.length > 0
+          ? recommendedExercises
+          : knowledgeMatch?.recommendedExercises ?? getDefaultExercises(),
     };
 
     return res.status(201).json(response);
   } catch (error) {
     console.error("OpenAI assistant error", error);
     const fallback = buildAssistantFallback(body, {
-      reply: "حدث خلل لحظي في خدمة الذكاء الاصطناعي، لذلك إليك خطة بديلة: جزّئ التمرين إلى ثلاث محاولات بطيئة أمام المرآة، ثم جرّب إدخال الصوت في كلمة، وأخيراً سجّل تقدّم طفلك مع وضع تاريخ لكل جلسة.",
-      simplifiedReply: "3 محاولات بطيئة أمام المرآة + كلمة تطبيق + تدوين التقدّم.",
+      ...(knowledgeMatch ?? {}),
+      reply:
+        knowledgeMatch?.reply ??
+        "حدث خلل لحظي في خدمة الذكاء الاصطناعي، لذلك إليك خطة بديلة: جزّئ التمرين إلى ثلاث محاولات بطيئة أمام المرآة، ثم جرّب إدخال الصوت في كلمة، وأخيراً سجّل تقدّم طفلك مع وضع تاريخ لكل جلسة.",
+      simplifiedReply:
+        knowledgeMatch?.simplifiedReply ?? "3 محاولات بطيئة أمام المرآة + كلمة تطبيق + تدوين التقدّم.",
       storedAt,
-      personalizedTips: [
-        "حافظ على نبرة صوت مشجعة وابتعد عن التصحيح المتكرر أمام الآخرين.",
-        "قدّم مكافأة بسيطة بعد إنهاء الجلسة لدعم الدافعية.",
-      ],
-      recommendedGames: [
-        {
-          title: "ساعي البريد المتلعثم",
-          objective: "زيادة الطلاقة وتقليل التلعثم عبر تكرار جمل قصيرة",
-          overview: "يتظاهر الطفل بأنه ساعي بريد يسلّم بطاقات تحمل كلمات بالصوت الصعب وينطق الجملة كاملة قبل التسليم.",
-          steps: [
-            "حضّر 4 بطاقات تشتمل على كلمات بالصوت المستهدف.",
-            "اطلب من الطفل قراءة الكلمة داخل جملة قصيرة وتسليم البطاقة بعد النطق الصحيح.",
-            "كرّروا الجولة مع مؤقت بسيط لزيادة السرعة تدريجياً دون ضغط.",
-          ],
-          materials: ["بطاقات", "مغلفات صغيرة"],
-          durationMinutes: 10,
-        },
-      ],
+      personalizedTips:
+        knowledgeMatch?.personalizedTips ?? [
+          "حافظ على نبرة صوت مشجعة وابتعد عن التصحيح المتكرر أمام الآخرين.",
+          "قدّم مكافأة بسيطة بعد إنهاء الجلسة لدعم الدافعية.",
+        ],
+      recommendedGames:
+        knowledgeMatch?.recommendedGames ?? [
+          {
+            title: "ساعي البريد المتلعثم",
+            objective: "زيادة الطلاقة وتقليل التلعثم عبر تكرار جمل قصيرة",
+            overview: "يتظاهر الطفل بأنه ساعي بريد يسلّم بطاقات تحمل كلمات بالصوت الصعب وينطق الجملة كاملة قبل التسليم.",
+            steps: [
+              "حضّر 4 بطاقات تشتمل على كلمات بالصوت المستهدف.",
+              "اطلب من الطفل قراءة الكلمة داخل جملة قصيرة وتسليم البطاقة بعد النطق الصحيح.",
+              "كرّروا الجولة مع مؤقت بسيط لزيادة السرعة تدريجياً دون ضغط.",
+            ],
+            materials: ["بطاقات", "مغلفات صغيرة"],
+            durationMinutes: 10,
+          },
+        ],
+      recommendedExercises: knowledgeMatch?.recommendedExercises ?? getDefaultExercises(),
     });
     return res.status(200).json(fallback);
   }
