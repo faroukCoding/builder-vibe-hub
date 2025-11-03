@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import OpenAI from "openai";
+import "dotenv/config";
 import {
   HomeLearningOverviewResponse,
   HomeLearningAssistantMessageRequest,
@@ -30,8 +31,9 @@ const AI_SYSTEM_PROMPT = `أنت "نور" مساعد نطق عربي للأطف�
 let cachedOpenAI: OpenAI | null = null;
 
 const getOpenAIClient = () => {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = (process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || "").trim();
   if (!apiKey) {
+    console.warn("[HomeLearning] OPENAI_API_KEY is not set. Falling back to canned responses.");
     return null;
   }
   if (!cachedOpenAI) {
