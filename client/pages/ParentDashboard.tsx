@@ -16,12 +16,19 @@ import {
   AlertCircle,
   Download,
   Eye,
+  MessageSquare,
   Brain,
   BarChart3,
   Globe,
   Play,
   Award,
   Gamepad2,
+  Bot,
+  Volume2,
+  VolumeX,
+  Send,
+  Loader2,
+  Mic,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,7 +42,18 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  AssistantChatRequest,
+  AssistantChatResponse,
+  AssistantHistoryResponse,
+  DailyTrainingSummaryResponse,
+  EducationalGamesResponse,
+} from "@shared/api";
 import {
   BarChart,
   Bar,
@@ -50,6 +68,49 @@ import {
   LineChart,
   Line,
 } from "recharts";
+
+type AssistantMessage = AssistantHistoryResponse["messages"][number];
+
+const fetchAssistantPreview = async (): Promise<AssistantHistoryResponse> => {
+  const params = new URLSearchParams({ limit: "12" });
+  const response = await fetch(`/api/ai-assistant/history?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error("تعذر تحميل محادثات المساعد الذكي");
+  }
+  return response.json();
+};
+
+const sendAssistantChat = async (
+  payload: AssistantChatRequest,
+): Promise<AssistantChatResponse> => {
+  const response = await fetch("/api/ai-assistant/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error("تعذر إرسال الرسالة إلى المساعد");
+  }
+
+  return response.json();
+};
+
+const fetchDailyTrainingSummary = async (): Promise<DailyTrainingSummaryResponse> => {
+  const response = await fetch("/api/daily-training");
+  if (!response.ok) {
+    throw new Error("تعذر تحميل بيانات التدريب اليومي");
+  }
+  return response.json();
+};
+
+const fetchEducationalGamesSummary = async (): Promise<EducationalGamesResponse> => {
+  const response = await fetch("/api/educational-games");
+  if (!response.ok) {
+    throw new Error("تعذر تحميل بيانات الألعاب التعليمية");
+  }
+  return response.json();
+};
 
 export default function ParentDashboard() {
   const navigate = useNavigate();
@@ -332,6 +393,105 @@ export default function ParentDashboard() {
         </CardContent>
       </Card>
 
+      <Card className="border-dashed border-2 border-emerald-200 shadow-none">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-emerald-600" />
+            الأدوات الذكية لطفلك
+          </CardTitle>
+          <CardDescription>
+            الوصول السريع للمساعد الذكي، التدريب اليومي، والألعاب التعليمية بالصور والصوت.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-3">
+            <Button
+              onClick={() => navigate("/ai-assistant")}
+              className="relative h-32 overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-500/90 via-purple-500/80 to-indigo-600 hover:from-indigo-600 hover:to-purple-600 text-white shadow-sm"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=600&q=80"
+                alt="مساعد ذكاء اصطناعي يساعد الأسرة"
+                className="absolute inset-0 h-full w-full object-cover opacity-30"
+                loading="lazy"
+              />
+              <div className="relative z-10 flex h-full w-full flex-col items-start justify-between text-right">
+                <div className="flex w-full items-center justify-between">
+                  <div className="rounded-full bg-white/20 p-2">
+                    <Bot className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full bg-white/20 px-3 py-1 text-xs">
+                    دردشة صوتية
+                  </span>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold">المساعد الذكي</p>
+                  <p className="text-xs text-white/80">
+                    تحدث، استمع، واحصل على نصائح مخصصة فوراً
+                  </p>
+                </div>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => navigate("/daily-training")}
+              className="relative h-32 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500/90 via-teal-500/80 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white shadow-sm"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=600&q=80"
+                alt="تدريب يومي تفاعلي للأطفال"
+                className="absolute inset-0 h-full w-full object-cover opacity-30"
+                loading="lazy"
+              />
+              <div className="relative z-10 flex h-full w-full flex-col items-start justify-between text-right">
+                <div className="flex w-full items-center justify-between">
+                  <div className="rounded-full bg-white/20 p-2">
+                    <Calendar className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full bg-white/20 px-3 py-1 text-xs">
+                    خطة مرئية
+                  </span>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold">التدريب اليومي</p>
+                  <p className="text-xs text-white/80">
+                    جداول صوتية وصور تحفيزية لكل تمرين
+                  </p>
+                </div>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => navigate("/educational-games")}
+              className="relative h-32 overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500/90 via-pink-500/80 to-orange-600 hover:from-orange-600 hover:to-pink-600 text-white shadow-sm"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=600&q=80"
+                alt="ألعاب تعليمية للأطفال"
+                className="absolute inset-0 h-full w-full object-cover opacity-30"
+                loading="lazy"
+              />
+              <div className="relative z-10 flex h-full w-full flex-col items-start justify-between text-right">
+                <div className="flex w-full items-center justify-between">
+                  <div className="rounded-full bg-white/20 p-2">
+                    <Gamepad2 className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full bg-white/20 px-3 py-1 text-xs">
+                    صور ملونة
+                  </span>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold">الألعاب التعليمية</p>
+                  <p className="text-xs text-white/80">
+                    أنشطة ممتعة مع بطاقات وصوتيات محفزة
+                  </p>
+                </div>
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
     </div>
   );
 
@@ -512,6 +672,517 @@ export default function ParentDashboard() {
       </Card>
     </div>
   );
+
+  const SmartToolsTab = () => {
+    const queryClient = useQueryClient();
+    const [inputValue, setInputValue] = useState("");
+    const [voiceEnabled, setVoiceEnabled] = useState(true);
+    const [messages, setMessages] = useState<AssistantMessage[]>([]);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+    const trainingAudioRef = useRef<HTMLAudioElement | null>(null);
+
+    const {
+      data: assistantData,
+      isLoading: assistantLoading,
+      error: assistantError,
+      isFetching: assistantRefetching,
+    } = useQuery({
+      queryKey: ["assistant-preview"],
+      queryFn: fetchAssistantPreview,
+      refetchInterval: 60_000,
+    });
+
+    useEffect(() => {
+      if (assistantData?.messages) {
+        setMessages(assistantData.messages.slice(-8));
+      }
+    }, [assistantData?.messages]);
+
+    useEffect(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    }, [messages]);
+
+    useEffect(() => {
+      if (!voiceEnabled || messages.length === 0) return;
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role !== "assistant") return;
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+      const utterance = new SpeechSynthesisUtterance(lastMessage.content);
+      utterance.lang = "ar-DZ";
+      const voices = window.speechSynthesis.getVoices();
+      const arabicVoice = voices.find((voice) => voice.lang.startsWith("ar"));
+      if (arabicVoice) {
+        utterance.voice = arabicVoice;
+      }
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }, [messages, voiceEnabled]);
+
+    const sendMessageMutation = useMutation({
+      mutationFn: sendAssistantChat,
+      onSuccess: (response, variables) => {
+        const parentMessage: AssistantMessage = {
+          id: `parent-preview-${Date.now()}`,
+          role: "parent",
+          timestamp: new Date().toISOString(),
+          content: variables.message,
+        };
+        const assistantMessage: AssistantMessage = {
+          id: `assistant-preview-${Date.now()}`,
+          role: "assistant",
+          timestamp: new Date().toISOString(),
+          content: response.reply,
+          suggestedActions: response.suggestedActions,
+        };
+        setMessages((prev) => [...prev, parentMessage, assistantMessage].slice(-12));
+        setInputValue("");
+        queryClient.invalidateQueries({ queryKey: ["assistant-preview"] });
+      },
+    });
+
+    const handleSendMessage = () => {
+      const trimmed = inputValue.trim();
+      if (!trimmed || sendMessageMutation.isLoading) return;
+      sendMessageMutation.mutate({ message: trimmed } as AssistantChatRequest);
+    };
+
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        handleSendMessage();
+      }
+    };
+
+    const {
+      data: trainingData,
+      isLoading: trainingLoading,
+      error: trainingError,
+    } = useQuery({
+      queryKey: ["daily-training-summary"],
+      queryFn: fetchDailyTrainingSummary,
+      staleTime: 60_000,
+      refetchInterval: 120_000,
+    });
+
+    const {
+      data: gamesData,
+      isLoading: gamesLoading,
+      error: gamesError,
+    } = useQuery({
+      queryKey: ["educational-games-summary"],
+      queryFn: fetchEducationalGamesSummary,
+      staleTime: 60_000,
+      refetchInterval: 120_000,
+    });
+
+    const upcomingExercises = useMemo(
+      () => trainingData?.exercises?.slice(0, 3) ?? [],
+      [trainingData],
+    );
+
+    const topGames = useMemo(() => gamesData?.games?.slice(0, 2) ?? [], [gamesData]);
+
+    const motivationalAudioUrl =
+      "https://cdn.pixabay.com/download/audio/2022/05/04/audio_c38986864c.mp3?filename=positive-morning-112190.mp3";
+
+    const handlePlayTrainingAudio = () => {
+      if (trainingAudioRef.current) {
+        trainingAudioRef.current.currentTime = 0;
+        void trainingAudioRef.current.play();
+      }
+    };
+
+    const gameImages = [
+      "https://images.unsplash.com/photo-1508948956644-0017e845d797?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=600&q=80",
+    ];
+
+    return (
+      <div className="space-y-6">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+          <Card className="flex flex-col">
+            <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Bot className="w-5 h-5 text-indigo-500" />
+                  المساعد الذكي Ortho AI
+                </CardTitle>
+                <CardDescription>
+                  دردش مع المساعد، استمع للردود الصوتية، وشاهد المقترحات السريعة.
+                </CardDescription>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setVoiceEnabled((prev) => !prev)}
+                  className="gap-2"
+                >
+                  {voiceEnabled ? (
+                    <>
+                      <VolumeX className="h-4 w-4" />
+                      إيقاف الصوت
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="h-4 w-4" />
+                      تشغيل الصوت
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate("/ai-assistant")}
+                  className="gap-2"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  فتح النافذة الكاملة
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="flex flex-1 flex-col gap-4">
+              {assistantError && (
+                <Alert variant="destructive">
+                  <AlertTitle>تعذر تحميل المحادثات</AlertTitle>
+                  <AlertDescription>{(assistantError as Error).message}</AlertDescription>
+                </Alert>
+              )}
+              <div className="flex-1">
+                {assistantLoading ? (
+                  <div className="space-y-3">
+                    <Skeleton className="h-16" />
+                    <Skeleton className="h-16" />
+                    <Skeleton className="h-16" />
+                  </div>
+                ) : (
+                  <div
+                    ref={chatContainerRef}
+                    className="flex h-64 flex-col gap-3 overflow-y-auto rounded-2xl border border-slate-100 bg-slate-50 p-4"
+                  >
+                    {messages.length === 0 ? (
+                      <p className="mt-6 text-center text-sm text-slate-500">
+                        لا توجد رسائل بعد، ابدأ محادثة جديدة مع المساعد الذكي.
+                      </p>
+                    ) : (
+                      messages.map((message) => {
+                        const isAssistant = message.role === "assistant";
+                        return (
+                          <div
+                            key={message.id}
+                            className={`flex ${isAssistant ? "justify-start" : "justify-end"}`}
+                          >
+                            <div
+                              className={`max-w-[85%] rounded-2xl p-3 shadow-sm ${
+                                isAssistant
+                                  ? "bg-white border border-slate-100 text-slate-700"
+                                  : "bg-indigo-500 text-white"
+                              }`}
+                            >
+                              <div className="mb-2 flex items-center justify-between text-xs opacity-70">
+                                <span className="flex items-center gap-1">
+                                  {isAssistant ? <Bot className="h-3 w-3" /> : <User className="h-3 w-3" />}
+                                  {isAssistant ? "المساعد" : "ولي الطفل"}
+                                </span>
+                                <span>
+                                  {new Date(message.timestamp).toLocaleTimeString("ar-DZ", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                              <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                                {message.content}
+                              </p>
+                              {message.suggestedActions && message.suggestedActions.length > 0 && (
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                  {message.suggestedActions.map((action) => (
+                                    <Badge
+                                      key={action}
+                                      variant={isAssistant ? "secondary" : "outline"}
+                                      className="text-xs"
+                                    >
+                                      {action}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </div>
+              {assistantRefetching && (
+                <p className="text-right text-xs text-slate-400">يتم تحديث المحادثة...</p>
+              )}
+              {sendMessageMutation.isError && (
+                <Alert variant="destructive">
+                  <AlertTitle>تعذر إرسال الرسالة</AlertTitle>
+                  <AlertDescription>
+                    {(sendMessageMutation.error as Error).message}
+                  </AlertDescription>
+                </Alert>
+              )}
+              <Textarea
+                value={inputValue}
+                onChange={(event) => setInputValue(event.target.value)}
+                onKeyDown={handleInputKeyDown}
+                rows={3}
+                placeholder="اكتب سؤالك ليقترح المساعد تمارين، ألعاب، أو نصائح... (Enter للإرسال، Shift+Enter لسطر جديد)"
+              />
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={handlePlayTrainingAudio}
+                  >
+                    <Mic className="h-4 w-4" />
+                    تشغيل رسالة تشجيعية
+                  </Button>
+                </div>
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim() || sendMessageMutation.isLoading}
+                  className="flex items-center gap-2"
+                >
+                  {sendMessageMutation.isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                  إرسال
+                </Button>
+              </div>
+              <audio
+                ref={trainingAudioRef}
+                src={motivationalAudioUrl}
+                preload="auto"
+                className="hidden"
+              />
+            </CardContent>
+          </Card>
+          <div className="space-y-6">
+            <Card className="overflow-hidden border-slate-100 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-emerald-500" />
+                  لمحة عن التدريب اليومي
+                </CardTitle>
+                <CardDescription>
+                  مؤشرات سريعة مع صور محفزة ومقاطع صوتية لدعم الطفل.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="relative overflow-hidden rounded-2xl">
+                  <img
+                    src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=600&q=80"
+                    alt="طفل يتدرب بمساعدة أحد الوالدين"
+                    className="h-40 w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-emerald-900/30" />
+                </div>
+                {trainingLoading ? (
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-20" />
+                  </div>
+                ) : trainingError ? (
+                  <Alert variant="destructive">
+                    <AlertTitle>تعذر تحميل التدريب اليومي</AlertTitle>
+                    <AlertDescription>{(trainingError as Error).message}</AlertDescription>
+                  </Alert>
+                ) : trainingData ? (
+                  <div className="space-y-3 text-sm text-slate-600">
+                    <div className="flex items-center justify-between gap-2 rounded-xl bg-emerald-50 p-3">
+                      <div>
+                        <p className="text-xs text-emerald-600">نسبة الإنجاز اليومي</p>
+                        <p className="text-lg font-semibold text-emerald-700">
+                          {trainingData.summary.dailyGoalCompletion}%
+                        </p>
+                      </div>
+                      <Progress value={trainingData.summary.dailyGoalCompletion} className="h-2 w-32" />
+                    </div>
+                    <div className="grid gap-2">
+                      {upcomingExercises.map((exercise) => (
+                        <div
+                          key={exercise.id}
+                          className="rounded-lg border border-slate-100 bg-slate-50 p-3"
+                        >
+                          <div className="flex items-center justify-between text-xs text-slate-500">
+                            <span>{exercise.stage}</span>
+                            <span>
+                              {new Date(exercise.scheduledAt).toLocaleTimeString("ar-DZ", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-sm font-medium text-slate-800">
+                            {exercise.title}
+                          </p>
+                          <p className="text-xs text-slate-500">هدف: {exercise.goal}</p>
+                        </div>
+                      ))}
+                      {upcomingExercises.length === 0 && (
+                        <p className="text-xs text-slate-500">
+                          لا توجد تمارين مجدولة اليوم، اطلب من المساعد اقتراح تمرين جديد.
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate("/daily-training")}
+                      className="gap-2"
+                    >
+                      <Calendar className="h-4 w-4" />
+                      الذهاب إلى التدريب اليومي
+                    </Button>
+                  </div>
+                ) : null}
+              </CardContent>
+            </Card>
+            <Card className="overflow-hidden border-slate-100 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Gamepad2 className="w-5 h-5 text-orange-500" />
+                  الألعاب التعليمية المباشرة
+                </CardTitle>
+                <CardDescription>
+                  صور وحركة للنشاطات المفضلة مع تقدم الشارات.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {gamesLoading ? (
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-1/2" />
+                    <Skeleton className="h-24" />
+                  </div>
+                ) : gamesError ? (
+                  <Alert variant="destructive">
+                    <AlertTitle>تعذر تحميل الألعاب التعليمية</AlertTitle>
+                    <AlertDescription>{(gamesError as Error).message}</AlertDescription>
+                  </Alert>
+                ) : gamesData ? (
+                  <div className="space-y-4">
+                    {topGames.map((game, index) => (
+                      <div
+                        key={game.id}
+                        className="overflow-hidden rounded-2xl border border-slate-100"
+                      >
+                        <div className="relative h-32 w-full">
+                          <img
+                            src={gameImages[index % gameImages.length]}
+                            alt={game.title}
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-slate-900/30" />
+                          <div className="absolute inset-0 flex items-start justify-between p-4 text-white">
+                            <div>
+                              <p className="text-xs uppercase tracking-wide text-white/80">اللعبة</p>
+                              <p className="text-lg font-semibold">{game.title}</p>
+                            </div>
+                            <div className="rounded-full bg-white/20 px-3 py-1 text-xs">
+                              {game.ageRange} سنوات
+                            </div>
+                          </div>
+                        </div>
+                        <div className="space-y-3 bg-white p-4 text-sm text-slate-600">
+                          <p>{game.description}</p>
+                          <div className="flex items-center justify-between text-xs">
+                            <span>أفضل نتيجة</span>
+                            <span className="font-semibold text-slate-800">{game.bestScore}%</span>
+                          </div>
+                          <Progress value={game.badgeProgress} />
+                          <div className="flex flex-wrap gap-2">
+                            {game.skills.map((skill) => (
+                              <Badge key={skill} variant="secondary">
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate("/educational-games")}
+                      className="gap-2"
+                    >
+                      <Play className="h-4 w-4" />
+                      تصفح مكتبة الألعاب
+                    </Button>
+                  </div>
+                ) : null}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        <Card className="overflow-hidden border-slate-100 shadow-sm">
+          <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div className="relative min-h-[220px]">
+              <img
+                src="https://images.unsplash.com/photo-1521790945508-bf2a36314e85?auto=format&fit=crop&w=800&q=80"
+                alt="طفل يستخدم جهازًا لوحيًا للتعلم"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-indigo-900/40" />
+              <div className="absolute inset-0 flex flex-col items-start justify-end p-6 text-white">
+                <span className="rounded-full bg-white/20 px-3 py-1 text-xs">تكامل ذكي</span>
+                <p className="mt-3 text-2xl font-semibold">
+                  الصوت، الصور، والبيانات في مكان واحد
+                </p>
+                <p className="text-sm text-white/80">
+                  كل أداة تعرض تجربة غنية بالوسائط لمتابعة رحلة طفلك بثقة.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-4 p-6 text-sm text-slate-600">
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <h4 className="mb-2 flex items-center gap-2 text-base font-semibold text-slate-800">
+                  <Bot className="h-4 w-4 text-indigo-500" />
+                  توصية صوتية سريعة
+                </h4>
+                <p>
+                  فعّل خيار الصوت للاستماع لملخص المساعد، أو شارك الصورة المرئية للتقدم مع الأخصائي.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <h4 className="mb-2 flex items-center gap-2 text-base font-semibold text-slate-800">
+                  <Calendar className="h-4 w-4 text-emerald-500" />
+                  صور محفزة للتدريب
+                </h4>
+                <p>
+                  الصور المرافقة للتدريب تساعد الطفل على تذكّر الخطوات، بينما يدعم الصوت تشكيل الروتين اليومي.
+                </p>
+              </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <h4 className="mb-2 flex items-center gap-2 text-base font-semibold text-slate-800">
+                  <Gamepad2 className="h-4 w-4 text-orange-500" />
+                  ألعاب تفاعلية بالصور
+                </h4>
+                <p>
+                  بطاقات الألوان وشاشات الألعاب تتكامل مع المساعد لتقديم اقتراحات مخصصة بعد كل جلسة لعب.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  };
 
   const CognitiveTestsTab = () => (
     <div className="space-y-6">
@@ -1065,10 +1736,14 @@ export default function ParentDashboard() {
         >
           {/* Tabs Navigation */}
           <div className="bg-white rounded-lg p-2 shadow-sm">
-            <TabsList className="grid grid-cols-6 w-full">
+            <TabsList className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Activity className="w-4 h-4" />
                 نظرة عامة
+              </TabsTrigger>
+              <TabsTrigger value="smart-tools" className="flex items-center gap-2">
+                <MessageSquare className="w-4 h-4" />
+                الأدوات الذكية
               </TabsTrigger>
               <TabsTrigger
                 value="cognitive"
@@ -1104,6 +1779,10 @@ export default function ParentDashboard() {
 
           <TabsContent value="overview">
             <OverviewTab />
+          </TabsContent>
+
+          <TabsContent value="smart-tools">
+            <SmartToolsTab />
           </TabsContent>
 
           <TabsContent value="cognitive">
