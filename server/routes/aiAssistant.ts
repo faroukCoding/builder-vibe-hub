@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
 import {
   appendAssistantMessage,
   getAssistantData,
@@ -11,55 +11,64 @@ import {
 
 const DEFAULT_PARENT_ID = "parent-1";
 
-let generativeModel: ReturnType<GoogleGenerativeAI["getGenerativeModel"]> | null = null;
+let openAIClient: OpenAI | null = null;
 
-function getGenerativeModel() {
-  const apiKey = process.env.GEMINI_API_KEY;
+const MAX_HISTORY_MESSAGES = 12;
+
+function getOpenAIClient() {
+  const apiKey = (process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || "").trim();
   if (!apiKey) {
     return null;
   }
 
-  if (!generativeModel) {
-    const client = new GoogleGenerativeAI(apiKey);
-    generativeModel = client.getGenerativeModel({ model: "gemini-1.5-flash" });
+  if (!openAIClient) {
+    openAIClient = new OpenAI({ apiKey });
   }
 
-  return generativeModel;
+  return openAIClient;
 }
 
-function buildAssistantPrompt({
-  message,
+function buildSystemPrompt({
   parentId,
   childName,
   trainingHighlights,
   gamesHighlights,
 }: {
-  message: string;
   parentId: string;
   childName: string;
   trainingHighlights: string;
   gamesHighlights: string;
 }) {
-  return `أنت مساعد تربوي متخصص يعمل ضمن منصة Ortho Smart لمتابعة الأطفال في علاج النطق.
-المستخدم هو ولي الطفل ${childName} (معرف ولي الأمر: ${parentId}).
+  return `أنت مساعد تربوي متخصص يعمل ضمن منصة Ortho Smart لدعم أولياء الأمور في متابعة علاج النطق لأطفالهم.
+اسم الطفل: ${childName}.
+معرف ولي الأمر: ${parentId}.
 
-بيانات التدريب الحالية:
+ملخص التدريب الحالي:
 ${trainingHighlights}
 
-بيانات الألعاب التعليمية:
+ملخص الأنشطة والألعاب التعليمية:
 ${gamesHighlights}
 
-تعليمات الرد:
-- استخدم العربية الفصحى المبسطة مع نبرة داعمة ودقيقة.
-- قدم اقتراحات عملية يمكن تنفيذها في المنزل.
-- اربط الرد بالأهداف الحالية للطفل كلما أمكن.
-- إذا طلب المستخدم خطة أسبوعية أو نصائح إضافية، قدم جدولاً مختصراً.
-- إذا لم تتوفر بيانات كافية، اقترح جمع معلومات إضافية بطريقة لطيفة.
-- لا تُطل في الحديث أكثر من ثلاث فقرات قصيرة.
-- أضف فقرة قصيرة في النهاية بعنوان "اقتراحات سريعة" إذا كانت مناسبة.
+التعليمات:
+- استخدم العربية الفصحى المبسطة مع نبرة داعمة وواقعية.
+- قدم توصيات عملية يمكن تنفيذها في المنزل مع ربطها بأهداف التدريب الحالية.
+- يمكن أن يتضمن الرد حتى ثلاث فقرات قصيرة فقط.
+- إذا كان ذلك مناسبًا، اختم بفقرة بعنوان "اقتراحات سريعة" تحتوي على نقطتين أو ثلاث.
+- أعد الرد بصيغة JSON فقط وفق البنية التالية دون أي نص إضافي خارج JSON:
+  {
+    "reply": "النص الكامل للرد",
+    "suggested_actions": ["قائمة مختصرة من الاقتراحات التنفيذية"],
+    "tone": "اختياري: وصف موجز للنبرة"
+  }
+- يجب أن تكون جميع الحقول باللغة العربية وبأسلوب مشجع.`;
+}
 
-رسالة ولي الأمر:
-"${message}"`;
+function buildConversationHistory(messages: Awaited<ReturnType<typeof getAssistantData>>["messages"]) {
+  const trimmed = messages.slice(-MAX_HISTORY_MESSAGES);
+  return trimmed.map((message) => ({
+    role: message.role === "assistant" ? ("assistant" as const) : ("user" as const),
+    content: message.content,
+  }));
 }
 
 function generateFallbackResponse(message: string, childName: string) {
@@ -167,31 +176,59 @@ export const handleAssistantChat: RequestHandler = async (req, res) => {
     const trainingHighlights = `التقدم العام: ${training.summary.dailyGoalCompletion}%، عدد التمارين: ${training.summary.totalExercises}، أبرز تمرين: ${training.exercises[0]?.title} (التقدم ${training.exercises[0]?.progress}%).`;
     const gamesHighlights = `النقاط الإجمالية: ${games.totalPoints}، التحدي النشط: ${games.games[0]?.weeklyChallenge.goal}، آخر نتيجة: ${games.games[0]?.sessions[0]?.score ?? "لا توجد"}.`;
 
-    const model = getGenerativeModel();
-    let reply: string;
+    const client = getOpenAIClient();
+    let reply = "";
     let suggestedActions: string[] = [];
-    let usedGemini = false;
+    let usedOpenAI = false;
 
-    if (model) {
+    if (client) {
       try {
-        const prompt = buildAssistantPrompt({
-          message,
+        const systemPrompt = buildSystemPrompt({
           parentId,
           childName,
           trainingHighlights,
           gamesHighlights,
         });
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
-        reply = text || "لم أتمكن من فهم الطلب، هل يمكن إعادة صياغته؟";
-        usedGemini = Boolean(text);
+        const historyForModel = buildConversationHistory(assistant.messages);
+
+        const completion = await client.chat.completions.create({
+          model: "gpt-4o-mini",
+          temperature: 0.7,
+          max_tokens: 600,
+          response_format: { type: "json_object" },
+          messages: [{ role: "system", content: systemPrompt }, ...historyForModel],
+        });
+
+        const rawContent = completion.choices[0]?.message?.content?.trim() ?? "";
+        let parsed: {
+          reply?: string;
+          suggested_actions?: string[];
+        } = {};
+
+        if (rawContent) {
+          try {
+            parsed = JSON.parse(rawContent);
+          } catch {
+            parsed = { reply: rawContent };
+          }
+        }
+
+        reply = (parsed.reply ?? "").trim();
+        if (Array.isArray(parsed.suggested_actions)) {
+          suggestedActions = parsed.suggested_actions
+            .map((item) => (typeof item === "string" ? item.trim() : ""))
+            .filter((item) => item.length > 0)
+            .slice(0, 4);
+        }
+
+        usedOpenAI = reply.length > 0;
       } catch (error) {
-        const fallback = generateFallbackResponse(message, childName);
-        reply = fallback.reply;
-        suggestedActions = fallback.suggestedActions;
+        console.error("[AI Assistant] OpenAI completion failed", error);
       }
-    } else {
+    }
+
+    if (!reply) {
       const fallback = generateFallbackResponse(message, childName);
       reply = fallback.reply;
       suggestedActions = fallback.suggestedActions;
@@ -209,7 +246,7 @@ export const handleAssistantChat: RequestHandler = async (req, res) => {
       message: "تم إرسال الرد",
       reply: assistantMessage.content,
       suggestedActions: assistantMessage.suggestedActions,
-      usedGemini,
+      usedOpenAI,
       context: {
         trainingHighlights,
         gamesHighlights,

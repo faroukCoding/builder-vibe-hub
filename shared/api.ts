@@ -226,7 +226,7 @@ export interface AssistantChatResponse {
   message: string;
   reply: string;
   suggestedActions?: string[];
-  usedGemini: boolean;
+  usedOpenAI: boolean;
   context: {
     trainingHighlights: string;
     gamesHighlights: string;
