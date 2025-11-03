@@ -63,6 +63,25 @@ export interface DailyTrainingSummaryResponse {
   exercises: DailyTrainingExerciseSummary[];
 }
 
+export interface DailyTrainingPracticeItem {
+  id: string;
+  type: "letter" | "word" | "sentence";
+  text: string;
+  audioUrl?: string;
+  ttsText?: string;
+  hints?: string[];
+  expectedResponses?: string[];
+}
+
+export interface DailyTrainingPracticeSet {
+  id: string;
+  title: string;
+  prompt: string;
+  focus: string;
+  items: DailyTrainingPracticeItem[];
+  tips?: string[];
+}
+
 export interface DailyTrainingDetailResponse {
   parentId: string;
   retrievedAt: string;
@@ -101,6 +120,7 @@ export interface DailyTrainingDetailResponse {
       url: string;
       description: string;
     }>;
+    practiceSets?: DailyTrainingPracticeSet[];
     evaluationHistory: Array<{
       id: string;
       date: string;

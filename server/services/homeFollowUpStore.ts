@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import type { DailyTrainingPracticeSet } from "@shared/api";
 
 const DATA_DIR = path.join(process.cwd(), "server", "data");
 const DATA_FILE = path.join(DATA_DIR, "home-follow-up.json");
@@ -76,6 +77,7 @@ export interface DailyTrainingExercise {
   resources: DailyTrainingResource[];
   evaluationHistory: DailyTrainingEvaluation[];
   milestones: DailyTrainingMilestone[];
+  practiceSets?: DailyTrainingPracticeSet[];
 }
 
 export interface DailyTrainingSummary {
@@ -278,6 +280,77 @@ function createDefaultDailyTrainingExercises(): DailyTrainingExercise[] {
           label: "دليل حركة اللسان",
           url: "https://storage.googleapis.com/public-assets-ortho/guide-tongue-r.pdf",
           description: "خطوات مرئية لحركة اللسان أثناء نطق حرف الراء",
+        },
+      ],
+      practiceSets: [
+        {
+          id: "letter-r-listen",
+          title: "استمع للحرف والمقاطع",
+          prompt: "اضغط على استمع للحرف أو المقطع ثم كرر بصوت واضح وواثق.",
+          focus: "إتقان نطق حرف الراء",
+          items: [
+            {
+              id: "letter-r",
+              type: "letter",
+              text: "ر",
+              expectedResponses: ["ر", "راء"],
+              hints: ["تأكد أن طرف لسانك يلمس سقف الحنك ثم يرتد بسرعة"],
+            },
+            {
+              id: "syllable-ra",
+              type: "letter",
+              text: "را",
+              expectedResponses: ["را"],
+              hints: ["ابدأ بصوت الراء ثم افتح فمك قليلاً مع الألف"],
+            },
+            {
+              id: "syllable-ri",
+              type: "letter",
+              text: "ري",
+              expectedResponses: ["ري"],
+              hints: ["ابتسم قليلاً مع كسرة الياء للحفاظ على وضوح الصوت"],
+            },
+            {
+              id: "syllable-ru",
+              type: "letter",
+              text: "رو",
+              expectedResponses: ["رو"],
+              hints: ["تقريب الشفتين يساعد على إظهار الضمة بشكل واضح"],
+            },
+          ],
+          tips: [
+            "أوقف أي أصوات محيطة قبل التشغيل ليتركز الطفل في الصوت.",
+            "شجع الطفل على لمس الحنك بطرف اللسان قبل كل محاولة.",
+          ],
+        },
+        {
+          id: "word-r-series",
+          title: "كلمات تحتوي على حرف الراء",
+          prompt: "استمع لكل كلمة ثم حاول نطقها كما سمعتها.",
+          focus: "دمج الحرف داخل كلمات بسيطة",
+          items: [
+            {
+              id: "word-ward",
+              type: "word",
+              text: "ورد",
+              expectedResponses: ["ورد"],
+            },
+            {
+              id: "word-qitar",
+              type: "word",
+              text: "قطار",
+              expectedResponses: ["قطار"],
+            },
+            {
+              id: "word-rumman",
+              type: "word",
+              text: "رمان",
+              expectedResponses: ["رمان"],
+            },
+          ],
+          tips: [
+            "اطلب من الطفل أن يرفع صوته قليلاً عند نطق حرف الراء في منتصف الكلمة.",
+          ],
         },
       ],
       evaluationHistory: [
@@ -483,6 +556,37 @@ function createDefaultDailyTrainingExercises(): DailyTrainingExercise[] {
           description: "تمارين إضافية للطباعة",
         },
       ],
+      practiceSets: [
+        {
+          id: "word-s-vs-sh",
+          title: "استمع للكلمة وكررها",
+          prompt: "اضغط على استمع للكلمة ثم حاول تكرارها بسرعة معتدلة.",
+          focus: "تمييز الكلمات التي تحتوي على س أو ش",
+          items: [
+            { id: "word-samak", type: "word", text: "سمك", expectedResponses: ["سمك"] },
+            { id: "word-shams", type: "word", text: "شمس", expectedResponses: ["شمس"] },
+            { id: "word-sukar", type: "word", text: "سكر", expectedResponses: ["سكر"] },
+            { id: "word-shajarah", type: "word", text: "شجرة", expectedResponses: ["شجرة"] },
+          ],
+          tips: [
+            "كرر الكلمات بترتيب مختلف في كل مرة ليبقى الطفل متيقظاً.",
+            "اطلب من الطفل أن يلمس أنفه عند سماع صوت الشين لتمييزه عن السين.",
+          ],
+        },
+        {
+          id: "letter-contrast-s-sh",
+          title: "تمييز بين الحروف س و ش",
+          prompt: "استمع للحرف وحاول تحديد إن كان سينًا أم شينًا.",
+          focus: "تفريق الأصوات المتقاربة",
+          items: [
+            { id: "letter-s", type: "letter", text: "س", expectedResponses: ["س", "سين"] },
+            { id: "letter-sh", type: "letter", text: "ش", expectedResponses: ["ش", "شين"] },
+          ],
+          tips: [
+            "استخدم حركة يد مختلفة لكل حرف عند التكرار لتثبيت التمييز السمعي.",
+          ],
+        },
+      ],
       evaluationHistory: [
         {
           id: "eval-words-1",
@@ -572,6 +676,38 @@ function createDefaultDailyTrainingExercises(): DailyTrainingExercise[] {
           label: "تمثيل الجملة",
           url: "https://www.youtube.com/embed/8kV9m2n7xPo",
           description: "فيديو قصير لتدريب الجملة مع تعبير",
+        },
+      ],
+      practiceSets: [
+        {
+          id: "sentence-repeat",
+          title: "استمع للجملة وكررها",
+          prompt: "استمع للجملة النموذجية ثم أعدها بنفس النبرة والسرعة.",
+          focus: "تنظيم التنغيم في الجمل القصيرة",
+          items: [
+            {
+              id: "sentence-love-school",
+              type: "sentence",
+              text: "أنا أحب المدرسة",
+              expectedResponses: ["انا احب المدرسة", "أنا أحب المدرسة"],
+            },
+            {
+              id: "sentence-go-morning",
+              type: "sentence",
+              text: "نذهب إلى المدرسة صباحًا",
+              expectedResponses: ["نذهب الى المدرسة صباحا", "نذهب إلى المدرسة صباحًا"],
+            },
+            {
+              id: "sentence-meet-friends",
+              type: "sentence",
+              text: "ألتقي بأصدقائي في الصف",
+              expectedResponses: ["التقي باصدقائي في الصف", "ألتقي بأصدقائي في الصف"],
+            },
+          ],
+          tips: [
+            "شجع الطفل على الابتسام أثناء النطق للحفاظ على نبرة إيجابية.",
+            "اطلب منه رفع يده قليلاً عند نهاية الجملة لتذكيره بصعود النبرة.",
+          ],
         },
       ],
       evaluationHistory: [],
