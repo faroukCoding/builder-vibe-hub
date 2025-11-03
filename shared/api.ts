@@ -244,3 +244,141 @@ export interface AssistantTipResponse {
     deliveredAt: string;
   };
 }
+
+export interface HomeLearningOverviewResponse {
+  childId: string;
+  generatedAt: string;
+  summary: {
+    streakDays: number;
+    totalSessionsThisWeek: number;
+    weeklyImprovementPercent: number;
+    aiFeedbackCount: number;
+    nextPlannedSession: string;
+  };
+  assistant: {
+    activeConversationId: string;
+    lastInteractionAt: string | null;
+    suggestedFocus: string;
+    conversationPreview: Array<{
+      id: string;
+      role: "assistant" | "child" | "parent";
+      timestamp: string;
+      message: string;
+      pronunciationScore?: number;
+    }>;
+  };
+  training: {
+    modules: Array<{
+      id: string;
+      title: string;
+      type: "letter" | "word" | "sentence" | "discrimination";
+      difficulty: "easy" | "medium" | "hard";
+      progress: number;
+      nextReviewAt: string;
+      lockedUntilSuccess: boolean;
+    }>;
+    currentLevel: number;
+    nextMilestone: string;
+  };
+  games: {
+    weeklyScore: number;
+    unlockedBadges: string[];
+    highlights: Array<{
+      id: string;
+      title: string;
+      accuracy: number;
+      lastPlayed: string;
+    }>;
+  };
+}
+
+export interface HomeLearningAssistantHistoryMessage {
+  role: "assistant" | "child" | "parent";
+  content: string;
+  createdAt?: string;
+  tone?: string;
+}
+
+export interface HomeLearningAssistantMessageRequest {
+  childId: string;
+  sender: "child" | "parent";
+  modality: "text" | "audio";
+  message?: string;
+  audioSampleUrl?: string;
+  targetSound?: string;
+  contextTags?: string[];
+  history?: HomeLearningAssistantHistoryMessage[];
+}
+
+export interface HomeLearningAssistantMessageResponse {
+  conversationId: string;
+  reply: string;
+  simplifiedReply: string;
+  voiceEnabled: boolean;
+  storedAt: string;
+  cues: string[];
+  nextActions: string[];
+}
+
+export interface HomeLearningPronunciationEvaluationRequest {
+  childId: string;
+  exerciseId: string;
+  attemptId: string;
+  expectedPhonemes: string[];
+  audioSampleUrl?: string;
+  transcript?: string;
+}
+
+export interface HomeLearningPronunciationEvaluationResponse {
+  attemptId: string;
+  overallScore: number;
+  metrics: {
+    accuracy: number;
+    clarity: number;
+    fluency: number;
+    pacing: number;
+  };
+  phonemeBreakdown: Array<{
+    phoneme: string;
+    score: number;
+    tips: string[];
+  }>;
+  passed: boolean;
+  requiredRetry: boolean;
+  feedback: string;
+}
+
+export interface HomeLearningTrainingAnswerRequest {
+  childId: string;
+  moduleId: string;
+  answer: string;
+  isCorrect: boolean;
+  retryCount: number;
+  responseTimeMs?: number;
+}
+
+export interface HomeLearningTrainingAnswerResponse {
+  moduleId: string;
+  isCorrect: boolean;
+  nextStep: "repeat" | "advance";
+  unlocksNextLevel: boolean;
+  encouragementMessage: string;
+  updatedProgress: number;
+}
+
+export interface HomeLearningGameResultRequest {
+  childId: string;
+  gameId: string;
+  mode: "audio-matching" | "letter-assembly" | "rapid-pronunciation";
+  score: number;
+  accuracy: number;
+  timeRemainingSeconds: number;
+}
+
+export interface HomeLearningGameResultResponse {
+  gameId: string;
+  newWeeklyScore: number;
+  badgeUnlocked?: string;
+  leaderboardPosition?: number;
+  message: string;
+}

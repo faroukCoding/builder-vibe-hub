@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import multer from "multer";
@@ -19,6 +20,13 @@ import {
   handleAssistantHistory,
   handleAssistantTip,
 } from "./routes/aiAssistant";
+import {
+  handleGetHomeLearningOverview,
+  handlePostHomeLearningAssistantMessage,
+  handlePostHomeLearningPronunciation,
+  handlePostHomeLearningTrainingAnswer,
+  handlePostHomeLearningGameResult,
+} from "./routes/homeLearning";
 
 export function createServer() {
   const app = express();
@@ -73,6 +81,22 @@ export function createServer() {
   app.get("/api/ai-assistant/history", handleAssistantHistory);
   app.post("/api/ai-assistant/chat", handleAssistantChat);
   app.post("/api/ai-assistant/tip", handleAssistantTip);
+
+  // Home learning tools endpoints
+  app.get("/api/home-learning/overview", handleGetHomeLearningOverview);
+  app.post(
+    "/api/home-learning/assistant/message",
+    handlePostHomeLearningAssistantMessage,
+  );
+  app.post(
+    "/api/home-learning/assistant/pronunciation",
+    handlePostHomeLearningPronunciation,
+  );
+  app.post(
+    "/api/home-learning/training/answer",
+    handlePostHomeLearningTrainingAnswer,
+  );
+  app.post("/api/home-learning/games/result", handlePostHomeLearningGameResult);
 
   return app;
 }
