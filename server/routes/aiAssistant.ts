@@ -154,6 +154,14 @@ export const handleAssistantChat: RequestHandler = async (req, res) => {
   try {
     const parentId = (req.body?.parentId as string) || DEFAULT_PARENT_ID;
     const message = (req.body?.message as string)?.trim();
+    // Optional: when the frontend already has a local canned reply (from client DB),
+    // it can send it here to persist both the parent message and the assistant reply
+    // without invoking OpenAI. This helps keep server history consistent with client.
+    const localReply = typeof req.body?.localReply === "string" ? (req.body.localReply as string) : undefined;
+    const localItemId = typeof req.body?.localItemId === "string" ? (req.body.localItemId as string) : undefined;
+    const providedSuggestedActions = Array.isArray(req.body?.suggestedActions)
+      ? (req.body.suggestedActions as string[])
+      : undefined;
 
     if (!message) {
       return res.status(400).json({ error: "يرجى كتابة رسالة للمساعد" });
@@ -165,6 +173,29 @@ export const handleAssistantChat: RequestHandler = async (req, res) => {
       timestamp: new Date().toISOString(),
       content: message,
     });
+
+    // If the client provided a local reply, persist it and return immediately
+    if (localReply) {
+      const assistantMessage = await appendAssistantMessage(parentId, {
+        id: `assistant-${Date.now()}`,
+        role: "assistant",
+        timestamp: new Date().toISOString(),
+        content: localReply,
+        suggestedActions: providedSuggestedActions?.length ? providedSuggestedActions : undefined,
+      });
+
+      return res.json({
+        message: "تم إرسال الرد",
+        reply: assistantMessage.content,
+        suggestedActions: assistantMessage.suggestedActions,
+        usedOpenAI: false,
+        context: {
+          trainingHighlights: "",
+          gamesHighlights: "",
+          conversationLength: (await getAssistantData(parentId)).messages.length,
+        },
+      });
+    }
 
     const [training, games, assistant, parentProfile] = await Promise.all([
       getDailyTraining(parentId),

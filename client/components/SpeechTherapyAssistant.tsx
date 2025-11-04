@@ -487,7 +487,7 @@ export default function SpeechTherapyAssistant({
     // Si pas de messages sauvegardés, retourner tableau vide (le welcome sera ajouté dans useEffect)
     return saved.length > 0 ? saved : [];
   });
-  const [inputValue, setInputValue] = useState("");
+  // use uncontrolled textarea to avoid flicker/reset issues on re-render
   const [isTyping, setIsTyping] = useState(false);
   const [showAllItems, setShowAllItems] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
@@ -653,7 +653,10 @@ export default function SpeechTherapyAssistant({
           content: displayText ?? rawText,
         },
       ]);
-      setInputValue("");
+      // clear uncontrolled textarea
+      try {
+        if (inputRef.current) inputRef.current.value = "";
+      } catch {}
 
       onLogInteraction?.({
         type: "assistant",
@@ -668,13 +671,41 @@ export default function SpeechTherapyAssistant({
         // Chercher dans la base de données locale
         const matchedItem = forcedItem ?? findAssistantItem(trimmed);
         if (matchedItem) {
-          addAssistantMessage(matchedItem.answer, matchedItem, true);
+          // Persist user message and the local assistant reply on the server
+          try {
+            const res = await fetch("/api/ai-assistant/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                parentId: PARENT_ID,
+                message: trimmed,
+                localReply: matchedItem.answer,
+                localItemId: matchedItem.id,
+                suggestedActions: matchedItem.extra?.suggestions ?? undefined,
+              }),
+            });
+
+            if (res.ok) {
+              const data = await res.json();
+              // Use server-returned reply to stay consistent
+              addAssistantMessage(data.reply ?? matchedItem.answer, matchedItem, true);
+            } else {
+              // If server persistence fails, still show local answer but log
+              console.warn("Failed to persist local reply", await res.text());
+              addAssistantMessage(matchedItem.answer, matchedItem, true);
+            }
+          } catch (err) {
+            console.error("Failed to persist local matchedItem reply:", err);
+            addAssistantMessage(matchedItem.answer, matchedItem, true);
+          }
+
           onLogInteraction?.({
             type: "assistant",
             activity: "إجابة من قاعدة البيانات",
             result: "success",
             notes: matchedItem.answer,
           });
+
           return;
         }
 
@@ -711,9 +742,10 @@ export default function SpeechTherapyAssistant({
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      handleSend(inputValue);
+      const val = inputRef.current?.value ?? "";
+      handleSend(val);
     },
-    [handleSend, inputValue],
+    [handleSend],
   );
 
   const handleQuickReply = useCallback(
@@ -941,14 +973,13 @@ export default function SpeechTherapyAssistant({
         <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
           <textarea
             placeholder="اكتب سؤالك بالتفصيل..."
-            value={inputValue}
             ref={inputRef}
-            onChange={(event) => setInputValue(event.currentTarget.value)}
             onMouseDown={() => inputRef.current?.focus()}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
-                handleSend(inputValue);
+                const val = inputRef.current?.value ?? "";
+                handleSend(val);
               }
             }}
             disabled={isTyping}
@@ -958,7 +989,7 @@ export default function SpeechTherapyAssistant({
             <Button
               type="submit"
               className="rounded-full bg-sky-500 px-6 text-white shadow hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={!inputValue.trim() || isTyping}
+              disabled={isTyping}
             >
               {isTyping ? "جاري الإرسال..." : "أرسل سؤالي الآن"}
             </Button>
