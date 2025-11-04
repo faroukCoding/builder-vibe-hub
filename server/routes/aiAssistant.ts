@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
+import { promises as fs } from "fs";
 import OpenAI from "openai";
+import path from "path";
 import {
   appendAssistantMessage,
   getAssistantData,
@@ -254,6 +256,18 @@ export const handleAssistantChat: RequestHandler = async (req, res) => {
       },
     });
   } catch (error) {
+    // Log the error stack to a server-side log file for easier debugging
+    try {
+      const logDir = path.join(process.cwd(), "server", "logs");
+      await fs.mkdir(logDir, { recursive: true });
+      const logPath = path.join(logDir, "assistant-errors.log");
+      const entry = `[${new Date().toISOString()}] ${String((error as Error).stack ?? (error as Error).message)}\n`;
+      await fs.appendFile(logPath, entry, "utf-8");
+    } catch (logErr) {
+      // If logging fails, print to console as a fallback
+      console.error("Failed to write assistant error log:", logErr);
+    }
+
     res.status(500).json({
       error: "تعذر الحصول على رد من المساعد",
       details: (error as Error).message,
