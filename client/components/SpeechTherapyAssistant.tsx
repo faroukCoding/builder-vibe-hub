@@ -492,7 +492,15 @@ export default function SpeechTherapyAssistant({
   const [showAllItems, setShowAllItems] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
-  const [inputValue, setInputValue] = useState("");
+  // initialize input value once from localStorage to avoid resetting on re-renders
+  const INPUT_DRAFT_KEY = "speech_therapy_input_draft";
+  const [inputValue, setInputValue] = useState<string>(() => {
+    try {
+      return storage.get<string>(INPUT_DRAFT_KEY, "");
+    } catch {
+      return "";
+    }
+  });
   const isComposingRef = useRef(false);
   const initializedRef = useRef(false);
   const isSubmittingRef = useRef(false);
@@ -973,9 +981,9 @@ export default function SpeechTherapyAssistant({
           )}
         </div>
         <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
-          <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+          <div className="flex flex-col gap-3">
             <textarea
-              placeholder="اكتب سؤالك هنا..."
+              placeholder="اكتب سؤالك بالتفصيل..."
               value={inputValue}
               onChange={(e) => setInputValue(e.currentTarget.value)}
               ref={inputRef}
@@ -1006,13 +1014,13 @@ export default function SpeechTherapyAssistant({
               spellCheck={true}
               readOnly={false}
               disabled={isTyping}
-              className="flex-1 w-full min-h-[120px] max-h-[50vh] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+              className="w-full min-h-[120px] max-h-[50vh] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
             />
 
-            <div className="flex flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
+            <div className="flex items-center justify-end gap-3">
               <Button
                 type="submit"
-                className="rounded-full bg-sky-500 px-6 py-3 text-white shadow hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
+                className="rounded-full bg-sky-500 px-6 py-3 text-white shadow hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={isTyping || !inputValue.trim()}
               >
                 {isTyping ? "جاري الإرسال..." : "إرسال السؤال"}
@@ -1020,17 +1028,14 @@ export default function SpeechTherapyAssistant({
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => {
-                  setInputValue("");
-                  inputRef.current && (inputRef.current.value = "");
-                }}
+                onClick={() => setInputValue("")}
                 disabled={isTyping}
               >
                 مسح الحقل
               </Button>
             </div>
+            <div className="text-xs text-slate-400">اضغط Enter لإرسال، أو استخدم Shift+Enter لسطر جديد.</div>
           </div>
-          <div className="text-xs text-slate-400">اضغط Enter لإرسال، أو استخدم Shift+Enter لسطر جديد.</div>
         </form>
       </CardContent>
     </Card>
