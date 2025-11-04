@@ -491,6 +491,7 @@ export default function SpeechTherapyAssistant({
   const [isTyping, setIsTyping] = useState(false);
   const [showAllItems, setShowAllItems] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const initializedRef = useRef(false);
   const isSubmittingRef = useRef(false);
   const PARENT_ID = "parent-1"; // TODO: replace with real parent identifier when available
@@ -941,7 +942,9 @@ export default function SpeechTherapyAssistant({
           <textarea
             placeholder="اكتب سؤالك بالتفصيل..."
             value={inputValue}
+            ref={inputRef}
             onChange={(event) => setInputValue(event.currentTarget.value)}
+            onMouseDown={() => inputRef.current?.focus()}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
