@@ -1,7 +1,7 @@
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+// use native textarea here to avoid focus/forwardRef edge-cases in some environments
 import { MessageCircle, PartyPopper, Sparkles, UserRound } from "lucide-react";
 
 type AssistantItemType = "faq" | "exercise" | "tip";
@@ -938,10 +938,10 @@ export default function SpeechTherapyAssistant({
           )}
         </div>
         <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
-          <Textarea
+          <textarea
             placeholder="اكتب سؤالك بالتفصيل..."
             value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
+            onChange={(event) => setInputValue(event.currentTarget.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
@@ -949,7 +949,7 @@ export default function SpeechTherapyAssistant({
               }
             }}
             disabled={isTyping}
-            className="min-h-[120px] rounded-2xl border-sky-200 bg-white/90 shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full min-h-[120px] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
           />
           <div className="flex flex-wrap items-center gap-3">
             <Button
