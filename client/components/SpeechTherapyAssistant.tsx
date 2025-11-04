@@ -738,11 +738,16 @@ export default function SpeechTherapyAssistant({
 
   const handleFollowUp = useCallback(
     (option: FollowUpOption) => {
-      const item = assistantDataMap[option.itemId];
-      if (!item) {
+      // If option.itemId is present and maps to a known item, send that item.
+      // Otherwise, fallback to sending the option label as a plain query.
+      const item = option.itemId ? assistantDataMap[option.itemId] : undefined;
+      if (item) {
+        handleSend(item.question ?? item.title ?? option.label, option.label, item);
         return;
       }
-      handleSend(item.question ?? item.title ?? option.label, option.label, item);
+
+      // Fallback: send the suggestion text as a user query
+      handleSend(option.label, option.label);
     },
     [handleSend],
   );
