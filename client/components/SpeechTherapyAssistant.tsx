@@ -492,6 +492,7 @@ export default function SpeechTherapyAssistant({
   const [showAllItems, setShowAllItems] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const isComposingRef = useRef(false);
   const initializedRef = useRef(false);
   const isSubmittingRef = useRef(false);
   const PARENT_ID = "parent-1"; // TODO: replace with real parent identifier when available
@@ -974,16 +975,39 @@ export default function SpeechTherapyAssistant({
           <textarea
             placeholder="اكتب سؤالك بالتفصيل..."
             ref={inputRef}
+            // allow browser to choose direction based on content (Arabic/LTR languages)
+            dir="auto"
+            // accessibility
+            aria-label="حقل سؤال المساعد الذكي"
+            title="اكتب سؤالك هنا ثم اضغط Enter لإرساله"
+            tabIndex={0}
             onMouseDown={() => inputRef.current?.focus()}
+            onFocus={() => inputRef.current?.classList.add("ring-2", "ring-sky-300")}
+            onBlur={() => inputRef.current?.classList.remove("ring-2", "ring-sky-300")}
+            // IME composition support (prevent sending on Enter while composing)
+            onCompositionStart={() => (isComposingRef.current = true)}
+            onCompositionEnd={() => (isComposingRef.current = false)}
             onKeyDown={(event) => {
-              if (event.key === "Enter" && !event.shiftKey) {
+              if (event.key === "Enter" && !event.shiftKey && !isComposingRef.current) {
                 event.preventDefault();
                 const val = inputRef.current?.value ?? "";
                 handleSend(val);
               }
             }}
+            // auto-resize to content for stable UX
+            onInput={() => {
+              try {
+                const el = inputRef.current;
+                if (!el) return;
+                el.style.height = "auto";
+                // add small buffer to avoid scrollbar flicker
+                el.style.height = Math.min(window.innerHeight * 0.5, el.scrollHeight + 6) + "px";
+              } catch {}
+            }}
+            inputMode="text"
+            spellCheck={true}
             disabled={isTyping}
-            className="w-full min-h-[120px] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+            className="w-full min-h-[120px] max-h-[50vh] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none relative z-10"
           />
           <div className="flex flex-wrap items-center gap-3">
             <Button
