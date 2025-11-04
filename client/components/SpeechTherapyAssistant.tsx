@@ -587,6 +587,75 @@ export default function SpeechTherapyAssistant({
     }
   }, [messages, onReplyCountChange, onHighlightsChange]);
 
+  // --- Chatbase: injecter le widget et identifier l'utilisateur (uniquement هنا) ---
+  useEffect(() => {
+    const CLIENT_ID_KEY = "chatbase_client_id";
+    let clientId = storage.get<string | null>(CLIENT_ID_KEY, null);
+    if (!clientId) {
+      clientId = `parent-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+      storage.set(CLIENT_ID_KEY, clientId);
+    }
+
+    let mounted = true;
+    const SCRIPT_ID = "gEbQnZ9nZyS0OKlEC3gUG";
+
+    async function initChatbase() {
+      try {
+        const resp = await fetch("/api/chatbase/token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: clientId, name: childName ?? undefined }),
+        });
+        if (!resp.ok) {
+          // eslint-disable-next-line no-console
+          console.warn("Chatbase token request failed", resp.status);
+          return;
+        }
+        const { token } = await resp.json();
+        if (!token) {
+          // eslint-disable-next-line no-console
+          console.warn("Chatbase token missing in response");
+          return;
+        }
+
+        // Inject inline initializer (only once)
+        if (!document.getElementById(`${SCRIPT_ID}-inline`)) {
+          const inline = document.createElement("script");
+          inline.type = "text/javascript";
+          inline.id = `${SCRIPT_ID}-inline`;
+          inline.text = `(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="${SCRIPT_ID}";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();`;
+          document.body.appendChild(inline);
+        }
+
+        // wait for window.chatbase to be present
+        await new Promise<void>((resolve) => {
+          const check = () => {
+            // @ts-ignore
+            if ((window as any).chatbase) return resolve();
+            setTimeout(check, 150);
+          };
+          check();
+        });
+
+        // identify with the signed token
+        // @ts-ignore
+        if (mounted && (window as any).chatbase) {
+          // @ts-ignore
+          window.chatbase("identify", { token });
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("Chatbase init error:", err);
+      }
+    }
+
+    initChatbase();
+
+    return () => {
+      mounted = false;
+    };
+  }, [childName]);
+
   const addAssistantMessage = useCallback(
     (content: string, item?: AssistantItem, includeFollowUps = false) => {
       setMessages((prev) => [

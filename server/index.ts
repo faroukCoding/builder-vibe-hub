@@ -20,6 +20,7 @@ import {
   handleAssistantHistory,
   handleAssistantTip,
 } from "./routes/aiAssistant";
+import { handleChatbaseToken } from "./routes/chatbase-token";
 import {
   handleGetHomeLearningOverview,
   handlePostHomeLearningAssistantMessage,
@@ -81,6 +82,9 @@ export function createServer() {
   app.get("/api/ai-assistant/history", handleAssistantHistory);
   app.post("/api/ai-assistant/chat", handleAssistantChat);
   app.post("/api/ai-assistant/tip", handleAssistantTip);
+
+  // Chatbase token signing endpoint (server-side only)
+  app.post("/api/chatbase/token", handleChatbaseToken);
 
   // Home learning tools endpoints
   app.get("/api/home-learning/overview", handleGetHomeLearningOverview);
