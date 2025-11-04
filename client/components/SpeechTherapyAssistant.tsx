@@ -381,7 +381,7 @@ const assistantDataMap: Record<string, AssistantItem> = assistantData.reduce((ac
 }, {} as Record<string, AssistantItem>);
 
 const QUICK_REPLIES: AssistantQuickReply[] = [
-  { id: "quick_s_pronunciation", label: "🎯 تمرين نطق حرف "س"", itemId: "exercise_s_sound" },
+  { id: "quick_s_pronunciation", label: '🎯 تمرين نطق حرف "س"', itemId: "exercise_s_sound" },
   { id: "quick_tongue_flex", label: "👅 تمرين مرونة اللسان", itemId: "exercise_tongue_flexibility" },
   { id: "quick_language_vs_speech", label: "🧠 الفرق بين التأخر اللغوي واضطراب النطق", itemId: "language_difference" },
   { id: "quick_stutter", label: "💬 كيف أتعامل مع تلعثم طفلي؟", itemId: "speech_stutter" },
@@ -453,50 +453,24 @@ const findAssistantItem = (question: string): AssistantItem | null => {
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// Use the server-side assistant endpoint so the API key remains on the server
 const requestOpenAIResponse = async (prompt: string, childName?: string): Promise<string | null> => {
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-  if (!apiKey) {
-    console.warn("Missing OpenAI API key. Set VITE_OPENAI_API_KEY in .env");
-    return null;
-  }
-
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch("/api/ai-assistant/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        temperature: 0.6,
-        messages: [
-          {
-            role: "system",
-            content:
-              "أنت مساعد متخصص في علاج النطق واللغة للأطفال. أجب بالعربية الفصحى البسيطة مع نبرة مطمئنة وذكر رموز تعبيرية مناسبة. قدّم خطوات عملية قصيرة تشجع وليّ الأمر على المتابعة المنزلية الآمنة.",
-          },
-          {
-            role: "user",
-            content: `سؤال وليّ الأمر: ${prompt}\nاسم الطفل (اختياري): ${childName ?? "غير محدد"}. ركز على النطق، التأخر اللغوي، الألعاب المنزلية، ونصائح الأولياء.`,
-          },
-        ],
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ parentId: "parent-1", message: prompt }),
     });
 
-    if (!response.ok) {
-      console.error("OpenAI API error", response.status, await response.text());
+    if (!res.ok) {
+      console.error("Assistant endpoint error", res.status, await res.text());
       return null;
     }
 
-    const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
-    };
-
-    const reply = data.choices?.[0]?.message?.content?.trim();
-    return reply ?? null;
+    const data = (await res.json()) as { reply?: string };
+    return data.reply ?? null;
   } catch (error) {
-    console.error("Failed to fetch OpenAI response", error);
+    console.error("Failed to call assistant endpoint", error);
     return null;
   }
 };
@@ -515,9 +489,11 @@ export default function SpeechTherapyAssistant({
   });
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [showAllItems, setShowAllItems] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
   const initializedRef = useRef(false);
   const isSubmittingRef = useRef(false);
+  const PARENT_ID = "parent-1"; // TODO: replace with real parent identifier when available
 
   const welcomeMessage = useMemo(
     () =>
@@ -540,15 +516,51 @@ export default function SpeechTherapyAssistant({
     initializedRef.current = true;
     
     // Si pas de messages sauvegardés, ajouter le message de bienvenue
-    if (messages.length === 0) {
-      setMessages([
-        {
-          id: "assistant-welcome",
-          role: "assistant",
-          content: welcomeMessage,
-        },
-      ]);
-    }
+    // Try to hydrate from server history first so chats persist across devices
+    (async () => {
+      try {
+        const res = await fetch(`/api/ai-assistant/history?parentId=${encodeURIComponent(
+          PARENT_ID,
+        )}&limit=50`);
+        if (res.ok) {
+          const data = await res.json();
+          const serverMessages = (data.messages ?? []) as Array<{
+            id: string;
+            role: "parent" | "assistant";
+            content: string;
+            timestamp: string;
+            suggestedActions?: string[];
+          }>;
+
+          if (serverMessages.length > 0) {
+            const mapped = serverMessages.map((m) => ({
+              id: m.id,
+              role: m.role === "assistant" ? ("assistant" as const) : ("user" as const),
+              content: m.content,
+              // attempt to attach item reference if possible
+              item: assistantData.find((it) => it.answer === m.content) ?? undefined,
+              suggestions: m.suggestedActions?.map((s, i) => ({ id: `srv-${i}` + Date.now(), label: s, itemId: "" })),
+            }));
+            setMessages(mapped);
+            // do not overwrite with welcome message
+            return;
+          }
+        }
+      } catch (err) {
+        // ignore — fallback to local welcome
+        console.warn("Failed to load assistant history from server:", err);
+      }
+
+      if (messages.length === 0) {
+        setMessages([
+          {
+            id: "assistant-welcome",
+            role: "assistant",
+            content: welcomeMessage,
+          },
+        ]);
+      }
+    })();
   }, [welcomeMessage, messages.length]);
 
   // Auto-scroll
@@ -589,16 +601,15 @@ export default function SpeechTherapyAssistant({
 
   const addAssistantMessage = useCallback(
     (content: string, item?: AssistantItem, includeFollowUps = false) => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `assistant-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
-          role: "assistant",
-          content,
-          item,
-          suggestions: includeFollowUps ? FOLLOW_UP_RECOMMENDATIONS : undefined,
-        },
-      ]);
+      const msg = {
+        id: `assistant-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
+        role: "assistant" as const,
+        content,
+        item,
+        suggestions: includeFollowUps ? FOLLOW_UP_RECOMMENDATIONS : undefined,
+      };
+      setMessages((prev) => [...prev, msg]);
+      // persist to local storage handled by useEffect; server persistence exists via /api/ai-assistant/chat
     },
     [],
   );
@@ -687,6 +698,16 @@ export default function SpeechTherapyAssistant({
     },
     [handleSend],
   );
+
+  // Group items by section for "show all" view
+  const itemsBySection = useMemo(() => {
+    const map: Record<string, AssistantItem[]> = {};
+    assistantData.forEach((it) => {
+      if (!map[it.section]) map[it.section] = [];
+      map[it.section].push(it);
+    });
+    return map;
+  }, []);
 
   const handleFollowUp = useCallback(
     (option: FollowUpOption) => {
@@ -848,6 +869,42 @@ export default function SpeechTherapyAssistant({
           ))}
         </div>
 
+        {/* Show all items (tips/exercises/faqs) */}
+        <div className="mt-2" dir="rtl">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setShowAllItems((v) => !v)}
+            className="text-xs"
+          >
+            {showAllItems ? "إخفاء جميع النصائح والتمارين" : "عرض جميع النصائح والتمارين"}
+          </Button>
+
+          {showAllItems && (
+            <div className="mt-3 grid gap-3 rounded-lg border border-slate-100 bg-white p-3">
+              {Object.keys(itemsBySection).map((section) => (
+                <div key={section} className="space-y-2">
+                  <div className="text-sm font-semibold text-sky-700">{section}</div>
+                  <div className="flex flex-wrap gap-2">
+                    {itemsBySection[section].map((it) => (
+                      <Button
+                        key={it.id}
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleSend(it.question ?? it.title ?? it.answer, it.title ?? it.question, it)}
+                        className="rounded-full bg-white/90 text-sky-700"
+                        disabled={isTyping}
+                      >
+                        {it.title ?? it.question ?? it.id}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
           <Textarea
             placeholder="اكتب سؤالك بالتفصيل..."
