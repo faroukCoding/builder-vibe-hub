@@ -86,6 +86,8 @@ const SECTION_TIPS = "💡 نصائح تربوية";
 
 // Clé pour localStorage
 const STORAGE_KEY = "speech_therapy_chat_history";
+// Clé pour sauvegarde temporaire du draft de l'input
+const DRAFT_INPUT_KEY = "speech_therapy_input_draft";
 
 // Helper localStorage avec gestion d'erreurs
 const storage = {
@@ -513,11 +515,33 @@ export default function SpeechTherapyAssistant({
     // Si pas de messages sauvegardés, retourner tableau vide (le welcome sera ajouté dans useEffect)
     return saved.length > 0 ? saved : [];
   });
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
   const [isTyping, setIsTyping] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
   const initializedRef = useRef(false);
   const isSubmittingRef = useRef(false);
+
+  // Charger le draft sauvegardé une seule fois au montage (éviter la réinitialisation à chaque rendu)
+  useEffect(() => {
+    try {
+      const saved = storage.get<string>(DRAFT_INPUT_KEY, "");
+      if (saved) {
+        setInputValue(saved);
+      }
+    } catch (e) {
+      console.error("Erreur lecture draft input depuis localStorage:", e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sauvegarder le draft à chaque changement de inputValue
+  useEffect(() => {
+    try {
+      storage.set(DRAFT_INPUT_KEY, inputValue);
+    } catch (e) {
+      console.error("Erreur sauvegarde draft input dans localStorage:", e);
+    }
+  }, [inputValue]);
 
   const welcomeMessage = useMemo(
     () =>
