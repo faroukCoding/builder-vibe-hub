@@ -136,51 +136,26 @@ export default function AIAssistant() {
     setErrorMessage(null);
 
     try {
-      // Vérification de la clé API
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-      if (!apiKey) {
-        throw new Error("⚠️ يرجى إعداد VITE_OPENAI_API_KEY في ملف .env");
-      }
-
-      // Préparer le contexte (limité aux derniers messages)
-      const contextMessages = [...messages, userMessage].slice(-MAX_MESSAGES_IN_CONTEXT);
-
-      // Appel API
-      const response = await fetch(API_URL, {
+      // Call the server assistant endpoint which handles OpenAI and persistence
+      const res = await fetch("/api/ai-assistant/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          temperature: 0.7,
-          max_tokens: 500,
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            ...contextMessages.map((msg) => ({
-              role: msg.role,
-              content: msg.content,
-            })),
-          ],
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ parentId: "parent-1", message: trimmed }),
       });
 
-      // Gestion des erreurs HTTP
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorMsg = errorData.error?.message || `خطأ HTTP ${response.status}`;
-        throw new Error(errorMsg);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `خطأ HTTP ${res.status}`);
       }
 
-      const data = await response.json();
-      const reply = data?.choices?.[0]?.message?.content?.trim();
+      const data = (await res.json()) as { reply?: string; suggestedActions?: string[] };
+      const reply = data?.reply?.trim();
 
       if (!reply) {
         throw new Error("لم يصل رد من المساعد. حاول مرة أخرى.");
       }
 
-      // Ajouter la réponse
+      // Ajouter la réponse (et suggestions si وُجدت)
       const assistantMessage: IChatMessage = {
         id: generateId("assistant"),
         role: "assistant",
