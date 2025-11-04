@@ -533,14 +533,34 @@ export default function SpeechTherapyAssistant({
           }>;
 
           if (serverMessages.length > 0) {
-            const mapped = serverMessages.map((m) => ({
-              id: m.id,
-              role: m.role === "assistant" ? ("assistant" as const) : ("user" as const),
-              content: m.content,
-              // attempt to attach item reference if possible
-              item: assistantData.find((it) => it.answer === m.content) ?? undefined,
-              suggestions: m.suggestedActions?.map((s, i) => ({ id: `srv-${i}` + Date.now(), label: s, itemId: "" })),
-            }));
+            const mapped = serverMessages.map((m) => {
+              // try to associate suggestedActions strings with known assistant items
+              const suggestions = (m.suggestedActions ?? []).map((s, i) => {
+                // try to find item by matching title/question/answer substrings
+                const foundItem = assistantData.find((it) => {
+                  const needle = s.toLowerCase();
+                  return (
+                    (it.title && it.title.toLowerCase().includes(needle)) ||
+                    (it.question && it.question.toLowerCase().includes(needle)) ||
+                    (it.answer && it.answer.toLowerCase().includes(needle))
+                  );
+                });
+                return {
+                  id: `srv-${i}-${Date.now()}`,
+                  label: s,
+                  itemId: foundItem ? foundItem.id : "",
+                } as FollowUpOption;
+              });
+
+              return {
+                id: m.id,
+                role: m.role === "assistant" ? ("assistant" as const) : ("user" as const),
+                content: m.content,
+                // attempt to attach item reference if possible (match by answer)
+                item: assistantData.find((it) => it.answer === m.content) ?? undefined,
+                suggestions: suggestions.length ? suggestions : undefined,
+              } as ChatMessage;
+            });
             setMessages(mapped);
             // do not overwrite with welcome message
             return;
@@ -617,16 +637,13 @@ export default function SpeechTherapyAssistant({
   const handleSend = useCallback(
     async (rawText: string, displayText?: string, forcedItem?: AssistantItem) => {
       const trimmed = rawText.trim();
-      
-      // Validation avec protection contre les doubles soumissions
-      if (!trimmed || isTyping || isSubmittingRef.current) {
-        return;
-      }
+      if (!trimmed) return;
+      if (isTyping || isSubmittingRef.current) return;
 
-      // Bloquer les nouvelles soumissions
       isSubmittingRef.current = true;
+      setIsTyping(true);
 
-      // Ajouter le message utilisateur
+      // Add user message immediately
       setMessages((prev) => [
         ...prev,
         {
@@ -644,40 +661,50 @@ export default function SpeechTherapyAssistant({
         notes: trimmed,
       });
 
-      setIsTyping(true);
-      await wait(650);
+      try {
+        await wait(650);
 
-      // Chercher dans la base de données locale
-      const matchedItem = forcedItem ?? findAssistantItem(trimmed);
-      if (matchedItem) {
-        addAssistantMessage(matchedItem.answer, matchedItem, true);
-        setIsTyping(false);
-        isSubmittingRef.current = false;
+        // Chercher dans la base de données locale
+        const matchedItem = forcedItem ?? findAssistantItem(trimmed);
+        if (matchedItem) {
+          addAssistantMessage(matchedItem.answer, matchedItem, true);
+          onLogInteraction?.({
+            type: "assistant",
+            activity: "إجابة من قاعدة البيانات",
+            result: "success",
+            notes: matchedItem.answer,
+          });
+          return;
+        }
+
+        // Sinon, appeler OpenAI (server endpoint)
+        const aiReply = await requestOpenAIResponse(trimmed, childName);
+        const fallbackReply =
+          aiReply ??
+          "أحتاج إلى مزيد من التفاصيل لأقدّم لك خطة دقيقة 🌈. أخبرني ما الحرف أو المهارة التي ترغب في تطويرها لنقترح تمرينًا عمليًا.";
+        addAssistantMessage(fallbackReply, undefined, Boolean(aiReply));
         onLogInteraction?.({
           type: "assistant",
-          activity: "إجابة من قاعدة البيانات",
-          result: "success",
-          notes: matchedItem.answer,
+          activity: aiReply ? "إجابة الذكاء الاصطناعي" : "تعذّر استدعاء الذكاء الاصطناعي",
+          result: aiReply ? "success" : "retry",
+          notes: fallbackReply,
         });
-        return;
+      } catch (err) {
+        console.error("handleSend failed:", err);
+        addAssistantMessage("❌ حدث خطأ أثناء إرسال الرسالة. حاول مرة أخرى.");
+        onLogInteraction?.({
+          type: "assistant",
+          activity: "خطأ أثناء الإرسال",
+          result: "retry",
+          notes: String(err),
+        });
+      } finally {
+        // always reset flags
+        setIsTyping(false);
+        isSubmittingRef.current = false;
       }
-
-      // Sinon, appeler OpenAI
-      const aiReply = await requestOpenAIResponse(trimmed, childName);
-      const fallbackReply =
-        aiReply ??
-        "أحتاج إلى مزيد من التفاصيل لأقدّم لك خطة دقيقة 🌈. أخبرني ما الحرف أو المهارة التي ترغب في تطويرها لنقترح تمرينًا عمليًا.";
-      addAssistantMessage(fallbackReply, undefined, Boolean(aiReply));
-      setIsTyping(false);
-      isSubmittingRef.current = false;
-      onLogInteraction?.({
-        type: "assistant",
-        activity: aiReply ? "إجابة الذكاء الاصطناعي" : "تعذّر استدعاء الذكاء الاصطناعي",
-        result: aiReply ? "success" : "retry",
-        notes: fallbackReply,
-      });
     },
-    [addAssistantMessage, childName, isTyping, onLogInteraction],
+    [addAssistantMessage, childName, onLogInteraction],
   );
 
   const handleSubmit = useCallback(
