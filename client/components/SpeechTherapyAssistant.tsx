@@ -492,6 +492,7 @@ export default function SpeechTherapyAssistant({
   const [showAllItems, setShowAllItems] = useState(false);
   const conversationRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const [inputValue, setInputValue] = useState("");
   const isComposingRef = useRef(false);
   const initializedRef = useRef(false);
   const isSubmittingRef = useRef(false);
@@ -654,10 +655,11 @@ export default function SpeechTherapyAssistant({
           content: displayText ?? rawText,
         },
       ]);
-      // clear uncontrolled textarea
+      // clear textarea (controlled + ref)
       try {
         if (inputRef.current) inputRef.current.value = "";
       } catch {}
+      setInputValue("");
 
       onLogInteraction?.({
         type: "assistant",
@@ -743,8 +745,7 @@ export default function SpeechTherapyAssistant({
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const val = inputRef.current?.value ?? "";
-      handleSend(val);
+      handleSend(inputValue);
     },
     [handleSend],
   );
@@ -972,60 +973,64 @@ export default function SpeechTherapyAssistant({
           )}
         </div>
         <form onSubmit={handleSubmit} className="space-y-3" dir="rtl">
-          <textarea
-            placeholder="اكتب سؤالك بالتفصيل..."
-            ref={inputRef}
-            // allow browser to choose direction based on content (Arabic/LTR languages)
-            dir="auto"
-            // accessibility
-            aria-label="حقل سؤال المساعد الذكي"
-            title="اكتب سؤالك هنا ثم اضغط Enter لإرساله"
-            tabIndex={0}
-            onMouseDown={() => inputRef.current?.focus()}
-            onFocus={() => inputRef.current?.classList.add("ring-2", "ring-sky-300")}
-            onBlur={() => inputRef.current?.classList.remove("ring-2", "ring-sky-300")}
-            // IME composition support (prevent sending on Enter while composing)
-            onCompositionStart={() => (isComposingRef.current = true)}
-            onCompositionEnd={() => (isComposingRef.current = false)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" && !event.shiftKey && !isComposingRef.current) {
-                event.preventDefault();
-                const val = inputRef.current?.value ?? "";
-                handleSend(val);
-              }
-            }}
-            // auto-resize to content for stable UX
-            onInput={() => {
-              try {
-                const el = inputRef.current;
-                if (!el) return;
-                el.style.height = "auto";
-                // add small buffer to avoid scrollbar flicker
-                el.style.height = Math.min(window.innerHeight * 0.5, el.scrollHeight + 6) + "px";
-              } catch {}
-            }}
-            inputMode="text"
-            spellCheck={true}
-            disabled={isTyping}
-            className="w-full min-h-[120px] max-h-[50vh] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none relative z-10"
-          />
-          <div className="flex flex-wrap items-center gap-3">
-            <Button
-              type="submit"
-              className="rounded-full bg-sky-500 px-6 text-white shadow hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+          <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+            <textarea
+              placeholder="اكتب سؤالك هنا..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.currentTarget.value)}
+              ref={inputRef}
+              dir="rtl"
+              aria-label="حقل سؤال المساعد الذكي"
+              title="اكتب سؤالك هنا ثم اضغط إرسال"
+              tabIndex={0}
+              onMouseDown={() => inputRef.current?.focus()}
+              onFocus={() => inputRef.current?.classList.add("ring-2", "ring-sky-300")}
+              onBlur={() => inputRef.current?.classList.remove("ring-2", "ring-sky-300")}
+              onCompositionStart={() => (isComposingRef.current = true)}
+              onCompositionEnd={() => (isComposingRef.current = false)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey && !isComposingRef.current) {
+                  event.preventDefault();
+                  handleSend(inputValue);
+                }
+              }}
+              onInput={() => {
+                try {
+                  const el = inputRef.current;
+                  if (!el) return;
+                  el.style.height = "auto";
+                  el.style.height = Math.min(window.innerHeight * 0.5, el.scrollHeight + 6) + "px";
+                } catch {}
+              }}
+              inputMode="text"
+              spellCheck={true}
+              readOnly={false}
               disabled={isTyping}
-            >
-              {isTyping ? "جاري الإرسال..." : "أرسل سؤالي الآن"}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={clearHistory}
-              disabled={messages.length <= 1 || isTyping}
-            >
-              إعادة تعيين المحادثة
-            </Button>
+              className="flex-1 w-full min-h-[120px] max-h-[50vh] rounded-2xl border border-sky-200 bg-white/90 px-4 py-3 text-sm shadow-sm focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+            />
+
+            <div className="flex flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
+              <Button
+                type="submit"
+                className="rounded-full bg-sky-500 px-6 py-3 text-white shadow hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
+                disabled={isTyping || !inputValue.trim()}
+              >
+                {isTyping ? "جاري الإرسال..." : "إرسال السؤال"}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  setInputValue("");
+                  inputRef.current && (inputRef.current.value = "");
+                }}
+                disabled={isTyping}
+              >
+                مسح الحقل
+              </Button>
+            </div>
           </div>
+          <div className="text-xs text-slate-400">اضغط Enter لإرسال، أو استخدم Shift+Enter لسطر جديد.</div>
         </form>
       </CardContent>
     </Card>
