@@ -2590,9 +2590,7 @@ export default function ParentDashboard() {
   };
 
   const CognitiveTestsTab = () => (
-    <div className="space-y-6">
-      >
-
+   
       {/* المكتسبات القبلية والمجموعة الضمنية */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
         <CardHeader>
