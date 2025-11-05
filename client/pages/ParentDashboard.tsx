@@ -2629,6 +2629,7 @@ export default function ParentDashboard() {
       </div>
     </CardContent>
   </Card>
+    ))}
        {/*تمارين الإدراك والانتباه والذاكرة*/}
       <Card className="bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
         <CardHeader>
