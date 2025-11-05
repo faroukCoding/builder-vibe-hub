@@ -2589,47 +2589,48 @@ export default function ParentDashboard() {
     );
   };
 
-  const CognitiveTestsTab = () => (
-   return (
-      {/* المكتسبات القبلية والمجموعة الضمنية */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
-        )
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Brain className="w-6 h-6 text-green-600" />
-            المكتسبات الأساسية
-          </CardTitle>
-          <CardDescription>المكتسبات القبلية والمجموعة الضمنية</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            <Button
-              onClick={() => navigate("/pre-basic-acquisitions")}
-              className="h-32 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-3"
-            >
-              <div className="text-3xl">🎨</div>
-              <div className="text-center">
-                <div className="font-semibold">المكتسبات القبلية</div>
-                <div className="text-xs opacity-80">
-                  الألوان، الأرقام، الجسم، الجانبية
-                </div>
-              </div>
-            </Button>
-            <Button
-              onClick={() => navigate("/implicit-group")}
-              className="h-32 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-3"
-            >
-              <div className="text-3xl">🗂️</div>
-              <div className="text-center">
-                <div className="font-semibold">المجموعة الضمنية</div>
-                <div className="text-xs opacity-80">
-                  الفواكه، الخضر، المواصلات، الطيور
-                </div>
-              </div>
-            </Button>
+ const CognitiveTestsTab = () => (
+  <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Brain className="w-6 h-6 text-green-600" />
+        المكتسبات الأساسية
+      </CardTitle>
+      <CardDescription>المكتسبات القبلية والمجموعة الضمنية</CardDescription>
+    </CardHeader>
+
+    <CardContent>
+      <div className="grid md:grid-cols-2 gap-4 mb-6">
+        <Button
+          onClick={() => navigate("/pre-basic-acquisitions")}
+          className="h-32 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-3"
+        >
+          <div className="text-3xl">🎨</div>
+          <div className="text-center">
+            <div className="font-semibold">المكتسبات القبلية</div>
+            <div className="text-xs opacity-80">
+              الألوان، الأرقام، الجسم، الجانبية
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </Button>
+
+        <Button
+          onClick={() => navigate("/implicit-group")}
+          className="h-32 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-3"
+        >
+          <div className="text-3xl">🗂️</div>
+          <div className="text-center">
+            <div className="font-semibold">المجموعة الضمنية</div>
+            <div className="text-xs opacity-80">
+              الفواكه، الخضر، المواصلات، الطيور
+            </div>
+          </div>
+        </Button>
+      </div>
+    </CardContent>
+  </Card>
+);
+
 
       {/* تمارين الإدراك والانتباه ��الذاكرة */}
       <Card className="bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
