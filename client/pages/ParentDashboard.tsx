@@ -2632,7 +2632,7 @@ export default function ParentDashboard() {
 
 
 
-      {/* تمارين الإدراك والانتباه ��الذاكرة */}
+      <span>تمارين الإدراك والانتباه والذاكرة</span>
       <Card className="bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
