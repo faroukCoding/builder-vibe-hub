@@ -2589,7 +2589,256 @@ export default function ParentDashboard() {
     );
   };
 
- 
+ const CognitiveTestsTab = () => (
+  <div className="space-y-6">
+    {/* المكتسبات الأساسية */}
+    <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Brain className="w-6 h-6 text-green-600" />
+          المكتسبات الأساسية
+        </CardTitle>
+        <CardDescription>المكتسبات القبلية والمجموعة الضمنية</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <Button
+            onClick={() => navigate("/pre-basic-acquisitions")}
+            className="h-32 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-3"
+          >
+            <div className="text-3xl">🎨</div>
+            <div className="text-center">
+              <div className="font-semibold">المكتسبات القبلية</div>
+              <div className="text-xs opacity-80">
+                الألوان، الأرقام، الجسم، الجانبية
+              </div>
+            </div>
+          </Button>
+          <Button
+            onClick={() => navigate("/implicit-group")}
+            className="h-32 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-3"
+          >
+            <div className="text-3xl">🗂️</div>
+            <div className="text-center">
+              <div className="font-semibold">المجموعة الضمنية</div>
+              <div className="text-xs opacity-80">
+                الفواكه، الخضر، المواصلات، الطيور
+              </div>
+            </div>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* التمارين المعرفية المتقدمة */}
+    <Card className="bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Eye className="w-6 h-6 text-orange-600" />
+          التمارين المعرفية المتقدمة
+        </CardTitle>
+        <CardDescription>
+          تمارين الإدراك البصري والانتباه والذاكرة
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <Button
+            onClick={() => navigate("/perceptual-exercises")}
+            className="h-32 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-3"
+          >
+            <div className="text-3xl">👁️</div>
+            <div className="text-center">
+              <div className="font-semibold">الإدراك البصري</div>
+              <div className="text-xs opacity-80">3 مراحل متدرجة</div>
+            </div>
+          </Button>
+          <Button
+            onClick={() => navigate("/attention-exercises")}
+            className="h-32 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white flex flex-col items-center justify-center gap-3"
+          >
+            <div className="text-3xl">🎯</div>
+            <div className="text-center">
+              <div className="font-semibold">تمارين الانتباه</div>
+              <div className="text-xs opacity-80">3 أنواع انتباه</div>
+            </div>
+          </Button>
+          <Button
+            onClick={() => navigate("/memory-exercises")}
+            className="h-32 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white flex flex-col items-center justify-center gap-3"
+          >
+            <div className="text-3xl">🧠</div>
+            <div className="text-center">
+              <div className="font-semibold">تمارين الذاكرة</div>
+              <div className="text-xs opacity-80">سمعية وبصرية</div>
+            </div>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* تمارين الإدراك المعرفية */}
+    <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Brain className="w-6 h-6 text-purple-600" />
+          تمارين الإدراك المعرفية
+        </CardTitle>
+        <CardDescription>
+          تمارين تفاعلية لتطوير مهارات الإدراك والتعرف على الأشياء
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <Button
+            onClick={() => navigate("/cognitive-tests")}
+            className="h-24 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white flex flex-col items-center justify-center gap-2"
+          >
+            <div className="text-2xl">🍎</div>
+            <span>الفواكه</span>
+          </Button>
+          <Button
+            onClick={() => navigate("/cognitive-tests")}
+            className="h-24 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white flex flex-col items-center justify-center gap-2"
+          >
+            <div className="text-2xl">🥕</div>
+            <span>الخضروات</span>
+          </Button>
+          <Button
+            onClick={() => navigate("/cognitive-tests")}
+            className="h-24 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-2"
+          >
+            <div className="text-2xl">👕</div>
+            <span>الملابس</span>
+          </Button>
+          <Button
+            onClick={() => navigate("/cognitive-tests")}
+            className="h-24 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white flex flex-col items-center justify-center gap-2"
+          >
+            <div className="text-2xl">🐘</div>
+            <span>الحيوانات</span>
+          </Button>
+          <Button
+            onClick={() => navigate("/cognitive-tests")}
+            className="h-24 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white flex flex-col items-center justify-center gap-2"
+          >
+            <div className="text-2xl">🚗</div>
+            <span>المركبات</span>
+          </Button>
+          <Button
+            onClick={() => navigate("/cognitive-tests")}
+            className="h-24 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white flex flex-col items-center justify-center gap-2"
+          >
+            <div className="text-3xl">🧠</div>
+            <span>المطابقة الذكية</span>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+    
+    {/* إحصائيات التقدم */}
+    <div className="grid md:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="w-5 h-5" />
+            التقدم الشهري في التمارين
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={cognitiveTestsProgress}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="month"
+                axisLine={true}
+                tickLine={true}
+                type="category"
+                orientation="bottom"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                axisLine={true}
+                tickLine={true}
+                type="number"
+                orientation="left"
+                tick={{ fontSize: 12 }}
+              />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="fruits"
+                stroke="#ff6b6b"
+                strokeWidth={2}
+                name="الفواكه"
+              />
+              <Line
+                type="monotone"
+                dataKey="vegetables"
+                stroke="#4ecdc4"
+                strokeWidth={2}
+                name="الخضروات"
+              />
+              <Line
+                type="monotone"
+                dataKey="clothes"
+                stroke="#45b7d1"
+                strokeWidth={2}
+                name="الملابس"
+              />
+              <Line
+                type="monotone"
+                dataKey="animals"
+                stroke="#96ceb4"
+                strokeWidth={2}
+                name="الحيوانات"
+              />
+              <Line
+                type="monotone"
+                dataKey="vehicles"
+                stroke="#ffeaa7"
+                strokeWidth={2}
+                name="المركبات"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Award className="w-5 h-5" />
+            نسب النجاح الحالية
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={testCategories}
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+                label={({ name, value }) => `${name}: ${value}%`}
+                startAngle={0}
+                endAngle={360}
+                innerRadius={0}
+              >
+                {testCategories.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+);
           
   const GeographicalChartTab = () => (
     <div className="space-y-6">
