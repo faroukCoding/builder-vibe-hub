@@ -2735,7 +2735,7 @@ export default function ParentDashboard() {
           </div>
         </CardContent>
       </Card>
-
+      )
       {/* إحصائيات التقدم */}
       <div className="grid md:grid-cols-2 gap-6">
         <Card>
