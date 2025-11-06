@@ -107,23 +107,23 @@ export default function Index() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Logo Section */}
         <div className="text-center mb-12">
-          <div className="bg-black text-white rounded-full w-32 h-32 mx-auto mb-6 shadow-xl flex items-center justify-center overflow-hidden">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F7d0caf934e794ae2afa6a9944c5b8775%2F97af8386d4f542668cf40857fea32999?format=webp&width=256"
-              alt="Ortho Smart"
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
-            Ortho Smart
-          </h1>
-          <p className="text-2xl text-gray-600 font-semibold mb-4">
-            مرحباً بك في Ortho Smart
-          </p>
-          <div className="text-sm text-blue-600 bg-blue-50 inline-block px-4 py-2 rounded-full">
-            منصة رقمية متخصصة في الأرطوفونيا
-          </div>
-        </div>
+  <div className="bg-black text-white rounded-full w-32 h-32 mx-auto mb-6 shadow-xl flex items-center justify-center overflow-hidden">
+    <img
+      src="/logo-new.jpg"
+      alt="Ortho Smart"
+      className="w-full h-full object-contain"
+    />
+  </div>
+  <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+    Ortho Smart
+  </h1>
+  <p className="text-2xl text-gray-600 font-semibold mb-4">
+    مرحباً بك في Ortho Smart
+  </p>
+  <div className="text-sm text-blue-600 bg-blue-50 inline-block px-4 py-2 rounded-full">
+    منصة رقمية متخصصة في الأرطوفونيا
+  </div>
+</div>
 
         {/* Action Buttons */}
         <div className="text-center space-y-6">
