@@ -115,7 +115,7 @@ export default function ImplicitGroup() {
       items: [
         { name: "قميص", emoji: "👕" },
         { name: "فستان", emoji: "👗" },
-        { name: "بنطلون", emoji: "👖" },
+        { name: "سروال", emoji: "👖" },
         { name: "حذاء", emoji: "👟" },
         { name: "قبعة", emoji: "👒" },
         { name: "جوارب", emoji: "🧦" },
