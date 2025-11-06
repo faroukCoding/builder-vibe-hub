@@ -160,6 +160,8 @@ export default function Login() {
                 >
                   <option value="specialist">أخصائي</option>
                   <option value="parent">ولي أمر</option>
+                   <option value="malade">مرضى الراشدين</option>
+
                 </select>
               </div>
 
