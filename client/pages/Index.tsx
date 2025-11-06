@@ -23,6 +23,7 @@ import {
   Calculator,
   BarChart3,
   Gamepad2,
+  UserCheck,
 } from "lucide-react";
 
 export default function Index() {
@@ -159,11 +160,12 @@ export default function Index() {
               </div>
             </div>
           ) : (
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               <h3 className="text-2xl font-semibold mb-6 text-gray-800">
                 اختر نوع الحساب
               </h3>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* أخصائي أرطوفوني */}
                 <Card
                   className="cursor-pointer hover:shadow-xl transition-all border-2 hover:border-blue-400 group"
                   onClick={() => navigate("/specialist-register")}
@@ -184,6 +186,7 @@ export default function Index() {
                   </CardContent>
                 </Card>
 
+                {/* ولي أمر */}
                 <Card
                   className="cursor-pointer hover:shadow-xl transition-all border-2 hover:border-green-400 group"
                   onClick={() => navigate("/parent-register")}
@@ -201,6 +204,27 @@ export default function Index() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* مريض راشد */}
+                <Card
+                  className="cursor-pointer hover:shadow-xl transition-all border-2 hover:border-purple-400 group"
+                  onClick={() => navigate("/adult-patient-register")}
+                >
+                  <CardContent className="pt-8 text-center">
+                    <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-600 group-hover:scale-110 transition-transform">
+                      <UserCheck className="w-10 h-10" />
+                    </div>
+                    <h4 className="text-xl font-semibold mb-2">
+                      أنا مريض راشد
+                    </h4>
+                    <p className="text-gray-600 text-sm mb-4">
+                      تمارين تفاعلية مصممة خصيصاً للراشدين ومتابعة التقدم
+                    </p>
+                    <div className="text-xs text-purple-600 bg-purple-50 px-3 py-1 rounded-full inline-block">
+                      حساب شخصي
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
 
               <Button
@@ -213,6 +237,63 @@ export default function Index() {
             </div>
           )}
         </div>
+
+        {/* Features Section */}
+        {!showAccountTypes && (
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+              مميزات المنصة
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
+                <Card
+                  key={index}
+                  className="text-center border-2 border-gray-100 hover:border-blue-200 transition-all"
+                >
+                  <CardContent className="pt-8">
+                    <div className="text-blue-600 mb-4 flex justify-center">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tools Section */}
+        {!showAccountTypes && (
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+              أدوات التقييم والعلاج
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {toolCategories.map((category, index) => (
+                <Card
+                  key={index}
+                  className="cursor-pointer hover:shadow-lg transition-all border-2 border-gray-100 hover:border-gray-200"
+                  onClick={() => setShowAccountTypes(true)}
+                >
+                  <CardContent className="p-6 text-center">
+                    <div
+                      className={`${category.color} text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4`}
+                    >
+                      {category.icon}
+                    </div>
+                    <h3 className="font-semibold mb-2">{category.title}</h3>
+                    <p className="text-sm text-gray-600">
+                      {category.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
