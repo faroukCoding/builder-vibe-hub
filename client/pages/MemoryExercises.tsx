@@ -54,6 +54,14 @@ export default function MemoryExercises() {
       color: "bg-blue-500",
       description: "مكان الصورة - تذكر مواضع الصور واسحبها لأماكنها",
     },
+    {
+      id: "working",
+      title: "الذاكرة العاملة",
+      subtitle: "Working Memory",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-purple-500",
+      description: "الترتيب العكسي - تذكر الأشكال ورتبها بشكل عكسي",
+    },
   ];
 
   // Auditory Memory Game
@@ -448,12 +456,243 @@ export default function MemoryExercises() {
     );
   };
 
+  // Working Memory Game - الترتيب العكسي
+  const WorkingMemoryGame = ({ onComplete }: { onComplete: () => void }) => {
+    const [shapes, setShapes] = useState<string[]>([]);
+    const [showShapes, setShowShapes] = useState(true);
+    const [gamePhase, setGamePhase] = useState<"memorize" | "recall">("memorize");
+    const [playerSequence, setPlayerSequence] = useState<string[]>([]);
+    const [availableShapes, setAvailableShapes] = useState<string[]>([]);
+    const [score, setScore] = useState(0);
+    const [lives, setLives] = useState(3);
+    const [showResult, setShowResult] = useState(false);
+    const [memorizeTime, setMemorizeTime] = useState(3);
+    const [level, setLevel] = useState(2); // Start with 2 shapes
+
+    const shapeEmojis = ["🔺", "🔵", "⭐", "🟩", "🔶", "🟣"];
+
+    const initializeGame = () => {
+      // Generate random sequence of shapes
+      const newShapes = [];
+      for (let i = 0; i < level; i++) {
+        const randomShape = shapeEmojis[Math.floor(Math.random() * shapeEmojis.length)];
+        newShapes.push(randomShape);
+      }
+
+      setShapes(newShapes);
+      setAvailableShapes([...newShapes].sort(() => Math.random() - 0.5)); // Shuffle available shapes
+      setPlayerSequence([]);
+      setGamePhase("memorize");
+      setShowShapes(true);
+      setMemorizeTime(3);
+    };
+
+    useEffect(() => {
+      initializeGame();
+    }, [level]);
+
+    useEffect(() => {
+      if (gamePhase === "memorize" && memorizeTime > 0) {
+        const timer = setTimeout(() => {
+          setMemorizeTime(memorizeTime - 1);
+        }, 1000);
+        return () => clearTimeout(timer);
+      } else if (gamePhase === "memorize" && memorizeTime === 0) {
+        setShowShapes(false);
+        setGamePhase("recall");
+        speakArabic("الآن رتب الأشكال بشكل عكسي");
+      }
+    }, [memorizeTime, gamePhase]);
+
+    const handleShapeClick = (shape: string) => {
+      if (gamePhase !== "recall") return;
+
+      const newPlayerSequence = [...playerSequence, shape];
+      setPlayerSequence(newPlayerSequence);
+
+      // Check if sequence is complete
+      if (newPlayerSequence.length === shapes.length) {
+        // Check if the sequence is the reverse of the original
+        const reversedOriginal = [...shapes].reverse();
+        const isCorrect = newPlayerSequence.every(
+          (shape, index) => shape === reversedOriginal[index]
+        );
+
+        if (isCorrect) {
+          setScore(score + 1);
+          speakArabic("ممتاز! الترتيب صحيح");
+
+          // Increase level every 3 correct answers
+          if (score > 0 && score % 3 === 0) {
+            setLevel(level + 1);
+          }
+
+          setTimeout(() => {
+            initializeGame();
+          }, 1500);
+        } else {
+          setLives(lives - 1);
+          speakArabic("أوووو حاول مرة أخرى");
+
+          if (lives - 1 <= 0) {
+            setShowResult(true);
+          } else {
+            setTimeout(() => {
+              initializeGame();
+            }, 1500);
+          }
+        }
+      }
+    };
+
+    if (showResult) {
+      return (
+        <div className="text-center space-y-6">
+          <div className="text-6xl mb-4">🧠</div>
+          <h3 className="text-2xl font-bold">انتهت لعبة الذاكرة العاملة!</h3>
+          <p className="text-lg">النتيجة: {score} جولات صحيحة</p>
+          <p className="text-lg">أعلى مستوى: {level} أشكال</p>
+          <div className="flex gap-4 justify-center">
+            <Button
+              onClick={() => {
+                setScore(0);
+                setLives(3);
+                setLevel(2);
+                setShowResult(false);
+                initializeGame();
+              }}
+            >
+              <RotateCcw className="w-4 h-4 ml-2" />
+              إعادة اللعب
+            </Button>
+            <Button onClick={onComplete} variant="outline">
+              العودة
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-xl font-bold mb-4">الترتيب العكسي</h3>
+          <div className="flex items-center justify-center gap-6 mb-4">
+            <div className="flex">
+              {[...Array(3)].map((_, i) => (
+                <span
+                  key={i}
+                  className={`text-2xl ${i < lives ? "text-red-500" : "text-gray-300"}`}
+                >
+                  ❤️
+                </span>
+              ))}
+            </div>
+            <div className="text-lg font-bold">النتيجة: {score}</div>
+            <div className="text-lg font-bold">المستوى: {level}</div>
+          </div>
+
+          {gamePhase === "memorize" && (
+            <div className="text-blue-600 font-semibold mb-4">
+              <Timer className="w-5 h-5 inline ml-2" />
+              انظر إلى الأشكال - يتبقى {memorizeTime} ثواني
+            </div>
+          )}
+
+          {gamePhase === "recall" && (
+            <div className="text-green-600 font-semibold mb-4">
+              اضغط على الأشكال بالترتيب العكسي
+            </div>
+          )}
+        </div>
+
+        {/* Original Shapes Display */}
+        <div className="text-center">
+          <h4 className="font-semibold mb-4">الأشكال:</h4>
+          <div className="flex justify-center gap-4 mb-8">
+            {shapes.map((shape, index) => (
+              <div
+                key={index}
+                className={`w-16 h-16 border-4 rounded-lg flex items-center justify-center text-3xl transition-all ${
+                  showShapes
+                    ? "border-black bg-white"
+                    : "border-gray-300 bg-gray-100"
+                }`}
+              >
+                {showShapes ? shape : "?"}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Player's Sequence */}
+        {gamePhase === "recall" && (
+          <div className="text-center">
+            <h4 className="font-semibold mb-4">ترتيبك:</h4>
+            <div className="flex justify-center gap-4 mb-8">
+              {playerSequence.map((shape, index) => (
+                <div
+                  key={index}
+                  className="w-16 h-16 border-4 border-green-500 bg-green-100 rounded-lg flex items-center justify-center text-3xl"
+                >
+                  {shape}
+                </div>
+              ))}
+              {Array(shapes.length - playerSequence.length)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-16 h-16 border-4 border-gray-300 bg-gray-100 rounded-lg flex items-center justify-center text-3xl text-gray-400"
+                  >
+                    ?
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Available Shapes to Click */}
+        {gamePhase === "recall" && (
+          <div className="text-center">
+            <h4 className="font-semibold mb-4">اختر الأشكال:</h4>
+            <div className="flex justify-center gap-4 flex-wrap">
+              {availableShapes.map((shape, index) => (
+                <Card
+                  key={index}
+                  className="cursor-pointer hover:shadow-lg transition-all w-20 h-20 flex items-center justify-center"
+                  onClick={() => handleShapeClick(shape)}
+                >
+                  <CardContent className="p-0 flex items-center justify-center text-3xl">
+                    {shape}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="text-center">
+          <Button
+            onClick={() => speakArabic("يتظهر في الشاشة أشكال لثواني ثم تختفي وعلى المستخدم ترتيبها بشكل عكسي")}
+            variant="outline"
+          >
+            <Volume2 className="w-4 h-4 ml-2" />
+            استمع للتعليمات
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   const renderMemoryGame = () => {
     switch (activeType) {
       case "auditory":
         return <AuditoryMemoryGame onComplete={() => setActiveType(null)} />;
       case "visual":
         return <VisualMemoryGame onComplete={() => setActiveType(null)} />;
+      case "working":
+        return <WorkingMemoryGame onComplete={() => setActiveType(null)} />;
       default:
         return null;
     }
@@ -512,7 +751,7 @@ export default function MemoryExercises() {
                   لعبة الذاكرة
                 </h1>
                 <p className="text-gray-600 text-sm">
-                  تمارين الذاكرة السمعية والبصرية
+                  تمارين الذاكرة السمعية والبصرية والذاكرة العاملة
                 </p>
               </div>
             </div>
@@ -534,12 +773,12 @@ export default function MemoryExercises() {
             MEMORY GAME
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            تطوير الذاكرة السمعية والبصرية من خلال ألعاب تفاعلية ممتعة
+            تطوير الذاكرة السمعية والبصرية والذاكرة العاملة من خلال ألعاب تفاعلية ممتعة
           </p>
         </div>
 
         {/* Memory Types Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid lg:grid-cols-3 gap-8 mb-12">
           {memoryTypes.map((type) => (
             <Card
               key={type.id}
@@ -580,7 +819,7 @@ export default function MemoryExercises() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6 text-blue-700">
+            <div className="grid md:grid-cols-3 gap-6 text-blue-700">
               <div>
                 <h4 className="font-semibold mb-2">الذاكرة السمعية:</h4>
                 <ul className="space-y-2 text-sm">
@@ -602,6 +841,17 @@ export default function MemoryExercises() {
                   <li>• عند الإجابة الخاطئة: "أوووو حاول مرة أخرى"</li>
                 </ul>
               </div>
+              <div>
+                <h4 className="font-semibold mb-2">الذاكرة العاملة:</h4>
+                <ul className="space-y-2 text-sm">
+                  <li>• يتظهر في الشاشة أشكال لثواني ثم تختفي</li>
+                  <li>• وعلى المستخدم ترتيبها بشكل عكسي</li>
+                  <li>• يسمع المستخدم "الآن رتب الأشكال بشكل عكسي"</li>
+                  <li>• تشجيع عند الإجابة الصحيحة</li>
+                  <li>• عند الإجابة الخاطئة: "أوووو حاول مرة أخرى"</li>
+                  <li>• تزداد الصعوبة مع تقدم المستوى</li>
+                </ul>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -609,3 +859,5 @@ export default function MemoryExercises() {
     </div>
   );
 }
+
+         
