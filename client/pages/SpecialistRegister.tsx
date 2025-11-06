@@ -213,7 +213,6 @@ export default function SpecialistRegister() {
                 <SelectContent>
                   <SelectItem value="speech-therapy">علاج النطق واللغة</SelectItem>
                   <SelectItem value="developmental-therapy">العلاج التطويري</SelectItem>
-                  <SelectItem value="cognitive-therapy">العلاج المعرفي</SelectItem>
                   <SelectItem value="autism-therapy">علاج طيف التوحد</SelectItem>
                   <SelectItem value="general-orthophony">الأرطوفونيا العامة</SelectItem>
                 </SelectContent>
