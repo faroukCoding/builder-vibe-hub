@@ -200,24 +200,7 @@ export default function SpecialistRegister() {
               </div>
             </div>
 
-            {/* Specialization */}
-            <div className="space-y-2">
-              <Label className="text-right flex items-center gap-2">
-                <GraduationCap className="w-4 h-4" />
-                التخصص
-              </Label>
-              <Select value={formData.specialization} onValueChange={(value) => handleInputChange('specialization', value)} required>
-                <SelectTrigger className="text-right">
-                  <SelectValue placeholder="اختر تخصصك" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="speech-therapy">علاج النطق واللغة</SelectItem>
-                  <SelectItem value="developmental-therapy">العلاج التطويري</SelectItem>
-                  <SelectItem value="autism-therapy">علاج طيف التوحد</SelectItem>
-                  <SelectItem value="general-orthophony">الأرطوفونيا العامة</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+           
 
             {/* Experience */}
             <div className="space-y-2">
