@@ -121,7 +121,7 @@ export default function Index() {
     مرحباً بك في Ortho Smart
   </p>
   <div className="text-sm text-blue-600 bg-blue-50 inline-block px-4 py-2 rounded-full">
-    منصة رقمية متخصصة في الأرطوفونيا
+     تطبيق متخصص في الأرطوفونيا
   </div>
 </div>
 
@@ -242,7 +242,7 @@ export default function Index() {
         {!showAccountTypes && (
           <div className="mt-16">
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-              مميزات المنصة
+           مميزات التطبيق 
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
